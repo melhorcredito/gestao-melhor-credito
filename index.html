@@ -529,8 +529,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <script type="module">
 // ── FIREBASE CONFIG ───────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCNCb0DW_BicboPvggu8_6VXxVsdIngB24",
@@ -993,6 +993,37 @@ async function confirmDel(){
     }
   });
 });
+
+// ── EXPOR FUNÇÕES GLOBALMENTE (necessário para type="module") ──
+window.switchTab = switchTab;
+window.setLoginPill = setLoginPill;
+window.openLoginModal = openLoginModal;
+window.openLoginEdit = openLoginEdit;
+window.closeLoginModal = closeLoginModal;
+window.salvarLogin = salvarLogin;
+window.moveLogin = moveLogin;
+window.openDemandaModal = openDemandaModal;
+window.openDemandaEdit = openDemandaEdit;
+window.closeDemandaModal = closeDemandaModal;
+window.salvarDemanda = salvarDemanda;
+window.moveDemanda = moveDemanda;
+window.openEmailModal = openEmailModal;
+window.openEmailEdit = openEmailEdit;
+window.closeEmailModal = closeEmailModal;
+window.salvarEmail = salvarEmail;
+window.moveEmail = moveEmail;
+window.openSubModal = openSubModal;
+window.openSubEdit = openSubEdit;
+window.closeSubModal = closeSubModal;
+window.salvarSub = salvarSub;
+window.moveSub = moveSub;
+window.openDel = openDel;
+window.closeDel = closeDel;
+window.confirmDel = confirmDel;
+window.renderLogins = renderLogins;
+window.renderDemandas = renderDemandas;
+window.renderEmails = renderEmails;
+window.renderSub = renderSub;
 
 </script>
 </body>
