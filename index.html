@@ -180,6 +180,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('demandas',this)">📋 Demandas / Propostas</div>
     <div class="tab" onclick="switchTab('emails',this)">✉️ Demanda E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
+    <div class="tab" onclick="switchTab('comunicados',this)">📢 Comunicados</div>
   </div>
 </div>
 
@@ -384,7 +385,63 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
   </div>
 </div>
 
-<!-- ══ MODAL CADASTROS SUB ══ -->
+<!-- ══════════════ ABA 5: COMUNICADOS ══════════════ -->
+<div class="tab-content" id="tab-comunicados">
+  <div class="hero-text">
+    <div class="badge">✦ Avisos Internos</div>
+    <h1>Mural de <em>Comunicados</em></h1>
+    <p>Avisos, procedimentos e mudanças para toda a equipe.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat and"><div class="n" id="c-st-and">0</div><div class="l">Em Vigor</div></div>
+    <div class="stat fin"><div class="n" id="c-st-fin">0</div><div class="l">Arquivado</div></div>
+    <div class="stat tot"><div class="n" id="c-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="c-srch" placeholder="🔍 Buscar comunicado..." oninput="renderComunicados()">
+    </div>
+    <button class="btn-add" onclick="openComModal()">＋ Novo Comunicado</button>
+  </div>
+
+  <div class="board" style="grid-template-columns:1fr 1fr">
+    <div class="col">
+      <div class="col-head and">
+        <div class="col-title and"><span class="col-dot and"></span>Em Vigor</div>
+        <span class="col-count and" id="c-cnt-and">0</span>
+      </div>
+      <div class="col-body" id="c-col-and"></div>
+    </div>
+    <div class="col">
+      <div class="col-head fin">
+        <div class="col-title fin"><span class="col-dot fin"></span>Arquivado</div>
+        <span class="col-count fin" id="c-cnt-fin">0</span>
+      </div>
+      <div class="col-body" id="c-col-fin"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL COMUNICADOS ══ -->
+<div class="overlay" id="c-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="c-modal-title">Novo Comunicado</h2>
+      <button class="close-btn" onclick="closeComModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="cw-titulo"><label>Título *</label><input id="c-titulo" placeholder="Ex: Novo procedimento de cadastro"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="cw-banco"><label>Banco *</label><input id="c-banco" placeholder="Ex: Bradesco, Itaú, Total Crédito..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="cw-texto"><label>Comunicado *</label><textarea id="c-texto" placeholder="Descreva o comunicado..."></textarea><span class="em">Campo obrigatório</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeComModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarCom()">Publicar</button>
+    </div>
+  </div>
+</div>
 <div class="overlay" id="s-overlay">
   <div class="modal">
     <div class="modal-head">
@@ -976,23 +1033,113 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':'demandas';
+  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','del-overlay'].forEach(function(id){
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this){
       if(id==='l-overlay') closeLoginModal();
       else if(id==='d-overlay') closeDemandaModal();
       else if(id==='e-overlay') closeEmailModal();
       else if(id==='s-overlay') closeSubModal();
+      else if(id==='c-overlay') closeComModal();
       else closeDel();
     }
   });
 });
+
+// ══════════════════════════════════════════════════════════════
+// ABA COMUNICADOS
+// ══════════════════════════════════════════════════════════════
+var COMUNICADOS = [];
+var cEditId = null;
+
+onSnapshot(collection(db,'comunicados'), function(snap){
+  COMUNICADOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderComunicados();
+});
+
+function renderComunicados(){
+  var srch = document.getElementById('c-srch').value.trim().toLowerCase();
+  var cols = {and:[],fin:[]};
+  COMUNICADOS.forEach(function(it){
+    if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !it.texto.toLowerCase().includes(srch)) return;
+    cols[it.status] && cols[it.status].push(it);
+  });
+  ['and','fin'].forEach(function(s){
+    var el = document.getElementById('c-col-'+s);
+    document.getElementById('c-cnt-'+s).textContent = cols[s].length;
+    if(!cols[s].length){ el.innerHTML='<div class="empty">Nenhum comunicado</div>'; return; }
+    el.innerHTML = cols[s].map(function(it){
+      var btns='';
+      if(s==='and')  btns+='<button class="mv-btn to-fin" onclick="moveCom(\''+it.id+'\',\'fin\')">📦 Arquivar</button>';
+      if(s==='fin')  btns+='<button class="mv-btn to-and" onclick="moveCom(\''+it.id+'\',\'and\')">➡ Em Vigor</button>';
+      return '<div class="card">'
+        +'<div class="card-top"><div class="card-name">📢 '+it.titulo+'</div>'
+        +'<div class="card-actions">'
+        +'<button class="act-btn" onclick="openComEdit(\''+it.id+'\')">✏️</button>'
+        +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'com\',\''+escHtml(it.titulo)+'\')">🗑️</button>'
+        +'</div></div>'
+        +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'
+        +'<span class="tag data">📅 '+it.data+'</span></div>'
+        +'<div style="margin-top:8px;font-size:13px;color:var(--text);line-height:1.6;background:var(--blue-p);border-radius:8px;padding:10px 12px">'+it.texto+'</div>'
+        +'<div class="card-move">'+btns+'</div>'
+        +'</div>';
+    }).join('');
+  });
+  var tot = COMUNICADOS.filter(function(it){
+    if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !it.texto.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  document.getElementById('c-st-tot').textContent  = tot.length;
+  document.getElementById('c-st-and').textContent  = cols.and.length;
+  document.getElementById('c-st-fin').textContent  = cols.fin.length;
+}
+
+function openComModal(){
+  cEditId=null;
+  document.getElementById('c-modal-title').textContent='Novo Comunicado';
+  ['c-titulo','c-banco','c-texto'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['cw-titulo','cw-banco','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('c-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('c-titulo').focus(); },100);
+}
+function openComEdit(id){
+  var it=COMUNICADOS.find(function(x){ return x.id===id; }); if(!it) return;
+  cEditId=id;
+  document.getElementById('c-modal-title').textContent='Editar Comunicado';
+  document.getElementById('c-titulo').value=it.titulo;
+  document.getElementById('c-banco').value=it.banco||'';
+  document.getElementById('c-texto').value=it.texto;
+  ['cw-titulo','cw-banco','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('c-overlay').classList.add('open');
+}
+function closeComModal(){ document.getElementById('c-overlay').classList.remove('open'); }
+
+async function salvarCom(){
+  var titulo=document.getElementById('c-titulo').value.trim();
+  var banco=document.getElementById('c-banco').value.trim();
+  var texto=document.getElementById('c-texto').value.trim();
+  var ok=true;
+  [['cw-titulo',titulo],['cw-banco',banco],['cw-texto',texto]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(cEditId){
+    await updateDoc(doc(db,'comunicados',cEditId),{titulo,banco,texto});
+  } else {
+    await addDoc(collection(db,'comunicados'),{titulo,banco,texto,status:'and',data:hoje()});
+  }
+  closeComModal();
+}
+async function moveCom(id,status){
+  await updateDoc(doc(db,'comunicados',id),{status});
+}
 
 // ── EXPOR FUNÇÕES GLOBALMENTE (necessário para type="module") ──
 window.switchTab = switchTab;
@@ -1023,7 +1170,12 @@ window.confirmDel = confirmDel;
 window.renderLogins = renderLogins;
 window.renderDemandas = renderDemandas;
 window.renderEmails = renderEmails;
-window.renderSub = renderSub;
+window.openComModal = openComModal;
+window.openComEdit = openComEdit;
+window.closeComModal = closeComModal;
+window.salvarCom = salvarCom;
+window.moveCom = moveCom;
+window.renderComunicados = renderComunicados;
 
 </script>
 </body>
