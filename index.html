@@ -178,7 +178,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
   <div class="tabs">
     <div class="tab active" onclick="switchTab('logins',this)">🔐 Criações de Logins</div>
     <div class="tab" onclick="switchTab('demandas',this)">📋 Demandas / Propostas</div>
-    <div class="tab" onclick="switchTab('emails',this)">✉️ Demanda E-mail</div>
+    <div class="tab" onclick="switchTab('emails',this)">✉️ Demandas E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
     <div class="tab" onclick="switchTab('comunicados',this)">📢 Comunicados</div>
     <div class="tab" onclick="switchTab('contatos',this)">📞 Contatos Bancos</div>
@@ -297,7 +297,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 <div class="tab-content" id="tab-emails">
   <div class="hero-text">
     <div class="badge">✦ Demandas por E-mail</div>
-    <h1>Controle de <em>Demanda E-mail</em></h1>
+    <h1>Controle de <em>Demandas E-mail</em></h1>
     <p>Acompanhe as demandas enviadas por e-mail e seus status.</p>
   </div>
 
@@ -675,23 +675,25 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
   </div>
 </div>
 
-<script type="module">
-// ── FIREBASE CONFIG ───────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
 const firebaseConfig = {
   apiKey: "AIzaSyCNCb0DW_BicboPvggu8_6VXxVsdIngB24",
   authDomain: "melhor-credito.firebaseapp.com",
   projectId: "melhor-credito",
   storageBucket: "melhor-credito.firebasestorage.app",
   messagingSenderId: "664835784824",
-  appId: "1:664835784824:web:79d66cc6fb52d76030ad8d",
-  measurementId: "G-WHKZZ93P24"
+  appId: "1:664835784824:web:79d66cc6fb52d76030ad8d"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+function collection(d,n){ return d.collection(n); }
+function onSnapshot(ref,cb){ ref.onSnapshot(function(snap){ cb(snap); }); }
+function addDoc(ref,data){ return ref.add(data); }
+function updateDoc(ref,data){ return ref.update(data); }
+function deleteDoc(ref){ return ref.delete(); }
+function doc(d,col,id){ return d.collection(col).doc(id); }
 
 // ── UTILS ──────────────────────────────────────────────────────
 function formatDate(s){ if(!s) return ''; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
@@ -1379,52 +1381,6 @@ async function salvarIn(){
   closeInModal();
 }
 
-// ── EXPOR FUNÇÕES GLOBALMENTE (necessário para type="module") ──
-window.switchTab = switchTab;
-window.setLoginPill = setLoginPill;
-window.openLoginModal = openLoginModal;
-window.openLoginEdit = openLoginEdit;
-window.closeLoginModal = closeLoginModal;
-window.salvarLogin = salvarLogin;
-window.moveLogin = moveLogin;
-window.openDemandaModal = openDemandaModal;
-window.openDemandaEdit = openDemandaEdit;
-window.closeDemandaModal = closeDemandaModal;
-window.salvarDemanda = salvarDemanda;
-window.moveDemanda = moveDemanda;
-window.openEmailModal = openEmailModal;
-window.openEmailEdit = openEmailEdit;
-window.closeEmailModal = closeEmailModal;
-window.salvarEmail = salvarEmail;
-window.moveEmail = moveEmail;
-window.openSubModal = openSubModal;
-window.openSubEdit = openSubEdit;
-window.closeSubModal = closeSubModal;
-window.salvarSub = salvarSub;
-window.moveSub = moveSub;
-window.openDel = openDel;
-window.closeDel = closeDel;
-window.confirmDel = confirmDel;
-window.renderLogins = renderLogins;
-window.renderDemandas = renderDemandas;
-window.renderEmails = renderEmails;
-window.renderSub = renderSub;
-window.openComModal = openComModal;
-window.openComEdit = openComEdit;
-window.closeComModal = closeComModal;
-window.salvarCom = salvarCom;
-window.moveCom = moveCom;
-window.renderComunicados = renderComunicados;
-window.openCtModal = openCtModal;
-window.openCtEdit = openCtEdit;
-window.closeCtModal = closeCtModal;
-window.salvarCt = salvarCt;
-window.renderContatos = renderContatos;
-window.openInModal = openInModal;
-window.openInEdit = openInEdit;
-window.closeInModal = closeInModal;
-window.salvarIn = salvarIn;
-window.renderInterno = renderInterno;
 
 </script>
 </body>
