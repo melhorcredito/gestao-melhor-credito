@@ -181,6 +181,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('emails',this)">✉️ Demanda E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
     <div class="tab" onclick="switchTab('comunicados',this)">📢 Comunicados</div>
+    <div class="tab" onclick="switchTab('contatos',this)">📞 Contatos Parceiro</div>
+    <div class="tab" onclick="switchTab('interno',this)">🏢 Contatos Interno</div>
   </div>
 </div>
 
@@ -442,10 +444,93 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     </div>
   </div>
 </div>
-<div class="overlay" id="s-overlay">
+
+<!-- ══════════════ ABA 6: CONTATOS ══════════════ -->
+<div class="tab-content" id="tab-contatos">
+  <div class="hero-text">
+    <div class="badge">✦ Agenda de Contatos</div>
+    <h1>Contatos <em>Banco / Parceiro</em></h1>
+    <p>Telefones e e-mails dos seus contatos por banco.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat tot"><div class="n" id="ct-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="ct-srch" placeholder="🔍 Buscar por nome ou banco..." oninput="renderContatos()">
+    </div>
+    <button class="btn-add" onclick="openCtModal()">＋ Novo Contato</button>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px" id="ct-grid">
+    <div class="empty" style="grid-column:1/-1">Nenhum contato cadastrado</div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONTATOS ══ -->
+<div class="overlay" id="ct-overlay">
   <div class="modal">
     <div class="modal-head">
-      <h2 id="s-modal-title">Novo Cadastro Sub</h2>
+      <h2 id="ct-modal-title">Novo Contato</h2>
+      <button class="close-btn" onclick="closeCtModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="ctw-nome"><label>Nome *</label><input id="ct-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="ctw-banco"><label>Banco *</label><input id="ct-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
+      <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-email" placeholder="contato@banco.com.br" type="email"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeCtModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarCt()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ABA 7: CONTATOS INTERNO ══════════════ -->
+<div class="tab-content" id="tab-interno">
+  <div class="hero-text">
+    <div class="badge">✦ Agenda Interna</div>
+    <h1>Contatos <em>Banco Interno</em></h1>
+    <p>Telefones dos contatos internos por banco.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat tot"><div class="n" id="in-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="in-srch" placeholder="🔍 Buscar por nome ou banco..." oninput="renderInterno()">
+    </div>
+    <button class="btn-add" onclick="openInModal()">＋ Novo Contato Interno</button>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px" id="in-grid">
+    <div class="empty" style="grid-column:1/-1">Nenhum contato cadastrado</div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONTATOS INTERNO ══ -->
+<div class="overlay" id="in-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="in-modal-title">Novo Contato Interno</h2>
+      <button class="close-btn" onclick="closeInModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="inw-nome"><label>Nome *</label><input id="in-nome" placeholder="Ex: Maria Santos"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="inw-banco"><label>Banco *</label><input id="in-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="in-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeInModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarIn()">Salvar</button>
+    </div>
+  </div>
+</div>
       <button class="close-btn" onclick="closeSubModal()">✕</button>
     </div>
     <div class="modal-body">
@@ -1033,13 +1118,13 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':'demandas';
+  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','del-overlay'].forEach(function(id){
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this){
       if(id==='l-overlay') closeLoginModal();
@@ -1047,6 +1132,8 @@ async function confirmDel(){
       else if(id==='e-overlay') closeEmailModal();
       else if(id==='s-overlay') closeSubModal();
       else if(id==='c-overlay') closeComModal();
+      else if(id==='ct-overlay') closeCtModal();
+      else if(id==='in-overlay') closeInModal();
       else closeDel();
     }
   });
@@ -1141,6 +1228,151 @@ async function moveCom(id,status){
   await updateDoc(doc(db,'comunicados',id),{status});
 }
 
+// ══════════════════════════════════════════════════════════════
+// ABA CONTATOS
+// ══════════════════════════════════════════════════════════════
+var CONTATOS = [];
+var ctEditId = null;
+
+onSnapshot(collection(db,'contatos'), function(snap){
+  CONTATOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderContatos();
+});
+
+function renderContatos(){
+  var srch = document.getElementById('ct-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('ct-grid');
+  var list = CONTATOS.filter(function(it){
+    if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  document.getElementById('ct-st-tot').textContent = CONTATOS.length;
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">👤 '+it.nome+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openCtEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'contato\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span></div>'
+      +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
+      +(it.email?'<div style="margin-top:5px;font-size:13px;color:var(--text)">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.email+'</a></div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function openCtModal(){
+  ctEditId=null;
+  document.getElementById('ct-modal-title').textContent='Novo Contato';
+  ['ct-nome','ct-banco','ct-tel','ct-email'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['ctw-nome','ctw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('ct-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('ct-nome').focus(); },100);
+}
+function openCtEdit(id){
+  var it=CONTATOS.find(function(x){ return x.id===id; }); if(!it) return;
+  ctEditId=id;
+  document.getElementById('ct-modal-title').textContent='Editar Contato';
+  document.getElementById('ct-nome').value=it.nome;
+  document.getElementById('ct-banco').value=it.banco;
+  document.getElementById('ct-tel').value=it.tel||'';
+  document.getElementById('ct-email').value=it.email||'';
+  ['ctw-nome','ctw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('ct-overlay').classList.add('open');
+}
+function closeCtModal(){ document.getElementById('ct-overlay').classList.remove('open'); }
+
+async function salvarCt(){
+  var nome=document.getElementById('ct-nome').value.trim();
+  var banco=document.getElementById('ct-banco').value.trim();
+  var tel=document.getElementById('ct-tel').value.trim();
+  var email=document.getElementById('ct-email').value.trim();
+  var ok=true;
+  [['ctw-nome',nome],['ctw-banco',banco]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(ctEditId){
+    await updateDoc(doc(db,'contatos',ctEditId),{nome,banco,tel,email});
+  } else {
+    await addDoc(collection(db,'contatos'),{nome,banco,tel,email,data:hoje()});
+  }
+  closeCtModal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// ABA CONTATOS INTERNO
+// ══════════════════════════════════════════════════════════════
+var INTERNO = [];
+var inEditId = null;
+
+onSnapshot(collection(db,'interno'), function(snap){
+  INTERNO = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderInterno();
+});
+
+function renderInterno(){
+  var srch = document.getElementById('in-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('in-grid');
+  var list = INTERNO.filter(function(it){
+    if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  document.getElementById('in-st-tot').textContent = INTERNO.length;
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">🏢 '+it.nome+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openInEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'interno\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span></div>'
+      +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function openInModal(){
+  inEditId=null;
+  document.getElementById('in-modal-title').textContent='Novo Contato Interno';
+  ['in-nome','in-banco','in-tel'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['inw-nome','inw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('in-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('in-nome').focus(); },100);
+}
+function openInEdit(id){
+  var it=INTERNO.find(function(x){ return x.id===id; }); if(!it) return;
+  inEditId=id;
+  document.getElementById('in-modal-title').textContent='Editar Contato Interno';
+  document.getElementById('in-nome').value=it.nome;
+  document.getElementById('in-banco').value=it.banco;
+  document.getElementById('in-tel').value=it.tel||'';
+  ['inw-nome','inw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('in-overlay').classList.add('open');
+}
+function closeInModal(){ document.getElementById('in-overlay').classList.remove('open'); }
+
+async function salvarIn(){
+  var nome=document.getElementById('in-nome').value.trim();
+  var banco=document.getElementById('in-banco').value.trim();
+  var tel=document.getElementById('in-tel').value.trim();
+  var ok=true;
+  [['inw-nome',nome],['inw-banco',banco]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(inEditId){
+    await updateDoc(doc(db,'interno',inEditId),{nome,banco,tel});
+  } else {
+    await addDoc(collection(db,'interno'),{nome,banco,tel,data:hoje()});
+  }
+  closeInModal();
+}
+
 // ── EXPOR FUNÇÕES GLOBALMENTE (necessário para type="module") ──
 window.switchTab = switchTab;
 window.setLoginPill = setLoginPill;
@@ -1176,6 +1408,16 @@ window.closeComModal = closeComModal;
 window.salvarCom = salvarCom;
 window.moveCom = moveCom;
 window.renderComunicados = renderComunicados;
+window.openCtModal = openCtModal;
+window.openCtEdit = openCtEdit;
+window.closeCtModal = closeCtModal;
+window.salvarCt = salvarCt;
+window.renderContatos = renderContatos;
+window.openInModal = openInModal;
+window.openInEdit = openInEdit;
+window.closeInModal = closeInModal;
+window.salvarIn = salvarIn;
+window.renderInterno = renderInterno;
 
 </script>
 </body>
