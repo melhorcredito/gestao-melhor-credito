@@ -716,7 +716,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
           <option value="fin">Finalizado</option>
         </select>
       </div>
-      <div class="mf"><label>Operacional <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="s-oper" placeholder="Nome do operacional responsável"></div>
+      <div class="mf" id="sw-oper"><label>Operacional *</label><input id="s-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeSubModal()">Cancelar</button>
@@ -754,7 +754,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
           <option value="fin">Finalizado</option>
         </select>
       </div>
-      <div class="mf"><label>Operacional <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="l-oper" placeholder="Nome do operacional responsável"></div>
+      <div class="mf" id="lw-oper"><label>Operacional *</label><input id="l-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeLoginModal()">Cancelar</button>
@@ -771,9 +771,10 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <button class="close-btn" onclick="closeDemandaModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="mf" id="dw-grupo"><label>Nome Grupo *</label><input id="d-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="dw-grupo"><label>Parceiro *</label><input id="d-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
       <div class="mf" id="dw-banco"><label>Banco *</label><input id="d-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="dw-proposta"><label>Proposta *</label><input id="d-proposta" placeholder="Ex: Proposta 12345"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Proposta <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="d-proposta" placeholder="Ex: Proposta 12345"></div>
+      <div class="mf"><label>CPF Cliente <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="d-cpfcliente" placeholder="000.000.000-00" maxlength="14"></div>
       <div class="mf" id="dw-datainicio"><label>Data de Início *</label><input type="date" id="d-datainicio"><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Chamado <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label>
         <input id="d-chamado" placeholder="Ex: CHM-00123">
@@ -785,7 +786,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
           <option value="res">Resolvido</option>
         </select>
       </div>
-      <div class="mf"><label>Operacional <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="d-oper" placeholder="Nome do operacional responsável"></div>
+      <div class="mf" id="dw-oper"><label>Operacional *</label><input id="d-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="d-obs" placeholder="Alguma observação sobre essa demanda..."></textarea></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeDemandaModal()">Cancelar</button>
@@ -803,7 +805,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     </div>
     <div class="modal-body">
       <div class="mf" id="ew-nome"><label>Nome *</label><input id="e-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="ew-demanda"><label>Demanda *</label><input id="e-demanda" placeholder="Descreva a demanda"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="ew-demanda"><label>Assunto *</label><input id="e-demanda" placeholder="Descreva o assunto"><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Banco <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-banco" placeholder="Ex: Bradesco, Itaú..."></div>
       <div class="mf"><label>Proposta <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-proposta" placeholder="Ex: Proposta 12345"></div>
       <div class="mf" id="ew-dataenvio"><label>Data de Envio *</label><input type="date" id="e-dataenvio"><span class="em">Campo obrigatório</span></div>
@@ -815,7 +817,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
           <option value="res">Resolvido</option>
         </select>
       </div>
-      <div class="mf"><label>Operacional <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-oper" placeholder="Nome do operacional responsável"></div>
+      <div class="mf" id="ew-oper"><label>Operacional *</label><input id="e-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="e-obs" placeholder="Alguma observação sobre essa demanda..."></textarea></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeEmailModal()">Cancelar</button>
@@ -938,9 +941,7 @@ function openLoginModal(){
   document.getElementById('l-modal-title').textContent='Nova Solicitação';
   ['l-nome','l-banco','l-obs','l-oper'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('l-prom').value=''; document.getElementById('l-status').value='and';
-  ['lw-nome','lw-banco','lw-prom'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
-  document.getElementById('l-overlay').classList.add('open');
-  setTimeout(function(){ document.getElementById('l-nome').focus(); },100);
+  ['lw-nome','lw-banco','lw-prom','lw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
 }
 function openLoginEdit(id){
   var it=LOGINS.find(function(x){ return x.id===id; }); if(!it) return;
@@ -965,7 +966,7 @@ async function salvarLogin(){
   var oper=document.getElementById('l-oper').value.trim();
   var status=document.getElementById('l-status').value;
   var ok=true;
-  [['lw-nome',nome],['lw-banco',banco],['lw-prom',prom]].forEach(function(p){
+  [['lw-nome',nome],['lw-banco',banco],['lw-prom',prom],['lw-oper',oper]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
@@ -1012,11 +1013,13 @@ function renderDemandas(){
         +'<div class="card-actions"><button class="act-btn" onclick="openDemandaEdit(\''+it.id+'\')">✏️</button>'
         +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'demanda\',\''+escHtml(it.grupo)+'\')">🗑️</button></div></div>'
         +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'
-        +'<span class="tag proposta">📄 '+it.proposta+'</span>'
+        +(it.proposta?'<span class="tag proposta">📄 '+it.proposta+'</span>':'')
+        +(it.cpfcliente?'<span class="tag chamado">👤 CPF: '+it.cpfcliente+'</span>':'')
         +(it.chamado?'<span class="tag chamado">🎫 '+it.chamado+'</span>':'')
         +(it.datainicio?'<span class="tag data">🗓️ Início: '+formatDate(it.datainicio)+'</span>':'')
         +'<span class="tag data">📅 '+it.data+'</span></div>'
         +(it.oper?'<div style="margin-top:6px;font-size:11px;font-weight:600;color:#0369a1">👤 Operacional: '+it.oper+'</div>':'')
+        +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
         +'<div class="card-move">'+btns+'</div></div>';
     }).join('');
   });
@@ -1033,11 +1036,9 @@ function renderDemandas(){
 function openDemandaModal(){
   dEditId=null;
   document.getElementById('d-modal-title').textContent='Nova Demanda';
-  ['d-grupo','d-banco','d-proposta','d-chamado','d-datainicio','d-oper'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['d-grupo','d-banco','d-proposta','d-cpfcliente','d-chamado','d-datainicio','d-oper','d-obs'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('d-status').value='and';
-  ['dw-grupo','dw-banco','dw-proposta','dw-datainicio'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
-  document.getElementById('d-overlay').classList.add('open');
-  setTimeout(function(){ document.getElementById('d-grupo').focus(); },100);
+  ['dw-grupo','dw-banco','dw-datainicio','dw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
 }
 function openDemandaEdit(id){
   var it=DEMANDAS.find(function(x){ return x.id===id; }); if(!it) return;
@@ -1045,12 +1046,13 @@ function openDemandaEdit(id){
   document.getElementById('d-modal-title').textContent='Editar Demanda';
   document.getElementById('d-grupo').value=it.grupo;
   document.getElementById('d-banco').value=it.banco;
-  document.getElementById('d-proposta').value=it.proposta;
+  document.getElementById('d-proposta').value=it.proposta||'';
+  document.getElementById('d-cpfcliente').value=it.cpfcliente||'';
   document.getElementById('d-chamado').value=it.chamado||'';
   document.getElementById('d-datainicio').value=it.datainicio||'';
   document.getElementById('d-oper').value=it.oper||'';
-  document.getElementById('d-status').value=it.status;
-  ['dw-grupo','dw-banco','dw-proposta','dw-datainicio'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('d-obs').value=it.obs||'';
+  ['dw-grupo','dw-banco','dw-datainicio','dw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('d-overlay').classList.add('open');
 }
 function closeDemandaModal(){ document.getElementById('d-overlay').classList.remove('open'); }
@@ -1059,20 +1061,22 @@ async function salvarDemanda(){
   var grupo=document.getElementById('d-grupo').value.trim();
   var banco=document.getElementById('d-banco').value.trim();
   var proposta=document.getElementById('d-proposta').value.trim();
+  var cpfcliente=document.getElementById('d-cpfcliente').value.trim();
   var chamado=document.getElementById('d-chamado').value.trim();
   var datainicio=document.getElementById('d-datainicio').value;
   var oper=document.getElementById('d-oper').value.trim();
+  var obs=document.getElementById('d-obs').value.trim();
   var status=document.getElementById('d-status').value;
   var ok=true;
-  [['dw-grupo',grupo],['dw-banco',banco],['dw-proposta',proposta],['dw-datainicio',datainicio]].forEach(function(p){
+  [['dw-grupo',grupo],['dw-banco',banco],['dw-datainicio',datainicio],['dw-oper',oper]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
   if(dEditId){
-    await updateDoc(doc(db,'demandas',dEditId),{grupo,banco,proposta,chamado,datainicio,oper,status});
+    await updateDoc(doc(db,'demandas',dEditId),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status});
   } else {
-    await addDoc(collection(db,'demandas'),{grupo,banco,proposta,chamado,datainicio,oper,status,data:hoje()});
+    await addDoc(collection(db,'demandas'),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status,data:hoje()});
   }
   closeDemandaModal();
 }
@@ -1117,6 +1121,7 @@ function renderEmails(){
         +(it.dataenvio?'<span class="tag data">📤 Envio: '+formatDate(it.dataenvio)+'</span>':'')
         +'<span class="tag data">📅 '+it.data+'</span></div>'
         +(it.oper?'<div style="margin-top:6px;font-size:11px;font-weight:600;color:#0369a1">👤 Operacional: '+it.oper+'</div>':'')
+        +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
         +'<div class="card-move">'+btns+'</div></div>';
     }).join('');
   });
@@ -1133,11 +1138,9 @@ function renderEmails(){
 function openEmailModal(){
   eEditId=null;
   document.getElementById('e-modal-title').textContent='Nova Demanda E-mail';
-  ['e-nome','e-demanda','e-banco','e-proposta','e-dataenvio','e-chamado','e-oper'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['e-nome','e-demanda','e-banco','e-proposta','e-dataenvio','e-chamado','e-oper','e-obs'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('e-status').value='and';
-  ['ew-nome','ew-demanda','ew-dataenvio'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
-  document.getElementById('e-overlay').classList.add('open');
-  setTimeout(function(){ document.getElementById('e-nome').focus(); },100);
+  ['ew-nome','ew-demanda','ew-dataenvio','ew-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
 }
 function openEmailEdit(id){
   var it=EMAILS.find(function(x){ return x.id===id; }); if(!it) return;
@@ -1150,7 +1153,7 @@ function openEmailEdit(id){
   document.getElementById('e-dataenvio').value=it.dataenvio||'';
   document.getElementById('e-chamado').value=it.chamado||'';
   document.getElementById('e-oper').value=it.oper||'';
-  document.getElementById('e-status').value=it.status;
+  document.getElementById('e-obs').value=it.obs||'';
   ['ew-nome','ew-demanda','ew-dataenvio'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('e-overlay').classList.add('open');
 }
@@ -1164,17 +1167,18 @@ async function salvarEmail(){
   var dataenvio=document.getElementById('e-dataenvio').value;
   var chamado=document.getElementById('e-chamado').value.trim();
   var oper=document.getElementById('e-oper').value.trim();
+  var obs=document.getElementById('e-obs').value.trim();
   var status=document.getElementById('e-status').value;
   var ok=true;
-  [['ew-nome',nome],['ew-demanda',demanda],['ew-dataenvio',dataenvio]].forEach(function(p){
+  [['ew-nome',nome],['ew-demanda',demanda],['ew-dataenvio',dataenvio],['ew-oper',oper]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
   if(eEditId){
-    await updateDoc(doc(db,'emails',eEditId),{nome,demanda,banco,proposta,dataenvio,chamado,oper,status});
+    await updateDoc(doc(db,'emails',eEditId),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status});
   } else {
-    await addDoc(collection(db,'emails'),{nome,demanda,banco,proposta,dataenvio,chamado,oper,status,data:hoje()});
+    await addDoc(collection(db,'emails'),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status,data:hoje()});
   }
   closeEmailModal();
 }
@@ -1237,7 +1241,7 @@ function openSubModal(){
   document.getElementById('s-modal-title').textContent='Novo Cadastro Sub';
   ['s-nome','s-razao','s-cnpj','s-cpf','s-banco','s-obs','s-oper'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('s-status').value='and';
-  ['sw-nome','sw-razao','sw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['sw-nome','sw-razao','sw-banco','sw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('s-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('s-nome').focus(); },100);
 }
@@ -1253,7 +1257,7 @@ function openSubEdit(id){
   document.getElementById('s-obs').value=it.obs||'';
   document.getElementById('s-oper').value=it.oper||'';
   document.getElementById('s-status').value=it.status;
-  ['sw-nome','sw-razao','sw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['sw-nome','sw-razao','sw-banco','sw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('s-overlay').classList.add('open');
 }
 function closeSubModal(){ document.getElementById('s-overlay').classList.remove('open'); }
@@ -1268,7 +1272,7 @@ async function salvarSub(){
   var oper=document.getElementById('s-oper').value.trim();
   var status=document.getElementById('s-status').value;
   var ok=true;
-  [['sw-nome',nome],['sw-razao',razao],['sw-banco',banco]].forEach(function(p){
+  [['sw-nome',nome],['sw-razao',razao],['sw-banco',banco],['sw-oper',oper]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
