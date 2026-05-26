@@ -187,6 +187,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
     <div class="tab" onclick="switchTab('comissoes',this)">💰 Comissões</div>
+    <div class="tab" onclick="switchTab('parceiros',this)">👥 Parceiros</div>
+    <div class="tab" onclick="switchTab('contratos',this)">📄 Contratos</div>
   </div>
 </div>
 
@@ -694,7 +696,97 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     </div>
   </div>
 </div>
-<div class="overlay" id="s-overlay">
+
+<!-- ══════════════ ABA 11: PARCEIROS ══════════════ -->
+<div class="tab-content" id="tab-parceiros">
+  <div class="hero-text">
+    <div class="badge">✦ Parceiros</div>
+    <h1>Cadastro de <em>Parceiros</em></h1>
+    <p>Gerencie os dados e documentos dos seus parceiros.</p>
+  </div>
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l">
+        <input class="search" id="par-srch" placeholder="🔍 Buscar por nome ou grupo..." oninput="renderParceiros()">
+      </div>
+      <button class="btn-add" onclick="openParModal()">＋ Novo Parceiro</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="par-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum parceiro cadastrado</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ABA 12: CONTRATOS ══════════════ -->
+<div class="tab-content" id="tab-contratos">
+  <div class="hero-text">
+    <div class="badge">✦ Contratos</div>
+    <h1>Controle de <em>Contratos</em></h1>
+    <p>Gerencie os contratos assinados dos seus parceiros.</p>
+  </div>
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l">
+        <input class="search" id="con-srch" placeholder="🔍 Buscar por parceiro ou grupo..." oninput="renderContratos()">
+      </div>
+      <button class="btn-add" onclick="openConModal()">＋ Novo Contrato</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="con-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum contrato cadastrado</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL PARCEIROS ══ -->
+<div class="overlay" id="par-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="par-modal-title">Novo Parceiro</h2>
+      <button class="close-btn" onclick="closeParModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="parw-grupo"><label>Nome do Grupo *</label><input id="par-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="parw-nome"><label>Nome *</label><input id="par-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-email" placeholder="joao@email.com" type="email"></div>
+      <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          Documentos (CNH/CPF) <button type="button" onclick="addDocField()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar</button>
+        </label>
+        <div id="doc-fields" style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+          <div style="display:flex;gap:6px;align-items:center">
+            <input class="doc-nome-input" placeholder="Nome do doc. (ex: CPF João)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">
+            <input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeParModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarPar()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONTRATOS ══ -->
+<div class="overlay" id="con-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="con-modal-title">Novo Contrato</h2>
+      <button class="close-btn" onclick="closeConModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="conw-parceiro"><label>Nome do Parceiro *</label><input id="con-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="conw-grupo"><label>Nome do Grupo *</label><input id="con-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="conw-link"><label>Link do Contrato (Google Drive) *</label><input id="con-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="con-obs" placeholder="Alguma observação sobre o contrato..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeConModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarCon()">Salvar</button>
+    </div>
+  </div>
+</div>
   <div class="modal">
     <div class="modal-head">
       <h2 id="s-modal-title">Novo Cadastro Sub</h2>
@@ -1303,7 +1395,7 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':'demandas';
+  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':delType==='par'?'parceiros':delType==='con'?'contratos':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
@@ -1602,8 +1694,184 @@ async function salvarCm(){
   closeCmModal();
 }
 
+// ══════════════════════════════════════════════════════════════
+// ABA PARCEIROS
+// ══════════════════════════════════════════════════════════════
+var PARCEIROS = [];
+var parEditId = null;
+
+onSnapshot(collection(db,'parceiros'), function(snap){
+  PARCEIROS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderParceiros();
+});
+
+function addDocField(){
+  var div = document.createElement('div');
+  div.style.cssText='display:flex;gap:6px;align-items:center';
+  div.innerHTML='<input class="doc-nome-input" placeholder="Nome do doc. (ex: CNH Maria)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
+    +'<input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
+    +'<button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button>';
+  document.getElementById('doc-fields').appendChild(div);
+}
+
+function getDocs(){
+  var nomes = Array.from(document.querySelectorAll('.doc-nome-input')).map(function(i){ return i.value.trim(); });
+  var links = Array.from(document.querySelectorAll('.doc-link-input')).map(function(i){ return i.value.trim(); });
+  var docs = [];
+  nomes.forEach(function(n,i){ if(n||links[i]) docs.push({nome:n,link:links[i]}); });
+  return docs;
+}
+
+function renderParceiros(){
+  var srch = document.getElementById('par-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('par-grid');
+  var list = PARCEIROS.filter(function(it){
+    if(srch && !it.nome.toLowerCase().includes(srch) && !it.grupo.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum parceiro cadastrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    var docs = it.docs||[];
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">👥 '+it.nome+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openParEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'par\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.grupo+'</span></div>'
+      +(it.email?'<div style="margin-top:6px;font-size:13px">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none">'+it.email+'</a></div>':'')
+      +(it.tel?'<div style="margin-top:4px;font-size:13px">📞 '+it.tel+'</div>':'')
+      +(docs.length?'<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Documentos</div>'
+        +docs.map(function(d){ return '<div style="margin-bottom:4px;font-size:12px">'
+          +(d.link?'<a href="'+d.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--blue-p);color:var(--blue);text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600">📎 '+(d.nome||'Documento')+'</a>':'<span style="color:var(--lbl)">📎 '+(d.nome||'Documento')+'</span>')
+          +'</div>'; }).join('')+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function openParModal(){
+  parEditId=null;
+  document.getElementById('par-modal-title').textContent='Novo Parceiro';
+  ['par-grupo','par-nome','par-email','par-tel'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('doc-fields').innerHTML='<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc. (ex: CPF João)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"></div>';
+  document.getElementById('par-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('par-grupo').focus(); },100);
+}
+function openParEdit(id){
+  var it=PARCEIROS.find(function(x){ return x.id===id; }); if(!it) return;
+  parEditId=id;
+  document.getElementById('par-modal-title').textContent='Editar Parceiro';
+  document.getElementById('par-grupo').value=it.grupo;
+  document.getElementById('par-nome').value=it.nome;
+  document.getElementById('par-email').value=it.email||'';
+  document.getElementById('par-tel').value=it.tel||'';
+  ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  var docs = it.docs||[{nome:'',link:''}];
+  document.getElementById('doc-fields').innerHTML = docs.map(function(d,i){
+    if(i===0) return '<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc." value="'+escHtml(d.nome||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" value="'+escHtml(d.link||'')+'" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"></div>';
+    return '<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc." value="'+escHtml(d.nome||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" value="'+escHtml(d.link||'')+'" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button></div>';
+  }).join('');
+  document.getElementById('par-overlay').classList.add('open');
+}
+function closeParModal(){ document.getElementById('par-overlay').classList.remove('open'); }
+
+async function salvarPar(){
+  var grupo=document.getElementById('par-grupo').value.trim();
+  var nome=document.getElementById('par-nome').value.trim();
+  var email=document.getElementById('par-email').value.trim();
+  var tel=document.getElementById('par-tel').value.trim();
+  var docs=getDocs();
+  var ok=true;
+  [['parw-grupo',grupo],['parw-nome',nome]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(parEditId){
+    await updateDoc(doc(db,'parceiros',parEditId),{grupo,nome,email,tel,docs});
+  } else {
+    await addDoc(collection(db,'parceiros'),{grupo,nome,email,tel,docs,data:hoje()});
+  }
+  closeParModal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// ABA CONTRATOS
+// ══════════════════════════════════════════════════════════════
+var CONTRATOS = [];
+var conEditId = null;
+
+onSnapshot(collection(db,'contratos'), function(snap){
+  CONTRATOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderContratos();
+});
+
+function renderContratos(){
+  var srch = document.getElementById('con-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('con-grid');
+  var list = CONTRATOS.filter(function(it){
+    if(srch && !it.parceiro.toLowerCase().includes(srch) && !it.grupo.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contrato cadastrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">📄 '+it.parceiro+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openConEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'con\',\''+escHtml(it.parceiro)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.grupo+'</span>'
+      +'<span class="tag data">📅 '+it.data+'</span></div>'
+      +(it.link?'<div style="margin-top:10px"><a href="'+it.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600">📎 Abrir Contrato</a></div>':'')
+      +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function openConModal(){
+  conEditId=null;
+  document.getElementById('con-modal-title').textContent='Novo Contrato';
+  ['con-parceiro','con-grupo','con-link','con-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['conw-parceiro','conw-grupo','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('con-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('con-parceiro').focus(); },100);
+}
+function openConEdit(id){
+  var it=CONTRATOS.find(function(x){ return x.id===id; }); if(!it) return;
+  conEditId=id;
+  document.getElementById('con-modal-title').textContent='Editar Contrato';
+  document.getElementById('con-parceiro').value=it.parceiro;
+  document.getElementById('con-grupo').value=it.grupo;
+  document.getElementById('con-link').value=it.link||'';
+  document.getElementById('con-obs').value=it.obs||'';
+  ['conw-parceiro','conw-grupo','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('con-overlay').classList.add('open');
+}
+function closeConModal(){ document.getElementById('con-overlay').classList.remove('open'); }
+
+async function salvarCon(){
+  var parceiro=document.getElementById('con-parceiro').value.trim();
+  var grupo=document.getElementById('con-grupo').value.trim();
+  var link=document.getElementById('con-link').value.trim();
+  var obs=document.getElementById('con-obs').value.trim();
+  var ok=true;
+  [['conw-parceiro',parceiro],['conw-grupo',grupo],['conw-link',link]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(conEditId){
+    await updateDoc(doc(db,'contratos',conEditId),{parceiro,grupo,link,obs});
+  } else {
+    await addDoc(collection(db,'contratos'),{parceiro,grupo,link,obs,data:hoje()});
+  }
+  closeConModal();
+}
+
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay'].forEach(function(id){
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this){
       if(id==='l-overlay') closeLoginModal();
@@ -1616,6 +1884,8 @@ async function salvarCm(){
       else if(id==='lb-overlay') closeLBModal();
       else if(id==='lk-overlay') closeLkModal();
       else if(id==='cm-overlay') closeCmModal();
+      else if(id==='par-overlay') closeParModal();
+      else if(id==='con-overlay') closeConModal();
       else closeDel();
     }
   });
