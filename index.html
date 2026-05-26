@@ -1044,6 +1044,7 @@ function openDemandaModal(){
   document.getElementById('d-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('d-grupo').focus(); },100);
 }
+function openDemandaEdit(id){
   var it=DEMANDAS.find(function(x){ return x.id===id; }); if(!it) return;
   dEditId=id;
   document.getElementById('d-modal-title').textContent='Editar Demanda';
