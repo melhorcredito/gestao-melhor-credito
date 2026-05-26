@@ -186,7 +186,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
-    <div class="tab" onclick="switchTab('comissoes',this)">💰 Comissões</div>
+    <div class="tab" onclick="switchTab('comissoes',this)">💰 Comissões <span id="cm-badge" style="display:none;background:#e53e3e;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 6px;margin-left:4px">🔔</span></div>
     <div class="tab" onclick="switchTab('parceiros',this)">👥 Parceiros</div>
     <div class="tab" onclick="switchTab('contratos',this)">📄 Contratos</div>
   </div>
@@ -657,7 +657,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <h1>Controle de <em>Comissões</em></h1>
     <p>Gerencie tabelas e percentuais de comissão por parceiro e banco.</p>
   </div>
-  <div style="background:var(--bg);min-height:400px">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
         <input class="search" id="cm-srch" placeholder="🔍 Buscar por parceiro ou banco..." oninput="renderCom()">
       </div>
@@ -689,6 +690,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       </div>
       <div class="mf"><label>Percentual para Ajuste <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="cm-perc" placeholder="Ex: 2,5%"></div>
       <div class="mf" id="cmw-data"><label>Data Realizada *</label><input type="date" id="cm-data"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Prazo <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input type="text" id="cm-prazo" placeholder="Ex: 30 dias, até 10/06/2026..."></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="cm-obs" placeholder="Alguma observação sobre essa comissão..."></textarea></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeCmModal()">Cancelar</button>
@@ -1615,15 +1618,39 @@ function getTabelas(){
 function renderCom(){
   var srch = document.getElementById('cm-srch').value.trim().toLowerCase();
   var grid = document.getElementById('cm-grid');
+  var agora = Date.now();
   var list = COMISSOES.filter(function(it){
     if(srch && !it.parceiro.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
-  
+
+  // Atualiza badge na aba
+  var alertas = COMISSOES.filter(function(it){
+    if(!it.criado) return false;
+    var partes = it.criado.split('/');
+    if(partes.length!==3) return false;
+    var criado = new Date(partes[2],partes[1]-1,partes[0]).getTime();
+    var horas = (agora - criado) / (1000*60*60);
+    return horas >= 24;
+  });
+  var badge = document.getElementById('cm-badge');
+  if(badge){ badge.style.display = alertas.length ? 'inline' : 'none'; badge.textContent = '🔔 '+alertas.length; }
+
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhuma comissão cadastrada</div>'; return; }
   grid.innerHTML = list.map(function(it){
     var tabelas = it.tabelas||[];
-    return '<div class="card" style="background:#fff">'
+    var alerta = '';
+    if(it.criado){
+      var partes = it.criado.split('/');
+      if(partes.length===3){
+        var criado = new Date(partes[2],partes[1]-1,partes[0]).getTime();
+        var horas = (agora - criado) / (1000*60*60);
+        if(horas >= 48) alerta = '<div style="background:#fee2e2;color:#dc2626;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:600;margin-bottom:8px">🔔 Atenção! +48h sem verificação</div>';
+        else if(horas >= 24) alerta = '<div style="background:#fef9c3;color:#854d0e;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:600;margin-bottom:8px">⚠️ Verifique! +24h sem verificação</div>';
+      }
+    }
+    return '<div class="card" style="background:#fff;'+(alerta.includes('48h')?'border-color:#fca5a5':alerta.includes('24h')?'border-color:#fde68a':'')+'">'
+      +alerta
       +'<div class="card-top"><div class="card-name">💰 '+it.parceiro+'</div>'
       +'<div class="card-actions">'
       +'<button class="act-btn" onclick="openCmEdit(\''+it.id+'\')">✏️</button>'
@@ -1632,7 +1659,9 @@ function renderCom(){
       +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'
       +(it.perc?'<span class="tag" style="background:#fef9c3;color:#854d0e;border:1px solid #fde68a">📊 '+it.perc+'</span>':'')
       +(it.data?'<span class="tag data">📅 '+formatDate(it.data)+'</span>':'')
+      +(it.prazo?'<span class="tag" style="background:#fce7f3;color:#9d174d;border:1px solid #fbcfe8">⏰ Prazo: '+it.prazo+'</span>':'')
       +'</div>'
+      +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
       +(tabelas.length?'<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Tabelas</div>'
         +tabelas.map(function(t){ return '<div style="font-size:12px;color:var(--text);background:var(--blue-p);border-radius:6px;padding:6px 10px;margin-bottom:4px;line-height:1.4">📋 '+t+'</div>'; }).join('')+'</div>':'')
       +'</div>';
@@ -1642,7 +1671,7 @@ function renderCom(){
 function openCmModal(){
   cmEditId=null;
   document.getElementById('cm-modal-title').textContent='Nova Comissão';
-  ['cm-parceiro','cm-banco','cm-perc','cm-data'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['cm-parceiro','cm-banco','cm-perc','cm-data','cm-prazo','cm-obs'].forEach(function(id){ document.getElementById(id).value=''; });
   ['cmw-parceiro','cmw-banco','cmw-data'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('tabela-fields').innerHTML='<input class="tabela-input" placeholder="Ex: FINANTO INSS NOVO 96X - TAXA 1,85% - CÓD 1008" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">';
   document.getElementById('cm-overlay').classList.add('open');
@@ -1657,6 +1686,8 @@ function openCmEdit(id){
   document.getElementById('cm-banco').value=it.banco;
   document.getElementById('cm-perc').value=it.perc||'';
   document.getElementById('cm-data').value=it.data||'';
+  document.getElementById('cm-prazo').value=it.prazo||'';
+  document.getElementById('cm-obs').value=it.obs||'';
   ['cmw-parceiro','cmw-banco','cmw-data'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   var tabs = it.tabelas||[''];
   document.getElementById('tabela-fields').innerHTML = tabs.map(function(t,i){
@@ -1672,6 +1703,8 @@ async function salvarCm(){
   var parceiro=document.getElementById('cm-parceiro').value.trim();
   var banco=document.getElementById('cm-banco').value.trim();
   var perc=document.getElementById('cm-perc').value.trim();
+  var prazo=document.getElementById('cm-prazo').value;
+  var obs=document.getElementById('cm-obs').value.trim();
   var data=document.getElementById('cm-data').value;
   var tabelas=getTabelas();
   var ok=true;
@@ -1681,9 +1714,9 @@ async function salvarCm(){
   });
   if(!ok) return;
   if(cmEditId){
-    await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,tabelas});
+    await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,prazo,obs,tabelas});
   } else {
-    await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,tabelas,criado:hoje()});
+    await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,prazo,obs,tabelas,criado:hoje()});
   }
   closeCmModal();
 }
