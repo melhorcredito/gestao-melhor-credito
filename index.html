@@ -34,7 +34,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 .tab-content.active{display:block}
 .hero-text{text-align:center;padding:28px 24px 20px;background:linear-gradient(135deg,#003a66,#005fa3)}
 .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#1a90e0;background:rgba(26,144,224,.15);border:1px solid rgba(26,144,224,.3);padding:5px 14px;border-radius:20px;margin-bottom:10px}
-.hero-text h1{font-family:var(--fd);font-size:clamp(18px,3.5vw,28px);color:#fff;margin-bottom:5px}
+.hero-text h1{font-family:var(--fd);font-size:clamp(16px,2.5vw,22px);color:#fff;margin-bottom:0;text-align:center;font-weight:400;letter-spacing:.01em}
 .hero-text h1 em{font-style:normal;color:#1a90e0}
 .hero-text p{font-size:13px;color:rgba(255,255,255,.6);max-width:480px;margin:0 auto}
 .stats{display:flex;justify-content:center;gap:12px;padding:16px 20px;flex-wrap:wrap}
@@ -148,9 +148,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
   </div>
 </div>
 <div class="tab-content" id="tab-logins">
-  <div class="page-header"><h1>Controle de <em>Logins Internos</em></h1>
-    <p>Acompanhe as solicitações por promotora e status em tempo real.</p>
-  </div>
+  
 
   <div class="stats">
     <div class="stat and"><div class="n" id="l-st-and">0</div><div class="l">Em Andamento</div></div>
@@ -206,9 +204,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 2: DEMANDAS ══════════════ -->
 <div class="tab-content" id="tab-demandas">
-  <div class="page-header"><h1>Controle de <em>Demandas / Propostas</em></h1>
-    <p>Gerencie todas as demandas e propostas internas separadas por status.</p>
-  </div>
+  
 
   <div class="stats">
     <div class="stat and"><div class="n" id="d-st-and">0</div><div class="l">Em Andamento</div></div>
@@ -251,9 +247,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 3: DEMANDA E-MAIL ══════════════ -->
 <div class="tab-content" id="tab-emails">
-  <div class="page-header"><h1>Controle de <em>Demandas E-mail</em></h1>
-    <p>Acompanhe as demandas enviadas por e-mail e seus status.</p>
-  </div>
+  
 
   <div class="stats">
     <div class="stat and"><div class="n" id="e-st-and">0</div><div class="l">Em Andamento</div></div>
@@ -296,9 +290,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 4: CADASTROS SUB ══════════════ -->
 <div class="tab-content" id="tab-sub">
-  <div class="page-header"><h1>Controle de <em>Cadastros Sub</em></h1>
-    <p>Gerencie os cadastros de subcontas por status.</p>
-  </div>
+  
 
   <div class="stats">
     <div class="stat and"><div class="n" id="s-st-and">0</div><div class="l">Em Andamento</div></div>
@@ -341,9 +333,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 5: COMUNICADOS ══════════════ -->
 <div class="tab-content" id="tab-comunicados">
-  <div class="page-header"><h1>Mural de <em>Comunicados</em></h1>
-    <p>Avisos, procedimentos e mudanças para toda a equipe.</p>
-  </div>
+  
 
   <div class="toolbar">
     <div class="toolbar-l">
@@ -391,9 +381,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 6: CONTATOS ══════════════ -->
 <div class="tab-content" id="tab-contatos">
-  <div class="page-header"><h1>Contatos <em>Bancos</em></h1>
-    <p>Telefones e e-mails dos seus contatos por banco.</p>
-  </div>
+  
 
   <div class="toolbar">
     <div class="toolbar-l">
@@ -438,9 +426,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 7: CONTATOS INTERNO ══════════════ -->
 <div class="tab-content" id="tab-interno">
-  <div class="page-header"><h1>Contatos <em>Suporte Interno</em></h1>
-    <p>Telefones dos contatos internos por banco.</p>
-  </div>
+  
 
   <div class="toolbar">
     <div class="toolbar-l">
@@ -505,9 +491,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
   <!-- CONTEÚDO (oculto até digitar senha) -->
   <div id="lb-content" style="display:none">
-    <div class="page-header"><h1>Logins <em>Bancos</em></h1>
-      <p>Acesse rapidamente os logins e senhas dos bancos.</p>
-    </div>
+    
 
     <div class="toolbar">
       <div class="toolbar-l">
@@ -552,9 +536,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 9: LINKS ÚTEIS ══════════════ -->
 <div class="tab-content" id="tab-links">
-  <div class="page-header"><h1>Links <em>Úteis</em></h1>
-    <p>Acesse rapidamente os sistemas e ferramentas do dia a dia.</p>
-  </div>
+  
   <div style="background:var(--bg)">
     <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
@@ -588,9 +570,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 10: COMISSÕES ══════════════ -->
 <div class="tab-content" id="tab-comissoes">
-  <div class="page-header"><h1>Controle de <em>Comissões</em></h1>
-    <p>Gerencie tabelas e percentuais de comissão por parceiro e banco.</p>
-  </div>
+  
   <div style="background:var(--bg)">
     <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
@@ -636,9 +616,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 11: PARCEIROS ══════════════ -->
 <div class="tab-content" id="tab-parceiros">
-  <div class="page-header"><h1>Cadastro de <em>Parceiros</em></h1>
-    <p>Gerencie os dados e documentos dos seus parceiros.</p>
-  </div>
+  
   <div style="background:var(--bg)">
     <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
@@ -654,9 +632,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
 <!-- ══════════════ ABA 12: CONTRATOS ══════════════ -->
 <div class="tab-content" id="tab-contratos">
-  <div class="page-header"><h1>Controle de <em>Contratos</em></h1>
-    <p>Gerencie os contratos assinados dos seus parceiros.</p>
-  </div>
+  
   <div style="background:var(--bg)">
     <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
