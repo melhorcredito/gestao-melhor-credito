@@ -183,6 +183,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('comunicados',this)">📢 Comunicados</div>
     <div class="tab" onclick="switchTab('contatos',this)">📞 Contatos Bancos</div>
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
+    <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
   </div>
 </div>
 
@@ -555,7 +556,54 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
   </div>
 </div>
 
-<!-- ══ MODAL CADASTROS SUB ══ -->
+<!-- ══════════════ ABA 8: LOGINS BANCOS ══════════════ -->
+<div class="tab-content" id="tab-loginsbancos">
+  <div class="hero-text">
+    <div class="badge">✦ Logins Bancos</div>
+    <h1>Logins <em>Bancos</em></h1>
+    <p>Acesse rapidamente os logins e senhas dos bancos.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat tot"><div class="n" id="lb-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="lb-srch" placeholder="🔍 Buscar por banco..." oninput="renderLB()">
+    </div>
+    <button class="btn-add" onclick="openLBModal()">＋ Novo Login</button>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="lb-grid">
+    <div class="empty" style="grid-column:1/-1">Nenhum login cadastrado</div>
+  </div>
+</div>
+
+<!-- ══ MODAL LOGINS BANCOS ══ -->
+<div class="overlay" id="lb-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="lb-modal-title">Novo Login</h2>
+      <button class="close-btn" onclick="closeLBModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="lbw-banco"><label>Banco *</label><input id="lb-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="lbw-login"><label>Login *</label><input id="lb-login" placeholder="Ex: usuario@banco.com.br"><span class="em">Campo obrigatório</span></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          Senha <button type="button" onclick="toggleSenha()" id="lb-toggle-btn" style="background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m);border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">👁 Mostrar</button>
+        </label>
+        <input id="lb-senha" type="password" placeholder="••••••••">
+      </div>
+      <div class="mf"><label>Link <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="lb-link" placeholder="https://..."></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeLBModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarLB()">Salvar</button>
+    </div>
+  </div>
+</div>
 <div class="overlay" id="s-overlay">
   <div class="modal">
     <div class="modal-head">
@@ -1149,13 +1197,107 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':'demandas';
+  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
 
+// ══════════════════════════════════════════════════════════════
+// ABA LOGINS BANCOS
+// ══════════════════════════════════════════════════════════════
+var LB = [];
+var lbEditId = null;
+
+onSnapshot(collection(db,'loginsbancos'), function(snap){
+  LB = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderLB();
+});
+
+function toggleSenha(){
+  var inp = document.getElementById('lb-senha');
+  var btn = document.getElementById('lb-toggle-btn');
+  if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈 Ocultar'; }
+  else { inp.type='password'; btn.textContent='👁 Mostrar'; }
+}
+
+function renderLB(){
+  var srch = document.getElementById('lb-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('lb-grid');
+  var list = LB.filter(function(it){
+    if(srch && !it.banco.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  document.getElementById('lb-st-tot').textContent = LB.length;
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum login cadastrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">🔑 '+it.banco+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openLBEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'lb\',\''+escHtml(it.banco)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div style="margin-top:8px;font-size:13px;color:var(--lbl)">👤 <strong>Login:</strong> '+it.login+'</div>'
+      +'<div style="margin-top:5px;font-size:13px;color:var(--lbl);display:flex;align-items:center;gap:8px">'
+      +'🔒 <strong>Senha:</strong> <span id="s-'+it.id+'" style="letter-spacing:3px">••••••••</span>'
+      +'<button onclick="revealSenha(\''+it.id+'\',\''+escHtml(it.senha||'')+'\',this)" style="background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;font-weight:600">Mostrar</button>'
+      +'</div>'
+      +(it.link?'<div style="margin-top:6px;font-size:13px">🌐 <a href="'+it.link+'" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600">Acessar sistema</a></div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function revealSenha(id, senha, btn){
+  var el = document.getElementById('s-'+id);
+  if(el.textContent === '••••••••'){ el.textContent=senha; el.style.letterSpacing='normal'; btn.textContent='Ocultar'; }
+  else { el.textContent='••••••••'; el.style.letterSpacing='3px'; btn.textContent='Mostrar'; }
+}
+
+function openLBModal(){
+  lbEditId=null;
+  document.getElementById('lb-modal-title').textContent='Novo Login';
+  ['lb-banco','lb-login','lb-senha','lb-link'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('lb-senha').type='password';
+  document.getElementById('lb-toggle-btn').textContent='👁 Mostrar';
+  ['lbw-banco','lbw-login'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('lb-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('lb-banco').focus(); },100);
+}
+function openLBEdit(id){
+  var it=LB.find(function(x){ return x.id===id; }); if(!it) return;
+  lbEditId=id;
+  document.getElementById('lb-modal-title').textContent='Editar Login';
+  document.getElementById('lb-banco').value=it.banco;
+  document.getElementById('lb-login').value=it.login;
+  document.getElementById('lb-senha').value=it.senha||'';
+  document.getElementById('lb-link').value=it.link||'';
+  document.getElementById('lb-senha').type='password';
+  document.getElementById('lb-toggle-btn').textContent='👁 Mostrar';
+  ['lbw-banco','lbw-login'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('lb-overlay').classList.add('open');
+}
+function closeLBModal(){ document.getElementById('lb-overlay').classList.remove('open'); }
+
+async function salvarLB(){
+  var banco=document.getElementById('lb-banco').value.trim();
+  var login=document.getElementById('lb-login').value.trim();
+  var senha=document.getElementById('lb-senha').value.trim();
+  var link=document.getElementById('lb-link').value.trim();
+  var ok=true;
+  [['lbw-banco',banco],['lbw-login',login]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(lbEditId){
+    await updateDoc(doc(db,'loginsbancos',lbEditId),{banco,login,senha,link});
+  } else {
+    await addDoc(collection(db,'loginsbancos'),{banco,login,senha,link,data:hoje()});
+  }
+  closeLBModal();
+}
+
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','del-overlay'].forEach(function(id){
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this){
       if(id==='l-overlay') closeLoginModal();
@@ -1165,6 +1307,7 @@ async function confirmDel(){
       else if(id==='c-overlay') closeComModal();
       else if(id==='ct-overlay') closeCtModal();
       else if(id==='in-overlay') closeInModal();
+      else if(id==='lb-overlay') closeLBModal();
       else closeDel();
     }
   });
