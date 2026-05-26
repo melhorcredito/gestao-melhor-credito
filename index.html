@@ -749,17 +749,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <div class="mf" id="parw-nome"><label>Nome *</label><input id="par-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-email" placeholder="joao@email.com" type="email"></div>
       <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
-      <div class="mf">
-        <label style="display:flex;align-items:center;justify-content:space-between">
-          Documentos (CNH/CPF) <button type="button" onclick="addDocField()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar</button>
-        </label>
-        <div id="doc-fields" style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-          <div style="display:flex;gap:6px;align-items:center">
-            <input class="doc-nome-input" placeholder="Nome do doc. (ex: CPF João)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">
-            <input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">
-          </div>
-        </div>
-      </div>
+      <div class="mf"><label>Link da Pasta de Documentos <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-doclink" placeholder="https://drive.google.com/drive/folders/..."></div>
+      <div class="mf"><label>Link da Pasta de Contratos <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-conlink" placeholder="https://drive.google.com/drive/folders/..."></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeParModal()">Cancelar</button>
@@ -1705,23 +1696,6 @@ onSnapshot(collection(db,'parceiros'), function(snap){
   renderParceiros();
 });
 
-function addDocField(){
-  var div = document.createElement('div');
-  div.style.cssText='display:flex;gap:6px;align-items:center';
-  div.innerHTML='<input class="doc-nome-input" placeholder="Nome do doc. (ex: CNH Maria)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
-    +'<input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
-    +'<button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button>';
-  document.getElementById('doc-fields').appendChild(div);
-}
-
-function getDocs(){
-  var nomes = Array.from(document.querySelectorAll('.doc-nome-input')).map(function(i){ return i.value.trim(); });
-  var links = Array.from(document.querySelectorAll('.doc-link-input')).map(function(i){ return i.value.trim(); });
-  var docs = [];
-  nomes.forEach(function(n,i){ if(n||links[i]) docs.push({nome:n,link:links[i]}); });
-  return docs;
-}
-
 function renderParceiros(){
   var srch = document.getElementById('par-srch').value.trim().toLowerCase();
   var grid = document.getElementById('par-grid');
@@ -1731,7 +1705,6 @@ function renderParceiros(){
   });
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum parceiro cadastrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
-    var docs = it.docs||[];
     return '<div class="card" style="background:#fff">'
       +'<div class="card-top"><div class="card-name">👥 '+it.nome+'</div>'
       +'<div class="card-actions">'
@@ -1741,10 +1714,10 @@ function renderParceiros(){
       +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.grupo+'</span></div>'
       +(it.email?'<div style="margin-top:6px;font-size:13px">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none">'+it.email+'</a></div>':'')
       +(it.tel?'<div style="margin-top:4px;font-size:13px">📞 '+it.tel+'</div>':'')
-      +(docs.length?'<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Documentos</div>'
-        +docs.map(function(d){ return '<div style="margin-bottom:4px;font-size:12px">'
-          +(d.link?'<a href="'+d.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--blue-p);color:var(--blue);text-decoration:none;padding:5px 10px;border-radius:6px;font-weight:600">📎 '+(d.nome||'Documento')+'</a>':'<span style="color:var(--lbl)">📎 '+(d.nome||'Documento')+'</span>')
-          +'</div>'; }).join('')+'</div>':'')
+      +'<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">'
+      +(it.doclink?'<a href="'+it.doclink+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:#fef9c3;color:#854d0e;border:1px solid #fde68a;text-decoration:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600">📁 Documentos</a>':'')
+      +(it.conlink?'<a href="'+it.conlink+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m);text-decoration:none;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600">📄 Contratos</a>':'')
+      +'</div>'
       +'</div>';
   }).join('');
 }
@@ -1752,9 +1725,8 @@ function renderParceiros(){
 function openParModal(){
   parEditId=null;
   document.getElementById('par-modal-title').textContent='Novo Parceiro';
-  ['par-grupo','par-nome','par-email','par-tel'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['par-grupo','par-nome','par-email','par-tel','par-doclink','par-conlink'].forEach(function(id){ document.getElementById(id).value=''; });
   ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
-  document.getElementById('doc-fields').innerHTML='<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc. (ex: CPF João)" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"></div>';
   document.getElementById('par-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('par-grupo').focus(); },100);
 }
@@ -1766,12 +1738,9 @@ function openParEdit(id){
   document.getElementById('par-nome').value=it.nome;
   document.getElementById('par-email').value=it.email||'';
   document.getElementById('par-tel').value=it.tel||'';
+  document.getElementById('par-doclink').value=it.doclink||'';
+  document.getElementById('par-conlink').value=it.conlink||'';
   ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
-  var docs = it.docs||[{nome:'',link:''}];
-  document.getElementById('doc-fields').innerHTML = docs.map(function(d,i){
-    if(i===0) return '<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc." value="'+escHtml(d.nome||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" value="'+escHtml(d.link||'')+'" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"></div>';
-    return '<div style="display:flex;gap:6px;align-items:center"><input class="doc-nome-input" placeholder="Nome do doc." value="'+escHtml(d.nome||'')+'" style="flex:1;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><input class="doc-link-input" placeholder="Link do Google Drive" value="'+escHtml(d.link||'')+'" style="flex:2;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none"><button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button></div>';
-  }).join('');
   document.getElementById('par-overlay').classList.add('open');
 }
 function closeParModal(){ document.getElementById('par-overlay').classList.remove('open'); }
@@ -1781,7 +1750,8 @@ async function salvarPar(){
   var nome=document.getElementById('par-nome').value.trim();
   var email=document.getElementById('par-email').value.trim();
   var tel=document.getElementById('par-tel').value.trim();
-  var docs=getDocs();
+  var doclink=document.getElementById('par-doclink').value.trim();
+  var conlink=document.getElementById('par-conlink').value.trim();
   var ok=true;
   [['parw-grupo',grupo],['parw-nome',nome]].forEach(function(p){
     var w=document.getElementById(p[0]);
@@ -1789,9 +1759,9 @@ async function salvarPar(){
   });
   if(!ok) return;
   if(parEditId){
-    await updateDoc(doc(db,'parceiros',parEditId),{grupo,nome,email,tel,docs});
+    await updateDoc(doc(db,'parceiros',parEditId),{grupo,nome,email,tel,doclink,conlink});
   } else {
-    await addDoc(collection(db,'parceiros'),{grupo,nome,email,tel,docs,data:hoje()});
+    await addDoc(collection(db,'parceiros'),{grupo,nome,email,tel,doclink,conlink,data:hoje()});
   }
   closeParModal();
 }
