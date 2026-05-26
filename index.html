@@ -635,20 +635,19 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <h1>Links <em>Úteis</em></h1>
     <p>Acesse rapidamente os sistemas e ferramentas do dia a dia.</p>
   </div>
-
-  <div class="stats">
-    <div class="stat tot"><div class="n" id="lk-st-tot">0</div><div class="l">Total</div></div>
-  </div>
-
-  <div class="toolbar">
-    <div class="toolbar-l">
-      <input class="search" id="lk-srch" placeholder="🔍 Buscar por descrição..." oninput="renderLinks()">
+  <div style="background:var(--bg);min-height:400px">
+    <div class="stats">
+      <div class="stat tot"><div class="n" id="lk-st-tot">0</div><div class="l">Total</div></div>
     </div>
-    <button class="btn-add" onclick="openLkModal()">＋ Novo Link</button>
-  </div>
-
-  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px" id="lk-grid">
-    <div class="empty" style="grid-column:1/-1">Nenhum link cadastrado</div>
+    <div class="toolbar">
+      <div class="toolbar-l">
+        <input class="search" id="lk-srch" placeholder="🔍 Buscar por descrição..." oninput="renderLinks()">
+      </div>
+      <button class="btn-add" onclick="openLkModal()">＋ Novo Link</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px" id="lk-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum link cadastrado</div>
+    </div>
   </div>
 </div>
 
