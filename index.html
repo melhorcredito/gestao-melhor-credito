@@ -942,8 +942,9 @@ function openLoginModal(){
   ['l-nome','l-banco','l-obs','l-oper'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('l-prom').value=''; document.getElementById('l-status').value='and';
   ['lw-nome','lw-banco','lw-prom','lw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('l-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('l-nome').focus(); },100);
 }
-function openLoginEdit(id){
   var it=LOGINS.find(function(x){ return x.id===id; }); if(!it) return;
   lEditId=id;
   document.getElementById('l-modal-title').textContent='Editar Solicitação';
@@ -1039,8 +1040,9 @@ function openDemandaModal(){
   ['d-grupo','d-banco','d-proposta','d-cpfcliente','d-chamado','d-datainicio','d-oper','d-obs'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('d-status').value='and';
   ['dw-grupo','dw-banco','dw-datainicio','dw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('d-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('d-grupo').focus(); },100);
 }
-function openDemandaEdit(id){
   var it=DEMANDAS.find(function(x){ return x.id===id; }); if(!it) return;
   dEditId=id;
   document.getElementById('d-modal-title').textContent='Editar Demanda';
@@ -1141,6 +1143,8 @@ function openEmailModal(){
   ['e-nome','e-demanda','e-banco','e-proposta','e-dataenvio','e-chamado','e-oper','e-obs'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('e-status').value='and';
   ['ew-nome','ew-demanda','ew-dataenvio','ew-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('e-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('e-nome').focus(); },100);
 }
 function openEmailEdit(id){
   var it=EMAILS.find(function(x){ return x.id===id; }); if(!it) return;
@@ -1154,7 +1158,7 @@ function openEmailEdit(id){
   document.getElementById('e-chamado').value=it.chamado||'';
   document.getElementById('e-oper').value=it.oper||'';
   document.getElementById('e-obs').value=it.obs||'';
-  ['ew-nome','ew-demanda','ew-dataenvio'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['ew-nome','ew-demanda','ew-dataenvio','ew-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('e-overlay').classList.add('open');
 }
 function closeEmailModal(){ document.getElementById('e-overlay').classList.remove('open'); }
