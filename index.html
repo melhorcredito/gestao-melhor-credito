@@ -1288,7 +1288,7 @@ function renderContatos(){
       +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'contato\',\''+escHtml(it.banco)+'\')">🗑️</button>'
       +'</div></div>'
       +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
-      +(it.whats?'<div style="margin-top:5px;font-size:13px;color:var(--text)">💬 <a href="https://wa.me/55'+it.whats.replace(/\D/g,'')+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600">'+it.whats+'</a></div>':'')
+      +(it.whats?'<div style="margin-top:5px;font-size:13px;color:var(--text)">💬 <a href="https://web.whatsapp.com/send?phone=55'+it.whats.replace(/\D/g,'')+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600">'+it.whats+'</a></div>':'')
       +(it.email?'<div style="margin-top:5px;font-size:13px;color:var(--text)">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.email+'</a></div>':'')
       +(it.localidades?'<div style="margin-top:5px;font-size:12px;color:var(--lbl)">🗺️ '+it.localidades+'</div>':'')
       +(sacs.length?'<div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--lbl)">SAC:</div>'
