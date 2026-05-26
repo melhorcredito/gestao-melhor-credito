@@ -945,6 +945,7 @@ function openLoginModal(){
   document.getElementById('l-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('l-nome').focus(); },100);
 }
+function openLoginEdit(id){
   var it=LOGINS.find(function(x){ return x.id===id; }); if(!it) return;
   lEditId=id;
   document.getElementById('l-modal-title').textContent='Editar Solicitação';
