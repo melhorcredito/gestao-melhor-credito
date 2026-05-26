@@ -399,12 +399,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <p>Avisos, procedimentos e mudanças para toda a equipe.</p>
   </div>
 
-  <div class="stats">
-    <div class="stat and"><div class="n" id="c-st-and">0</div><div class="l">Em Vigor</div></div>
-    <div class="stat fin"><div class="n" id="c-st-fin">0</div><div class="l">Arquivado</div></div>
-    <div class="stat tot"><div class="n" id="c-st-tot">0</div><div class="l">Total</div></div>
-  </div>
-
   <div class="toolbar">
     <div class="toolbar-l">
       <input class="search" id="c-srch" placeholder="🔍 Buscar comunicado..." oninput="renderComunicados()">
@@ -457,10 +451,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <p>Telefones e e-mails dos seus contatos por banco.</p>
   </div>
 
-  <div class="stats">
-    <div class="stat tot"><div class="n" id="ct-st-tot">0</div><div class="l">Total</div></div>
-  </div>
-
   <div class="toolbar">
     <div class="toolbar-l">
       <input class="search" id="ct-srch" placeholder="🔍 Buscar por banco..." oninput="renderContatos()">
@@ -508,12 +498,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="badge">✦ Suporte Interno</div>
     <h1>Contatos <em>Suporte Interno</em></h1>
     <p>Telefones dos contatos internos por banco.</p>
-  </div>
-
-  <div class="stats">
-    <div class="stat tot"><div class="n" id="in-st-tot">0</div><div class="l">Total</div></div>
-    <div class="stat and"><div class="n" id="in-st-suporte">0</div><div class="l">Suporte Banco</div></div>
-    <div class="stat pend"><div class="n" id="in-st-gc">0</div><div class="l">Contatos GC</div></div>
   </div>
 
   <div class="toolbar">
@@ -585,10 +569,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <p>Acesse rapidamente os logins e senhas dos bancos.</p>
     </div>
 
-    <div class="stats">
-      <div class="stat tot"><div class="n" id="lb-st-tot">0</div><div class="l">Total</div></div>
-    </div>
-
     <div class="toolbar">
       <div class="toolbar-l">
         <input class="search" id="lb-srch" placeholder="🔍 Buscar por banco..." oninput="renderLB()">
@@ -638,10 +618,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <p>Acesse rapidamente os sistemas e ferramentas do dia a dia.</p>
   </div>
   <div style="background:var(--bg);min-height:400px">
-    <div class="stats">
-      <div class="stat tot"><div class="n" id="lk-st-tot">0</div><div class="l">Total</div></div>
-    </div>
-    <div class="toolbar">
       <div class="toolbar-l">
         <input class="search" id="lk-srch" placeholder="🔍 Buscar por descrição..." oninput="renderLinks()">
       </div>
@@ -679,10 +655,6 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <p>Gerencie tabelas e percentuais de comissão por parceiro e banco.</p>
   </div>
   <div style="background:var(--bg);min-height:400px">
-    <div class="stats">
-      <div class="stat tot"><div class="n" id="cm-st-tot">0</div><div class="l">Total</div></div>
-    </div>
-    <div class="toolbar">
       <div class="toolbar-l">
         <input class="search" id="cm-srch" placeholder="🔍 Buscar por parceiro ou banco..." oninput="renderCom()">
       </div>
@@ -1380,7 +1352,7 @@ function renderLB(){
     if(srch && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('lb-st-tot').textContent = LB.length;
+  
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum login cadastrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
     return '<div class="card" style="background:#fff">'
@@ -1467,7 +1439,7 @@ function renderLinks(){
     if(srch && !it.desc.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('lk-st-tot').textContent = LINKS.length;
+  
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum link cadastrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
     return '<div class="card" style="background:#fff">'
@@ -1550,7 +1522,7 @@ function renderCom(){
     if(srch && !it.parceiro.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('cm-st-tot').textContent = COMISSOES.length;
+  
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhuma comissão cadastrada</div>'; return; }
   grid.innerHTML = list.map(function(it){
     var tabelas = it.tabelas||[];
@@ -1681,9 +1653,7 @@ function renderComunicados(){
     if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !it.texto.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('c-st-tot').textContent  = tot.length;
-  document.getElementById('c-st-and').textContent  = cols.and.length;
-  document.getElementById('c-st-fin').textContent  = cols.fin.length;
+  
 }
 
 function openComModal(){
@@ -1745,7 +1715,7 @@ function renderContatos(){
     if(srch && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('ct-st-tot').textContent = CONTATOS.length;
+  
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
     var sacs = (it.sacs||[]).filter(function(s){ return s.trim(); });
@@ -1851,9 +1821,7 @@ function renderInterno(){
     if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
-  document.getElementById('in-st-tot').textContent = INTERNO.length;
-  document.getElementById('in-st-suporte').textContent = INTERNO.filter(function(x){ return (x.tipo||'suporte')==='suporte'; }).length;
-  document.getElementById('in-st-gc').textContent = INTERNO.filter(function(x){ return x.tipo==='gc'; }).length;
+  
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
     var tipoTag = (it.tipo||'suporte')==='gc'
