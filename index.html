@@ -459,7 +459,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
   <div class="toolbar">
     <div class="toolbar-l">
-      <input class="search" id="ct-srch" placeholder="🔍 Buscar por nome ou banco..." oninput="renderContatos()">
+      <input class="search" id="ct-srch" placeholder="🔍 Buscar por banco..." oninput="renderContatos()">
     </div>
     <button class="btn-add" onclick="openCtModal()">＋ Novo Contato</button>
   </div>
@@ -477,10 +477,17 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <button class="close-btn" onclick="closeCtModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="mf" id="ctw-nome"><label>Nome *</label><input id="ct-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
       <div class="mf" id="ctw-banco"><label>Banco *</label><input id="ct-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
       <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-email" placeholder="contato@banco.com.br" type="email"></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          SAC <button type="button" onclick="addSacField()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar SAC</button>
+        </label>
+        <div id="sac-fields" style="display:flex;flex-direction:column;gap:6px;margin-top:6px">
+          <input class="sac-input" placeholder="Ex: 0800 000 0000" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none">
+        </div>
+      </div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeCtModal()">Cancelar</button>
@@ -499,6 +506,8 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 
   <div class="stats">
     <div class="stat tot"><div class="n" id="in-st-tot">0</div><div class="l">Total</div></div>
+    <div class="stat and"><div class="n" id="in-st-suporte">0</div><div class="l">Suporte Banco</div></div>
+    <div class="stat pend"><div class="n" id="in-st-gc">0</div><div class="l">Contatos GC</div></div>
   </div>
 
   <div class="toolbar">
@@ -506,6 +515,12 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <input class="search" id="in-srch" placeholder="🔍 Buscar por nome ou banco..." oninput="renderInterno()">
     </div>
     <button class="btn-add" onclick="openInModal()">＋ Novo Contato Interno</button>
+  </div>
+
+  <div class="pills" id="in-pills" style="padding:0 20px 14px;max-width:1400px;margin:0 auto">
+    <div class="pill active" onclick="setInPill(this,'')">Todos</div>
+    <div class="pill" style="border-color:#3b82f6;color:#1e40af" onclick="setInPill(this,'suporte')">🏦 Suporte Banco</div>
+    <div class="pill" style="border-color:#7c3aed;color:#5b21b6" onclick="setInPill(this,'gc')">👥 Contatos GC</div>
   </div>
 
   <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px" id="in-grid">
@@ -521,6 +536,12 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
       <button class="close-btn" onclick="closeInModal()">✕</button>
     </div>
     <div class="modal-body">
+      <div class="mf"><label>Categoria *</label>
+        <select id="in-tipo">
+          <option value="suporte">🏦 Suporte Banco</option>
+          <option value="gc">👥 Contatos GC</option>
+        </select>
+      </div>
       <div class="mf" id="inw-nome"><label>Nome *</label><input id="in-nome" placeholder="Ex: Maria Santos"><span class="em">Campo obrigatório</span></div>
       <div class="mf" id="inw-banco"><label>Banco *</label><input id="in-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="in-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
@@ -1251,61 +1272,77 @@ function renderContatos(){
   var srch = document.getElementById('ct-srch').value.trim().toLowerCase();
   var grid = document.getElementById('ct-grid');
   var list = CONTATOS.filter(function(it){
-    if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
+    if(srch && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
   document.getElementById('ct-st-tot').textContent = CONTATOS.length;
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
+    var sacs = (it.sacs||[]).filter(function(s){ return s.trim(); });
     return '<div class="card" style="background:#fff">'
-      +'<div class="card-top"><div class="card-name">👤 '+it.nome+'</div>'
+      +'<div class="card-top"><div class="card-name">🏦 '+it.banco+'</div>'
       +'<div class="card-actions">'
       +'<button class="act-btn" onclick="openCtEdit(\''+it.id+'\')">✏️</button>'
-      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'contato\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'contato\',\''+escHtml(it.banco)+'\')">🗑️</button>'
       +'</div></div>'
-      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span></div>'
       +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
       +(it.email?'<div style="margin-top:5px;font-size:13px;color:var(--text)">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.email+'</a></div>':'')
+      +(sacs.length?'<div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--lbl)">SAC:</div>'
+        +sacs.map(function(s){ return '<div style="font-size:13px;color:var(--text)">📟 <a href="tel:'+s+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+s+'</a></div>'; }).join(''):'')
       +'</div>';
   }).join('');
+}
+
+function addSacField(){
+  var div = document.createElement('div');
+  div.style.cssText='display:flex;gap:6px;align-items:center';
+  div.innerHTML='<input class="sac-input" placeholder="Ex: 0800 000 0000" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none">'
+    +'<button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button>';
+  document.getElementById('sac-fields').appendChild(div);
+}
+
+function getSacs(){
+  return Array.from(document.querySelectorAll('.sac-input')).map(function(i){ return i.value.trim(); }).filter(Boolean);
 }
 
 function openCtModal(){
   ctEditId=null;
   document.getElementById('ct-modal-title').textContent='Novo Contato';
-  ['ct-nome','ct-banco','ct-tel','ct-email'].forEach(function(id){ document.getElementById(id).value=''; });
-  ['ctw-nome','ctw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['ct-banco','ct-tel','ct-email'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('ctw-banco').classList.remove('err');
+  document.getElementById('sac-fields').innerHTML='<input class="sac-input" placeholder="Ex: 0800 000 0000" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none">';
   document.getElementById('ct-overlay').classList.add('open');
-  setTimeout(function(){ document.getElementById('ct-nome').focus(); },100);
+  setTimeout(function(){ document.getElementById('ct-banco').focus(); },100);
 }
 function openCtEdit(id){
   var it=CONTATOS.find(function(x){ return x.id===id; }); if(!it) return;
   ctEditId=id;
   document.getElementById('ct-modal-title').textContent='Editar Contato';
-  document.getElementById('ct-nome').value=it.nome;
   document.getElementById('ct-banco').value=it.banco;
   document.getElementById('ct-tel').value=it.tel||'';
   document.getElementById('ct-email').value=it.email||'';
-  ['ctw-nome','ctw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('ctw-banco').classList.remove('err');
+  var sacFields = document.getElementById('sac-fields');
+  var sacs = it.sacs||[''];
+  sacFields.innerHTML = sacs.map(function(s,i){
+    if(i===0) return '<input class="sac-input" placeholder="Ex: 0800 000 0000" value="'+s+'" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none">';
+    return '<div style="display:flex;gap:6px;align-items:center"><input class="sac-input" placeholder="Ex: 0800 000 0000" value="'+s+'" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none"><button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button></div>';
+  }).join('');
   document.getElementById('ct-overlay').classList.add('open');
 }
 function closeCtModal(){ document.getElementById('ct-overlay').classList.remove('open'); }
 
 async function salvarCt(){
-  var nome=document.getElementById('ct-nome').value.trim();
   var banco=document.getElementById('ct-banco').value.trim();
   var tel=document.getElementById('ct-tel').value.trim();
   var email=document.getElementById('ct-email').value.trim();
-  var ok=true;
-  [['ctw-nome',nome],['ctw-banco',banco]].forEach(function(p){
-    var w=document.getElementById(p[0]);
-    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
-  });
-  if(!ok) return;
+  var sacs=getSacs();
+  if(!banco){ document.getElementById('ctw-banco').classList.add('err'); return; }
+  document.getElementById('ctw-banco').classList.remove('err');
   if(ctEditId){
-    await updateDoc(doc(db,'contatos',ctEditId),{nome,banco,tel,email});
+    await updateDoc(doc(db,'contatos',ctEditId),{banco,tel,email,sacs});
   } else {
-    await addDoc(collection(db,'contatos'),{nome,banco,tel,email,data:hoje()});
+    await addDoc(collection(db,'contatos'),{banco,tel,email,sacs,data:hoje()});
   }
   closeCtModal();
 }
@@ -1315,29 +1352,43 @@ async function salvarCt(){
 // ══════════════════════════════════════════════════════════════
 var INTERNO = [];
 var inEditId = null;
+var inFilterTipo = '';
 
 onSnapshot(collection(db,'interno'), function(snap){
   INTERNO = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
   renderInterno();
 });
 
+function setInPill(el, tipo){
+  document.querySelectorAll('#in-pills .pill').forEach(function(x){ x.classList.remove('active'); });
+  el.classList.add('active');
+  inFilterTipo = tipo;
+  renderInterno();
+}
+
 function renderInterno(){
   var srch = document.getElementById('in-srch').value.trim().toLowerCase();
   var grid = document.getElementById('in-grid');
   var list = INTERNO.filter(function(it){
+    if(inFilterTipo && it.tipo !== inFilterTipo) return false;
     if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
   document.getElementById('in-st-tot').textContent = INTERNO.length;
+  document.getElementById('in-st-suporte').textContent = INTERNO.filter(function(x){ return x.tipo==='suporte'; }).length;
+  document.getElementById('in-st-gc').textContent = INTERNO.filter(function(x){ return x.tipo==='gc'; }).length;
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
+    var tipoTag = it.tipo==='gc'
+      ? '<span class="tag" style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe">👥 Contatos GC</span>'
+      : '<span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">🏦 Suporte Banco</span>';
     return '<div class="card" style="background:#fff">'
       +'<div class="card-top"><div class="card-name">🏢 '+it.nome+'</div>'
       +'<div class="card-actions">'
       +'<button class="act-btn" onclick="openInEdit(\''+it.id+'\')">✏️</button>'
       +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'interno\',\''+escHtml(it.nome)+'\')">🗑️</button>'
       +'</div></div>'
-      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span></div>'
+      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'+tipoTag+'</div>'
       +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
       +'</div>';
   }).join('');
@@ -1347,6 +1398,7 @@ function openInModal(){
   inEditId=null;
   document.getElementById('in-modal-title').textContent='Novo Contato Interno';
   ['in-nome','in-banco','in-tel'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('in-tipo').value='suporte';
   ['inw-nome','inw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('in-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('in-nome').focus(); },100);
@@ -1358,6 +1410,7 @@ function openInEdit(id){
   document.getElementById('in-nome').value=it.nome;
   document.getElementById('in-banco').value=it.banco;
   document.getElementById('in-tel').value=it.tel||'';
+  document.getElementById('in-tipo').value=it.tipo||'suporte';
   ['inw-nome','inw-banco'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('in-overlay').classList.add('open');
 }
@@ -1367,6 +1420,7 @@ async function salvarIn(){
   var nome=document.getElementById('in-nome').value.trim();
   var banco=document.getElementById('in-banco').value.trim();
   var tel=document.getElementById('in-tel').value.trim();
+  var tipo=document.getElementById('in-tipo').value;
   var ok=true;
   [['inw-nome',nome],['inw-banco',banco]].forEach(function(p){
     var w=document.getElementById(p[0]);
@@ -1374,9 +1428,9 @@ async function salvarIn(){
   });
   if(!ok) return;
   if(inEditId){
-    await updateDoc(doc(db,'interno',inEditId),{nome,banco,tel});
+    await updateDoc(doc(db,'interno',inEditId),{nome,banco,tel,tipo});
   } else {
-    await addDoc(collection(db,'interno'),{nome,banco,tel,data:hoje()});
+    await addDoc(collection(db,'interno'),{nome,banco,tel,tipo,data:hoje()});
   }
   closeInModal();
 }
