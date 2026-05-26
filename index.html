@@ -184,6 +184,7 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="tab" onclick="switchTab('contatos',this)">📞 Contatos Bancos</div>
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
+    <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
   </div>
 </div>
 
@@ -626,7 +627,48 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     </div>
   </div>
 </div>
-<div class="overlay" id="s-overlay">
+
+<!-- ══════════════ ABA 9: LINKS ÚTEIS ══════════════ -->
+<div class="tab-content" id="tab-links">
+  <div class="hero-text">
+    <div class="badge">✦ Links Úteis</div>
+    <h1>Links <em>Úteis</em></h1>
+    <p>Acesse rapidamente os sistemas e ferramentas do dia a dia.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat tot"><div class="n" id="lk-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="lk-srch" placeholder="🔍 Buscar por descrição..." oninput="renderLinks()">
+    </div>
+    <button class="btn-add" onclick="openLkModal()">＋ Novo Link</button>
+  </div>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px" id="lk-grid">
+    <div class="empty" style="grid-column:1/-1">Nenhum link cadastrado</div>
+  </div>
+</div>
+
+<!-- ══ MODAL LINKS ÚTEIS ══ -->
+<div class="overlay" id="lk-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="lk-modal-title">Novo Link</h2>
+      <button class="close-btn" onclick="closeLkModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="lkw-desc"><label>Descrição *</label><input id="lk-desc" placeholder="Ex: Sistema de Propostas Bradesco"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="lkw-link"><label>Link *</label><input id="lk-link" placeholder="https://..."><span class="em">Campo obrigatório</span></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeLkModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarLk()">Salvar</button>
+    </div>
+  </div>
+</div>
   <div class="modal">
     <div class="modal-head">
       <h2 id="s-modal-title">Novo Cadastro Sub</h2>
@@ -1225,7 +1267,7 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':'demandas';
+  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
@@ -1354,8 +1396,79 @@ async function salvarLB(){
   closeLBModal();
 }
 
+// ══════════════════════════════════════════════════════════════
+// ABA LINKS ÚTEIS
+// ══════════════════════════════════════════════════════════════
+var LINKS = [];
+var lkEditId = null;
+
+onSnapshot(collection(db,'linksuteis'), function(snap){
+  LINKS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderLinks();
+});
+
+function renderLinks(){
+  var srch = document.getElementById('lk-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('lk-grid');
+  var list = LINKS.filter(function(it){
+    if(srch && !it.desc.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  document.getElementById('lk-st-tot').textContent = LINKS.length;
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum link cadastrado</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">🔗 '+it.desc+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openLkEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'link\',\''+escHtml(it.desc)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div style="margin-top:10px">'
+      +'<a href="'+it.link+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(0,119,204,.25)">🌐 Acessar</a>'
+      +'</div>'
+      +'<div style="margin-top:8px;font-size:11px;color:#9eb8cc;word-break:break-all">'+it.link+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function openLkModal(){
+  lkEditId=null;
+  document.getElementById('lk-modal-title').textContent='Novo Link';
+  ['lk-desc','lk-link'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['lkw-desc','lkw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('lk-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('lk-desc').focus(); },100);
+}
+function openLkEdit(id){
+  var it=LINKS.find(function(x){ return x.id===id; }); if(!it) return;
+  lkEditId=id;
+  document.getElementById('lk-modal-title').textContent='Editar Link';
+  document.getElementById('lk-desc').value=it.desc;
+  document.getElementById('lk-link').value=it.link;
+  ['lkw-desc','lkw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('lk-overlay').classList.add('open');
+}
+function closeLkModal(){ document.getElementById('lk-overlay').classList.remove('open'); }
+
+async function salvarLk(){
+  var desc=document.getElementById('lk-desc').value.trim();
+  var link=document.getElementById('lk-link').value.trim();
+  var ok=true;
+  [['lkw-desc',desc],['lkw-link',link]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(lkEditId){
+    await updateDoc(doc(db,'linksuteis',lkEditId),{desc,link});
+  } else {
+    await addDoc(collection(db,'linksuteis'),{desc,link,data:hoje()});
+  }
+  closeLkModal();
+}
+
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','del-overlay'].forEach(function(id){
   document.getElementById(id).addEventListener('click',function(e){
     if(e.target===this){
       if(id==='l-overlay') closeLoginModal();
@@ -1366,6 +1479,7 @@ async function salvarLB(){
       else if(id==='ct-overlay') closeCtModal();
       else if(id==='in-overlay') closeInModal();
       else if(id==='lb-overlay') closeLBModal();
+      else if(id==='lk-overlay') closeLkModal();
       else closeDel();
     }
   });
