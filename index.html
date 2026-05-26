@@ -479,7 +479,9 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
     <div class="modal-body">
       <div class="mf" id="ctw-banco"><label>Banco *</label><input id="ct-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
+      <div class="mf"><label>WhatsApp <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-whats" placeholder="(00) 00000-0000" maxlength="16"></div>
       <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-email" placeholder="contato@banco.com.br" type="email"></div>
+      <div class="mf"><label>Demais Localidades <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="ct-localidades" placeholder="Ex: SP: (11) 0000-0000 / RJ: (21) 0000-0000"></div>
       <div class="mf">
         <label style="display:flex;align-items:center;justify-content:space-between">
           SAC <button type="button" onclick="addSacField()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar SAC</button>
@@ -1286,7 +1288,9 @@ function renderContatos(){
       +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'contato\',\''+escHtml(it.banco)+'\')">🗑️</button>'
       +'</div></div>'
       +(it.tel?'<div style="margin-top:8px;font-size:13px;color:var(--text)">📞 <a href="tel:'+it.tel+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.tel+'</a></div>':'')
+      +(it.whats?'<div style="margin-top:5px;font-size:13px;color:var(--text)">💬 <a href="https://wa.me/'+it.whats.replace(/\D/g,'')+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600">'+it.whats+'</a></div>':'')
       +(it.email?'<div style="margin-top:5px;font-size:13px;color:var(--text)">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+it.email+'</a></div>':'')
+      +(it.localidades?'<div style="margin-top:5px;font-size:12px;color:var(--lbl)">🗺️ '+it.localidades+'</div>':'')
       +(sacs.length?'<div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--lbl)">SAC:</div>'
         +sacs.map(function(s){ return '<div style="font-size:13px;color:var(--text)">📟 <a href="tel:'+s+'" style="color:var(--blue);text-decoration:none;font-weight:600">'+s+'</a></div>'; }).join(''):'')
       +'</div>';
@@ -1308,7 +1312,7 @@ function getSacs(){
 function openCtModal(){
   ctEditId=null;
   document.getElementById('ct-modal-title').textContent='Novo Contato';
-  ['ct-banco','ct-tel','ct-email'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['ct-banco','ct-tel','ct-whats','ct-email','ct-localidades'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('ctw-banco').classList.remove('err');
   document.getElementById('sac-fields').innerHTML='<input class="sac-input" placeholder="Ex: 0800 000 0000" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none">';
   document.getElementById('ct-overlay').classList.add('open');
@@ -1320,7 +1324,9 @@ function openCtEdit(id){
   document.getElementById('ct-modal-title').textContent='Editar Contato';
   document.getElementById('ct-banco').value=it.banco;
   document.getElementById('ct-tel').value=it.tel||'';
+  document.getElementById('ct-whats').value=it.whats||'';
   document.getElementById('ct-email').value=it.email||'';
+  document.getElementById('ct-localidades').value=it.localidades||'';
   document.getElementById('ctw-banco').classList.remove('err');
   var sacFields = document.getElementById('sac-fields');
   var sacs = it.sacs||[''];
@@ -1335,14 +1341,16 @@ function closeCtModal(){ document.getElementById('ct-overlay').classList.remove(
 async function salvarCt(){
   var banco=document.getElementById('ct-banco').value.trim();
   var tel=document.getElementById('ct-tel').value.trim();
+  var whats=document.getElementById('ct-whats').value.trim();
   var email=document.getElementById('ct-email').value.trim();
+  var localidades=document.getElementById('ct-localidades').value.trim();
   var sacs=getSacs();
   if(!banco){ document.getElementById('ctw-banco').classList.add('err'); return; }
   document.getElementById('ctw-banco').classList.remove('err');
   if(ctEditId){
-    await updateDoc(doc(db,'contatos',ctEditId),{banco,tel,email,sacs});
+    await updateDoc(doc(db,'contatos',ctEditId),{banco,tel,whats,email,localidades,sacs});
   } else {
-    await addDoc(collection(db,'contatos'),{banco,tel,email,sacs,data:hoje()});
+    await addDoc(collection(db,'contatos'),{banco,tel,whats,email,localidades,sacs,data:hoje()});
   }
   closeCtModal();
 }
@@ -1370,16 +1378,17 @@ function renderInterno(){
   var srch = document.getElementById('in-srch').value.trim().toLowerCase();
   var grid = document.getElementById('in-grid');
   var list = INTERNO.filter(function(it){
-    if(inFilterTipo && it.tipo !== inFilterTipo) return false;
+    var tipo = it.tipo || 'suporte';
+    if(inFilterTipo && tipo !== inFilterTipo) return false;
     if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
     return true;
   });
   document.getElementById('in-st-tot').textContent = INTERNO.length;
-  document.getElementById('in-st-suporte').textContent = INTERNO.filter(function(x){ return x.tipo==='suporte'; }).length;
+  document.getElementById('in-st-suporte').textContent = INTERNO.filter(function(x){ return (x.tipo||'suporte')==='suporte'; }).length;
   document.getElementById('in-st-gc').textContent = INTERNO.filter(function(x){ return x.tipo==='gc'; }).length;
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum contato encontrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
-    var tipoTag = it.tipo==='gc'
+    var tipoTag = (it.tipo||'suporte')==='gc'
       ? '<span class="tag" style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe">👥 Contatos GC</span>'
       : '<span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe">🏦 Suporte Banco</span>';
     return '<div class="card" style="background:#fff">'
