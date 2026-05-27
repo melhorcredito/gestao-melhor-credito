@@ -1,0 +1,361 @@
+# Roteiro Operacional INSS – BRB (Resumo Organizado)
+
+Documento: **Roteiro Operacional Crédito Consignado INSS – BRB**
+Atualização: **Dezembro/2025** 
+
+---
+
+# 1. Público-Alvo
+
+## Clientes Permitidos
+
+O convênio atende:
+
+* Aposentados do INSS
+* Pensionistas vitalícios
+* Beneficiários do RGPS
+* Beneficiários espécie:
+
+  * 32 e 92 com idade igual ou superior a 60 anos
+* Beneficiários espécie 21:
+
+  * respeitando o prazo final do benefício 
+
+---
+
+# 2. Clientes Não Permitidos
+
+Não são aceitos:
+
+* Menores de 18 anos
+* Pensionistas temporários
+* CPF irregular
+* Analfabetos
+* Deficientes visuais impossibilitados de assinar
+* Clientes residentes fora do Brasil
+* Benefícios pagos pelos Correios
+* Benefícios vinculados a cooperativas sem convênio
+* Benefícios de pensão alimentícia
+* Representantes legais, tutores, curadores e procuradores
+* Benefícios BPC/LOAS espécies 87 e 88
+* Clientes impedidos de operar com BRB
+* Benefícios de previdência complementar
+* Indígenas (determinação FUNAI) 
+
+---
+
+# 3. Verificações Obrigatórias
+
+Antes da digitação:
+
+* Conferir CPF na Receita Federal
+* Validar situação regular do CPF
+* Confirmar e-mail do cliente
+* Conferir classificação correta dos documentos
+* Validar dados do benefício na Dataprev 
+
+---
+
+# 4. Documentos Necessários
+
+Obrigatórios:
+
+* Documento oficial com foto:
+
+  * RG
+  * CNH
+  * CTPS
+  * RNE
+* IN100
+* HISCON
+* Comprovante de residência atualizado
+
+Regras:
+
+* Documentos devem ser originais
+* Não aceita:
+
+  * xerox
+  * cópias
+  * passaporte 
+
+---
+
+# 5. Benefícios Aceitos
+
+Principais espécies aceitas:
+
+* Aposentadoria por idade
+* Aposentadoria por invalidez
+* Aposentadoria por tempo de contribuição
+* Pensão por morte
+* Pensão vitalícia
+* Benefícios especiais previstos em lei 
+
+---
+
+# 6. Benefícios Não Aceitos
+
+Principais espécies recusadas:
+
+* Auxílio-doença
+* Auxílio-acidente
+* Auxílio-reclusão
+* LOAS
+* Salário maternidade
+* Benefícios temporários
+* Pecúlios
+* Benefícios assistenciais 
+
+---
+
+# 7. Regras para Pensão por Morte (Espécie 21)
+
+A Dataprev valida o prazo do benefício.
+
+Duração máxima conforme idade do dependente:
+
+| Idade            | Duração   |
+| ---------------- | --------- |
+| Menos de 22 anos | 3 anos    |
+| 22 a 27 anos     | 6 anos    |
+| 28 a 30 anos     | 10 anos   |
+| 31 a 41 anos     | 15 anos   |
+| 42 a 44 anos     | 20 anos   |
+| 45+              | Vitalício |
+
+Erro apresentado:
+
+* “IR - Prazo da operação é maior que a data de extensão da conta do benefício” 
+
+---
+
+# 8. Margem Livre
+
+Regras:
+
+* Parcela mínima:
+
+  * R$ 25
+* Valor mínimo:
+
+  * R$ 500
+* Prazo mínimo:
+
+  * 13 meses
+* Prazo máximo:
+
+  * 96 meses
+* Valor máximo por CPF:
+
+  * R$ 150 mil
+
+Importante:
+
+* Sempre validar:
+
+  * “Valor disponível para averbação de empréstimo” da IN100
+* Margem excedida:
+
+  * vira margem negativa 
+
+---
+
+# 9. Portabilidade
+
+## Regras Gerais
+
+* Valor mínimo:
+
+  * R$ 4.000,01
+* Troco mínimo:
+
+  * R$ 100
+* Contratos precisam ter:
+
+  * mais de 360 dias
+* Operação deve ser:
+
+  * registrada e liquidada no mesmo dia
+
+Bancos não portados:
+
+* PicPay
+* Agibank
+* Banco C6
+* C6 Consignado 
+
+---
+
+# 10. Refinanciamento de Carteira
+
+Regras:
+
+* Parcela mínima:
+
+  * R$ 25
+* Troco mínimo:
+
+  * R$ 50
+* Permitido:
+
+  * unificar parcelas
+  * agregar margem
+* Não permitido:
+
+  * refinanciar contratos Facta e Pine iniciados em 4, 5 ou 6
+
+Importante:
+
+* Taxa do refinanciamento:
+
+  * não pode ser inferior à taxa original
+* Redução de parcela:
+
+  * margem liberada apenas após 7 dias úteis pela Dataprev 
+
+---
+
+# 11. Refinanciamento de Portabilidade
+
+Regras:
+
+* Troco mínimo:
+
+  * R$ 50
+* Permitido:
+
+  * unificar parcelas
+  * agregar margem
+* Refinanciamento:
+
+  * só após averbação da portabilidade
+
+Importante:
+
+* Refinanciamento de portabilidade:
+
+  * válido até 60 dias após pagamento da PORT
+* Após 60 dias:
+
+  * vira refinanciamento de carteira 
+
+---
+
+# 12. Retenção de Portabilidade
+
+Regras:
+
+* Taxas:
+
+  * somente conforme planilha BRB
+* Não permite:
+
+  * agregar margem
+  * unificar parcelas
+
+Qualquer taxa divergente:
+
+* contrato cancelado automaticamente 
+
+---
+
+# 13. Horários Operacionais
+
+## Operações Gerais
+
+* Segunda a sexta
+* Até 18h
+
+## Portabilidade
+
+* Envio até:
+
+  * 15h
+* Após 17h25:
+
+  * envio para CIP somente no próximo dia útil 
+
+---
+
+# 14. Quantidade de Linhas
+
+Total permitido:
+
+* 15 linhas por benefício
+
+Distribuição:
+
+* 13 linhas:
+
+  * empréstimos consignados
+* 2 linhas:
+
+  * cartão consignado 
+
+---
+
+# 15. Pontos de Atenção
+
+Obrigatório validar:
+
+* Benefício ativo
+* Benefício desbloqueado
+* Dados bancários
+* Endereço do cliente
+* Número correto do benefício
+* Comprometimento máximo da margem
+* Valor do troco
+
+Importante:
+
+* Não pode operar cliente:
+
+  * recebendo benefício em estado diferente do domicílio
+* Benefício novo:
+
+  * bloqueado por 90 dias
+* Proibida abordagem ativa:
+
+  * nos primeiros 180 dias do benefício 
+
+---
+
+# 16. Liberação de Crédito
+
+Regras:
+
+* Crédito obrigatório:
+
+  * na conta de recebimento do benefício
+* Cartão magnético:
+
+  * precisa conta corrente em nome do titular
+* Bancos digitais:
+
+  * apenas contas correntes digitais
+* Não aceita:
+
+  * carteiras digitais
+  * contas pagamento
+  * ordem de pagamento (OP) 
+
+---
+
+# 17. Reenvio de TED
+
+Em caso de erro:
+
+* Solicitar via:
+
+  * [insscfi@financeira.brb.com.br](mailto:insscfi@financeira.brb.com.br)
+
+Prazo:
+
+* até 48h úteis
+
+Importante:
+
+* Não reenviam TED:
+
+  * com mesmos dados incorretos
