@@ -852,10 +852,27 @@ async function sendMsg() {
     pdfTxt = pdfCtx.map(function(p){ return '=== ARQUIVO: '+p.name+' ===\n'+p.content; }).join('\n\n');
   }
 
+  // Carrega contatos para incluir no contexto
+  var contTxt = '';
+  try {
+    var allContacts = await getContacts();
+    var banks = _banks.length ? _banks : await getBanks();
+    var contLines = [];
+    banks.forEach(function(b){
+      var items = allContacts[b.id]||[];
+      if(items.length){
+        contLines.push('--- '+b.name+' ---');
+        items.forEach(function(c){ contLines.push(c.tipo+': '+c.desc+' — '+c.valor); });
+      }
+    });
+    if(contLines.length) contTxt = 'CONTATOS DOS BANCOS:\n'+contLines.join('\n');
+  } catch(e){}
+
   var sys = 'Você é o Consultor MC, assistente especializado em crédito consignado da Melhor Crédito.\n'
-    +'Responda SOMENTE com base nas informações do roteiro fornecido. Seja claro e objetivo.\n'
-    +'Banco: '+ST.bank.name+' | Produto: '+ST.prod.name+'\n'
-    +(pdfTxt ? 'ROTEIRO:\n'+pdfTxt : 'ATENÇÃO: Nenhum roteiro disponível para este banco/produto.');
+    +'Responda com base no roteiro e nos contatos disponíveis. Seja claro e objetivo.\n'
+    +'Banco atual: '+ST.bank.name+' | Produto: '+ST.prod.name+'\n'
+    +(pdfTxt ? 'ROTEIRO:\n'+pdfTxt : 'ATENÇÃO: Nenhum roteiro disponível para este banco/produto.')
+    +(contTxt ? '\n\n'+contTxt : '');
 
   var messages = ST.hist.concat([{role:'user',content:txt}]);
   try {
