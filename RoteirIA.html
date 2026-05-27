@@ -14,8 +14,6 @@
   --font:'DM Sans',sans-serif;--fd:'DM Serif Display',serif;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
-
-/* HEADER */
 header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .logo{font-family:var(--fd);font-size:18px;color:#fff}
 .logo em{font-style:normal;color:#1a90e0}
@@ -23,53 +21,49 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .htag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b3d9f5;background:rgba(255,255,255,.08);padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.12)}
 .btn-hdr{padding:5px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:rgba(255,255,255,.75);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-hdr:hover{background:rgba(255,255,255,.15);color:#fff}
-
-/* TELAS */
 .screen{display:none;min-height:calc(100vh - 54px)}
 .screen.active{display:flex}
 
-/* ═══ LOGIN ═══ */
+/* LOGIN */
 #s-login{align-items:center;justify-content:center;padding:20px}
-.login-box{background:var(--wh);border:1.5px solid var(--bdr);border-radius:18px;padding:36px 32px;max-width:400px;width:100%;box-shadow:0 8px 40px rgba(0,60,120,.14);text-align:center}
+.lbox{background:var(--wh);border:1.5px solid var(--bdr);border-radius:18px;padding:36px 32px;max-width:400px;width:100%;box-shadow:0 8px 40px rgba(0,60,120,.14);text-align:center}
 .lico{width:60px;height:60px;background:linear-gradient(135deg,var(--dark),var(--blue));border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:24px}
-.login-box h2{font-family:var(--fd);font-size:24px;color:var(--dark);margin-bottom:5px}
-.login-box p{font-size:13px;color:var(--lbl);margin-bottom:24px;line-height:1.6}
-.finp{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
-.finp:focus{border-color:var(--blue-l);background:#fff;box-shadow:0 0 0 3px rgba(0,119,204,.1)}
-.finp::placeholder{color:#9eb8cc}
-.btn-p{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,119,204,.3);transition:background .2s,transform .15s}
-.btn-p:hover{background:var(--blue-l);transform:translateY(-1px)}
-.btn-p:disabled{background:var(--bdr);cursor:not-allowed;transform:none}
+.lbox h2{font-family:var(--fd);font-size:24px;color:var(--dark);margin-bottom:5px}
+.lbox p{font-size:13px;color:var(--lbl);margin-bottom:24px;line-height:1.6}
+.fi{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none;margin-bottom:10px;transition:border-color .2s,box-shadow .2s}
+.fi:focus{border-color:var(--blue-l);background:#fff;box-shadow:0 0 0 3px rgba(0,119,204,.1)}
+.fi::placeholder{color:#9eb8cc}
+.bp{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,119,204,.3);transition:background .2s,transform .15s}
+.bp:hover{background:var(--blue-l);transform:translateY(-1px)}
+.bp:disabled{background:var(--bdr);cursor:not-allowed;transform:none}
 .lerr{font-size:12px;color:var(--red);margin-top:8px;display:none}
-.lload{font-size:12px;color:var(--lbl);margin-top:8px;display:none}
+.lmsg{font-size:12px;color:var(--lbl);margin-top:8px;display:none}
 
-/* ═══ MAIN (CHAT) ═══ */
+/* MAIN */
 #s-main{flex-direction:row;height:calc(100vh - 54px)}
-
-/* Sidebar */
 .sb{width:256px;min-width:256px;background:var(--dark);display:flex;flex-direction:column;overflow:hidden}
 .sb-top{padding:16px 14px 10px;border-bottom:1px solid rgba(255,255,255,.07)}
 .slbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
-.bsearch{width:100%;padding:7px 11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;font-family:var(--font);font-size:12px;color:#fff;outline:none}
-.bsearch::placeholder{color:rgba(255,255,255,.25)}
-.bsearch:focus{border-color:var(--blue-l)}
-.blist{flex:1;overflow-y:auto;padding:8px 6px}
-.blist::-webkit-scrollbar{width:3px}
-.blist::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
-.bitem{border-radius:7px;margin-bottom:1px}
-.bhdr{display:flex;align-items:center;gap:8px;padding:8px 9px;cursor:pointer;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:500;border-radius:7px;user-select:none;transition:background .15s}
-.bhdr:hover{background:rgba(255,255,255,.07);color:#fff}
-.bhdr.abk{background:rgba(26,144,224,.18);color:#1a90e0}
+.bsrch{width:100%;padding:7px 11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;font-family:var(--font);font-size:12px;color:#fff;outline:none}
+.bsrch::placeholder{color:rgba(255,255,255,.25)}
+.bsrch:focus{border-color:var(--blue-l)}
+.bl{flex:1;overflow-y:auto;padding:8px 6px}
+.bl::-webkit-scrollbar{width:3px}
+.bl::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+.bi{border-radius:7px;margin-bottom:1px}
+.bh{display:flex;align-items:center;gap:8px;padding:8px 9px;cursor:pointer;color:rgba(255,255,255,.7);font-size:12.5px;font-weight:500;border-radius:7px;user-select:none;transition:background .15s}
+.bh:hover{background:rgba(255,255,255,.07);color:#fff}
+.bh.abk{background:rgba(26,144,224,.18);color:#1a90e0}
 .bico{width:26px;height:26px;background:rgba(255,255,255,.07);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
 .bnm{flex:1;font-size:12px}
 .barr{font-size:9px;opacity:.4;transition:transform .2s}
-.bitem.open .barr{transform:rotate(90deg)}
+.bi.open .barr{transform:rotate(90deg)}
 .bprods{display:none;padding:2px 0 4px 34px}
-.bitem.open .bprods{display:block}
+.bi.open .bprods{display:block}
 .pbtn{display:block;width:100%;text-align:left;padding:6px 9px;background:none;border:none;border-radius:5px;font-family:var(--font);font-size:11.5px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .15s}
 .pbtn:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
 .pbtn.ap{background:rgba(26,144,224,.22);color:#1a90e0;font-weight:600}
-.sb-no-banks{color:rgba(255,255,255,.25);font-size:11px;padding:16px 10px;text-align:center;line-height:1.6}
+.sb-nobank{color:rgba(255,255,255,.25);font-size:11px;padding:16px 10px;text-align:center;line-height:1.6}
 .sb-bot{padding:10px 14px;border-top:1px solid rgba(255,255,255,.07)}
 .ubadge{display:flex;align-items:center;gap:9px}
 .uav{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
@@ -78,8 +72,6 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .url{font-size:10px;color:rgba(255,255,255,.3)}
 .btn-lo{background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:3px;transition:color .15s}
 .btn-lo:hover{color:var(--red)}
-
-/* Chat area */
 .ca{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .ctbar{padding:12px 18px;background:var(--wh);border-bottom:1.5px solid var(--bdr);display:flex;align-items:center;gap:10px}
 .ctx{flex:1}
@@ -125,8 +117,8 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .bsc:disabled{background:var(--bdr);cursor:not-allowed;transform:none}
 .chint{font-size:10px;color:var(--lbl);margin-top:5px;opacity:.6}
 
-/* ═══ ADMIN ═══ */
-#s-admin{flex-direction:column;padding:24px 20px;max-width:920px;margin:0 auto;width:100%;gap:18px}
+/* ADMIN */
+#s-admin{flex-direction:column;padding:24px 20px;max-width:940px;margin:0 auto;width:100%;gap:18px}
 .ah{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .ah h2{font-family:var(--fd);font-size:24px;color:var(--dark)}
 .ah p{font-size:12px;color:var(--lbl);margin-top:2px}
@@ -137,7 +129,7 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .asec{display:none;flex-direction:column;gap:14px}
 .asec.act{display:flex}
 .agrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:620px){.agrid{grid-template-columns:1fr}.sb{display:none}}
+@media(max-width:620px){.agrid{grid-template-columns:1fr}}
 .acard{background:var(--wh);border:1.5px solid var(--bdr);border-radius:12px;padding:18px}
 .acard h3{font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
 .acard.full{grid-column:span 2}
@@ -148,7 +140,7 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .badd{padding:8px 14px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}
 .badd:hover{background:var(--blue-l)}
 .badd:disabled{background:var(--bdr);cursor:not-allowed}
-.litems{display:flex;flex-direction:column;gap:5px;max-height:190px;overflow-y:auto}
+.litems{display:flex;flex-direction:column;gap:5px;max-height:200px;overflow-y:auto}
 .litems::-webkit-scrollbar{width:3px}
 .litems::-webkit-scrollbar-thumb{background:var(--bdr)}
 .litem{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg);border:1px solid var(--bdr);border-radius:7px;font-size:12px}
@@ -157,13 +149,12 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .litem .lm{font-size:10px;color:var(--lbl)}
 .brm{background:none;border:none;color:#fca5a5;cursor:pointer;font-size:14px;padding:2px 5px;border-radius:3px;transition:color .15s;flex-shrink:0}
 .brm:hover{color:var(--red)}
-/* PDF */
 .upwrap{border:2px dashed var(--bdr);border-radius:9px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:10px}
 .upwrap:hover{border-color:var(--blue-l);background:var(--blue-p)}
-.upwrap input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upwrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .upwrap p{font-size:12px;color:var(--lbl)}
 .upwrap strong{color:var(--blue)}
-.plist{display:flex;flex-direction:column;gap:5px;max-height:150px;overflow-y:auto}
+.plist{display:flex;flex-direction:column;gap:5px;max-height:160px;overflow-y:auto}
 .pitem{display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--bg);border:1px solid var(--bdr);border-radius:6px;font-size:11px}
 .pnm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-weight:500}
 .psz{font-size:10px;color:var(--lbl);flex-shrink:0}
@@ -171,7 +162,6 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .pdot.ok{background:var(--green)}
 .pdot.ld{background:#f59e0b;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-/* Logs */
 .ltbl{width:100%;border-collapse:collapse;font-size:11px}
 .ltbl th{text-align:left;padding:7px 9px;color:var(--lbl);font-weight:600;border-bottom:1.5px solid var(--bdr);font-size:10px;text-transform:uppercase;letter-spacing:.06em}
 .ltbl td{padding:7px 9px;border-bottom:1px solid var(--bg);color:var(--text)}
@@ -180,25 +170,23 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 .sbox{flex:1;background:var(--blue-p);border:1px solid var(--blue-m);border-radius:9px;padding:11px;text-align:center}
 .sn{font-family:var(--fd);font-size:26px;color:var(--dark)}
 .sl{font-size:10px;color:var(--lbl);margin-top:1px}
-/* Btns sec */
 .bsec{padding:7px 14px;background:var(--wh);border:1.5px solid var(--bdr);border-radius:7px;font-family:var(--font);font-size:12px;color:var(--lbl);cursor:pointer;transition:all .2s}
 .bsec:hover{border-color:var(--blue);color:var(--blue)}
 .bdng{border-color:#fca5a5;color:var(--red)}
 .bdng:hover{background:#fff5f5;border-color:var(--red)}
-/* Upload progress */
-.uprog{font-size:11px;color:var(--lbl);margin-top:6px;display:none}
-/* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:10px 16px;border-radius:9px;font-size:12px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:999;transform:translateY(70px);opacity:0;transition:all .3s;max-width:280px}
+.uprog{font-size:11px;color:var(--lbl);margin-top:6px;padding:8px 10px;background:var(--blue-p);border:1px solid var(--blue-m);border-radius:6px;display:none}
+.ncred{display:none;background:var(--blue-p);border:1px solid var(--blue-m);border-radius:7px;padding:10px;font-size:11px;margin-top:4px;color:var(--dark);line-height:1.8}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:10px 16px;border-radius:9px;font-size:12px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:999;transform:translateY(70px);opacity:0;transition:all .3s;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{background:var(--green)}
 .toast.err{background:var(--red)}
-/* Loading overlay */
-.lov{position:fixed;inset:0;background:rgba(0,40,80,.65);z-index:500;display:flex;align-items:center;justify-content:center;display:none}
+.lov{position:fixed;inset:0;background:rgba(0,40,80,.6);z-index:500;display:none;align-items:center;justify-content:center}
 .lov.show{display:flex}
-.lbox{background:var(--wh);border-radius:14px;padding:32px 40px;text-align:center}
-.lbox p{font-size:13px;color:var(--lbl);margin-top:8px}
-.lspinner{width:36px;height:36px;border:3px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+.lbox2{background:var(--wh);border-radius:14px;padding:28px 36px;text-align:center;min-width:200px}
+.lbox2 p{font-size:12px;color:var(--lbl);margin-top:8px}
+.lspin{width:34px;height:34px;border:3px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.sb{display:none}}
 </style>
 </head>
 <body>
@@ -206,43 +194,42 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 <header>
   <span class="logo">Melhor <em>Crédito</em></span>
   <div class="hright">
-    <span class="htag" id="hbadge">✦ RoteirIA</span>
+    <span class="htag">✦ RoteirIA</span>
     <button class="btn-hdr" id="btn-adm" style="display:none" onclick="goAdmin()">⚙ Admin</button>
-    <button class="btn-hdr" id="btn-chat-adm" style="display:none" onclick="goChat()">← Chat</button>
+    <button class="btn-hdr" id="btn-back" style="display:none" onclick="goChat()">← Chat</button>
   </div>
 </header>
 
-<!-- Loading overlay -->
-<div class="lov" id="lov"><div class="lbox"><div class="lspinner"></div><p id="lov-msg">Carregando...</p></div></div>
+<div class="lov" id="lov"><div class="lbox2"><div class="lspin"></div><p id="lov-msg">Aguarde...</p></div></div>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div class="screen active" id="s-login">
-  <div class="login-box">
+  <div class="lbox">
     <div class="lico">🏦</div>
     <h2>RoteirIA</h2>
-    <p>Sistema de roteiros bancários.<br>Entre com seu login e senha.</p>
-    <input class="finp" type="text" id="l-user" placeholder="Login (ex: MC-001)" autocomplete="off">
-    <input class="finp" type="password" id="l-pass" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn-p" id="btn-login" onclick="doLogin()">Entrar</button>
+    <p>Consulta inteligente de roteiros bancários.<br>Entre com seu login e senha.</p>
+    <input class="fi" type="text" id="l-user" placeholder="Login (ex: MC-001)" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    <input class="fi" type="password" id="l-pass" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="bp" id="btn-login" onclick="doLogin()">Entrar</button>
     <div class="lerr" id="lerr">Login ou senha incorretos.</div>
-    <div class="lload" id="lload">⏳ Verificando acesso...</div>
+    <div class="lmsg" id="lmsg">⏳ Verificando acesso...</div>
   </div>
 </div>
 
-<!-- ═══ MAIN CHAT ═══ -->
+<!-- MAIN CHAT -->
 <div class="screen" id="s-main">
   <div class="sb" id="sb">
     <div class="sb-top">
       <div class="slbl">Selecione o banco</div>
-      <input class="bsearch" type="text" placeholder="Buscar..." oninput="filterBanks(this.value)">
+      <input class="bsrch" type="text" placeholder="Buscar banco..." oninput="filterBanks(this.value)">
     </div>
-    <div class="blist" id="blist"></div>
+    <div class="bl" id="bl"></div>
     <div class="sb-bot">
       <div class="ubadge">
         <div class="uav" id="uav">?</div>
         <div class="uinf">
           <div class="ucd" id="ucd">—</div>
-          <div class="url" id="url">Parceiro</div>
+          <div class="url" id="url-role">Parceiro</div>
         </div>
         <button class="btn-lo" onclick="doLogout()" title="Sair">⏻</button>
       </div>
@@ -251,7 +238,7 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
   <div class="ca">
     <div class="ctbar">
       <div class="ctx">
-        <div class="ctxe" id="ctx-e">← Selecione um banco e produto para começar</div>
+        <div class="ctxe" id="ctx-e">← Selecione um banco e produto</div>
         <div style="display:none" id="ctx-i">
           <div class="ctxb" id="ctx-bank">—</div>
           <div class="ctxp" id="ctx-prod">—</div>
@@ -260,10 +247,10 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
       <div class="ctbadge" id="ctx-badge" style="display:none">IA ativa</div>
     </div>
     <div class="msgs" id="msgs">
-      <div class="es" id="es">
+      <div class="es" id="es-init">
         <div class="esico">💬</div>
         <h3>Olá! Sou o RoteirIA</h3>
-        <p>Selecione um banco e produto na barra lateral para consultar os roteiros.</p>
+        <p>Selecione um banco e produto na barra lateral para começar.</p>
       </div>
     </div>
     <div class="cinp">
@@ -275,91 +262,79 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <div class="chint">Enter para enviar · Shift+Enter para nova linha</div>
+      <div class="chint">Enter para enviar · Shift+Enter nova linha</div>
     </div>
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
+<!-- ADMIN -->
 <div class="screen" id="s-admin">
   <div class="ah">
-    <div>
-      <h2>⚙ Painel Administrador</h2>
-      <p>Gerencie bancos, produtos, roteiros e acessos</p>
-    </div>
+    <div><h2>⚙ Painel Administrador</h2><p>Gerencie bancos, roteiros e acessos dos parceiros</p></div>
     <button class="bsec" onclick="goChat()">← Voltar ao chat</button>
   </div>
-
   <div class="anav">
     <button class="atab act" onclick="showTab('t-banks',this)">🏦 Bancos & Produtos</button>
-    <button class="atab" onclick="showTab('t-pdfs',this)">📄 Roteiros (PDF)</button>
-    <button class="atab" onclick="showTab('t-users',this)">🔑 Usuários & Acessos</button>
-    <button class="atab" onclick="showTab('t-logs',this)">📊 Logs & Uso</button>
+    <button class="atab" onclick="showTab('t-pdfs',this)">📄 Roteiros PDF</button>
+    <button class="atab" onclick="showTab('t-users',this)">🔑 Usuários</button>
+    <button class="atab" onclick="showTab('t-logs',this)">📊 Logs</button>
   </div>
 
-  <!-- TAB: Bancos -->
+  <!-- Bancos -->
   <div class="asec act" id="t-banks">
     <div class="agrid">
       <div class="acard">
         <h3>🏦 Adicionar Banco</h3>
         <div class="frow">
-          <input type="text" id="inp-bank" placeholder="Nome do banco (ex: Facta Financeira)">
+          <input type="text" id="inp-bank" placeholder="Nome do banco">
           <button class="badd" onclick="addBank()">+ Adicionar</button>
         </div>
-        <div class="litems" id="bank-list-adm"></div>
+        <div class="litems" id="bank-adm"></div>
       </div>
       <div class="acard">
         <h3>📦 Adicionar Produto</h3>
         <div class="frow" style="flex-direction:column;gap:7px">
-          <select id="sel-bank-p" style="min-width:100%">
-            <option value="">Selecione o banco...</option>
-          </select>
+          <select id="sel-bp"><option value="">Selecione o banco...</option></select>
           <div style="display:flex;gap:7px">
             <input type="text" id="inp-prod" placeholder="Ex: Portabilidade INSS, RMC...">
             <button class="badd" onclick="addProd()">+ Add</button>
           </div>
         </div>
-        <div class="litems" id="prod-list-adm" style="margin-top:8px"></div>
+        <div class="litems" id="prod-adm" style="margin-top:8px"></div>
       </div>
     </div>
   </div>
 
-  <!-- TAB: PDFs -->
+  <!-- PDFs -->
   <div class="asec" id="t-pdfs">
     <div class="acard full">
       <h3>📄 Upload de Roteiros PDF</h3>
       <div class="frow" style="margin-bottom:14px">
-        <select id="sel-pdf-bank" onchange="updPdfProd()">
-          <option value="">Selecione o banco...</option>
-        </select>
-        <select id="sel-pdf-prod">
-          <option value="">Selecione o produto...</option>
-        </select>
+        <select id="sel-pb" onchange="updPdfProd()"><option value="">Selecione o banco...</option></select>
+        <select id="sel-pp" onchange="loadPdfList()"><option value="">Selecione o produto...</option></select>
       </div>
-      <div class="upwrap" id="upwrap">
+      <div class="upwrap">
         <input type="file" accept=".pdf" multiple onchange="handlePdf(this.files)" id="finput">
-        <p>📄 <strong>Clique ou arraste</strong> os PDFs aqui<br><span style="font-size:10px;opacity:.6">Múltiplos PDFs permitidos por produto</span></p>
+        <p>📄 <strong>Clique ou arraste</strong> os PDFs aqui<br><span style="font-size:10px;opacity:.6">Múltiplos PDFs por produto · Sem limite de tamanho</span></p>
       </div>
-      <div class="uprog" id="uprog">⏳ Processando PDF...</div>
+      <div class="uprog" id="uprog">⏳ Processando...</div>
       <div class="plist" id="plist"></div>
     </div>
   </div>
 
-  <!-- TAB: Usuários -->
+  <!-- Usuários -->
   <div class="asec" id="t-users">
     <div class="agrid">
       <div class="acard">
         <h3>➕ Criar Usuário</h3>
-        <div class="frow"><input type="text" id="inp-ulogin" placeholder="Login (ex: MC-042)"></div>
-        <div class="frow"><input type="text" id="inp-uname" placeholder="Nome do parceiro"></div>
+        <div class="frow"><input type="text" id="inp-ul" placeholder="Login (ex: MC-042)"></div>
+        <div class="frow"><input type="text" id="inp-un" placeholder="Nome do parceiro"></div>
         <div class="frow">
-          <input type="password" id="inp-upass" placeholder="Senha">
+          <input type="password" id="inp-up" placeholder="Senha">
           <button class="badd" style="background:#555;font-size:11px;padding:8px 10px" onclick="genPass()">🎲</button>
         </div>
-        <div class="frow">
-          <button class="badd" style="width:100%" onclick="addUser()">+ Criar usuário</button>
-        </div>
-        <div id="new-cred" style="display:none;background:var(--blue-p);border:1px solid var(--blue-m);border-radius:7px;padding:10px;font-size:11px;margin-top:4px;color:var(--dark)"></div>
+        <button class="badd" style="width:100%;margin-top:4px" onclick="addUser()">+ Criar usuário</button>
+        <div class="ncred" id="ncred"></div>
       </div>
       <div class="acard">
         <h3>👥 Usuários cadastrados</h3>
@@ -368,7 +343,7 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
     </div>
   </div>
 
-  <!-- TAB: Logs -->
+  <!-- Logs -->
   <div class="asec" id="t-logs">
     <div class="acard full">
       <h3>📊 Estatísticas</h3>
@@ -377,11 +352,11 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
         <div class="sbox"><div class="sn" id="st-u">0</div><div class="sl">Usuários ativos</div></div>
         <div class="sbox"><div class="sn" id="st-b">0</div><div class="sl">Bancos cadastrados</div></div>
       </div>
-      <h3 style="margin-bottom:10px">📋 Histórico recente</h3>
+      <h3 style="margin-bottom:10px">📋 Histórico</h3>
       <div style="overflow-x:auto">
         <table class="ltbl">
           <thead><tr><th>Horário</th><th>Usuário</th><th>Banco</th><th>Produto</th><th>Pergunta</th></tr></thead>
-          <tbody id="log-body"></tbody>
+          <tbody id="log-tbody"></tbody>
         </table>
       </div>
       <div style="margin-top:10px;display:flex;gap:8px">
@@ -395,203 +370,235 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIG — JSONBin
-// ═══════════════════════════════════════════════
-var JKEY = '$2a$10$D4HEigy03RPyvi8l.GzvGetutFsH4Rrs4d8h18/wLq3DnSrJSdhy.';
-var JBASE = 'https://api.jsonbin.io/v3/b';
-var JHEADERS = {'Content-Type':'application/json','X-Master-Key':JKEY,'X-Bin-Meta':'false'};
+// ═══════════════════════════════════════
+// CONFIG GITHUB
+// ═══════════════════════════════════════
+var GH_TOKEN = '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';
+var GH_REPO  = 'melhorcredito/gestao-melhor-credito';
+var GH_BASE  = 'https://api.github.com/repos/' + GH_REPO + '/contents/';
+var GH_RAW   = 'https://raw.githubusercontent.com/' + GH_REPO + '/main/';
 
-// IDs dos bins (criados automaticamente na 1ª execução)
-var BINS = {};
-var BINS_KEY = 'mc_roteiria_bins';
+var ST = { user:null, bank:null, prod:null, hist:[], pdfs:{} };
 
-// Estado global
-var ST = {user:null, bank:null, prod:null, hist:[], pdfMem:{}};
-
-// ═══════════════════════════════════════════════
-// JSONBin helpers
-// ═══════════════════════════════════════════════
-async function binGet(id){
-  var r = await fetch(JBASE+'/'+id+'/latest',{headers:JHEADERS});
-  if(!r.ok) throw new Error('binGet '+r.status);
+// ═══════════════════════════════════════
+// GITHUB API
+// ═══════════════════════════════════════
+async function ghGet(path) {
+  // Raw é mais rápido para leitura, sem autenticação necessária
+  var r = await fetch(GH_RAW + path + '?t=' + Date.now());
+  if (!r.ok) throw new Error('ghGet ' + r.status);
   return await r.json();
 }
-async function binSet(id,data){
-  var r = await fetch(JBASE+'/'+id,{method:'PUT',headers:JHEADERS,body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('binSet '+r.status);
+
+async function ghSet(path, data, msg) {
+  // Precisa do SHA atual para fazer PUT
+  var sha = null;
+  try {
+    var infoR = await fetch(GH_BASE + path, {
+      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (infoR.ok) {
+      var info = await infoR.json();
+      sha = info.sha;
+    }
+  } catch(e) {}
+
+  var body = { message: msg || 'update ' + path, content: btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 0)))) };
+  if (sha) body.sha = sha;
+
+  var r = await fetch(GH_BASE + path, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) { var e = await r.text(); throw new Error('ghSet ' + r.status + ' ' + e); }
   return await r.json();
 }
-async function binCreate(name,data){
-  var r = await fetch(JBASE,{method:'POST',headers:Object.assign({'X-Bin-Name':name},JHEADERS),body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('binCreate '+r.status);
-  var j = await r.json();
-  return j.metadata.id;
+
+async function ghSetRaw(path, rawContent, msg, isBinary) {
+  // Para conteúdo grande (PDFs extraídos) — usa base64 direto
+  var sha = null;
+  try {
+    var infoR = await fetch(GH_BASE + path, {
+      headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (infoR.ok) { var info = await infoR.json(); sha = info.sha; }
+  } catch(e) {}
+
+  var content = isBinary ? rawContent : btoa(unescape(encodeURIComponent(rawContent)));
+  var body = { message: msg || 'update', content: content };
+  if (sha) body.sha = sha;
+
+  var r = await fetch(GH_BASE + path, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error('ghSetRaw ' + r.status);
+  return await r.json();
 }
 
-// Carrega/cria mapa de bins
-async function ensureBins(){
-  var local = localStorage.getItem(BINS_KEY);
-  if(local){ BINS = JSON.parse(local); return; }
-  // Cria todos os bins necessários
-  showLov('Configurando banco de dados pela primeira vez...');
-  BINS.users = await binCreate('mc-users',[{login:'ADMIN',name:'Administrador',pass:'admin2024',isAdmin:true}]);
-  BINS.banks = await binCreate('mc-banks',[]);
-  BINS.logs  = await binCreate('mc-logs',[]);
-  BINS.pdfs  = await binCreate('mc-pdfs',{});
-  localStorage.setItem(BINS_KEY, JSON.stringify(BINS));
-  hideLov();
+async function ghDel(path, msg) {
+  var infoR = await fetch(GH_BASE + path, {
+    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+  });
+  if (!infoR.ok) return;
+  var info = await infoR.json();
+  await fetch(GH_BASE + path, {
+    method: 'DELETE',
+    headers: { 'Authorization': 'token ' + GH_TOKEN, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg || 'delete ' + path, sha: info.sha })
+  });
 }
 
-// ═══════════════════════════════════════════════
-// DATA helpers
-// ═══════════════════════════════════════════════
-async function getUsers(){ return await binGet(BINS.users); }
-async function setUsers(v){ return await binSet(BINS.users,v); }
-async function getBanks(){ return await binGet(BINS.banks); }
-async function setBanks(v){ return await binSet(BINS.banks,v); }
-async function getLogs(){ return await binGet(BINS.logs); }
-async function setLogs(v){ return await binSet(BINS.logs,v); }
-async function getPdfs(){ return await binGet(BINS.pdfs); }
-async function setPdfs(v){ return await binSet(BINS.pdfs,v); }
+// ═══════════════════════════════════════
+// DATA GETTERS/SETTERS
+// ═══════════════════════════════════════
+async function getUsers()  { return await ghGet('data/users.json'); }
+async function setUsers(v) { return await ghSet('data/users.json', v, 'update users'); }
+async function getBanks()  { return await ghGet('data/banks.json'); }
+async function setBanks(v) { return await ghSet('data/banks.json', v, 'update banks'); }
+async function getLogs()   { return await ghGet('data/logs.json'); }
+async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
+async function getPdfIdx() { return await ghGet('data/pdfs_index.json'); }
+async function setPdfIdx(v){ return await ghSet('data/pdfs_index.json', v, 'update pdf index'); }
 
-// ═══════════════════════════════════════════════
-// LOADING overlay
-// ═══════════════════════════════════════════════
-function showLov(msg){ document.getElementById('lov-msg').textContent=msg||'Carregando...'; document.getElementById('lov').classList.add('show'); }
+// ═══════════════════════════════════════
+// LOADING
+// ═══════════════════════════════════════
+function showLov(m){ document.getElementById('lov-msg').textContent = m||'Aguarde...'; document.getElementById('lov').classList.add('show'); }
 function hideLov(){ document.getElementById('lov').classList.remove('show'); }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // LOGIN
-// ═══════════════════════════════════════════════
-async function doLogin(){
+// ═══════════════════════════════════════
+async function doLogin() {
   var login = document.getElementById('l-user').value.trim().toUpperCase();
   var pass  = document.getElementById('l-pass').value.trim();
-  if(!login||!pass) return;
-  document.getElementById('lerr').style.display='none';
-  document.getElementById('lload').style.display='block';
-  document.getElementById('btn-login').disabled=true;
-  try{
-    await ensureBins();
+  if (!login || !pass) return;
+  document.getElementById('lerr').style.display = 'none';
+  document.getElementById('lmsg').style.display = 'block';
+  document.getElementById('btn-login').disabled = true;
+  try {
     var users = await getUsers();
-    var found = users.find(function(u){ return u.login.toUpperCase()===login && u.pass===pass; });
-    if(!found){
-      document.getElementById('lerr').style.display='block';
-      document.getElementById('lload').style.display='none';
-      document.getElementById('btn-login').disabled=false;
+    var found = users.find(function(u){ return u.login.toUpperCase() === login && u.pass === pass; });
+    if (!found) {
+      document.getElementById('lerr').style.display = 'block';
+      document.getElementById('lmsg').style.display = 'none';
+      document.getElementById('btn-login').disabled = false;
       return;
     }
     ST.user = found;
     document.getElementById('uav').textContent = found.login.slice(0,2).toUpperCase();
-    document.getElementById('ucd').textContent  = found.login;
-    document.getElementById('url').textContent  = found.isAdmin?'Administrador':'Parceiro';
-    if(found.isAdmin){ document.getElementById('btn-adm').style.display='block'; }
-    document.getElementById('lload').style.display='none';
-    document.getElementById('btn-login').disabled=false;
+    document.getElementById('ucd').textContent = found.login;
+    document.getElementById('url-role').textContent = found.isAdmin ? 'Administrador' : 'Parceiro';
+    if (found.isAdmin) document.getElementById('btn-adm').style.display = 'block';
+    document.getElementById('lmsg').style.display = 'none';
+    document.getElementById('btn-login').disabled = false;
     showScreen('s-main');
-    await loadBankList();
+    await loadSidebar();
     addLog(found.login,'—','—','Entrou no sistema');
-  }catch(e){
-    document.getElementById('lerr').textContent='Erro de conexão. Tente novamente.';
-    document.getElementById('lerr').style.display='block';
-    document.getElementById('lload').style.display='none';
-    document.getElementById('btn-login').disabled=false;
+  } catch(e) {
+    document.getElementById('lerr').textContent = 'Erro de conexão. Tente novamente.';
+    document.getElementById('lerr').style.display = 'block';
+    document.getElementById('lmsg').style.display = 'none';
+    document.getElementById('btn-login').disabled = false;
   }
 }
 
-function doLogout(){
-  ST={user:null,bank:null,prod:null,hist:[],pdfMem:{}};
-  document.getElementById('l-user').value='';
-  document.getElementById('l-pass').value='';
-  document.getElementById('btn-adm').style.display='none';
-  document.getElementById('btn-chat-adm').style.display='none';
+function doLogout() {
+  ST = { user:null, bank:null, prod:null, hist:[], pdfs:{} };
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.getElementById('btn-adm').style.display = 'none';
+  document.getElementById('btn-back').style.display = 'none';
   showScreen('s-login');
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // TELAS
-// ═══════════════════════════════════════════════
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+// ═══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
 }
-async function goAdmin(){
+async function goAdmin() {
   showScreen('s-admin');
-  document.getElementById('btn-adm').style.display='none';
-  document.getElementById('btn-chat-adm').style.display='block';
+  document.getElementById('btn-adm').style.display = 'none';
+  document.getElementById('btn-back').style.display = 'block';
+  showLov('Carregando painel...');
   await renderAdminBanks();
-  renderUsersList();
+  await renderUsersList();
+  hideLov();
 }
-function goChat(){
+function goChat() {
   showScreen('s-main');
-  document.getElementById('btn-adm').style.display='block';
-  document.getElementById('btn-chat-adm').style.display='none';
+  document.getElementById('btn-adm').style.display = 'block';
+  document.getElementById('btn-back').style.display = 'none';
 }
 
-// ═══════════════════════════════════════════════
-// BANCO LIST (sidebar)
-// ═══════════════════════════════════════════════
-async function loadBankList(filter){
-  var banks = await getBanks();
-  renderBankList(banks, filter);
+// ═══════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════
+var _banks = [];
+async function loadSidebar() {
+  _banks = await getBanks();
+  renderSidebar(_banks);
 }
-
-function renderBankList(banks, filter){
-  var bl = document.getElementById('blist');
-  bl.innerHTML='';
-  var filtered = filter ? banks.filter(function(b){return b.name.toLowerCase().includes(filter.toLowerCase());}) : banks;
-  if(!filtered.length){
-    bl.innerHTML='<div class="sb-no-banks">Nenhum banco cadastrado.<br>Peça ao administrador.</div>';
+function renderSidebar(banks) {
+  var bl = document.getElementById('bl');
+  bl.innerHTML = '';
+  if (!banks.length) {
+    bl.innerHTML = '<div class="sb-nobank">Nenhum banco cadastrado.<br>Peça ao administrador.</div>';
     return;
   }
-  filtered.forEach(function(bank){
-    var div=document.createElement('div');
-    div.className='bitem';
-    div.id='bi-'+bank.id;
-    var prods=(bank.products||[]).map(function(p){
-      return '<button class="pbtn" id="pb-'+bank.id+'-'+p.id+'" onclick="selCtx(\''+bank.id+'\',\''+p.id+'\','+JSON.stringify(bank.name)+','+JSON.stringify(p.name)+')">'+p.name+'</button>';
+  banks.forEach(function(bank) {
+    var div = document.createElement('div');
+    div.className = 'bi';
+    div.id = 'bi-' + bank.id;
+    var prods = (bank.products||[]).map(function(p) {
+      return '<button class="pbtn" id="pb-'+bank.id+'-'+p.id+'" onclick="selCtx(\''+bank.id+'\',\''+p.id+'\',\''+esc(bank.name)+'\',\''+esc(p.name)+'\')">'+p.name+'</button>';
     }).join('');
-    div.innerHTML='<div class="bhdr" onclick="toggleB(\''+bank.id+'\')">'
+    div.innerHTML = '<div class="bh" onclick="toggleB(\''+bank.id+'\')">'
       +'<div class="bico">🏦</div><span class="bnm">'+bank.name+'</span><span class="barr">›</span>'
       +'</div><div class="bprods">'+prods+'</div>';
     bl.appendChild(div);
   });
 }
-
+function esc(s){ return s.replace(/'/g,"\\'"); }
 function toggleB(id){ var el=document.getElementById('bi-'+id); if(el) el.classList.toggle('open'); }
-
-async function filterBanks(v){
-  var banks = await getBanks();
-  renderBankList(banks, v);
+function filterBanks(v) {
+  renderSidebar(v ? _banks.filter(function(b){ return b.name.toLowerCase().includes(v.toLowerCase()); }) : _banks);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // SELECIONAR CONTEXTO
-// ═══════════════════════════════════════════════
-async function selCtx(bankId, prodId, bankName, prodName){
-  ST.bank={id:bankId,name:bankName};
-  ST.prod={id:prodId,name:prodName};
-  ST.hist=[];
+// ═══════════════════════════════════════
+async function selCtx(bankId, prodId, bankName, prodName) {
+  ST.bank = {id:bankId, name:bankName};
+  ST.prod = {id:prodId, name:prodName};
+  ST.hist = [];
 
-  document.querySelectorAll('.bhdr').forEach(function(h){h.classList.remove('abk');});
-  document.querySelectorAll('.pbtn').forEach(function(b){b.classList.remove('ap');});
-  var bh=document.querySelector('#bi-'+bankId+' .bhdr'); if(bh) bh.classList.add('abk');
-  var pb=document.getElementById('pb-'+bankId+'-'+prodId); if(pb) pb.classList.add('ap');
+  document.querySelectorAll('.bh').forEach(function(h){ h.classList.remove('abk'); });
+  document.querySelectorAll('.pbtn').forEach(function(b){ b.classList.remove('ap'); });
+  var bh = document.querySelector('#bi-'+bankId+' .bh'); if(bh) bh.classList.add('abk');
+  var pb = document.getElementById('pb-'+bankId+'-'+prodId); if(pb) pb.classList.add('ap');
 
-  document.getElementById('ctx-e').style.display='none';
-  document.getElementById('ctx-i').style.display='block';
-  document.getElementById('ctx-bank').textContent=bankName;
-  document.getElementById('ctx-prod').textContent=prodName;
-  document.getElementById('ctx-badge').style.display='block';
+  document.getElementById('ctx-e').style.display = 'none';
+  document.getElementById('ctx-i').style.display = 'block';
+  document.getElementById('ctx-bank').textContent = bankName;
+  document.getElementById('ctx-prod').textContent = prodName;
+  document.getElementById('ctx-badge').style.display = 'block';
 
-  var inp=document.getElementById('cinput');
-  inp.disabled=false; inp.placeholder='Pergunte sobre '+bankName+' — '+prodName+'...';
-  document.getElementById('bsc').disabled=false;
+  var inp = document.getElementById('cinput');
+  inp.disabled = false;
+  inp.placeholder = 'Pergunte sobre ' + bankName + ' — ' + prodName + '...';
+  document.getElementById('bsc').disabled = false;
 
-  var msgs=document.getElementById('msgs');
-  msgs.innerHTML='';
-  var es=document.createElement('div'); es.className='es';
-  es.innerHTML='<div class="esico">📄</div><h3>'+bankName+'</h3>'
+  var msgs = document.getElementById('msgs');
+  msgs.innerHTML = '';
+  var es = document.createElement('div'); es.className = 'es';
+  es.innerHTML = '<div class="esico">📄</div><h3>'+bankName+'</h3>'
     +'<p>Produto: <strong>'+prodName+'</strong><br>Faça sua pergunta abaixo.</p>'
     +'<div class="qqs">'
     +'<button class="qq" onclick="sendQ(\'Quantas parcelas pagas são necessárias para portabilidade?\')">Parcelas p/ portabilidade</button>'
@@ -602,45 +609,53 @@ async function selCtx(bankId, prodId, bankName, prodName){
     +'</div>';
   msgs.appendChild(es);
 
-  // Carrega PDFs do bin se ainda não estão em memória
-  var key=bankId+'__'+prodId;
-  if(!ST.pdfMem[key]){
-    try{
-      var pdfs=await getPdfs();
-      if(pdfs[key]&&pdfs[key].length){
-        ST.pdfMem[key]=pdfs[key];
+  // Carrega PDFs do GitHub se ainda não estão em memória
+  var key = bankId + '__' + prodId;
+  if (!ST.pdfs[key]) {
+    try {
+      var idx = await getPdfIdx();
+      var items = idx[key] || [];
+      if (items.length) {
+        ST.pdfs[key] = [];
+        for (var i=0; i<items.length; i++) {
+          try {
+            var r = await fetch(GH_RAW + 'data/pdfs/' + key + '/' + encodeURIComponent(items[i].name) + '.txt?t=' + Date.now());
+            if (r.ok) {
+              var txt = await r.text();
+              ST.pdfs[key].push({ name: items[i].name, content: txt });
+            }
+          } catch(e) {}
+        }
       }
-    }catch(e){}
+    } catch(e) {}
   }
 
-  // Avisa se não tem roteiro
-  var hasPdf=ST.pdfMem[key]&&ST.pdfMem[key].length;
-  if(!hasPdf){ addSysMsg('⚠️ Nenhum roteiro cadastrado para '+bankName+' — '+prodName+'. Peça ao administrador para fazer o upload.'); }
+  var hasPdf = ST.pdfs[key] && ST.pdfs[key].length;
+  if (!hasPdf) addSysMsg('⚠️ Nenhum roteiro cadastrado para ' + bankName + ' — ' + prodName + '. Peça ao administrador para fazer o upload.');
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // CHAT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function autoResize(el){ el.style.height='42px'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
 function sendQ(t){ document.getElementById('cinput').value=t; sendMsg(); }
 
-function addSysMsg(t){
-  var m=document.getElementById('msgs');
-  var d=document.createElement('div'); d.className='sysmsg'; d.textContent=t;
+function addSysMsg(t) {
+  var m = document.getElementById('msgs');
+  var d = document.createElement('div'); d.className='sysmsg'; d.textContent=t;
   m.appendChild(d); m.scrollTop=m.scrollHeight;
 }
 
-function addMsg(role,text){
-  var m=document.getElementById('msgs');
-  var es=m.querySelector('.es'); if(es) es.remove();
-  var now=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  var d=document.createElement('div'); d.className='msg '+role;
-  var av=role==='u'
-    ?'<div class="mav">'+ST.user.login.slice(0,2).toUpperCase()+'</div>'
-    :'<div class="mav">🤖</div>';
-  d.innerHTML=av+'<div style="display:flex;flex-direction:column;align-items:'+(role==='u'?'flex-end':'flex-start')+'">'
-    +'<div class="mb">'+fmtMsg(text)+'</div>'
-    +'<div class="mt">'+now+'</div></div>';
+function addMsg(role, text) {
+  var m = document.getElementById('msgs');
+  var es = m.querySelector('.es'); if(es) es.remove();
+  var now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  var d = document.createElement('div'); d.className='msg '+role;
+  var av = role==='u'
+    ? '<div class="mav">'+ST.user.login.slice(0,2).toUpperCase()+'</div>'
+    : '<div class="mav">🤖</div>';
+  d.innerHTML = av+'<div style="display:flex;flex-direction:column;align-items:'+(role==='u'?'flex-end':'flex-start')+'">'
+    +'<div class="mb">'+fmtMsg(text)+'</div><div class="mt">'+now+'</div></div>';
   m.appendChild(d); m.scrollTop=m.scrollHeight;
 }
 
@@ -659,100 +674,104 @@ function addTyping(){
 }
 function rmTyping(){ var t=document.getElementById('typ'); if(t) t.remove(); }
 
-async function sendMsg(){
-  var inp=document.getElementById('cinput');
-  var txt=inp.value.trim();
-  if(!txt||!ST.bank||!ST.prod) return;
-  if(document.getElementById('bsc').disabled) return;
+async function sendMsg() {
+  var inp = document.getElementById('cinput');
+  var txt = inp.value.trim();
+  if (!txt || !ST.bank || !ST.prod) return;
+  if (document.getElementById('bsc').disabled) return;
   inp.value=''; inp.style.height='42px';
-  addMsg('u',txt);
+  addMsg('u', txt);
   document.getElementById('bsc').disabled=true;
   addTyping();
 
-  // Monta contexto PDF
-  var key=ST.bank.id+'__'+ST.prod.id;
-  var pdfCtx=ST.pdfMem[key];
-  var pdfTxt='';
-  if(pdfCtx&&pdfCtx.length){
-    pdfTxt=pdfCtx.map(function(p){return '=== ARQUIVO: '+p.name+' ===\n'+p.content;}).join('\n\n');
+  var key = ST.bank.id+'__'+ST.prod.id;
+  var pdfCtx = ST.pdfs[key];
+  var pdfTxt = '';
+  if (pdfCtx && pdfCtx.length) {
+    pdfTxt = pdfCtx.map(function(p){ return '=== ARQUIVO: '+p.name+' ===\n'+p.content; }).join('\n\n');
   }
 
-  var sys='Você é o RoteirIA, assistente especializado em crédito consignado da Melhor Crédito.\n'
-    +'Responda SOMENTE com base nas informações do roteiro fornecido. Seja claro e direto.\n'
+  var sys = 'Você é o RoteirIA, assistente especializado em crédito consignado da Melhor Crédito.\n'
+    +'Responda SOMENTE com base nas informações do roteiro fornecido. Seja claro e objetivo.\n'
     +'Banco: '+ST.bank.name+' | Produto: '+ST.prod.name+'\n'
-    +(pdfTxt?'ROTEIRO:\n'+pdfTxt:'ATENÇÃO: Nenhum roteiro carregado. Informe que o roteiro não está disponível.');
+    +(pdfTxt ? 'ROTEIRO:\n'+pdfTxt : 'ATENÇÃO: Nenhum roteiro disponível para este banco/produto.');
 
-  var messages=ST.hist.concat([{role:'user',content:txt}]);
-  try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{
+  var messages = ST.hist.concat([{role:'user',content:txt}]);
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:messages})
     });
-    var data=await res.json();
+    var data = await res.json();
     rmTyping();
-    var reply=(data.content&&data.content[0]&&data.content[0].text)||'Erro ao obter resposta.';
-    addMsg('ai',reply);
-    ST.hist=messages.concat([{role:'assistant',content:reply}]);
-    if(ST.hist.length>20) ST.hist=ST.hist.slice(-20);
-    addLog(ST.user.login,ST.bank.name,ST.prod.name,txt);
-  }catch(e){
+    var reply = (data.content&&data.content[0]&&data.content[0].text)||'Erro ao obter resposta.';
+    addMsg('ai', reply);
+    ST.hist = messages.concat([{role:'assistant',content:reply}]);
+    if (ST.hist.length>20) ST.hist=ST.hist.slice(-20);
+    addLog(ST.user.login, ST.bank.name, ST.prod.name, txt);
+  } catch(e) {
     rmTyping();
     addMsg('ai','Erro de conexão. Tente novamente.');
   }
   document.getElementById('bsc').disabled=false;
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // PDF UPLOAD
-// ═══════════════════════════════════════════════
-async function handlePdf(files){
-  var bankId=document.getElementById('sel-pdf-bank').value;
-  var prodId=document.getElementById('sel-pdf-prod').value;
-  if(!bankId||!prodId){ toast('Selecione banco e produto!','err'); return; }
-  var key=bankId+'__'+prodId;
-  var prog=document.getElementById('uprog');
+// ═══════════════════════════════════════
+async function handlePdf(files) {
+  var bankId = document.getElementById('sel-pb').value;
+  var prodId = document.getElementById('sel-pp').value;
+  if (!bankId||!prodId){ toast('Selecione banco e produto!','err'); return; }
+  var key = bankId+'__'+prodId;
+  var prog = document.getElementById('uprog');
 
-  for(var i=0;i<files.length;i++){
-    var f=files[i];
-    if(f.type!=='application/pdf'){ toast(f.name+' não é PDF','err'); continue; }
+  for (var i=0; i<files.length; i++) {
+    var f = files[i];
+    if (f.type!=='application/pdf'){ toast(f.name+' não é PDF','err'); continue; }
     prog.style.display='block';
-    prog.textContent='⏳ Processando: '+f.name+' ('+(i+1)+'/'+files.length+')...';
+    prog.textContent='⏳ Extraindo texto de: '+f.name+' ('+(i+1)+'/'+files.length+')...';
 
-    var b64=await toB64(f);
-    try{
-      // Extrai texto do PDF via IA
-      var res=await fetch('https://api.anthropic.com/v1/messages',{
+    var b64 = await toB64(f);
+    try {
+      // Extrai texto via IA
+      var res = await fetch('https://api.anthropic.com/v1/messages',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
           model:'claude-sonnet-4-20250514',max_tokens:1000,
           messages:[{role:'user',content:[
             {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}},
-            {type:'text',text:'Extraia TODO o conteúdo textual deste roteiro bancário de forma completa e fiel. Mantenha todos os dados, tabelas, condições, taxas, prazos, regras e valores. Não resuma.'}
+            {type:'text',text:'Extraia TODO o conteúdo textual deste roteiro bancário de forma completa e fiel. Mantenha todos os dados, tabelas, condições, taxas, prazos, regras e valores. Não resuma nem omita nada.'}
           ]}]
         })
       });
-      var data=await res.json();
-      var txt=(data.content&&data.content[0]&&data.content[0].text)||'';
+      var data = await res.json();
+      var txt = (data.content&&data.content[0]&&data.content[0].text)||'';
 
-      // Salva no JSONBin
-      var pdfs=await getPdfs();
-      if(!pdfs[key]) pdfs[key]=[];
-      // Remove duplicata por nome
-      pdfs[key]=pdfs[key].filter(function(p){return p.name!==f.name;});
-      pdfs[key].push({name:f.name,size:f.size,content:txt,date:new Date().toISOString()});
-      await setPdfs(pdfs);
+      prog.textContent='💾 Salvando: '+f.name+'...';
 
-      // Atualiza memória local
-      if(!ST.pdfMem[key]) ST.pdfMem[key]=[];
-      ST.pdfMem[key]=ST.pdfMem[key].filter(function(p){return p.name!==f.name;});
-      ST.pdfMem[key].push({name:f.name,content:txt});
+      // Salva o texto extraído no GitHub
+      var filePath = 'data/pdfs/'+key+'/'+f.name+'.txt';
+      await ghSetRaw(filePath, txt, 'upload pdf '+f.name, false);
 
-      toast(f.name+' carregado!','ok');
-      renderPdfList(pdfs[key], key);
-    }catch(e){
-      toast('Erro ao processar '+f.name,'err');
+      // Atualiza índice
+      var idx = await getPdfIdx();
+      if (!idx[key]) idx[key]=[];
+      idx[key] = idx[key].filter(function(p){ return p.name!==f.name; });
+      idx[key].push({name:f.name, size:f.size, date:new Date().toISOString()});
+      await setPdfIdx(idx);
+
+      // Atualiza memória
+      if (!ST.pdfs[key]) ST.pdfs[key]=[];
+      ST.pdfs[key] = ST.pdfs[key].filter(function(p){ return p.name!==f.name; });
+      ST.pdfs[key].push({name:f.name, content:txt});
+
+      toast(f.name+' salvo!','ok');
+      await loadPdfList();
+    } catch(e) {
+      toast('Erro ao processar '+f.name+': '+e.message,'err');
     }
   }
   prog.style.display='none';
@@ -767,131 +786,137 @@ function toB64(file){
   });
 }
 
-async function updPdfProd(){
-  var bankId=document.getElementById('sel-pdf-bank').value;
-  var banks=await getBanks();
-  var bank=banks.find(function(b){return b.id===bankId;});
-  var sel=document.getElementById('sel-pdf-prod');
+async function updPdfProd() {
+  var bankId = document.getElementById('sel-pb').value;
+  var bank = _banks.find(function(b){ return b.id===bankId; });
+  var sel = document.getElementById('sel-pp');
   sel.innerHTML='<option value="">Selecione o produto...</option>';
-  if(bank)(bank.products||[]).forEach(function(p){sel.innerHTML+='<option value="'+p.id+'">'+p.name+'</option>';});
+  if (bank)(bank.products||[]).forEach(function(p){ sel.innerHTML+='<option value="'+p.id+'">'+p.name+'</option>'; });
   document.getElementById('plist').innerHTML='';
 }
 
-async function loadPdfList(){
-  var bankId=document.getElementById('sel-pdf-bank').value;
-  var prodId=document.getElementById('sel-pdf-prod').value;
-  if(!bankId||!prodId) return;
-  var key=bankId+'__'+prodId;
-  var pdfs=await getPdfs();
-  renderPdfList(pdfs[key]||[], key);
+async function loadPdfList() {
+  var bankId = document.getElementById('sel-pb').value;
+  var prodId = document.getElementById('sel-pp').value;
+  if (!bankId||!prodId) return;
+  var key = bankId+'__'+prodId;
+  try {
+    var idx = await getPdfIdx();
+    renderPdfList(idx[key]||[], key);
+  } catch(e) {}
 }
 
-function renderPdfList(items, key){
-  var pl=document.getElementById('plist'); if(!pl) return;
+function renderPdfList(items, key) {
+  var pl = document.getElementById('plist'); if(!pl) return;
   pl.innerHTML='';
   items.forEach(function(item){
-    var sz=item.size>1048576?(item.size/1048576).toFixed(1)+'MB':(item.size/1024).toFixed(0)+'KB';
-    var d=document.createElement('div'); d.className='pitem';
+    var sz = item.size>1048576?(item.size/1048576).toFixed(1)+'MB':(item.size/1024).toFixed(0)+'KB';
+    var d = document.createElement('div'); d.className='pitem';
     d.innerHTML='<span class="pdot ok"></span><span class="pnm">'+item.name+'</span>'
       +'<span class="psz">'+sz+'</span>'
-      +'<button class="brm" onclick="removePdf(\''+key+'\',\''+item.name+'\')">✕</button>';
+      +'<button class="brm" onclick="removePdf(\''+key+'\',\''+item.name.replace(/'/g,"\\'")+'\')">✕</button>';
     pl.appendChild(d);
   });
 }
 
-async function removePdf(key,name){
-  showLov('Removendo...');
-  try{
-    var pdfs=await getPdfs();
-    if(pdfs[key]) pdfs[key]=pdfs[key].filter(function(p){return p.name!==name;});
-    await setPdfs(pdfs);
-    if(ST.pdfMem[key]) ST.pdfMem[key]=ST.pdfMem[key].filter(function(p){return p.name!==name;});
-    renderPdfList(pdfs[key]||[],key);
+async function removePdf(key, name) {
+  showLov('Removendo PDF...');
+  try {
+    var idx = await getPdfIdx();
+    if (idx[key]) idx[key]=idx[key].filter(function(p){ return p.name!==name; });
+    await setPdfIdx(idx);
+    await ghDel('data/pdfs/'+key+'/'+name+'.txt', 'remove pdf '+name);
+    if (ST.pdfs[key]) ST.pdfs[key]=ST.pdfs[key].filter(function(p){ return p.name!==name; });
+    await loadPdfList();
     toast('PDF removido','ok');
-  }catch(e){ toast('Erro ao remover','err'); }
+  } catch(e){ toast('Erro ao remover','err'); }
   hideLov();
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // ADMIN — BANCOS
-// ═══════════════════════════════════════════════
-async function addBank(){
-  var name=document.getElementById('inp-bank').value.trim();
-  if(!name) return;
-  showLov('Salvando...');
-  try{
-    var banks=await getBanks();
-    banks.push({id:'b'+Date.now(),name:name,products:[]});
+// ═══════════════════════════════════════
+async function addBank() {
+  var name = document.getElementById('inp-bank').value.trim();
+  if (!name) return;
+  showLov('Salvando banco...');
+  try {
+    var banks = await getBanks();
+    banks.push({id:'b'+Date.now(), name:name, products:[]});
     await setBanks(banks);
+    _banks = banks;
     document.getElementById('inp-bank').value='';
     await renderAdminBanks();
     toast('Banco adicionado!','ok');
-  }catch(e){ toast('Erro ao salvar','err'); }
+  } catch(e){ toast('Erro: '+e.message,'err'); }
   hideLov();
 }
 
-async function removeBank(id){
-  if(!confirm('Remover banco e todos os produtos?')) return;
+async function removeBank(id) {
+  if (!confirm('Remover banco e todos os produtos?')) return;
   showLov('Removendo...');
-  try{
-    var banks=(await getBanks()).filter(function(b){return b.id!==id;});
+  try {
+    var banks = (await getBanks()).filter(function(b){ return b.id!==id; });
     await setBanks(banks);
+    _banks = banks;
     await renderAdminBanks();
     toast('Banco removido','ok');
-  }catch(e){ toast('Erro','err'); }
+  } catch(e){ toast('Erro','err'); }
   hideLov();
 }
 
-async function addProd(){
-  var bankId=document.getElementById('sel-bank-p').value;
-  var name=document.getElementById('inp-prod').value.trim();
-  if(!bankId||!name){ toast('Selecione banco e digite o produto','err'); return; }
-  showLov('Salvando...');
-  try{
-    var banks=await getBanks();
-    var bank=banks.find(function(b){return b.id===bankId;});
-    if(!bank.products) bank.products=[];
-    bank.products.push({id:'p'+Date.now(),name:name});
+async function addProd() {
+  var bankId = document.getElementById('sel-bp').value;
+  var name   = document.getElementById('inp-prod').value.trim();
+  if (!bankId||!name){ toast('Selecione banco e produto','err'); return; }
+  showLov('Salvando produto...');
+  try {
+    var banks = await getBanks();
+    var bank  = banks.find(function(b){ return b.id===bankId; });
+    if (!bank.products) bank.products=[];
+    bank.products.push({id:'p'+Date.now(), name:name});
     await setBanks(banks);
+    _banks = banks;
     document.getElementById('inp-prod').value='';
     await renderAdminBanks();
     toast('Produto adicionado!','ok');
-  }catch(e){ toast('Erro ao salvar','err'); }
+  } catch(e){ toast('Erro: '+e.message,'err'); }
   hideLov();
 }
 
-async function removeProd(bankId,prodId){
+async function removeProd(bankId, prodId) {
   showLov('Removendo...');
-  try{
-    var banks=await getBanks();
-    var bank=banks.find(function(b){return b.id===bankId;});
-    if(bank) bank.products=(bank.products||[]).filter(function(p){return p.id!==prodId;});
+  try {
+    var banks = await getBanks();
+    var bank  = banks.find(function(b){ return b.id===bankId; });
+    if (bank) bank.products=(bank.products||[]).filter(function(p){ return p.id!==prodId; });
     await setBanks(banks);
+    _banks = banks;
     await renderAdminBanks();
     toast('Produto removido','ok');
-  }catch(e){ toast('Erro','err'); }
+  } catch(e){ toast('Erro','err'); }
   hideLov();
 }
 
-async function renderAdminBanks(){
-  var banks=await getBanks();
-  // Lista admin
-  var bl=document.getElementById('bank-list-adm');
-  if(bl){
+async function renderAdminBanks() {
+  var banks = _banks.length ? _banks : await getBanks();
+  _banks = banks;
+  // Lista
+  var bl = document.getElementById('bank-adm');
+  if (bl) {
     bl.innerHTML='';
     banks.forEach(function(b){
-      var d=document.createElement('div'); d.className='litem'; d.style.flexDirection='column'; d.style.alignItems='flex-start'; d.style.gap='4px';
+      var d=document.createElement('div'); d.className='litem'; d.style.cssText='flex-direction:column;align-items:flex-start;gap:4px';
       d.innerHTML='<div style="display:flex;width:100%;align-items:center"><span class="lc">'+b.name+'</span><button class="brm" onclick="removeBank(\''+b.id+'\')">✕</button></div>'
         +(b.products||[]).map(function(p){
-          return '<div style="display:flex;width:100%;align-items:center;padding-left:8px">'
-            +'<span style="font-size:10px;color:var(--lbl)">↳ '+p.name+'</span>'
+          return '<div style="display:flex;width:100%;align-items:center;padding-left:8px"><span style="font-size:10px;color:var(--lbl)">↳ '+p.name+'</span>'
             +'<button class="brm" style="font-size:11px" onclick="removeProd(\''+b.id+'\',\''+p.id+'\')">✕</button></div>';
         }).join('');
       bl.appendChild(d);
     });
   }
   // Selects
-  ['sel-bank-p','sel-pdf-bank'].forEach(function(sid){
+  ['sel-bp','sel-pb'].forEach(function(sid){
     var sel=document.getElementById(sid); if(!sel) return;
     var cur=sel.value;
     sel.innerHTML='<option value="">Selecione o banco...</option>';
@@ -899,52 +924,50 @@ async function renderAdminBanks(){
   });
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // ADMIN — USUÁRIOS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function genPass(){
   var c='abcdefghjkmnpqrstuvwxyz23456789';
-  var p='';
-  for(var i=0;i<8;i++) p+=c[Math.floor(Math.random()*c.length)];
-  document.getElementById('inp-upass').value=p;
-  document.getElementById('inp-upass').type='text';
+  var p=''; for(var i=0;i<8;i++) p+=c[Math.floor(Math.random()*c.length)];
+  var el=document.getElementById('inp-up');
+  el.value=p; el.type='text';
 }
 
 async function addUser(){
-  var login=document.getElementById('inp-ulogin').value.trim().toUpperCase();
-  var name=document.getElementById('inp-uname').value.trim();
-  var pass=document.getElementById('inp-upass').value.trim();
-  if(!login||!name||!pass){ toast('Preencha todos os campos','err'); return; }
+  var login=document.getElementById('inp-ul').value.trim().toUpperCase();
+  var name =document.getElementById('inp-un').value.trim();
+  var pass =document.getElementById('inp-up').value.trim();
+  if (!login||!name||!pass){ toast('Preencha todos os campos','err'); return; }
   showLov('Criando usuário...');
-  try{
+  try {
     var users=await getUsers();
-    if(users.find(function(u){return u.login===login;})){ toast('Login já existe!','err'); hideLov(); return; }
+    if (users.find(function(u){ return u.login===login; })){ toast('Login já existe!','err'); hideLov(); return; }
     users.push({login:login,name:name,pass:pass,isAdmin:false,createdAt:new Date().toISOString()});
     await setUsers(users);
-    document.getElementById('inp-ulogin').value='';
-    document.getElementById('inp-uname').value='';
-    document.getElementById('inp-upass').value='';
-    document.getElementById('inp-upass').type='password';
-    // Mostra credenciais
-    var nc=document.getElementById('new-cred');
+    document.getElementById('inp-ul').value='';
+    document.getElementById('inp-un').value='';
+    document.getElementById('inp-up').value='';
+    document.getElementById('inp-up').type='password';
+    var nc=document.getElementById('ncred');
     nc.style.display='block';
-    nc.innerHTML='✅ <strong>Usuário criado!</strong><br>Login: <strong>'+login+'</strong><br>Senha: <strong>'+pass+'</strong><br><span style="color:var(--lbl)">Envie essas credenciais ao parceiro.</span>';
+    nc.innerHTML='✅ <strong>Usuário criado com sucesso!</strong><br>🔑 Login: <strong>'+login+'</strong><br>🔒 Senha: <strong>'+pass+'</strong><br>🔗 Link: <strong>melhorcredito.github.io/gestao-melhor-credito/RoteirIA.html</strong>';
     await renderUsersList();
     toast('Usuário criado!','ok');
-  }catch(e){ toast('Erro ao criar','err'); }
+  } catch(e){ toast('Erro: '+e.message,'err'); }
   hideLov();
 }
 
 async function removeUser(login){
-  if(login==='ADMIN'){ toast('Não é possível remover o admin','err'); return; }
-  if(!confirm('Remover usuário '+login+'?')) return;
+  if (login==='ADMIN'){ toast('Não é possível remover o admin','err'); return; }
+  if (!confirm('Remover usuário '+login+'?')) return;
   showLov('Removendo...');
-  try{
-    var users=(await getUsers()).filter(function(u){return u.login!==login;});
+  try {
+    var users=(await getUsers()).filter(function(u){ return u.login!==login; });
     await setUsers(users);
     await renderUsersList();
     toast('Usuário removido','ok');
-  }catch(e){ toast('Erro','err'); }
+  } catch(e){ toast('Erro','err'); }
   hideLov();
 }
 
@@ -960,29 +983,29 @@ async function renderUsersList(){
   });
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // LOGS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 async function addLog(login,bank,prod,q){
-  try{
+  try {
     var logs=await getLogs();
     logs.unshift({t:new Date().toISOString(),login:login,bank:bank,prod:prod,q:q});
-    if(logs.length>300) logs=logs.slice(0,300);
+    if (logs.length>200) logs=logs.slice(0,200);
     await setLogs(logs);
-  }catch(e){}
+  } catch(e){}
 }
 
 async function loadLogs(){
-  try{
+  try {
     var logs=await getLogs();
-    var banks=await getBanks();
+    var banks=_banks.length?_banks:await getBanks();
     var today=new Date().toDateString();
-    var tq=logs.filter(function(l){return new Date(l.t).toDateString()===today&&l.q!=='Entrou no sistema';}).length;
-    var us=new Set(logs.filter(function(l){return l.q!=='Entrou no sistema';}).map(function(l){return l.login;}));
+    var tq=logs.filter(function(l){ return new Date(l.t).toDateString()===today&&l.q!=='Entrou no sistema'; }).length;
+    var us=new Set(logs.filter(function(l){ return l.q!=='Entrou no sistema'; }).map(function(l){ return l.login; }));
     document.getElementById('st-q').textContent=tq;
     document.getElementById('st-u').textContent=us.size;
     document.getElementById('st-b').textContent=banks.length;
-    var tb=document.getElementById('log-body'); if(!tb) return;
+    var tb=document.getElementById('log-tbody'); if(!tb) return;
     tb.innerHTML='';
     logs.slice(0,60).forEach(function(l){
       var tr=document.createElement('tr');
@@ -991,42 +1014,39 @@ async function loadLogs(){
       tr.innerHTML='<td>'+t+'</td><td><strong>'+l.login+'</strong></td><td>'+l.bank+'</td><td>'+l.prod+'</td><td>'+q+'</td>';
       tb.appendChild(tr);
     });
-  }catch(e){}
+  } catch(e){}
 }
 
 async function clearLogs(){
-  if(!confirm('Apagar todos os logs?')) return;
+  if (!confirm('Apagar todos os logs?')) return;
   showLov('Limpando...');
-  try{ await setLogs([]); await loadLogs(); toast('Logs apagados','ok'); }catch(e){ toast('Erro','err'); }
+  try { await setLogs([]); await loadLogs(); toast('Logs apagados','ok'); } catch(e){ toast('Erro','err'); }
   hideLov();
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // ADMIN TABS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function showTab(id,btn){
-  document.querySelectorAll('.asec').forEach(function(s){s.classList.remove('act');});
-  document.querySelectorAll('.atab').forEach(function(b){b.classList.remove('act');});
+  document.querySelectorAll('.asec').forEach(function(s){ s.classList.remove('act'); });
+  document.querySelectorAll('.atab').forEach(function(b){ b.classList.remove('act'); });
   document.getElementById(id).classList.add('act');
   btn.classList.add('act');
-  if(id==='t-logs') loadLogs();
-  if(id==='t-users') renderUsersList();
-  if(id==='t-banks') renderAdminBanks();
-  if(id==='t-pdfs'){ renderAdminBanks(); }
+  if (id==='t-logs') loadLogs();
+  if (id==='t-users') renderUsersList();
+  if (id==='t-banks') renderAdminBanks();
+  if (id==='t-pdfs') renderAdminBanks();
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 // TOAST
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function toast(msg,type){
   var t=document.getElementById('toast');
   t.textContent=msg; t.className='toast '+(type||'');
   t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},2800);
+  setTimeout(function(){ t.classList.remove('show'); },3000);
 }
-
-// Ouvinte de seleção de produto para carregar PDFs
-document.getElementById('sel-pdf-prod').addEventListener('change', loadPdfList);
 </script>
 </body>
 </html>
