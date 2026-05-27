@@ -1,0 +1,538 @@
+### Renovação
+
+* Cliente com contrato liquidado.
+* Nova contratação entre:
+
+  * 1 até 30 dias após liquidação.
+
+### Inativo
+
+* Cliente com contrato liquidado há:
+
+  * mais de 31 dias.
+
+### Pré-Aprovado
+
+* Cliente recebe benefício na Crefisa.
+* Possui valores pré-aprovados.
+* Proposta segue direto para formalização.
+* Não passa pela mesa de crédito. 
+
+---
+
+# 4. Produtos Disponíveis
+
+Produtos ofertados:
+
+* Crédito Pessoal
+* Refinanciamento 
+
+---
+
+# 5. Público-Alvo
+
+## Público Atendido
+
+### INSS
+
+* Aposentados
+* Pensionistas
+* LOAS/BPC
+* Pensão por morte
+* Aposentadoria por idade
+* Aposentadoria por tempo de serviço
+
+### Servidores Públicos
+
+* Ativos
+* Aposentados
+* Pensionistas
+
+### Convênios Públicos
+
+* Prefeituras
+* Governos estaduais
+* SIAPE
+* Tribunal de Justiça
+* Forças Armadas
+
+### Empresas de Economia Mista
+
+* Petrobrás
+* Eletrobrás
+
+### Funcionários Bancários
+
+* Banco do Brasil
+* Caixa Econômica Federal
+* Banco do Nordeste 
+
+---
+
+# 6. Bancos Conveniados
+
+Atende clientes com:
+
+* Conta corrente
+* Conta poupança
+* Conta benefício
+
+Para clientes INSS e demais órgãos. 
+
+---
+
+# 7. Regras do Negócio – Bancos Conveniados
+
+## Forma de Crédito
+
+* Liberação:
+
+  * até 2 dias úteis após formalização.
+
+## Forma de Cobrança
+
+* Débito automático em conta.
+* Conforme data do benefício/salário.
+
+## Prazo Máximo
+
+* Até 12 parcelas.
+
+### Regra especial
+
+* Clientes com:
+
+  * 100 anos ou mais
+* Prazo máximo:
+
+  * 6 parcelas.
+
+## Idade
+
+* Mínima:
+
+  * 18 anos.
+* Máxima:
+
+  * sem limite, seguindo regras de perfil. 
+
+---
+
+# 8. Regras do Negócio – Pré-Aprovado 001
+
+## Liberação
+
+* Até 24 horas após formalização.
+
+## Cobrança
+
+* Débito automático em conta.
+
+## Prazo
+
+* Até 15 parcelas.
+
+### Regra especial
+
+* Clientes acima de:
+
+  * 100 anos
+* Prazo:
+
+  * máximo 6 parcelas.
+
+## Idade
+
+* Mínima:
+
+  * 18 anos.
+* Sem idade máxima. 
+
+---
+
+# 9. Regras do Produto
+
+## Limite mínimo
+
+* R$ 101,00
+
+---
+
+## Cliente Novo
+
+### INSS e Servidores Federais
+
+* Máximo por CPF:
+
+  * R$ 3.000,00
+
+### Prefeituras e Governos
+
+* Máximo:
+
+  * R$ 1.150,00
+
+### Representante Legal
+
+* Máximo:
+
+  * R$ 1.500,00
+
+---
+
+## Renovação / Refinanciamento
+
+### Segundo contrato
+
+* Até:
+
+  * R$ 7.000,00
+
+### Terceiro contrato
+
+* Até:
+
+  * R$ 10.000,00
+
+### Quarto contrato em diante
+
+* Até:
+
+  * R$ 20.000,00 
+
+---
+
+# 10. Cálculo de Parcela
+
+## Fórmula
+
+Base de cálculo × comprometimento
+– débitos concorrentes
+– débitos Crefisa
+
+---
+
+## Base de cálculo
+
+### INSS
+
+* Último extrato bancário.
+
+### Demais órgãos
+
+* Dois últimos extratos.
+* Considera:
+
+  * menor valor líquido recebido.
+
+---
+
+## Margem de comprometimento
+
+### Clientes normais
+
+* Até:
+
+  * 30%
+
+### PSD 069
+
+* Até:
+
+  * 60% 
+
+---
+
+# 11. Débitos Concorrentes
+
+A mesa de crédito avalia:
+
+* Descontos automáticos
+* Parcelas de terceiros
+* Débitos do próprio banco
+
+Tudo que debita no mesmo dia do benefício/salário:
+
+* é considerado débito concorrente. 
+
+---
+
+# 12. Exemplos de Cálculo
+
+## Cliente Novo
+
+R$ 1.412 × 30% = R$ 423,60
+– R$ 120,00
+
+Parcela máxima:
+
+* R$ 303,60
+
+---
+
+## Cliente Paralelo INSS
+
+R$ 1.412 × 30%
+– R$ 120,00 (terceiros)
+– R$ 50,00 (Crefisa)
+
+Parcela máxima:
+
+* R$ 253,60
+
+---
+
+## PSD 069
+
+R$ 1.412 × 60%
+– R$ 50,00
+
+Parcela máxima:
+
+* R$ 797,20 
+
+---
+
+# 13. Troca de Domicílio Bancário – INSS
+
+Se o cliente recebe em banco não conveniado:
+
+* Pode solicitar troca de domicílio bancário.
+
+Solicitação pode ser feita:
+
+* no banco conveniado
+  OU
+* diretamente no INSS.
+
+A proposta só pode ser feita:
+
+* após o primeiro pagamento no novo banco. 
+
+---
+
+# 14. Portabilidade de Salário – Demais Órgãos
+
+Servidores públicos:
+
+* podem solicitar portabilidade salarial.
+
+Necessário:
+
+* receber o primeiro salário no banco conveniado.
+
+Somente após isso:
+
+* pode realizar a proposta de crédito. 
+
+---
+
+# 15. Documentações Exigidas
+
+## INSS
+
+Obrigatório:
+
+* Documento com foto
+
+  * exceto CTPS e passaporte
+* CPF
+* Extrato de pagamento
+* Detalhamento de crédito
+* Histórico de crédito (HISCRE)
+* Último extrato bancário
+* Extrato de informações do benefício
+* Carta de concessão (quando solicitado)
+
+---
+
+## Demais Órgãos
+
+Obrigatório:
+
+* Documento com foto
+* CPF
+* Holerite/Contracheque
+* Dois últimos extratos bancários
+* Portal da Transparência
+* Documento funcional (Forças Armadas) 
+
+---
+
+# 16. Documento de Identificação
+
+Aceito:
+
+* Qualquer documento com foto e fé pública.
+
+Não aceita:
+
+* CTPS
+* Passaporte
+
+## Documento digital
+
+Somente aceito:
+
+* com QR Code válido. 
+
+---
+
+# 17. Documento Complementar
+
+Quando documento possuir:
+
+* rasuras
+* dificuldade de leitura
+
+Pode anexar:
+
+* CTPS física complementar. 
+
+---
+
+# 18. CPF
+
+Não precisa anexar separadamente:
+
+* se já constar no documento.
+
+Aceito:
+
+* Cartão CPF
+* Consulta Receita Federal 
+
+---
+
+# 19. Extrato Bancário – Auto Atendimento
+
+Para INSS é obrigatório constar:
+
+* Nome do banco
+* Nome do cliente
+* Agência e conta
+* Identificação do pagamento
+
+Exemplo aceito:
+
+* “Transf Pgt INSS” 
+
+---
+
+# 20. Extrato Bancário – Internet Banking
+
+Aceito pela análise:
+
+* desde que siga as mesmas regras do autoatendimento. 
+
+---
+
+# 21. HISCRE – Histórico de Créditos
+
+Documento obrigatório e importante para INSS.
+
+Como emitir:
+
+* App Meu INSS
+* Buscar:
+
+  * “Extrato de Pagamento” 
+
+---
+
+# 22. HISCON – Documento Não Aceito
+
+HISCON:
+
+* Histórico de Consignações
+
+Não é aceito:
+
+* porque mostra apenas empréstimos consignados. 
+
+---
+
+# 23. Extrato de Informações de Benefício
+
+Pode ser solicitado em:
+
+* representantes legais
+* benefícios recentes
+* novos entrantes
+
+Como emitir:
+
+* App Meu INSS
+* Buscar:
+
+  * “Extrato de Informações de Benefício” 
+
+---
+
+# 24. Contracheque / Holerite
+
+Obrigatório validar:
+
+* Nome e CPF
+* Órgão e matrícula
+* CNPJ
+* Agência e conta
+* Data do pagamento
+* Valor do salário 
+
+---
+
+# 25. Documento Funcional
+
+Solicitado apenas para:
+
+* Forças Armadas ativas
+
+Objetivo:
+
+* validar se cliente é:
+
+  * temporário
+  * efetivo 
+
+---
+
+# 26. Perfis Não Atendidos
+
+Não atende:
+
+* Analfabetos
+* Pessoas impossibilitadas de assinar
+* Deficientes visuais
+* Beneficiários de cartão magnético
+* Celetistas de empresas privadas
+* Estagiários
+* Bolsistas
+* Comissionados
+* Contratados de órgãos públicos
+* Clientes fora de bancos conveniados
+
+---
+
+## Benefícios Inelegíveis
+
+Não aceita:
+
+* Espécie 15:
+
+  * Auxílio Reclusão Trabalhador Rural
+* Espécie 25:
+
+  * Auxílio Reclusão LOPS
+* Espécie 30:
+
+  * Renda Mensal Vitalícia por Invalidez
+* Espécie 80:
+
+  * Salário Maternidade
+* Espécie 87:
+
+  * Deficiente Intelectual
+* Espécie 31/91:
+
+  * Benefícios Temporários
