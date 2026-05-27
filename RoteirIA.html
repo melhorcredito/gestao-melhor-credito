@@ -1664,13 +1664,13 @@ async function showPanel(type) {
   });
 
   if(type === 'chat') {
-    if(msgs)  msgs.style.display  = 'flex';
-    if(cinp)  cinp.style.display  = 'block';
+    if(msgs){ msgs.style.display='flex'; msgs.style.flexDirection='column'; }
+    if(cinp) cinp.style.display = 'block';
     if(bChat){ bChat.style.background='var(--mc-l)'; bChat.style.borderColor='var(--mc)'; bChat.style.color='var(--mc)'; bChat.style.fontWeight='700'; }
 
   } else if(type === 'contacts') {
     if(pCont){ pCont.style.display='flex'; pCont.style.flexDirection='column'; }
-    if(cinp)  cinp.style.display = 'none';
+    if(cinp) cinp.style.display = 'none';
     if(bCont){ bCont.style.background='var(--mc-l)'; bCont.style.borderColor='var(--mc)'; bCont.style.color='var(--mc)'; bCont.style.fontWeight='700'; }
     await renderContactsPanel();
 
