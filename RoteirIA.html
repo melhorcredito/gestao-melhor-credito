@@ -1453,6 +1453,175 @@ function toast(msg,type){
   t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); },3000);
 }
+
+// ═══════════════════════════════════════
+// COMUNICADOS
+// ═══════════════════════════════════════
+var typeConfig = {
+  info:    {label:'Informativo', color:'#0E7EC0', bg:'#E8F6FD', icon:'ℹ️'},
+  alert:   {label:'Alerta',      color:'#D97706', bg:'#FFF7ED', icon:'⚠️'},
+  suspend: {label:'Suspenso',    color:'#EF4444', bg:'#FFF5F5', icon:'🔴'},
+  update:  {label:'Atualização', color:'#9333EA', bg:'#FDF4FF', icon:'🔄'},
+  ok:      {label:'Reativado',   color:'#16A34A', bg:'#F0FDF4', icon:'✅'}
+};
+
+async function publishNotice() {
+  var tipo  = document.getElementById('notice-tipo').value;
+  var bank  = document.getElementById('notice-bank').value.trim();
+  var title = document.getElementById('notice-title').value.trim();
+  var body  = document.getElementById('notice-body').value.trim();
+  if(!title){ toast('Digite um título!','err'); return; }
+  showLov('Publicando comunicado...');
+  try{
+    var notices = await getNotices();
+    notices.unshift({
+      id:'n'+Date.now(), tipo:tipo, bank:bank, title:title,
+      body:body, date:new Date().toISOString(), author:ST.user.login
+    });
+    await setNotices(notices);
+    document.getElementById('notice-title').value='';
+    document.getElementById('notice-body').value='';
+    document.getElementById('notice-bank').value='';
+    await renderNoticesAdm();
+    toast('Comunicado publicado para todos!','ok');
+  }catch(e){ toast('Erro: '+e.message,'err'); }
+  hideLov();
+}
+
+async function removeNotice(id) {
+  if(!confirm('Remover este comunicado?')) return;
+  showLov('Removendo...');
+  try{
+    var notices = (await getNotices()).filter(function(n){ return n.id!==id; });
+    await setNotices(notices);
+    await renderNoticesAdm();
+    toast('Comunicado removido','ok');
+  }catch(e){ toast('Erro','err'); }
+  hideLov();
+}
+
+async function renderNoticesAdm() {
+  var list = document.getElementById('notices-adm-list'); if(!list) return;
+  var notices = await getNotices();
+  list.innerHTML = '';
+  if(!notices.length){
+    list.innerHTML='<div style="font-size:12px;color:var(--lbl);text-align:center;padding:16px">Nenhum comunicado publicado</div>';
+    return;
+  }
+  notices.forEach(function(n){
+    var tc = typeConfig[n.tipo]||typeConfig.info;
+    var d = document.createElement('div');
+    d.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:'+tc.bg+';border:1px solid '+tc.color+'33;border-radius:10px;border-left:3px solid '+tc.color+';margin-bottom:6px';
+    var dt = new Date(n.date).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    var icon = document.createElement('span'); icon.style.fontSize='18px'; icon.textContent=tc.icon;
+    var info = document.createElement('div'); info.style.flex='1';
+    info.innerHTML = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">'
+      +'<span style="font-size:10px;font-weight:700;color:'+tc.color+';text-transform:uppercase">'+tc.label+'</span>'
+      +(n.bank?'<span style="font-size:10px;color:var(--lbl)">• '+n.bank+'</span>':'')
+      +'<span style="font-size:10px;color:var(--lbl);margin-left:auto">'+dt+'</span></div>'
+      +'<div style="font-weight:700;color:var(--dark);font-size:13px">'+n.title+'</div>'
+      +(n.body?'<div style="font-size:12px;color:var(--lbl);margin-top:3px;line-height:1.5">'+n.body+'</div>':'');
+    var brm = document.createElement('button'); brm.className='brm'; brm.textContent='✕';
+    brm.onclick = (function(nid){ return function(){ removeNotice(nid); }; })(n.id);
+    d.appendChild(icon); d.appendChild(info); d.appendChild(brm);
+    list.appendChild(d);
+  });
+}
+
+async function renderNoticesPanel() {
+  var panel = document.getElementById('panel-notices');
+  if(!panel) return;
+  panel.innerHTML = '<div style="font-size:12px;color:var(--lbl);text-align:center;padding:20px">⏳ Carregando comunicados...</div>';
+  try{
+    var notices = await getNotices();
+    panel.innerHTML = '';
+    var header = document.createElement('div');
+    header.style.cssText = 'font-family:var(--fh);font-size:18px;font-weight:700;color:var(--dark);margin-bottom:16px';
+    header.textContent = '📢 Comunicados';
+    panel.appendChild(header);
+    if(!notices.length){
+      var empty = document.createElement('div');
+      empty.style.cssText='text-align:center;padding:40px;color:var(--lbl);font-size:13px';
+      empty.innerHTML='<div style="font-size:36px;margin-bottom:12px">📢</div><div>Nenhum comunicado no momento.</div>';
+      panel.appendChild(empty); return;
+    }
+    notices.forEach(function(n){
+      var tc = typeConfig[n.tipo]||typeConfig.info;
+      var d = document.createElement('div');
+      d.style.cssText='padding:14px 16px;background:'+tc.bg+';border:1px solid '+tc.color+'44;border-radius:12px;border-left:4px solid '+tc.color+';margin-bottom:8px';
+      var dt = new Date(n.date).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'
+        +'<span style="font-size:16px">'+tc.icon+'</span>'
+        +'<span style="font-size:10px;font-weight:700;color:'+tc.color+';text-transform:uppercase;background:'+tc.color+'18;padding:2px 8px;border-radius:20px">'+tc.label+'</span>'
+        +(n.bank?'<span style="font-size:11px;font-weight:600;color:var(--dark)">'+n.bank+'</span>':'')
+        +'<span style="font-size:10px;color:var(--lbl);margin-left:auto">'+dt+'</span></div>'
+        +'<div style="font-weight:700;color:var(--dark);font-size:14px;margin-bottom:4px">'+n.title+'</div>'
+        +(n.body?'<div style="font-size:13px;color:var(--lbl);line-height:1.6">'+n.body+'</div>':'');
+      panel.appendChild(d);
+    });
+  }catch(e){ panel.innerHTML='<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar.</div>'; }
+}
+
+async function renderContactsPanel() {
+  var panel = document.getElementById('panel-contacts');
+  if(!panel) return;
+  panel.innerHTML = '<div style="font-size:12px;color:var(--lbl);text-align:center;padding:20px">⏳ Carregando contatos...</div>';
+  try{
+    var banks = _banks.length ? _banks : await getBanks();
+    var contacts = await getContacts();
+    panel.innerHTML = '';
+    var header = document.createElement('div');
+    header.style.cssText = 'font-family:var(--fh);font-size:18px;font-weight:700;color:var(--dark);margin-bottom:16px';
+    header.textContent = '📞 Contatos dos Bancos';
+    panel.appendChild(header);
+    var typeIcons = {SAC:'📞',Ouvidoria:'🔔',Comercial:'💼',WhatsApp:'💬','E-mail':'✉️',Outro:'📌'};
+    var sorted = banks.slice().sort(function(a,b){ return a.name.localeCompare(b.name,'pt-BR'); });
+    var hasAny = false;
+    sorted.forEach(function(bank){
+      var items = contacts[bank.id]||[];
+      if(!items.length) return;
+      hasAny = true;
+      var card = document.createElement('div');
+      card.style.cssText = 'background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:8px';
+      var bankTitle = document.createElement('div');
+      bankTitle.style.cssText = 'font-family:var(--fh);font-size:14px;font-weight:700;color:var(--dark);margin-bottom:10px';
+      bankTitle.textContent = '🏦 '+bank.name;
+      card.appendChild(bankTitle);
+      items.forEach(function(c){
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--mc-ll)';
+        var icon = typeIcons[c.tipo]||'📌';
+        var isPhone = /^[\d\s\(\)\-\+]+$/.test(c.valor);
+        var isWA = c.tipo==='WhatsApp';
+        row.innerHTML = '<span style="font-size:16px">'+icon+'</span>'
+          +'<div style="flex:1"><div style="font-size:11px;font-weight:700;color:var(--lbl)">'+c.tipo+' — '+c.desc+'</div>'
+          +'<div style="font-size:13px;font-weight:600;color:var(--dark)">'+c.valor+'</div></div>'
+          +((isPhone||isWA)?'<a href="'+(isWA?'https://wa.me/55'+c.valor.replace(/\D/g,''):'tel:'+c.valor.replace(/\D/g,''))+'" style="padding:5px 12px;background:var(--mc-l);border:1px solid var(--mc);border-radius:20px;font-size:10px;font-weight:700;color:var(--mc);text-decoration:none">'+(isWA?'Abrir':'Ligar')+'</a>':'');
+        card.appendChild(row);
+      });
+      panel.appendChild(card);
+    });
+    if(!hasAny){
+      var empty = document.createElement('div');
+      empty.style.cssText='text-align:center;padding:40px;color:var(--lbl);font-size:13px';
+      empty.innerHTML='<div style="font-size:36px;margin-bottom:12px">📞</div><div>Nenhum contato cadastrado ainda.</div>';
+      panel.appendChild(empty);
+    }
+  }catch(e){ panel.innerHTML='<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar contatos.</div>'; }
+}
+
+async function checkNotices() {
+  try{
+    var notices = await getNotices();
+    var badge = document.getElementById('notice-badge');
+    if(badge && notices.length > 0){
+      var d24 = new Date(); d24.setDate(d24.getDate()-1);
+      var recentes = notices.filter(function(n){ return new Date(n.date)>=d24; });
+      if(recentes.length) badge.style.display='block';
+    }
+  }catch(e){}
+}
+
 // Listener contatos
 var selCont = document.getElementById('sel-cont-bank');
 if(selCont) selCont.addEventListener('change', onSelContBank);
