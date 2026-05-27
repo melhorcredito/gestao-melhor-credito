@@ -1765,7 +1765,7 @@ function openParModal(){
   parEditId=null;
   document.getElementById('par-modal-title').textContent='Novo Parceiro';
   ['par-grupo','par-email','par-tel','par-doclink'].forEach(function(id){ document.getElementById(id).value=''; });
-  ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('parw-grupo').classList.remove('err');
   document.getElementById('par-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('par-grupo').focus(); },100);
 }
@@ -1777,7 +1777,7 @@ function openParEdit(id){
   document.getElementById('par-email').value=it.email||'';
   document.getElementById('par-tel').value=it.tel||'';
   document.getElementById('par-doclink').value=it.doclink||'';
-  ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('parw-grupo').classList.remove('err');
   document.getElementById('par-overlay').classList.add('open');
 }
 function closeParModal(){ document.getElementById('par-overlay').classList.remove('open'); }
