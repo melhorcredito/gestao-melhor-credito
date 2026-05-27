@@ -454,13 +454,42 @@ async function ghDel(path, msg) {
 // ═══════════════════════════════════════
 // DATA GETTERS/SETTERS
 // ═══════════════════════════════════════
-async function getUsers()  { return await ghGet('data/users.json'); }
+async function getUsers()  {
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/users.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) throw new Error('getUsers '+r.status);
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
 async function setUsers(v) { return await ghSet('data/users.json', v, 'update users'); }
-async function getBanks()  { return await ghGet('data/banks.json'); }
+async function getBanks()  {
+  // Usa API do GitHub diretamente para evitar cache do raw
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/banks.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) throw new Error('getBanks '+r.status);
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
 async function setBanks(v) { return await ghSet('data/banks.json', v, 'update banks'); }
-async function getLogs()   { return await ghGet('data/logs.json'); }
+async function getLogs()   {
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/logs.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) throw new Error('getLogs '+r.status);
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
 async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
-async function getPdfIdx() { return await ghGet('data/pdfs_index.json'); }
+async function getPdfIdx() {
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/pdfs_index.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) throw new Error('getPdfIdx '+r.status);
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
 async function setPdfIdx(v){ return await ghSet('data/pdfs_index.json', v, 'update pdf index'); }
 
 // ═══════════════════════════════════════
