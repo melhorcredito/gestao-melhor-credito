@@ -1117,43 +1117,70 @@ async function removeUser(login){
 }
 
 async function renderUsersList(){
-  var users=await getUsers();
-  var ul=document.getElementById('users-list'); if(!ul) return;
-  ul.innerHTML='';
+  var users = await getUsers();
+  var ul = document.getElementById('users-list'); if(!ul) return;
+  ul.innerHTML = '';
   users.forEach(function(u){
-    var d=document.createElement('div'); d.className='litem';
-    var esc_login = u.login.replace(/'/g, "\\'");
-    d.innerHTML='<div class="li"><div class="lc">'+u.login+(u.isAdmin?' 👑':'')+'</div><div class="lm">'+u.name+'</div></div>'
-      +'<button onclick="editUser(\''+esc_login+'\')" style="background:none;border:none;color:var(--mc);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px" title="Editar">✏️</button>'
-      +(u.login==='ADMIN'?'':'<button class="brm" onclick="removeUser(\''+esc_login+'\')">✕</button>');
+    var d = document.createElement('div'); d.className = 'litem';
+    // Info
+    var info = document.createElement('div'); info.className = 'li';
+    info.innerHTML = '<div class="lc">'+u.login+(u.isAdmin?' 👑':'')+'</div><div class="lm">'+u.name+'</div>';
+    d.appendChild(info);
+    // Botão editar
+    var be = document.createElement('button');
+    be.textContent = '✏️'; be.title = 'Editar';
+    be.style.cssText = 'background:none;border:none;color:var(--mc);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px';
+    be.onclick = (function(login){ return function(){ editUser(login); }; })(u.login);
+    d.appendChild(be);
+    // Botão remover
+    if(u.login !== 'ADMIN'){
+      var br = document.createElement('button'); br.className = 'brm'; br.textContent = '✕';
+      br.onclick = (function(login){ return function(){ removeUser(login); }; })(u.login);
+      d.appendChild(br);
+    }
     ul.appendChild(d);
   });
 }
+
 
 async function editUser(login){
   var users = await getUsers();
   var user = users.find(function(u){ return u.login===login; });
   if(!user) return;
   var ex = document.getElementById('edit-modal'); if(ex) ex.remove();
+
   var modal = document.createElement('div');
   modal.id = 'edit-modal';
   modal.style.cssText = 'position:fixed;inset:0;background:rgba(10,22,40,.7);z-index:600;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)';
-  modal.innerHTML = '<div style="background:#fff;border-radius:20px;padding:28px 32px;max-width:380px;width:90%;box-shadow:0 8px 40px rgba(30,159,232,.2);border:1.5px solid var(--bdr)">'
-    +'<h3 style="font-family:var(--fh);font-size:18px;color:var(--dark);margin-bottom:4px">✏️ Editar Usuário</h3>'
-    +'<p style="font-size:12px;color:var(--lbl);margin-bottom:20px">Login: <strong>'+login+'</strong></p>'
-    +'<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nome</label>'
-    +'<input id="edit-name" type="text" value="'+user.name+'" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)"></div>'
-    +'<div style="margin-bottom:18px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nova senha <span style="font-weight:400;text-transform:none">(em branco = manter atual)</span></label>'
-    +'<div style="display:flex;gap:7px">'
-    +'<input id="edit-pass" type="text" placeholder="Nova senha..." style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)">'
-    +'<button onclick="var c='abcdefghjkmnpqrstuvwxyz23456789';var p='';for(var i=0;i<8;i++)p+=c[Math.floor(Math.random()*c.length)];document.getElementById('edit-pass').value=p;" style="padding:10px 12px;background:var(--dark);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px">🎲</button>'
-    +'</div></div>'
-    +'<div style="display:flex;gap:8px">'
-    +'<button onclick="saveEditUser(\''+login+'\')" style="flex:1;padding:11px;background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,159,232,.3)">💾 Salvar</button>'
-    +'<button onclick="document.getElementById('edit-modal').remove()" style="padding:11px 16px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:13px;color:var(--lbl);cursor:pointer">Cancelar</button>'
-    +'</div></div>';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'background:#fff;border-radius:20px;padding:28px 32px;max-width:380px;width:90%;box-shadow:0 8px 40px rgba(30,159,232,.2);border:1.5px solid var(--bdr)';
+
+  box.innerHTML = '<h3 style="font-family:var(--fh);font-size:18px;color:var(--dark);margin-bottom:4px">✏️ Editar Usuário</h3>'
+    + '<p style="font-size:12px;color:var(--lbl);margin-bottom:20px">Login: <strong>' + login + '</strong></p>'
+    + '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nome</label>'
+    + '<input id="edit-name" type="text" value="' + user.name.replace(/"/g,'&quot;') + '" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)"></div>'
+    + '<div style="margin-bottom:18px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nova senha <span style="font-weight:400;text-transform:none">(em branco = manter atual)</span></label>'
+    + '<div style="display:flex;gap:7px"><input id="edit-pass" type="text" placeholder="Nova senha..." style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)">'
+    + '<button id="btn-gen-pass" style="padding:10px 12px;background:var(--dark);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px">🎲</button></div></div>'
+    + '<div style="display:flex;gap:8px">'
+    + '<button id="btn-save-edit" style="flex:1;padding:11px;background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,159,232,.3)">💾 Salvar</button>'
+    + '<button id="btn-cancel-edit" style="padding:11px 16px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:13px;color:var(--lbl);cursor:pointer">Cancelar</button>'
+    + '</div>';
+
+  modal.appendChild(box);
   document.body.appendChild(modal);
+
+  document.getElementById('btn-gen-pass').onclick = function(){
+    var c='abcdefghjkmnpqrstuvwxyz23456789';
+    var p=''; for(var i=0;i<8;i++) p+=c[Math.floor(Math.random()*c.length)];
+    document.getElementById('edit-pass').value = p;
+  };
+  document.getElementById('btn-save-edit').onclick = function(){ saveEditUser(login); };
+  document.getElementById('btn-cancel-edit').onclick = function(){ modal.remove(); };
+  document.getElementById('edit-name').focus();
 }
+
 
 async function saveEditUser(login){
   var name = document.getElementById('edit-name').value.trim();
