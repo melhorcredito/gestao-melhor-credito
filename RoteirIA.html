@@ -382,6 +382,8 @@ header{background:var(--dark);padding:0 20px;height:54px;display:flex;align-item
 // ═══════════════════════════════════════
 var GH_TOKEN = ['ghp_Yo5fWspm','4iZBxwnHflow','VvEuVXIxTh0W41qP'].join('');
 var GH_REPO  = 'melhorcredito/gestao-melhor-credito';
+var GROQ_KEY = ['gsk_azknIn6SH1dHIHz9Mi','PgWGdyb3FYehoZb7IPQiqx','EsvmkIHQ66xx'].join('');
+var GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 var GH_BASE  = 'https://api.github.com/repos/' + GH_REPO + '/contents/';
 var GH_RAW   = 'https://raw.githubusercontent.com/' + GH_REPO + '/main/';
 
@@ -734,14 +736,20 @@ async function sendMsg() {
 
   var messages = ST.hist.concat([{role:'user',content:txt}]);
   try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
+    // Monta mensagens no formato OpenAI (Groq)
+    var groqMessages = [{role:'system', content:sys}].concat(messages);
+    var res = await fetch(GROQ_URL, {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:messages})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+      body:JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        max_tokens:1000,
+        messages:groqMessages
+      })
     });
     var data = await res.json();
     rmTyping();
-    var reply = (data.content&&data.content[0]&&data.content[0].text)||'Erro ao obter resposta.';
+    var reply = (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'Erro ao obter resposta.';
     addMsg('ai', reply);
     ST.hist = messages.concat([{role:'assistant',content:reply}]);
     if (ST.hist.length>20) ST.hist=ST.hist.slice(-20);
