@@ -1,0 +1,170 @@
+# Informações que precisam ser comunicadas ao cliente durante a apresentação da oferta
+
+* O desconto da parcela ocorre diretamente na folha de pagamento.
+* O desconto em folha pode acontecer antes da data de vencimento do contrato.
+* A empresa realiza o desconto conforme cronograma do Ministério do Trabalho.
+* A Caixa Econômica Federal faz o repasse ao banco até a data de vencimento.
+* O cliente deve ser informado sobre:
+
+  * data da averbação
+  * previsão do primeiro desconto
+  * data de repasse das parcelas
+  * primeiro vencimento bancário 
+
+---
+
+# Regras do produto
+
+* Produto destinado para trabalhadores CLT.
+* Idade permitida:
+
+  * de 21 até 60 anos
+* Necessário:
+
+  * possuir conta corrente ou poupança em banco aceito
+  * autorizar consulta de dados
+* Margem consignável:
+
+  * até 35% do salário
+* Quantidade máxima:
+
+  * até 9 contratos por CPF
+* Valor mínimo:
+
+  * R$ 700
+* Valor máximo:
+
+  * até R$ 50 mil
+* Prazo:
+
+  * de 6 até 48 meses
+* Liberação:
+
+  * via PIX
+* Garantia:
+
+  * margem consignável
+  * FGTS
+  * verbas rescisórias em caso de demissão involuntária
+* Formalização:
+
+  * digital
+* Não aceita:
+
+  * representante legal  
+
+---
+
+# Bancos aceitos para liberação do crédito
+
+Principais bancos aceitos:
+
+* C6 Bank
+* Bradesco
+* BRB
+* Sicredi
+* Banco do Brasil
+* Banrisul
+* Inter
+* Santander
+* Sicoob
+* BMG
+* Caixa Econômica
+* Unicred
+* Ailos
+* Itaú
+* Nubank
+* Pefisa 
+
+---
+
+# Agências não autorizadas para efetuar pagamentos
+
+Não são aceitas:
+
+* Itaú:
+
+  * agência 500
+* Neon/Votorantim:
+
+  * agência 655
+* Next/Bradesco:
+
+  * agências 3750, 3728, 3929, 3925, 7320, 7160, 7802, 6176, 7526, 7615, 3738 e 3737
+* Santander Digital:
+
+  * contas iniciadas com “77”
+* Caixa Tem:
+
+  * agência 3880 
+
+---
+
+# Documentação obrigatória
+
+Obrigatório apresentar:
+
+* Documento de identificação:
+
+  * RG
+  * CNH
+  * RNE
+  * CRNM
+  * Carteira de Classe
+* Dados bancários válidos para crédito
+* Autorização digital na formalização 
+
+---
+
+# Características do produto
+
+* Tipo de operação:
+
+  * proposta nova
+* Produto:
+
+  * margem livre
+* Prazo:
+
+  * 6 até 48 meses
+* Parcelas:
+
+  * mensais
+* Meio de liberação:
+
+  * PIX
+* Tarifa de cadastro:
+
+  * não permitida
+* Taxa:
+
+  * conforme perfil do cliente
+* Não opera:
+
+  * margem negativa
+* Não permite:
+
+  * agregar margem
+  * unificar parcelas
+* Formalização:
+
+  * Digital Web 
+
+---
+
+# Seguro do Consignado do Trabalhador
+
+## Coberturas do saldo devedor
+
+* Falecimento do titular
+* Invalidez permanente total por acidente
+
+## Cobertura de parcelas
+
+* Desemprego involuntário
+
+## Informações gerais
+
+* Seguro válido durante todo o contrato
+* Valor do seguro varia conforme valor financiado
+* Existem 2 tipos de planos disponibilizados pelo C6 Consig
