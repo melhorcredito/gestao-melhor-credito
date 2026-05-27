@@ -742,7 +742,7 @@ header{display:none}
     </div>
     <div class="modal-body">
       <div class="mf" id="conw-parceiro"><label>Nome do Parceiro *</label><input id="con-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="conw-grupo"><label>Nome do Grupo *</label><input id="con-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+
       <div class="mf" id="conw-link"><label>Link do Contrato (Google Drive) *</label><input id="con-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="con-obs" placeholder="Alguma observação sobre o contrato..."></textarea></div>
     </div>
@@ -1838,8 +1838,8 @@ function renderContratos(){
 function openConModal(){
   conEditId=null;
   document.getElementById('con-modal-title').textContent='Novo Contrato';
-  ['con-parceiro','con-grupo','con-link','con-obs'].forEach(function(id){ document.getElementById(id).value=''; });
-  ['conw-parceiro','conw-grupo','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['con-parceiro','con-link','con-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['conw-parceiro','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('con-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('con-parceiro').focus(); },100);
 }
@@ -1848,21 +1848,19 @@ function openConEdit(id){
   conEditId=id;
   document.getElementById('con-modal-title').textContent='Editar Contrato';
   document.getElementById('con-parceiro').value=it.parceiro;
-  document.getElementById('con-grupo').value=it.grupo;
   document.getElementById('con-link').value=it.link||'';
   document.getElementById('con-obs').value=it.obs||'';
-  ['conw-parceiro','conw-grupo','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['conw-parceiro','conw-link'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('con-overlay').classList.add('open');
 }
 function closeConModal(){ document.getElementById('con-overlay').classList.remove('open'); }
 
 async function salvarCon(){
   var parceiro=document.getElementById('con-parceiro').value.trim();
-  var grupo=document.getElementById('con-grupo').value.trim();
   var link=document.getElementById('con-link').value.trim();
   var obs=document.getElementById('con-obs').value.trim();
   var ok=true;
-  [['conw-parceiro',parceiro],['conw-grupo',grupo],['conw-link',link]].forEach(function(p){
+  [['conw-parceiro',parceiro],['conw-link',link]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
