@@ -873,6 +873,7 @@ async function addProd() {
   try {
     var banks = await getBanks();
     var bank  = banks.find(function(b){ return b.id===bankId; });
+    if (!bank){ toast('Banco não encontrado','err'); hideLov(); return; }
     if (!bank.products) bank.products=[];
     bank.products.push({id:'p'+Date.now(), name:name});
     await setBanks(banks);
@@ -899,7 +900,7 @@ async function removeProd(bankId, prodId) {
 }
 
 async function renderAdminBanks() {
-  var banks = _banks.length ? _banks : await getBanks();
+  var banks = await getBanks();
   _banks = banks;
   // Lista
   var bl = document.getElementById('bank-adm');
