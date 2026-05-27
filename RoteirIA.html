@@ -246,6 +246,13 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         </div>
       </div>
       <div class="ctbadge" id="ctx-badge" style="display:none">IA ativa</div>
+      <div style="display:flex;align-items:center;gap:6px;background:var(--mc-ll);border:1.5px solid var(--bdr);border-radius:24px;padding:5px 14px;min-width:260px;transition:all .2s" id="quick-wrap" onfocusin="this.style.borderColor='var(--mc)';this.style.background='#fff'" onfocusout="this.style.borderColor='var(--bdr)';this.style.background='var(--mc-ll)'">
+        <span style="font-size:13px;opacity:.5">🔍</span>
+        <input type="text" id="quick-input" placeholder="Pergunte qualquer coisa..." 
+          style="flex:1;border:none;background:transparent;font-family:var(--font);font-size:12px;color:var(--text);outline:none;min-width:0"
+          onkeydown="if(event.key==='Enter')sendQuickMsg()">
+        <button onclick="sendQuickMsg()" style="background:var(--mc);border:none;border-radius:16px;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;cursor:pointer;font-family:var(--font);white-space:nowrap">Enviar</button>
+      </div>
       <button onclick="showPanel('chat')" id="btn-panel-chat" style="padding:5px 12px;background:var(--mc-l);border:1px solid var(--mc);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--mc);cursor:pointer">💬 Chat</button>
       <button onclick="showPanel('contacts')" id="btn-panel-contacts" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer">📞 Contatos</button>
       <button onclick="showPanel('notices')" id="btn-panel-notices" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer;position:relative">📢 Avisos <span id="notice-badge" style="display:none;position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:var(--red);border-radius:50%"></span></button>
@@ -1698,6 +1705,121 @@ async function showPanel(type) {
     var badge = document.getElementById('notice-badge');
     if(badge) badge.style.display = 'none';
     await renderNoticesPanel();
+  }
+}
+
+
+// ═══════════════════════════════════════
+// BUSCA RÁPIDA (sem selecionar banco)
+// ═══════════════════════════════════════
+async function sendQuickMsg() {
+  var inp = document.getElementById('quick-input');
+  var txt = inp.value.trim();
+  if(!txt) return;
+  inp.value = '';
+
+  // Mostra no chat principal
+  var msgs = document.getElementById('msgs');
+  msgs.style.display = 'flex';
+  msgs.style.flexDirection = 'column';
+  document.getElementById('panel-contacts').style.display = 'none';
+  document.getElementById('panel-notices').style.display = 'none';
+
+  // Reseta botões do painel
+  var bChat = document.getElementById('btn-panel-chat');
+  var bCont = document.getElementById('btn-panel-contacts');
+  var bNot  = document.getElementById('btn-panel-notices');
+  if(bChat){ bChat.style.background='var(--mc-l)'; bChat.style.borderColor='var(--mc)'; bChat.style.color='var(--mc)'; }
+  if(bCont){ bCont.style.background='var(--white)'; bCont.style.borderColor='var(--bdr)'; bCont.style.color='var(--lbl)'; }
+  if(bNot) { bNot.style.background='var(--white)';  bNot.style.borderColor='var(--bdr)';  bNot.style.color='var(--lbl)'; }
+
+  // Remove empty state
+  var es = msgs.querySelector('.es'); if(es) es.remove();
+
+  // Adiciona mensagem do usuário
+  var now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  var userDiv = document.createElement('div'); userDiv.className = 'msg u';
+  var uav = ST.user ? ST.user.login.slice(0,2).toUpperCase() : 'EU';
+  userDiv.innerHTML = '<div class="mav" style="background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;font-size:11px;font-weight:700">'+uav+'</div>'
+    +'<div style="display:flex;flex-direction:column;align-items:flex-end">'
+    +'<div class="mb" style="background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;border-bottom-right-radius:4px">'+txt+'</div>'
+    +'<div class="mt">'+now+'</div></div>';
+  msgs.appendChild(userDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Typing
+  var typDiv = document.createElement('div'); typDiv.className = 'msg ai'; typDiv.id = 'quick-typ';
+  typDiv.innerHTML = '<div class="mav" style="background:var(--dark);font-size:15px">🤖</div>'
+    +'<div class="mb"><div class="tdots"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Monta contexto completo (todos os bancos, contatos, comunicados)
+  try {
+    var banks = _banks.length ? _banks : await getBanks();
+    var allContacts = await getContacts();
+    var notices = await getNotices();
+
+    // Contatos de todos os bancos
+    var contLines = [];
+    banks.forEach(function(b){
+      var items = allContacts[b.id]||[];
+      if(items.length){
+        contLines.push('=== '+b.name+' ===');
+        items.forEach(function(c){ contLines.push(c.tipo+': '+c.desc+' — '+c.valor); });
+      }
+    });
+
+    // Comunicados recentes
+    var noticeLines = notices.slice(0,5).map(function(n){
+      return '['+n.tipo.toUpperCase()+'] '+(n.bank?n.bank+' — ':'')+n.title+(n.body?' | '+n.body:'');
+    });
+
+    var sys = 'Você é o Consultor MC, assistente de crédito consignado da Melhor Crédito.
+'
+      +'Responda perguntas sobre roteiros, contatos dos bancos e comunicados.
+'
+      +'Seja direto e objetivo.
+
+'
+      +(contLines.length ? 'CONTATOS DOS BANCOS:
+'+contLines.join('
+')+'
+
+' : '')
+      +(noticeLines.length ? 'COMUNICADOS RECENTES:
+'+noticeLines.join('
+')+'
+
+' : '')
+      +'Se perguntarem sobre regras de um banco específico, informe que o parceiro deve selecionar o banco na barra lateral para consultar o roteiro completo.';
+
+    var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+      body:JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        max_tokens:600,
+        messages:[{role:'system',content:sys},{role:'user',content:txt}]
+      })
+    });
+    var data = await res.json();
+    var reply = (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'Erro ao obter resposta.';
+
+    var t = document.getElementById('quick-typ'); if(t) t.remove();
+    var aiDiv = document.createElement('div'); aiDiv.className = 'msg ai';
+    var now2 = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    aiDiv.innerHTML = '<div class="mav" style="background:var(--dark);font-size:15px">🤖</div>'
+      +'<div style="display:flex;flex-direction:column;align-items:flex-start">'
+      +'<div class="mb" style="background:var(--white);border:1.5px solid var(--bdr);border-bottom-left-radius:4px">'+fmtMsg(reply)+'</div>'
+      +'<div class="mt">'+now2+'</div></div>';
+    msgs.appendChild(aiDiv);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    addLog(ST.user?ST.user.login:'?', 'Busca rápida', '—', txt);
+  } catch(e) {
+    var t = document.getElementById('quick-typ'); if(t) t.remove();
+    addMsg('ai', 'Erro de conexão. Tente novamente.');
   }
 }
 
