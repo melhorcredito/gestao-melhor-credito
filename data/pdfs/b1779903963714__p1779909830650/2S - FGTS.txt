@@ -1,0 +1,155 @@
+# Roteiro Operacional FGTS 2S – Resumo Organizado
+
+Documento: **Roteiro Operacional FGTS 2S**
+Atualizado em: **31/03/2026** 
+
+---
+
+# 1. Público-Alvo
+
+Pode contratar quem:
+
+* Possui contas ativas e/ou inativas do FGTS
+* Possui saldo disponível no FGTS
+* Tem idade entre:
+
+  * 18 anos até 69 anos, 11 meses e 29 dias
+* Possui conta corrente ou poupança
+* É optante do saque-aniversário
+
+Instituições autorizadas:
+
+* BMP Sociedade de Crédito ao Microempreendedor e Empresa de Pequeno Porte LTDA
+* BMP Sociedade de Crédito Direto S.A 
+
+---
+
+# 2. Público Não Atendido
+
+Não são aceitos:
+
+* Pessoas impossibilitadas de assinar
+* Pessoas não alfabetizadas
+* Operações realizadas por:
+
+  * procuração
+  * tutela
+  * curatela 
+
+---
+
+# 3. Liberação de Crédito
+
+Regra obrigatória:
+
+* O crédito será liberado somente:
+
+  * em conta de titularidade do cliente 
+
+---
+
+# 4. Limites de Valores
+
+## Parcelas
+
+* Parcela mínima:
+
+  * R$ 100
+* Parcela máxima:
+
+  * R$ 500
+
+## Prazo
+
+* Até 5 parcelas mensais 
+
+---
+
+# 5. Adesão ao Saque-Aniversário
+
+## Primeiro acesso
+
+Passos:
+
+1. Entrar no App Meu INSS ou site meu.inss.gov.br
+2. Clicar em “Entrar com gov.br”
+3. Informar CPF
+4. Criar conta/acesso 
+
+---
+
+# 6. Autorização das Instituições no App FGTS
+
+## Conta já existente
+
+Passo a passo:
+
+1. Entrar no App FGTS com senha gov.br
+2. Clicar em:
+
+   * “Sistemática de saque do seu FGTS”
+3. Selecionar:
+
+   * “Empréstimo Saque-Aniversário”
+4. Autorizar:
+
+   * as 2 instituições da BMP
+5. Conta liberada para consulta 
+
+---
+
+# 7. Liberação por Ordem de Pagamento
+
+Não é permitido:
+
+* pagamento por ordem de pagamento (OP) 
+
+---
+
+# 8. Prazo para Antecipação
+
+## Primeira contratação
+
+* Permitido antecipar:
+
+  * até 5 parcelas
+
+## Após a primeira antecipação
+
+* Permitida:
+
+  * apenas 1 antecipação por ano
+* Limitado:
+
+  * até 3 parcelas antecipadas 
+
+---
+
+# 9. Documentos Necessários
+
+Na formalização:
+
+* Geralmente solicitado apenas:
+
+  * selfie pela plataforma Único
+
+Em alguns casos:
+
+* pode ser solicitado:
+
+  * documento de identificação
+    para atualização cadastral 
+
+---
+
+# 10. Carência para Contratação
+
+Regra válida a partir de:
+
+* 01/11/2025
+
+Necessário aguardar:
+
+* 90 dias após adesão ao saque-aniversário
+
+para contratar a antecipação FGTS
