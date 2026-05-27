@@ -246,7 +246,12 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         </div>
       </div>
       <div class="ctbadge" id="ctx-badge" style="display:none">IA ativa</div>
+      <button onclick="showPanel('chat')" id="btn-panel-chat" style="padding:5px 12px;background:var(--mc-l);border:1px solid var(--mc);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--mc);cursor:pointer">💬 Chat</button>
+      <button onclick="showPanel('contacts')" id="btn-panel-contacts" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer">📞 Contatos</button>
+      <button onclick="showPanel('notices')" id="btn-panel-notices" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer;position:relative">📢 Avisos <span id="notice-badge" style="display:none;position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:var(--red);border-radius:50%"></span></button>
     </div>
+    <div id="panel-notices" style="display:none;flex:1;overflow-y:auto;padding:24px 20px;flex-direction:column;gap:12px"></div>
+    <div id="panel-contacts" style="display:none;flex:1;overflow-y:auto;padding:24px 20px;flex-direction:column;gap:12px"></div>
     <div class="msgs" id="msgs">
       <div class="es" id="es-init">
         <div class="es-icon">💬</div>
@@ -276,6 +281,8 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
   <div class="anav">
     <button class="atab act" onclick="showTab('t-banks',this)">🏦 Bancos & Produtos</button>
     <button class="atab" onclick="showTab('t-pdfs',this)">📄 Roteiros</button>
+    <button class="atab" onclick="showTab('t-contacts',this)">📞 Contatos</button>
+    <button class="atab" onclick="showTab('t-notices',this)">📢 Comunicados</button>
     <button class="atab" onclick="showTab('t-users',this)">🔑 Usuários</button>
     <button class="atab" onclick="showTab('t-logs',this)">📊 Logs</button>
   </div>
@@ -311,6 +318,58 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
       <div class="plist" id="plist" style="margin-top:14px"></div>
     </div>
   </div>
+  <!-- CONTATOS -->
+  <div class="asec" id="t-contacts">
+    <div class="acard full">
+      <h3>📞 Contatos dos Bancos</h3>
+      <div class="frow" style="margin-bottom:12px">
+        <select id="sel-cont-bank"><option value="">Selecione o banco...</option></select>
+      </div>
+      <div id="cont-form" style="display:none">
+        <div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Adicionar contato</div>
+        <div class="frow">
+          <select id="cont-tipo" style="max-width:160px">
+            <option value="SAC">📞 SAC</option>
+            <option value="Ouvidoria">🔔 Ouvidoria</option>
+            <option value="Comercial">💼 Comercial</option>
+            <option value="WhatsApp">💬 WhatsApp</option>
+            <option value="E-mail">✉️ E-mail</option>
+            <option value="Outro">📌 Outro</option>
+          </select>
+          <input type="text" id="cont-desc" placeholder="Descrição (ex: SAC 24h, Gerente João...)">
+          <input type="text" id="cont-val" placeholder="Número ou e-mail">
+          <button class="badd" onclick="addContact()">+ Add</button>
+        </div>
+        <div class="litems" id="cont-list" style="margin-top:10px"></div>
+      </div>
+      <div id="cont-placeholder" style="text-align:center;padding:20px;font-size:13px;color:var(--lbl)">Selecione um banco para gerenciar os contatos</div>
+    </div>
+  </div>
+
+  <!-- COMUNICADOS -->
+  <div class="asec" id="t-notices">
+    <div class="acard full">
+      <h3>📢 Publicar Comunicado</h3>
+      <div class="frow">
+        <select id="notice-tipo">
+          <option value="info">ℹ️ Informativo</option>
+          <option value="alert">⚠️ Alerta</option>
+          <option value="suspend">🔴 Produto Suspenso</option>
+          <option value="update">🔄 Atualização de Regra</option>
+          <option value="ok">✅ Produto Reativado</option>
+        </select>
+        <input type="text" id="notice-bank" placeholder="Banco relacionado (opcional)">
+      </div>
+      <div class="frow">
+        <input type="text" id="notice-title" placeholder="Título do comunicado (ex: BMG suspende portabilidade INSS)">
+      </div>
+      <textarea id="notice-body" style="width:100%;min-height:100px;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--mc-ll);outline:none;resize:vertical;margin-bottom:8px" placeholder="Detalhes do comunicado..."></textarea>
+      <button class="badd" style="width:100%;padding:11px" onclick="publishNotice()">📢 Publicar para todos os parceiros</button>
+      <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px">Comunicados publicados</div>
+      <div id="notices-adm-list" style="display:flex;flex-direction:column;gap:8px"></div>
+    </div>
+  </div>
+
   <div class="asec" id="t-users">
     <div class="agrid">
       <div class="acard">
@@ -525,6 +584,26 @@ async function getLogs()   {
   return JSON.parse(atob(info.content.replace(/\n/g,'')));
 }
 async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
+async function getContacts() {
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/contacts.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) return {};
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
+async function setContacts(v){ return await ghSet('data/contacts.json', v, 'update contacts'); }
+
+async function getNotices() {
+  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/notices.json?t='+Date.now(), {
+    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
+  });
+  if (!r.ok) return [];
+  var info = await r.json();
+  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+}
+async function setNotices(v){ return await ghSet('data/notices.json', v, 'update notices'); }
+
 async function getPdfIdx() {
   var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/pdfs_index.json?t='+Date.now(), {
     headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
@@ -569,6 +648,7 @@ async function doLogin() {
     document.getElementById('btn-login').disabled = false;
     showScreen('s-main');
     await loadSidebar();
+    checkNotices();
     addLog(found.login,'—','—','Entrou no sistema');
   } catch(e) {
     document.getElementById('lerr').textContent = 'Erro de conexão. Tente novamente.';
@@ -1249,6 +1329,8 @@ function showTab(id,btn){
   if (id==='t-users') renderUsersList();
   if (id==='t-banks') renderAdminBanks();
   if (id==='t-pdfs') renderAdminBanks();
+  if (id==='t-contacts'){ renderAdminBanks(); loadContactsAdmin(); }
+  if (id==='t-notices'){ renderNoticesAdm(); }
 }
 
 // ═══════════════════════════════════════
