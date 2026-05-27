@@ -722,7 +722,6 @@ header{display:none}
     </div>
     <div class="modal-body">
       <div class="mf" id="parw-grupo"><label>Nome do Grupo *</label><input id="par-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="parw-nome"><label>Nome *</label><input id="par-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-email" placeholder="joao@email.com" type="email"></div>
       <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
       <div class="mf"><label>Link da Pasta de Documentos <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-doclink" placeholder="https://drive.google.com/drive/folders/..."></div>
@@ -1746,10 +1745,10 @@ function renderParceiros(){
   if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum parceiro cadastrado</div>'; return; }
   grid.innerHTML = list.map(function(it){
     return '<div class="card" style="background:#fff">'
-      +'<div class="card-top"><div class="card-name">👥 '+it.nome+'</div>'
+      +'<div class="card-top"><div class="card-name">👥 '+it.grupo+'</div>'
       +'<div class="card-actions">'
       +'<button class="act-btn" onclick="openParEdit(\''+it.id+'\')">✏️</button>'
-      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'par\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'par\',\''+escHtml(it.grupo)+'\')">🗑️</button>'
       +'</div></div>'
       +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.grupo+'</span></div>'
       +(it.email?'<div style="margin-top:6px;font-size:13px">✉️ <a href="mailto:'+it.email+'" style="color:var(--blue);text-decoration:none">'+it.email+'</a></div>':'')
@@ -1765,7 +1764,7 @@ function renderParceiros(){
 function openParModal(){
   parEditId=null;
   document.getElementById('par-modal-title').textContent='Novo Parceiro';
-  ['par-grupo','par-nome','par-email','par-tel','par-doclink'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['par-grupo','par-email','par-tel','par-doclink'].forEach(function(id){ document.getElementById(id).value=''; });
   ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('par-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('par-grupo').focus(); },100);
@@ -1775,7 +1774,6 @@ function openParEdit(id){
   parEditId=id;
   document.getElementById('par-modal-title').textContent='Editar Parceiro';
   document.getElementById('par-grupo').value=it.grupo;
-  document.getElementById('par-nome').value=it.nome;
   document.getElementById('par-email').value=it.email||'';
   document.getElementById('par-tel').value=it.tel||'';
   document.getElementById('par-doclink').value=it.doclink||'';
@@ -1786,21 +1784,19 @@ function closeParModal(){ document.getElementById('par-overlay').classList.remov
 
 async function salvarPar(){
   var grupo=document.getElementById('par-grupo').value.trim();
-  var nome=document.getElementById('par-nome').value.trim();
   var email=document.getElementById('par-email').value.trim();
   var tel=document.getElementById('par-tel').value.trim();
   var doclink=document.getElementById('par-doclink').value.trim();
-  var conlink=document.getElementById('par-conlink').value.trim();
   var ok=true;
-  [['parw-grupo',grupo],['parw-nome',nome]].forEach(function(p){
+  [['parw-grupo',grupo]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
   if(parEditId){
-    await updateDoc(doc(db,'parceiros',parEditId),{grupo,nome,email,tel,doclink,conlink});
+    await updateDoc(doc(db,'parceiros',parEditId),{grupo,email,tel,doclink});
   } else {
-    await addDoc(collection(db,'parceiros'),{grupo,nome,email,tel,doclink,conlink,data:hoje()});
+    await addDoc(collection(db,'parceiros'),{grupo,email,tel,doclink,data:hoje()});
   }
   closeParModal();
 }
