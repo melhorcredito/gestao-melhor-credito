@@ -1472,11 +1472,20 @@ var typeConfig = {
   ok:      {label:'Reativado',   color:'#16A34A', bg:'#F0FDF4', icon:'✅'}
 };
 
+function fixEncoding(str) {
+  // Corrige texto com encoding quebrado (latin1 interpretado como utf-8)
+  try {
+    return decodeURIComponent(escape(str));
+  } catch(e) {
+    return str;
+  }
+}
+
 async function publishNotice() {
   var tipo  = document.getElementById('notice-tipo').value;
-  var bank  = document.getElementById('notice-bank').value.trim();
-  var title = document.getElementById('notice-title').value.trim();
-  var body  = document.getElementById('notice-body').value.trim();
+  var bank  = fixEncoding(document.getElementById('notice-bank').value.trim());
+  var title = fixEncoding(document.getElementById('notice-title').value.trim());
+  var body  = fixEncoding(document.getElementById('notice-body').value.trim());
   if(!title){ toast('Digite um título!','err'); return; }
   showLov('Publicando comunicado...');
   try{
