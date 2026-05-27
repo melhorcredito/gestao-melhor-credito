@@ -562,6 +562,8 @@ async function loadSidebar() {
 function renderSidebar(banks) {
   var bl = document.getElementById('bl');
   bl.innerHTML = '';
+  // Ordena alfabeticamente
+  banks = banks.slice().sort(function(a,b){ return a.name.localeCompare(b.name,'pt-BR'); });
   if (!banks.length) {
     bl.innerHTML = '<div class="sb-nobank">Nenhum banco cadastrado.<br>Peça ao administrador.</div>';
     return;
