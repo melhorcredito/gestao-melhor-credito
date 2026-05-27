@@ -1362,6 +1362,89 @@ function showTab(id,btn){
 }
 
 // ═══════════════════════════════════════
+// CONTATOS — funções admin
+// ═══════════════════════════════════════
+async function loadContactsAdmin() {
+  var banks = await getBanks();
+  _banks = banks;
+  var sel = document.getElementById('sel-cont-bank');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">Selecione o banco...</option>';
+  banks.slice().sort(function(a,b){ return a.name.localeCompare(b.name,'pt-BR'); })
+    .forEach(function(b){
+      var opt = document.createElement('option');
+      opt.value = b.id; opt.textContent = b.name;
+      sel.appendChild(opt);
+    });
+}
+
+async function onSelContBank() {
+  var bankId = document.getElementById('sel-cont-bank').value;
+  var form = document.getElementById('cont-form');
+  var ph   = document.getElementById('cont-placeholder');
+  if(!bankId){ form.style.display='none'; ph.style.display='block'; return; }
+  form.style.display='block'; ph.style.display='none';
+  await renderContList(bankId);
+}
+
+async function renderContList(bankId) {
+  var contacts = await getContacts();
+  var list = document.getElementById('cont-list'); if(!list) return;
+  var items = contacts[bankId] || [];
+  list.innerHTML = '';
+  if(!items.length){
+    list.innerHTML = '<div style="font-size:12px;color:var(--lbl);padding:8px;text-align:center">Nenhum contato cadastrado</div>';
+    return;
+  }
+  var typeColors = {SAC:'#0E7EC0',Ouvidoria:'#D97706',Comercial:'#16A34A',WhatsApp:'#16A34A','E-mail':'#9333EA',Outro:'#64748B'};
+  items.forEach(function(c,i){
+    var d = document.createElement('div'); d.className='litem';
+    var color = typeColors[c.tipo]||'#64748B';
+    var badge = document.createElement('span');
+    badge.style.cssText = 'padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:'+color+'22;color:'+color;
+    badge.textContent = c.tipo;
+    var info = document.createElement('div'); info.className='li'; info.style.marginLeft='8px';
+    info.innerHTML = '<div class="lc">'+c.desc+'</div><div class="lm">'+c.valor+'</div>';
+    var brm = document.createElement('button'); brm.className='brm'; brm.textContent='✕';
+    brm.onclick = (function(bid,idx){ return function(){ removeContact(bid,idx); }; })(bankId,i);
+    d.appendChild(badge); d.appendChild(info); d.appendChild(brm);
+    list.appendChild(d);
+  });
+}
+
+async function addContact() {
+  var bankId = document.getElementById('sel-cont-bank').value;
+  var tipo   = document.getElementById('cont-tipo').value;
+  var desc   = document.getElementById('cont-desc').value.trim();
+  var valor  = document.getElementById('cont-val').value.trim();
+  if(!bankId||!desc||!valor){ toast('Preencha todos os campos','err'); return; }
+  showLov('Salvando contato...');
+  try{
+    var contacts = await getContacts();
+    if(!contacts[bankId]) contacts[bankId]=[];
+    contacts[bankId].push({tipo:tipo, desc:desc, valor:valor});
+    await setContacts(contacts);
+    document.getElementById('cont-desc').value='';
+    document.getElementById('cont-val').value='';
+    await renderContList(bankId);
+    toast('Contato adicionado!','ok');
+  }catch(e){ toast('Erro: '+e.message,'err'); }
+  hideLov();
+}
+
+async function removeContact(bankId, idx) {
+  showLov('Removendo...');
+  try{
+    var contacts = await getContacts();
+    if(contacts[bankId]) contacts[bankId].splice(idx,1);
+    await setContacts(contacts);
+    await renderContList(bankId);
+    toast('Contato removido','ok');
+  }catch(e){ toast('Erro','err'); }
+  hideLov();
+}
+
+// ═══════════════════════════════════════
 // TOAST
 // ═══════════════════════════════════════
 function toast(msg,type){
@@ -1370,6 +1453,9 @@ function toast(msg,type){
   t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); },3000);
 }
+// Listener contatos
+var selCont = document.getElementById('sel-cont-bank');
+if(selCont) selCont.addEventListener('change', onSelContBank);
 </script>
 </body>
 </html>
