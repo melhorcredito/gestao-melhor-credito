@@ -933,7 +933,7 @@ var lEditId = null, lFilterProm = '';
 
 onSnapshot(collection(db,'logins'), function(snap){
   LOGINS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderLogins(); updateDashboard();
+  renderLogins();
 });
 
 function renderLogins(){
@@ -1037,7 +1037,7 @@ var dEditId = null;
 
 onSnapshot(collection(db,'demandas'), function(snap){
   DEMANDAS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderDemandas(); updateDashboard();
+  renderDemandas();
 });
 
 function renderDemandas(){
@@ -1141,7 +1141,7 @@ var eEditId = null;
 
 onSnapshot(collection(db,'emails'), function(snap){
   EMAILS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderEmails(); updateDashboard();
+  renderEmails();
 });
 
 function renderEmails(){
@@ -1245,7 +1245,7 @@ var sEditId = null;
 
 onSnapshot(collection(db,'subs'), function(snap){
   SUBS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderSub(); updateDashboard();
+  renderSub();
 });
 
 function renderSub(){
@@ -1556,7 +1556,7 @@ var cmEditId = null;
 
 onSnapshot(collection(db,'comissoes'), function(snap){
   COMISSOES = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderCom(); updateDashboard();
+  renderCom();
 });
 
 function addTabela(){
@@ -1685,7 +1685,7 @@ var parEditId = null;
 
 onSnapshot(collection(db,'parceiros'), function(snap){
   PARCEIROS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderParceiros(); updateDashboard();
+  renderParceiros();
 });
 
 function renderParceiros(){
