@@ -1775,24 +1775,10 @@ async function sendQuickMsg() {
       return '['+n.tipo.toUpperCase()+'] '+(n.bank?n.bank+' — ':'')+n.title+(n.body?' | '+n.body:'');
     });
 
-    var sys = 'Você é o Consultor MC, assistente de crédito consignado da Melhor Crédito.
-'
-      +'Responda perguntas sobre roteiros, contatos dos bancos e comunicados.
-'
-      +'Seja direto e objetivo.
-
-'
-      +(contLines.length ? 'CONTATOS DOS BANCOS:
-'+contLines.join('
-')+'
-
-' : '')
-      +(noticeLines.length ? 'COMUNICADOS RECENTES:
-'+noticeLines.join('
-')+'
-
-' : '')
-      +'Se perguntarem sobre regras de um banco específico, informe que o parceiro deve selecionar o banco na barra lateral para consultar o roteiro completo.';
+    var sys = 'Voce e o Consultor MC da Melhor Credito. Responda sobre roteiros e contatos. '
+      +(contLines.length ? 'CONTATOS: '+contLines.join(' | ')+' ' : '')
+      +(noticeLines.length ? 'COMUNICADOS: '+noticeLines.join(' | ')+' ' : '')
+      +'Para roteiros especificos, o parceiro deve selecionar o banco na sidebar.';
 
     var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method:'POST',
