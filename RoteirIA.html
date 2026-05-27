@@ -1043,9 +1043,59 @@ async function renderUsersList(){
   users.forEach(function(u){
     var d=document.createElement('div'); d.className='litem';
     d.innerHTML='<div class="li"><div class="lc">'+u.login+(u.isAdmin?' 👑':'')+'</div><div class="lm">'+u.name+'</div></div>'
-      +(u.login==='ADMIN'?'':'<button class="brm" onclick="removeUser(\''+u.login+'\')">✕</button>');
+      +'<button onclick="editUser(''+u.login+'')" style="background:none;border:none;color:var(--mc);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px" title="Editar">✏️</button>'
+      +(u.login==='ADMIN'?'':'<button class="brm" onclick="removeUser(''+u.login+'')">✕</button>');
     ul.appendChild(d);
   });
+}
+
+async function editUser(login){
+  var users = await getUsers();
+  var user = users.find(function(u){ return u.login===login; });
+  if(!user) return;
+  var ex = document.getElementById('edit-modal'); if(ex) ex.remove();
+  var modal = document.createElement('div');
+  modal.id = 'edit-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(10,22,40,.7);z-index:600;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)';
+  modal.innerHTML = '<div style="background:#fff;border-radius:20px;padding:28px 32px;max-width:380px;width:90%;box-shadow:0 8px 40px rgba(30,159,232,.2);border:1.5px solid var(--bdr)">'
+    +'<h3 style="font-family:var(--fh);font-size:18px;color:var(--dark);margin-bottom:4px">✏️ Editar Usuário</h3>'
+    +'<p style="font-size:12px;color:var(--lbl);margin-bottom:20px">Login: <strong>'+login+'</strong></p>'
+    +'<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nome</label>'
+    +'<input id="edit-name" type="text" value="'+user.name+'" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)"></div>'
+    +'<div style="margin-bottom:18px"><label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">Nova senha <span style="font-weight:400;text-transform:none">(em branco = manter atual)</span></label>'
+    +'<div style="display:flex;gap:7px">'
+    +'<input id="edit-pass" type="text" placeholder="Nova senha..." style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;background:var(--mc-ll)">'
+    +'<button onclick="var c='abcdefghjkmnpqrstuvwxyz23456789';var p='';for(var i=0;i<8;i++)p+=c[Math.floor(Math.random()*c.length)];document.getElementById('edit-pass').value=p;" style="padding:10px 12px;background:var(--dark);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px">🎲</button>'
+    +'</div></div>'
+    +'<div style="display:flex;gap:8px">'
+    +'<button onclick="saveEditUser(''+login+'')" style="flex:1;padding:11px;background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(30,159,232,.3)">💾 Salvar</button>'
+    +'<button onclick="document.getElementById('edit-modal').remove()" style="padding:11px 16px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:13px;color:var(--lbl);cursor:pointer">Cancelar</button>'
+    +'</div></div>';
+  document.body.appendChild(modal);
+}
+
+async function saveEditUser(login){
+  var name = document.getElementById('edit-name').value.trim();
+  var pass = document.getElementById('edit-pass').value.trim();
+  if(!name){ toast('Digite um nome!','err'); return; }
+  showLov('Salvando...');
+  try{
+    var users = await getUsers();
+    var user = users.find(function(u){ return u.login===login; });
+    if(!user){ toast('Usuário não encontrado','err'); hideLov(); return; }
+    user.name = name;
+    if(pass) user.pass = pass;
+    await setUsers(users);
+    document.getElementById('edit-modal').remove();
+    await renderUsersList();
+    toast(pass?'Nome e senha atualizados!':'Nome atualizado!','ok');
+    if(pass){
+      var nc=document.getElementById('ncred');
+      nc.style.display='block';
+      nc.innerHTML='🔄 <strong>Credenciais atualizadas!</strong><br>Login: <strong>'+login+'</strong><br>Nova senha: <strong>'+pass+'</strong>';
+    }
+  }catch(e){ toast('Erro: '+e.message,'err'); }
+  hideLov();
 }
 
 // ═══════════════════════════════════════
