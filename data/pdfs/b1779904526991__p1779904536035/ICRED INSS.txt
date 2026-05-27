@@ -1,0 +1,353 @@
+# Roteiro Operacional INSS – Resumo Organizado
+
+Documento: **Roteiro Operacional INSS – iCred Academy**
+Última atualização: **09/03/2026 – V20** 
+
+---
+
+# 1. Regras Gerais
+
+* Prazo máximo: **96 meses**
+* Quantidade máxima de empréstimos: **13 contratos por benefício**
+* Margem autorizada:
+
+  * **30%** para BPC/LOAS
+  * **35%** para demais benefícios
+* Formalização:
+
+  * Processo **100% digital**
+* Liberação:
+
+  * Via **PIX** na conta do beneficiário
+* Cliente não alfabetizado:
+
+  * **Não permitido**
+* Representante legal:
+
+  * Suspensão temporária 
+
+---
+
+# 2. Público-Alvo Elegível
+
+Autorizados:
+
+* Aposentados do INSS
+* Pensionistas do INSS
+* Clientes alfabetizados
+* Benefícios elegíveis à consignação
+
+Principais espécies aceitas:
+
+* Aposentadoria por idade
+* Aposentadoria por invalidez
+* Aposentadoria por tempo de contribuição
+* Pensão por morte
+* Benefícios especiais previstos em lei 
+
+---
+
+# 3. Regras para Benefícios por Invalidez
+
+Somente permitido:
+
+* Clientes entre:
+
+  * **55 anos até 59 anos e 11 meses**
+  * Com mais de **15 anos de benefício**
+    OU
+* Clientes com:
+
+  * **60 anos ou mais**
+  * Independente do tempo de benefício 
+
+---
+
+# 4. Benefício BPC/LOAS
+
+* Margem consignável:
+
+  * **30%**
+* Contratação deve ocorrer em:
+
+  * **2 etapas**
+* Intervalo obrigatório:
+
+  * **5 dias úteis**
+    entre proposta e averbação
+* Conforme:
+
+  * INSTRUÇÃO NORMATIVA PRES/INSS Nº 154/2023
+
+Situação atual:
+
+* BPC/LOAS com:
+
+  * **suspensão temporária** 
+
+---
+
+# 5. Regras para Pensão por Morte
+
+* O prazo do contrato deve respeitar:
+
+  * o tempo restante da pensão
+* Contratos não podem ultrapassar:
+
+  * a validade do benefício
+* Pensões anteriores à:
+
+  * Lei nº 13.135/2015
+    seguem análise normal
+
+Duração da pensão conforme idade do dependente:
+
+* Menos de 22 anos:
+
+  * 3 anos
+* 22 a 27 anos:
+
+  * 6 anos
+* 28 a 30 anos:
+
+  * 10 anos
+* 31 a 41 anos:
+
+  * 15 anos
+* 42 a 44 anos:
+
+  * 20 anos
+* 45 anos ou mais:
+
+  * Vitalícia 
+
+---
+
+# 6. Representante Legal (RL)
+
+Representação legal ocorre quando:
+
+* O beneficiário é incapaz civilmente
+* Exemplo:
+
+  * menores de idade
+  * incapazes judicialmente
+
+Regras:
+
+* Não atende:
+
+  * espécie 21 com RL
+* Idade do titular:
+
+  * mínima: 4 anos
+  * máxima: 17 anos, 11 meses e 29 dias
+* Representante:
+
+  * mínimo 18 anos
+* Grau de parentesco:
+
+  * somente pai ou mãe
+* Formalização:
+
+  * realizada pelo representante legal
+* Titular analfabeto:
+
+  * permitido
+* Representante analfabeto:
+
+  * não permitido
+
+Situação atual:
+
+* RL com suspensão temporária
+* Conforme IN 190/2025 
+
+---
+
+# 7. Benefícios Não Autorizados
+
+Não são aceitos:
+
+* Pensão alimentícia
+* Beneficiários residentes no exterior
+* Benefícios assistenciais
+* Benefícios com curatela/tutela
+* Benefícios pagos pelos Correios
+* Benefícios pagos por cooperativas sem convênio 
+
+---
+
+# 8. Política de Crédito
+
+## Idade x Prazo x Valor
+
+| Idade        | Prazo Máximo | Valor Máximo |   |
+| ------------ | ------------ | ------------ | - |
+| 21 a 61 anos | 96x          | R$ 100.000   |   |
+| 62 anos      | 96x          | R$ 90.000    |   |
+| 63 anos      | 96x          | R$ 80.000    |   |
+| 64 anos      | 96x          | R$ 70.000    |   |
+| 65 anos      | 96x          | R$ 60.000    |   |
+| 66 anos      | 96x          | R$ 50.000    |   |
+| 67 anos      | 96x          | R$ 40.000    |   |
+| 68 anos      | 96x          | R$ 30.000    |   |
+| 69 anos      | 96x          | R$ 25.000    |   |
+| 70 anos      | 84x          | R$ 25.000    |   |
+| 71 anos      | 72x          | R$ 25.000    |   |
+| 72 anos      | 60x          | R$ 25.000    |   |
+| 73 anos      | 48x          | R$ 25.000    |   |
+| 74+          | Não faz      | Não faz      |   |
+
+---
+
+# 9. Regras por Produto
+
+## Refinanciamento
+
+* Valor mínimo liberado:
+
+  * R$ 100
+* Mínimo de parcelas pagas:
+
+  * 12
+* Redução de parcela:
+
+  * apenas margem negativa
+* Não permite:
+
+  * aumentar parcela
+  * unificar parcelas
+
+## Margem Livre
+
+* Valor mínimo:
+
+  * R$ 1.120
+* Prazo mínimo:
+
+  * 36x
+* Não opera:
+
+  * margem negativa 
+
+---
+
+# 10. Portabilidade
+
+## Refinanciamento de Portabilidade
+
+* Valor mínimo financiado:
+
+  * R$ 3.000
+* Troco mínimo:
+
+  * R$ 100
+* Redução de parcela:
+
+  * apenas margem negativa
+
+## Portabilidade
+
+* Mínimo de parcelas pagas:
+
+  * 1
+* Não permite:
+
+  * portabilidade isolada
+  * unificação de parcelas 
+
+---
+
+# 11. Documentação Necessária
+
+Obrigatório:
+
+* IN100
+* RG ou CNH
+* Documento físico em mãos no momento da assinatura digital 
+
+---
+
+# 12. Liberação de Crédito
+
+Forma de pagamento:
+
+* Via PIX
+
+Regras:
+
+* Conta deve ser:
+
+  * do titular do benefício
+* Para RL:
+
+  * PIX pode ser do representante
+  * apenas chave CPF
+
+Bancos aceitos:
+
+* Banco do Brasil
+* Caixa
+* Itaú
+* Bradesco
+* Santander
+* Banrisul
+* Sicredi
+* Sicoob
+* Inter
+* Nubank
+* BTG
+* Next
+* entre outros 
+
+---
+
+# 13. Retornos da Dataprev
+
+Principais erros:
+
+| Código | Motivo                       | Ação                              |   |
+| ------ | ---------------------------- | --------------------------------- | - |
+| HW     | Margem excedida              | Revisar margem                    |   |
+| IT     | Benefício bloqueado          | Aguardar desbloqueio              |   |
+| AN     | Conta inválida               | Atualizar IN100                   |   |
+| IF     | Benefício bloqueado          | Solicitar desbloqueio no Meu INSS |   |
+| HR     | Limite de contratos excedido | Verificar exclusão futura         |   |
+| IR     | Prazo maior que benefício    | Ajustar prazo                     |   |
+
+---
+
+# 14. Perguntas Frequentes
+
+### Cliente analfabeto?
+
+* Não atende atualmente.
+
+### IN100 vale por quanto tempo?
+
+* 30 dias corridos.
+
+### Atende representante legal?
+
+* Não no momento.
+
+### Crédito precisa cair na conta do benefício?
+
+* Sim.
+
+### Recebimento por cartão magnético?
+
+* Cliente deve informar PIX de conta própria.
+
+### Portabilidade reduz taxa?
+
+* Apenas para adequação do saldo.
+
+### Aceita banco fora da CIP?
+
+* Não.
+
+### Portabilidade aceita margem negativa?
+
+* Sim, seguindo regras de liberação.
