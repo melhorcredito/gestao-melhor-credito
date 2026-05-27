@@ -1765,7 +1765,7 @@ function renderParceiros(){
 function openParModal(){
   parEditId=null;
   document.getElementById('par-modal-title').textContent='Novo Parceiro';
-  ['par-grupo','par-nome','par-email','par-tel','par-doclink','par-conlink'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['par-grupo','par-nome','par-email','par-tel','par-doclink'].forEach(function(id){ document.getElementById(id).value=''; });
   ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('par-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('par-grupo').focus(); },100);
@@ -1779,7 +1779,6 @@ function openParEdit(id){
   document.getElementById('par-email').value=it.email||'';
   document.getElementById('par-tel').value=it.tel||'';
   document.getElementById('par-doclink').value=it.doclink||'';
-  document.getElementById('par-conlink').value=it.conlink||'';
   ['parw-grupo','parw-nome'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('par-overlay').classList.add('open');
 }
