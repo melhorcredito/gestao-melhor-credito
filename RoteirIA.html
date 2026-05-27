@@ -328,23 +328,81 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
     </div>
   </div>
   <div class="asec" id="t-logs">
-    <div class="acard full">
-      <h3>📊 Estatísticas de uso</h3>
-      <div class="srow">
-        <div class="sbox"><div class="sn" id="st-q">0</div><div class="sl">Perguntas hoje</div></div>
-        <div class="sbox"><div class="sn" id="st-u">0</div><div class="sl">Usuários ativos</div></div>
-        <div class="sbox"><div class="sn" id="st-b">0</div><div class="sl">Bancos cadastrados</div></div>
+    <!-- Linha do tempo e data -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(135deg,var(--dark),var(--dark2));border-radius:12px;color:#fff">
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.08em;text-transform:uppercase">Painel de Controle</div>
+        <div style="font-family:var(--fh);font-size:18px;font-weight:700;margin-top:2px" id="dash-date">—</div>
       </div>
-      <h3 style="margin-bottom:10px">📋 Histórico recente</h3>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:rgba(255,255,255,.4)">Última atualização</div>
+        <div style="font-size:13px;font-weight:600;color:var(--mc)" id="dash-time">—</div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em">Perguntas hoje</span>
+          <span style="width:32px;height:32px;background:var(--mc-l);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">💬</span>
+        </div>
+        <div style="font-family:var(--fh);font-size:32px;font-weight:700;color:var(--mc-d)" id="st-q">0</div>
+        <div style="font-size:11px;color:var(--lbl);margin-top:4px" id="st-q-week">0 esta semana</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em">Parceiros ativos</span>
+          <span style="width:32px;height:32px;background:#F0FDF4;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">👥</span>
+        </div>
+        <div style="font-family:var(--fh);font-size:32px;font-weight:700;color:var(--green)" id="st-u">0</div>
+        <div style="font-size:11px;color:var(--lbl);margin-top:4px" id="st-u-total">0 cadastrados</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em">Bancos</span>
+          <span style="width:32px;height:32px;background:#FFF7ED;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">🏦</span>
+        </div>
+        <div style="font-family:var(--fh);font-size:32px;font-weight:700;color:#D97706" id="st-b">0</div>
+        <div style="font-size:11px;color:var(--lbl);margin-top:4px" id="st-b-prod">0 produtos</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em">Total perguntas</span>
+          <span style="width:32px;height:32px;background:#FDF4FF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px">📈</span>
+        </div>
+        <div style="font-family:var(--fh);font-size:32px;font-weight:700;color:#9333EA" id="st-total">0</div>
+        <div style="font-size:11px;color:var(--lbl);margin-top:4px">histórico completo</div>
+      </div>
+    </div>
+
+    <!-- Gráfico + Ranking -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:18px">
+        <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">📊 Perguntas por dia (7 dias)</div>
+        <div id="chart-bars" style="display:flex;align-items:flex-end;gap:6px;height:80px;padding-bottom:4px"></div>
+        <div id="chart-labels" style="display:flex;gap:6px;margin-top:4px"></div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:18px">
+        <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">🏆 Bancos mais consultados</div>
+        <div id="rank-banks" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+
+    <!-- Histórico -->
+    <div style="background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em">📋 Histórico recente</div>
+        <div style="display:flex;gap:8px">
+          <button class="bsec" onclick="loadLogs()" style="font-size:11px;padding:5px 12px">↻ Atualizar</button>
+          <button class="bsec bdng" onclick="clearLogs()" style="font-size:11px;padding:5px 12px">🗑 Limpar</button>
+        </div>
+      </div>
       <div style="overflow-x:auto">
         <table class="ltbl">
           <thead><tr><th>Horário</th><th>Usuário</th><th>Banco</th><th>Produto</th><th>Pergunta</th></tr></thead>
           <tbody id="log-tbody"></tbody>
         </table>
-      </div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button class="bsec bdng" onclick="clearLogs()">🗑 Limpar logs</button>
-        <button class="bsec" onclick="loadLogs()">↻ Atualizar</button>
       </div>
     </div>
   </div>
@@ -1004,24 +1062,122 @@ async function addLog(login,bank,prod,q){
 
 async function loadLogs(){
   try {
-    var logs=await getLogs();
-    var banks=_banks.length?_banks:await getBanks();
-    var today=new Date().toDateString();
-    var tq=logs.filter(function(l){ return new Date(l.t).toDateString()===today&&l.q!=='Entrou no sistema'; }).length;
-    var us=new Set(logs.filter(function(l){ return l.q!=='Entrou no sistema'; }).map(function(l){ return l.login; }));
-    document.getElementById('st-q').textContent=tq;
-    document.getElementById('st-u').textContent=us.size;
-    document.getElementById('st-b').textContent=banks.length;
-    var tb=document.getElementById('log-tbody'); if(!tb) return;
+    var logs = await getLogs();
+    var banks = _banks.length ? _banks : await getBanks();
+    var users = await getUsers();
+    var today = new Date().toDateString();
+    var pergs = logs.filter(function(l){ return l.q!=='Entrou no sistema'; });
+    var tq = pergs.filter(function(l){ return new Date(l.t).toDateString()===today; }).length;
+
+    // Semana
+    var d7 = new Date(); d7.setDate(d7.getDate()-7);
+    var week = pergs.filter(function(l){ return new Date(l.t)>=d7; }).length;
+
+    // Usuários ativos (últimos 7 dias)
+    var us = new Set(pergs.filter(function(l){ return new Date(l.t)>=d7; }).map(function(l){ return l.login; }));
+
+    // Total produtos
+    var totalProd = banks.reduce(function(acc,b){ return acc+(b.products||[]).length; },0);
+
+    // Atualiza KPIs
+    document.getElementById('st-q').textContent = tq;
+    document.getElementById('st-q-week').textContent = week+' esta semana';
+    document.getElementById('st-u').textContent = us.size;
+    document.getElementById('st-u-total').textContent = (users.length-1)+' cadastrados';
+    document.getElementById('st-b').textContent = banks.length;
+    document.getElementById('st-b-prod').textContent = totalProd+' produtos';
+    document.getElementById('st-total').textContent = pergs.length;
+
+    // Data e hora
+    var now = new Date();
+    var dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    var meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    var el = document.getElementById('dash-date');
+    var et = document.getElementById('dash-time');
+    if(el) el.textContent = dias[now.getDay()]+', '+now.getDate()+' de '+meses[now.getMonth()]+'. de '+now.getFullYear();
+    if(et) et.textContent = now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+
+    // Gráfico 7 dias
+    var chartDiv = document.getElementById('chart-bars');
+    var labelDiv = document.getElementById('chart-labels');
+    if(chartDiv){
+      chartDiv.innerHTML=''; labelDiv.innerHTML='';
+      var dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+      var dayCounts = [];
+      for(var i=6;i>=0;i--){
+        var d = new Date(); d.setDate(d.getDate()-i);
+        var ds = d.toDateString();
+        var c = pergs.filter(function(l){ return new Date(l.t).toDateString()===ds; }).length;
+        dayCounts.push({day:dayNames[d.getDay()], count:c, isToday:i===0});
+      }
+      var maxC = Math.max.apply(null, dayCounts.map(function(d){ return d.count; }))||1;
+      dayCounts.forEach(function(d){
+        var pct = Math.max((d.count/maxC)*80,4);
+        var bar = document.createElement('div');
+        bar.style.cssText = 'flex:1;background:'+(d.isToday?'var(--mc)':'var(--mc-l)')+';border-radius:6px 6px 0 0;height:'+pct+'px;position:relative;cursor:default;transition:opacity .2s;';
+        bar.title = d.day+': '+d.count+' perguntas';
+        bar.onmouseover = function(){ this.style.opacity='.8'; };
+        bar.onmouseout = function(){ this.style.opacity='1'; };
+        if(d.count>0){
+          var lbl = document.createElement('div');
+          lbl.style.cssText = 'position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--mc-d);white-space:nowrap';
+          lbl.textContent = d.count;
+          bar.appendChild(lbl);
+        }
+        chartDiv.appendChild(bar);
+        var dl = document.createElement('div');
+        dl.style.cssText = 'flex:1;text-align:center;font-size:9px;color:'+(d.isToday?'var(--mc)':'var(--lbl)')+';font-weight:'+(d.isToday?'700':'400');
+        dl.textContent = d.day;
+        labelDiv.appendChild(dl);
+      });
+    }
+
+    // Ranking de bancos
+    var rankDiv = document.getElementById('rank-banks');
+    if(rankDiv){
+      rankDiv.innerHTML='';
+      var bankCount = {};
+      pergs.forEach(function(l){ if(l.bank&&l.bank!=='—') bankCount[l.bank]=(bankCount[l.bank]||0)+1; });
+      var sorted = Object.entries(bankCount).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5);
+      var maxB = sorted.length ? sorted[0][1] : 1;
+      if(!sorted.length){
+        rankDiv.innerHTML='<div style="font-size:12px;color:var(--lbl);text-align:center;padding:12px">Nenhuma consulta registrada ainda</div>';
+      } else {
+        var medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+        sorted.forEach(function(item,i){
+          var pct = Math.round((item[1]/maxB)*100);
+          var div = document.createElement('div');
+          div.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'
+            +'<div style="display:flex;align-items:center;gap:6px">'
+            +'<span style="font-size:13px">'+medals[i]+'</span>'
+            +'<span style="font-size:12px;font-weight:600;color:var(--dark)">'+item[0]+'</span>'
+            +'</div>'
+            +'<span style="font-size:11px;font-weight:700;color:var(--mc-d)">'+item[1]+'x</span>'
+            +'</div>'
+            +'<div style="height:5px;background:var(--mc-l);border-radius:3px;margin-bottom:6px">'
+            +'<div style="height:100%;width:'+pct+'%;background:var(--mc);border-radius:3px;transition:width .6s"></div>'
+            +'</div>';
+          rankDiv.appendChild(div);
+        });
+      }
+    }
+
+    // Tabela
+    var tb = document.getElementById('log-tbody'); if(!tb) return;
     tb.innerHTML='';
-    logs.slice(0,60).forEach(function(l){
-      var tr=document.createElement('tr');
-      var t=new Date(l.t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-      var q=l.q.length>55?l.q.slice(0,55)+'…':l.q;
-      tr.innerHTML='<td>'+t+'</td><td><strong>'+l.login+'</strong></td><td>'+l.bank+'</td><td>'+l.prod+'</td><td>'+q+'</td>';
+    logs.filter(function(l){ return l.q!=='Entrou no sistema'; }).slice(0,60).forEach(function(l){
+      var tr = document.createElement('tr');
+      var t = new Date(l.t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      var q = l.q.length>55?l.q.slice(0,55)+'…':l.q;
+      var bankColor = 'background:var(--mc-l);color:var(--mc-d)';
+      tr.innerHTML = '<td style="color:var(--lbl);font-size:11px">'+t+'</td>'
+        +'<td><strong style="color:var(--dark)">'+l.login+'</strong></td>'
+        +'<td><span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;'+bankColor+'">'+l.bank+'</span></td>'
+        +'<td style="font-size:11px;color:var(--lbl)">'+l.prod+'</td>'
+        +'<td style="font-size:12px">'+q+'</td>';
       tb.appendChild(tr);
     });
-  } catch(e){}
+  } catch(e){ console.error(e); }
 }
 
 async function clearLogs(){
