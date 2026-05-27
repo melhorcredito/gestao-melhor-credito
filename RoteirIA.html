@@ -1487,15 +1487,9 @@ function fixEncoding(str) {
 
 function cleanText(str) {
   if(!str) return str;
-  // Remove caracteres de controle e normaliza espaços
-  return str
-    .replace(/[ --]/g, '')
-    .replace(/
-/g, '\n')
-    .replace(/
-/g, '\n')
-    .normalize('NFC');
+  return str.normalize('NFC');
 }
+
 
 async function publishNotice() {
   var tipo  = document.getElementById('notice-tipo').value;
