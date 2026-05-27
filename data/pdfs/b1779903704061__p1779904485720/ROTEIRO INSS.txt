@@ -1,0 +1,250 @@
+Roteiro - FINANTO
+Criado por:
+Jhade D’avilla
+Atualizado em:
+23/03/2026
+Sumário
+Fluxos das Propostas
+Tabelas e Limites
+Roteiro Operacional
+Envio de Evidência
+03
+08
+13
+19
+FLUXO DAS PROPOSTAS
+NO SISTEMA
+Port com Refin
+Até 6 dias
+Formalizado
+5 dias úteis
+Aguardando
+CIP
+Aguardando
+Aprovação
+Manual
+Passível de análise
+Rejeitado
+*Troco mínimo: Tabela tradicional R$100,00 | Tabela Power R$200,00
+Troco = ou > digitado
+Aprovação
+Troco < +10%
+Reprovado
+Aprovação c/
+Reformalização
+Aguardando
+Averbação
+Integrado
+**Regra do endividamento: Troco mínimo respeitando a regra de 5% do valor do endividamento
+Contrato novo
+Propostas escolhidas *por amostragem*
+Clientes que recebem por *cartão magnético*
+Até 6 dias
+Formalizado
+Averbado
+Averbado
+Aguardando
+Auditoria
+Aguardando
+Aprovação
+Supervisor
+Reprovado
+Aprovado
+Reprovado
+Aprovado
+Aguardando
+Aprov. Super.
+Integrado
+Reprovado
+Integrado
+Pendência Evidência
+Aguardando
+Aprovação
+Supervisor
+Aprovado
+Retornar
+Evidência
+Averbado
+Pendênte
+Evidência
+Averbado
+Regulariza
+Evidência
+Aprovado
+Rejeitado
+Integrado
+TABELAS E LIMITES
+Contrato novo
+Sem Seguro
+Tabela
+Taxa
+Prazo
+Parcela Min.
+Limite por contrato
+Limite por CPF
+Seguro
+Seguro (%)
+1011 Novo
+1,85%
+96x
+R$20,00
+Não possui
+Não
+1012 Entrante
+1,85%
+96x
+R$20,00
+Não possui
+Não
+Portabilidade com Refin
+Sem Seguro
+Tabela
+Taxa
+Prazo
+Parcela Mínima
+Saldo Mínimo
+Seguro
+Pagas
+Troco Mín
+2089 Prime
+1,66% - 1,85%
+96x
+Acima de R$300
+Não possui
+Não
+R$100,00
+2088 Select
+1,68% à 1,85%
+96x
+De  R$101 a R$299
+Não possui
+Não
+R$100,00
+2087 Essencial
+1,75% à 1,85%
+96x
+De R$50 a R$100
+Não possui
+Não
+R$100,00
+*Troco mínimo: 5% do endividamento ou R$100. O que for maior.
+ROTEIRO OPERACIONAL
+Regras Gerais 
+RG Físico e Digital: Até 10 anos;*
+CNH Física e Digital: Passa por análise do formalizador;
+Passaporte: Passa por análise do formalizador;
+Carteira Funcional: Passa por análise do formalizador;
+CRNM, RNM E RNE: Carteira de identidade de estrangeiro.
+IDADE
+PRAZO
+TICKET
+21 a 69 anos
+96x
+até R$ 120.000
+70 anos
+84x
+Até R$ 60.000
+Idade Máxima: 69 anos e 10 meses;
+Benefício 21: Acima de 45 anos.
+Benefício 32: Não aceito.
+Benefício 92: Acima de 60 anos.
+PB/AP/TO/RR: Não faz acima de 60 anos.
+Unificação de Parcela: Não faz.
+Agregar Margem: Não faz.
+Margem Negativa: Não opera;
+*Documentos acima de 10 anos passa por análise do formalizador e do banco.
+Benefício BPC Loas
+BPC Loas 87: Não opera; Representante Legal: Não opera;
+BPC Loas 88: Opera todos os produtos;
+Política de Idade: 66 anos e 10 meses;
+Regra de tempo de concessão: Não possui; Prazo para averbação: 5 dias;
+Temporariamente Suspenso
+Informações Gerais
+NÃO PORTA
+Inbursa
+Qi Sociedade
+Picpay
+Pine
+BNP Paribas
+Alfa
+Facta
+C6
+Safra
+ACIMA DE 12 PAGAS
+Pan
+Paraná
+Santander
+Mercantil
+Agibank
+Daycoval
+Parati
+Teimosinha
+CONTRATO NOVO: Permance ativa por 30 dias corridos, com tentativas de consulta de IN100, quando consegue
+consultar segue para a averbação;
+REFINANCIAMENTO: Permanece ativa por 6 dias corridos, com tentativas de consulta de IN100, quando consegue
+consultar segue para averbação;
+ENTRANTES: É considerada a data de concessão informada na digitação, sendo entrante, fica represado e a partir do
+89° dia, a proposta segue para a consulta de IN100, por mais 29 dias corridos;
+RETORNO MARGEM EXCEDIDA: Será disponibilizado o valor real disponível na observação. É necessário redigitar a
+proposta com o valor corrigido. Caso a margem esteja zerada, cancele a proposta;
+Contas Aceitas
+Digito da conta é letra: Sempre preencher com 0;
+Cartão Magnético: Escolher um dos bancos autorizados para liberação dos valores;
+Reapresentação de Pagamento Refin: 2 dias úteis (da data de integração);
+Reapresentação de Pagamento Novo: 5 dias corridos (da data de integração);
+CÓDIGO CÓDIGO NOME DO BANCO NOME DO BANCO
+341 069
+033 260
+001 389
+389
+336
+Itaú Unibanco (exceto IT) Banco Crefisa
+Banco Santander* Banco Nubank
+Banco do Brasil Banco Mercantil
+Banco Mercantil do Brasil
+Banco C6
+237 121
+422
+104 623
+041
+Banco Bradesco (exceto Next) Banco Agibank
+Banco Safra
+Caixa (exceto Caixa Tem) Banco Pan
+Banrisul
+*Exceto contas que iniciam por “77”
+CÓDIGO NOME DO BANCO
+756
+085
+Sicoob
+Ailos
+748
+136
+Sicred
+Unicred
+ENVIO DE EVIDÊNCIA
+Envio de Evidência
+É obrigatório o envio de evidência da venda, para toda proposta de:
+Contrato Novo (no ato da negociação);
+É válido como evidência print da conversa que contenha:
+Número do cliente;
+Mensagem detalhada da operação;
+Aviso de não cobrança de taxas adicionais;
+Confirmação do cliente.
+Exemplos de Script
+Nome: [Nome do cliente]
+CPF: [CPF]
+Correspondente Bancário: [Nome]
+Produto: Empréstimo Consignado
+Valor: R$ [Valor]
+Parcela: R$ [Valor parcela]
+Quantidade de parcelas: [Número]
+Contém seguro? [Sim/Nâo]
+Recebe o benefício via cartão magnético? Se sim, qual os
+dados bancários para liberação do valor? [Dados bancários]
+Não cobramos nenhuma taxa adicional
+Não enviamos boletos para pagamento.
+Confirma que está ciente e de acordo com todas as
+informações acima para prosseguirmos?
+Exemplos de Evidência
+Um banco pensado exclusivamente para correspondentes bancários,
+focado em proporcionar facilidade, agilidade e segurança.
