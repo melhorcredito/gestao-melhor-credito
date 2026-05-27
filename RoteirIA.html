@@ -1636,6 +1636,54 @@ async function renderContactsPanel() {
   }catch(e){ panel.innerHTML='<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar contatos.</div>'; }
 }
 
+
+// ═══════════════════════════════════════
+// PAINEL SWITCHER
+// ═══════════════════════════════════════
+async function showPanel(type) {
+  var msgs  = document.getElementById('msgs');
+  var pCont = document.getElementById('panel-contacts');
+  var pNot  = document.getElementById('panel-notices');
+  var cinp  = document.querySelector('.cinp');
+  var bChat = document.getElementById('btn-panel-chat');
+  var bCont = document.getElementById('btn-panel-contacts');
+  var bNot  = document.getElementById('btn-panel-notices');
+
+  // Esconde tudo
+  if(msgs)  msgs.style.display  = 'none';
+  if(pCont) pCont.style.display = 'none';
+  if(pNot)  pNot.style.display  = 'none';
+
+  // Reset botões
+  [bChat, bCont, bNot].forEach(function(b){
+    if(!b) return;
+    b.style.background   = 'var(--white)';
+    b.style.borderColor  = 'var(--bdr)';
+    b.style.color        = 'var(--lbl)';
+    b.style.fontWeight   = '500';
+  });
+
+  if(type === 'chat') {
+    if(msgs)  msgs.style.display  = 'flex';
+    if(cinp)  cinp.style.display  = 'block';
+    if(bChat){ bChat.style.background='var(--mc-l)'; bChat.style.borderColor='var(--mc)'; bChat.style.color='var(--mc)'; bChat.style.fontWeight='700'; }
+
+  } else if(type === 'contacts') {
+    if(pCont){ pCont.style.display='flex'; pCont.style.flexDirection='column'; }
+    if(cinp)  cinp.style.display = 'none';
+    if(bCont){ bCont.style.background='var(--mc-l)'; bCont.style.borderColor='var(--mc)'; bCont.style.color='var(--mc)'; bCont.style.fontWeight='700'; }
+    await renderContactsPanel();
+
+  } else if(type === 'notices') {
+    if(pNot){ pNot.style.display='flex'; pNot.style.flexDirection='column'; }
+    if(cinp) cinp.style.display = 'none';
+    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; }
+    var badge = document.getElementById('notice-badge');
+    if(badge) badge.style.display = 'none';
+    await renderNoticesPanel();
+  }
+}
+
 async function checkNotices() {
   try{
     var notices = await getNotices();
