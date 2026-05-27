@@ -1,0 +1,233 @@
+# Regras do Produto
+
+* Produto destinado para beneficiários do INSS.
+* Operações disponíveis:
+
+  * Margem Livre
+  * Refinanciamento
+  * Portabilidade
+  * Refinanciamento da Portabilidade
+* Formalização disponível:
+
+  * Digital Web
+  * Plus
+* Prazo e condições variam conforme:
+
+  * idade
+  * margem
+  * tipo de benefício
+* Crédito liberado somente:
+
+  * na conta de recebimento do benefício
+* Formalização digital exige:
+
+  * celular válido do cliente
+  * selfie
+  * envio de documentação  
+
+---
+
+# Público-Alvo: Autorizado
+
+Permitido para:
+
+* Aposentados do INSS
+* Pensionistas do INSS
+* Beneficiários com margem consignável disponível
+* Clientes alfabetizados
+* Clientes com benefício ativo e desbloqueado
+* Clientes que recebem benefício em conta bancária válida 
+
+---
+
+# Público-Alvo: Não Autorizado
+
+Não permitido para:
+
+* Clientes com benefício suspenso ou cessado
+* Benefícios bloqueados
+* Clientes com dados inconsistentes no INSS
+* Clientes impossibilitados de assinar
+* Operações com divergência cadastral
+* Clientes com documentação inválida ou incompleta  
+
+---
+
+# Regras Gerais – Margem Livre
+
+* Permite:
+
+  * contratação de proposta nova
+* Simulação pode ser feita por:
+
+  * valor solicitado
+  * valor da parcela
+* Cliente escolhe:
+
+  * prazo
+  * valor desejado
+* Sistema apresenta:
+
+  * taxas disponíveis
+  * IOF
+  * valor liberado
+  * valor da parcela
+* Dados do benefício devem ser exatamente iguais aos do INSS
+* Crédito:
+
+  * obrigatório na conta do benefício
+* Conta pode ser:
+
+  * corrente
+  * poupança  
+
+---
+
+# Regras Gerais – Refinanciamento
+
+* Necessário selecionar:
+
+  * contratos disponíveis para refinanciar
+* Pode refinanciar:
+
+  * um ou mais contratos
+* Clientes com margem negativa:
+
+  * precisam reduzir o valor da parcela
+* Margem negativa:
+
+  * é descontada da parcela máxima permitida
+* Simulação apresenta:
+
+  * prazo
+  * parcela
+  * IOF
+  * valor liberado
+* Dados bancários:
+
+  * devem coincidir com os dados do benefício   
+
+---
+
+# Regras Gerais – Portabilidade e Refinanciamento da Portabilidade
+
+## Portabilidade
+
+* Permite:
+
+  * redução de parcela
+  * portabilidade pura
+* Não permite:
+
+  * aumento da parcela
+* Caso exista portabilidade em andamento:
+
+  * margem livre será reprovada
+* Cliente com margem negativa:
+
+  * precisa reduzir o valor da parcela
+* Formalização:
+
+  * Digital Web
+  * Plus (somente INSS)
+
+## Refinanciamento da Portabilidade
+
+* Permite:
+
+  * agregação de margem
+* Permitido:
+
+  * apenas 1 refinanciamento de portabilidade por vez
+* Troco mínimo:
+
+  * menor valor entre R$ 50 ou 5% do financiado
+* Se o refinanciamento for cancelado:
+
+  * a portabilidade também será cancelada
+* Exceção de idade:
+
+  * 74 e 75 anos → até 84 parcelas    
+
+---
+
+# Bancos Não Aceitos
+
+O arquivo informa que:
+
+* O pagamento deve ocorrer:
+
+  * somente na conta de recebimento do benefício
+* Dados bancários divergentes:
+
+  * causam reprovação
+* Contas inválidas:
+
+  * precisam de ajuste para reenvio ao INSS  
+
+---
+
+# Regras de Invalidez – INSS
+
+Para aposentadoria por invalidez:
+
+* É obrigatório validar:
+
+  * tipo do benefício
+  * prazo permitido
+  * situação ativa do benefício
+* Dados inconsistentes:
+
+  * retornam pendência no INSS
+* Prazo da operação:
+
+  * não pode ultrapassar a validade do benefício
+* Código IR:
+
+  * operação maior que prazo do benefício
+* Benefícios bloqueados:
+
+  * retornam códigos IE, IF e IT  
+
+---
+
+# Rubricas
+
+Na proposta devem ser validados:
+
+* Valor da parcela
+* Margem disponível
+* Desconto consignável
+* Dados da averbação
+* Banco de recebimento
+* Tipo de conta:
+
+  * corrente
+  * poupança
+* Número do benefício
+* Dados bancários compatíveis com o INSS  
+
+---
+
+# Documentos Necessários para Envio da Operação ao INSS
+
+Obrigatório:
+
+* Documento de identificação do cliente
+* Dados do benefício
+* Dados bancários
+* Selfie (formalização digital)
+* Assinatura quando necessário
+* Documentação anexada no sistema
+* CPF do agente certificado
+* Referências de contato do cliente
+
+Importante:
+
+* Toda documentação deve ser anexada corretamente no sistema
+* Pendências documentais:
+
+  * geram retorno para ajuste
+* Propostas sem atuação:
+
+  * cancelam automaticamente após 10 dias
