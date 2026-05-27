@@ -122,9 +122,60 @@ header{background:var(--dark);padding:0 28px;height:58px;display:flex;align-item
 .del-yes{flex:1;padding:10px;border:none;border-radius:9px;background:#e53e3e;font-family:var(--font);font-size:14px;font-weight:600;color:#fff;cursor:pointer;transition:background .15s}
 .del-yes:hover{background:#c53030}
 #lb-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;padding:40px 20px}
+
+/* ── SIDEBAR ── */
+body{display:flex}
+.sidebar{width:240px;background:var(--dark);min-height:100vh;position:fixed;left:0;top:0;z-index:200;display:flex;flex-direction:column;box-shadow:3px 0 20px rgba(0,0,0,.2);transition:width .3s}
+.sidebar.collapsed{width:56px}
+.sb-logo{padding:18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden}
+.sb-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#1a90e0,#0055aa);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-logo-text{font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden}
+.sb-logo-text span{color:#1a90e0}
+.sb-toggle{position:absolute;right:-12px;top:22px;width:24px;height:24px;background:var(--blue);border:none;border-radius:50%;color:#fff;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,119,204,.4);z-index:201;transition:transform .3s}
+.sidebar.collapsed .sb-toggle{transform:rotate(180deg)}
+.sb-nav{flex:1;padding:12px 8px;overflow-y:auto;scrollbar-width:none}
+.sb-nav::-webkit-scrollbar{display:none}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:10px 8px 4px;white-space:nowrap;overflow:hidden}
+.sidebar.collapsed .sb-section{opacity:0}
+.sb-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:all .2s;margin-bottom:2px;color:rgba(255,255,255,.55);font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;border:1px solid transparent}
+.sb-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-item.active{background:rgba(26,144,224,.2);color:#fff;border-color:rgba(26,144,224,.3)}
+.sb-item .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+.sb-item .sb-label{flex:1;overflow:hidden}
+.sb-badge{background:#e53e3e;color:#fff;border-radius:20px;font-size:9px;font-weight:700;padding:2px 5px;flex-shrink:0}
+.main{margin-left:240px;flex:1;min-height:100vh;transition:margin .3s;overflow-x:hidden}
+.sidebar.collapsed ~ .main{margin-left:56px}
+header{display:none}
+.hero{display:none}
 </style>
 </head>
 <body>
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">MC</div>
+    <div class="sb-logo-text">Melhor <span>Crédito</span></div>
+  </div>
+  <button class="sb-toggle" onclick="toggleSidebar()">◀</button>
+  <nav class="sb-nav">
+    <div class="sb-section">Operacional</div>
+    <div class="sb-item active" onclick="switchTab('logins',this)"><span class="sb-icon">🔐</span><span class="sb-label">Criações de Logins</span></div>
+    <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / Propostas</span></div>
+    <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas E-mail</span></div>
+    <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros Sub</span></div>
+    <div class="sb-section">Gestão</div>
+    <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
+    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Comunicados</span></div>
+    <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Parceiros</span></div>
+    <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos</span></div>
+    <div class="sb-section">Contatos</div>
+    <div class="sb-item" onclick="switchTab('contatos',this)"><span class="sb-icon">📞</span><span class="sb-label">Contatos Bancos</span></div>
+    <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte Interno</span></div>
+    <div class="sb-section">Acesso Rápido</div>
+    <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
+    <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
+  </nav>
+</aside>
+<div class="main">
 
 <header>
   <span class="hlogo">Melhor <em>Crédito</em></span>
@@ -862,8 +913,12 @@ function promTag(p){ var cls=p==='GLM'?'glm':p==='Llamas'?'lla':'nov'; return '<
 function escHtml(s){ return (s||'').replace(/'/g,"\\'"); }
 
 // ── TABS ───────────────────────────────────────────────────────
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
 function switchTab(name,el){
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab,.sb-item').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
   if(el) el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
@@ -2077,5 +2132,6 @@ async function salvarIn(){
 
 </script>
 
+</div><!-- /main -->
 </body>
 </html>
