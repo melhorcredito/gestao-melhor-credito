@@ -1,0 +1,271 @@
+# Roteiro Operacional CLT 2S – Resumo Organizado
+
+Documento: **Roteiro Operacional CLT 2S** 
+
+---
+
+# 1. O que é o Crédito do Trabalhador?
+
+O Crédito do Trabalhador (Consignado Privado) é destinado para:
+
+* Trabalhadores CLT
+* Trabalhadores domésticos
+* Trabalhadores rurais
+
+Características:
+
+* Parcelas descontadas direto na folha
+* Margem consignável:
+
+  * até 35% do salário
+* Limite:
+
+  * até 9 contratos ativos por CPF 
+
+---
+
+# 2. Público Elegível
+
+## Público Atendido
+
+* Trabalhadores CLT
+* Domésticos
+* Trabalhadores rurais 
+
+---
+
+# 3. Público Não Atendido
+
+Não são aceitos:
+
+* PEPs (Pessoas Expostas Politicamente)
+* CPF irregular na Receita Federal
+* Funcionários com contrato com data de término
+* Estagiários
+* Menores aprendizes 
+
+---
+
+# 4. Regras em Caso de Mudança de Emprego
+
+## Se mudar de emprego
+
+* O desconto continua automaticamente
+* Transferência ocorre pelo:
+
+  * eSocial
+* Novo empregador:
+
+  * assume os descontos em folha 
+
+---
+
+# 5. Regras em Caso de Demissão
+
+## Demissão sem justa causa
+
+Podem ser utilizados:
+
+* Rescisão
+* FGTS
+* Multa rescisória
+
+para quitar o empréstimo.
+
+Caso ainda exista saldo:
+
+* dívida é transferida automaticamente para o novo emprego 
+
+---
+
+# 6. Pedido de Demissão
+
+Se o cliente pedir demissão:
+
+* O saldo pendente continua vinculado
+* O desconto passa automaticamente:
+
+  * para o novo vínculo empregatício
+* Processo realizado via:
+
+  * eSocial 
+
+---
+
+# 7. Cancelamento do Contrato
+
+O cliente pode cancelar:
+
+* em até 7 dias corridos
+* após o recebimento do crédito
+
+Condição:
+
+* devolver integralmente o valor recebido
+
+Atendimento:
+
+* Central de Atendimento ao Cliente 
+
+---
+
+# 8. Saque-Aniversário FGTS
+
+Quem aderiu ao saque-aniversário:
+
+* pode contratar normalmente
+* sem restrições 
+
+---
+
+# 9. Quitação e Renegociação
+
+O cliente pode:
+
+* quitar contrato
+* antecipar parcelas
+* renegociar dívida
+
+Pode ser feito:
+
+* a qualquer momento
+* inclusive durante troca de emprego
+
+Sem necessidade:
+
+* de nova averbação 
+
+---
+
+# 10. Condições Padrão – Tabela Premium
+
+## Margem
+
+* Até 70% da margem Dataprev
+* Limitado a:
+
+  * 35% do salário líquido
+
+## Tempo de Emprego x Prazo
+
+| Tempo de Empresa | Prazo Máximo |
+| ---------------- | ------------ |
+| 12 a 24 meses    | 18 parcelas  |
+| 25 a 36 meses    | 24 parcelas  |
+| 36+ meses        | 36 parcelas  |
+
+## Valores
+
+* Valor mínimo:
+
+  * R$ 1.000
+* Valor máximo:
+
+  * R$ 10.000 
+
+---
+
+# 11. Política de Crédito – Pessoa Física (CPF)
+
+## Critérios Gerais
+
+* Idade mínima:
+
+  * 18 anos
+* Idade máxima:
+
+  * 61 anos ao final do contrato 
+
+---
+
+# 12. Regras para Empresas (CNPJ)
+
+## Empresas Permitidas
+
+A empresa deve ser:
+
+* privada
+
+Não são aceitas:
+
+* empresas públicas
+* empresas de economia mista
+* associações
+* ONGs 
+
+---
+
+# 13. Condições Restritivas – Menor Tempo de Casa (Tabela Podium)
+
+## Margem
+
+* Até 50% da margem Dataprev
+* Limitado a:
+
+  * 35% do salário líquido
+
+## Tempo de Empresa x Prazo
+
+| Tempo de Empresa | Prazo           |
+| ---------------- | --------------- |
+| 6 a 11 meses     | Até 12 parcelas |
+
+## Valores
+
+* Valor mínimo:
+
+  * R$ 1.000
+* Valor máximo:
+
+  * R$ 5.000 
+
+---
+
+# 14. Requisitos para Empresas (CNPJ)
+
+## Elegibilidade
+
+A empresa deve possuir:
+
+* mínimo de 20 funcionários
+
+OU
+
+* faturamento anual mínimo:
+
+  * R$ 1.500.000
+
+Além disso:
+
+* CNPJ precisa ter:
+
+  * mínimo de 3 anos 
+
+---
+
+# 15. Empresas Não Permitidas
+
+Não aceita:
+
+* MEI
+* Microempresa (ME) 
+
+---
+
+# 16. Bancos Não Aceitos
+
+Principais bancos recusados:
+
+* Asaas
+* Cora
+* Mercado Pago
+* PagSeguro
+* Stone
+* Caixa Tem
+* Iti
+* Neon
+* Superdigital
+* BS2
+* Banco Carrefour
+* BMP Money Plus
+* Celcoin Pagamentos
