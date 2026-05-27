@@ -537,40 +537,15 @@ header{display:none}
 
 <!-- ══════════════ ABA 8: LOGINS BANCOS ══════════════ -->
 <div class="tab-content" id="tab-loginsbancos">
-
-  <!-- TELA DE SENHA -->
-  <div id="lb-lock" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;padding:40px 20px">
-    <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:16px;padding:40px 32px;max-width:380px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,58,102,.1)">
-      <div style="font-size:48px;margin-bottom:12px">🔐</div>
-      <h2 style="font-family:var(--fd);font-size:22px;color:var(--dark);margin-bottom:8px">Área Restrita</h2>
-      <p style="font-size:13px;color:var(--lbl);margin-bottom:24px;line-height:1.6">Digite a senha para acessar os logins bancários.</p>
-      <div class="mf" style="text-align:left;margin-bottom:16px">
-        <label>Senha de acesso</label>
-        <input id="lb-pass-input" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkLBPass()" style="width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:15px;outline:none">
-        <span id="lb-pass-err" style="font-size:11px;color:#e53e3e;display:none;margin-top:4px">Senha incorreta. Tente novamente.</span>
-      </div>
-      <button onclick="checkLBPass()" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-family:var(--font);font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(0,119,204,.3)">Acessar</button>
-    </div>
-  </div>
-
-  <!-- CONTEÚDO (oculto até digitar senha) -->
-  <div id="lb-content" style="display:none">
-    
-
     <div class="toolbar">
       <div class="toolbar-l">
         <input class="search" id="lb-srch" placeholder="🔍 Buscar por banco..." oninput="renderLB()">
       </div>
-      <div style="display:flex;gap:8px">
-        <button onclick="lockLB()" style="background:#fee2e2;color:#dc2626;border:1.5px solid #fca5a5;border-radius:9px;padding:9px 16px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer">🔒 Bloquear</button>
-        <button class="btn-add" onclick="openLBModal()">＋ Novo Login</button>
-      </div>
+      <button class="btn-add" onclick="openLBModal()">＋ Novo Login</button>
     </div>
-
     <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="lb-grid">
       <div class="empty" style="grid-column:1/-1">Nenhum login cadastrado</div>
     </div>
-  </div>
 </div>
 
 <!-- ══ MODAL LOGINS BANCOS ══ -->
@@ -947,11 +922,7 @@ function switchTab(name,el){
   document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
   if(el) el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-  if(name !== 'loginsbancos' && lbUnlocked){
-    lbUnlocked = false;
-    document.getElementById('lb-lock').style.display = 'flex';
-    document.getElementById('lb-content').style.display = 'none';
-  }
+
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1394,7 +1365,7 @@ onSnapshot(collection(db,'loginsbancos'), function(snap){
 });
 
 var LB_PASS = 'Melhor2026@#';
-var lbUnlocked = false;
+var lbUnlocked = true;
 
 function checkLBPass(){
   var inp = document.getElementById('lb-pass-input');
