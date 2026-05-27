@@ -493,7 +493,6 @@ async function ghGet(path) {
 }
 
 async function ghSet(path, data, msg) {
-  // Precisa do SHA atual para fazer PUT
   var sha = null;
   try {
     var infoR = await fetch(GH_BASE + path, {
@@ -505,7 +504,10 @@ async function ghSet(path, data, msg) {
     }
   } catch(e) {}
 
-  var body = { message: msg || 'update ' + path, content: btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 0)))) };
+  // Usa encodeURIComponent para preservar acentos e emojis
+  var jsonStr = JSON.stringify(data, null, 0);
+  var encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+  var body = { message: msg || 'update ' + path, content: encoded };
   if (sha) body.sha = sha;
 
   var r = await fetch(GH_BASE + path, {
@@ -603,6 +605,11 @@ async function getNotices() {
   return JSON.parse(atob(info.content.replace(/\n/g,'')));
 }
 async function setNotices(v){ return await ghSet('data/notices.json', v, 'update notices'); }
+
+// Fix encoding para salvar textos com acentos/emojis no GitHub
+function toBase64Unicode(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
 
 async function getPdfIdx() {
   var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/pdfs_index.json?t='+Date.now(), {
