@@ -1473,19 +1473,35 @@ var typeConfig = {
 };
 
 function fixEncoding(str) {
-  // Corrige texto com encoding quebrado (latin1 interpretado como utf-8)
+  if(!str) return str;
   try {
-    return decodeURIComponent(escape(str));
+    // Tenta corrigir latin1/cp1252 mal interpretado como UTF-8
+    var enc = new TextEncoder();
+    var dec = new TextDecoder('utf-8', {fatal: false});
+    return dec.decode(enc.encode(str));
   } catch(e) {
-    return str;
+    try { return decodeURIComponent(escape(str)); } 
+    catch(e2) { return str; }
   }
+}
+
+function cleanText(str) {
+  if(!str) return str;
+  // Remove caracteres de controle e normaliza espaços
+  return str
+    .replace(/[ --]/g, '')
+    .replace(/
+/g, '\n')
+    .replace(/
+/g, '\n')
+    .normalize('NFC');
 }
 
 async function publishNotice() {
   var tipo  = document.getElementById('notice-tipo').value;
-  var bank  = fixEncoding(document.getElementById('notice-bank').value.trim());
-  var title = fixEncoding(document.getElementById('notice-title').value.trim());
-  var body  = fixEncoding(document.getElementById('notice-body').value.trim());
+  var bank  = cleanText(document.getElementById('notice-bank').value.trim());
+  var title = cleanText(document.getElementById('notice-title').value.trim());
+  var body  = cleanText(document.getElementById('notice-body').value.trim());
   if(!title){ toast('Digite um título!','err'); return; }
   showLov('Publicando comunicado...');
   try{
@@ -1641,6 +1657,27 @@ async function checkNotices() {
 // Listener contatos
 var selCont = document.getElementById('sel-cont-bank');
 if(selCont) selCont.addEventListener('change', onSelContBank);
+
+// Listener paste - limpa encoding ao colar nos campos de comunicado
+function addPasteListener(id) {
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('paste', function(e) {
+    e.preventDefault();
+    var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    // Insere como texto puro normalizado
+    var start = el.selectionStart;
+    var end = el.selectionEnd;
+    var current = el.value;
+    el.value = current.slice(0, start) + text + current.slice(end);
+    el.selectionStart = el.selectionEnd = start + text.length;
+  });
+}
+addPasteListener('notice-title');
+addPasteListener('notice-body');
+addPasteListener('notice-bank');
+addPasteListener('inp-rot-txt');
+addPasteListener('inp-rot-nome');
 </script>
 </body>
 </html>
