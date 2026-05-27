@@ -871,13 +871,18 @@ async function addProd() {
   if (!bankId||!name){ toast('Selecione banco e produto','err'); return; }
   showLov('Salvando produto...');
   try {
+    // Sempre busca a versão mais atualizada do GitHub antes de modificar
     var banks = await getBanks();
     var bank  = banks.find(function(b){ return b.id===bankId; });
     if (!bank){ toast('Banco não encontrado','err'); hideLov(); return; }
     if (!bank.products) bank.products=[];
+    // Verifica se produto já existe
+    if (bank.products.find(function(p){ return p.name.toLowerCase()===name.toLowerCase(); })){
+      toast('Produto já existe!','err'); hideLov(); return;
+    }
     bank.products.push({id:'p'+Date.now(), name:name});
     await setBanks(banks);
-    _banks = banks;
+    _banks = JSON.parse(JSON.stringify(banks)); // cópia profunda
     document.getElementById('inp-prod').value='';
     await renderAdminBanks();
     toast('Produto adicionado!','ok');
