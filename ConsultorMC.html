@@ -1827,199 +1827,112 @@ async function renderNoticesPanel() {
 async function renderContactsPanel() {
   var panel = document.getElementById('panel-contacts');
   if(!panel) return;
-  panel.innerHTML = '<div style="font-size:12px;color:var(--lbl);text-align:center;padding:20px">⏳ Carregando contatos...</div>';
+  panel.innerHTML = '<div style="font-size:12px;color:var(--lbl);text-align:center;padding:20px">⏳ Carregando...</div>';
   try{
     var banks = _banks.length ? _banks : await getBanks();
     var contacts = await getContacts();
     panel.innerHTML = '';
-    var header = document.createElement('div');
-    header.style.cssText = 'font-family:var(--fh);font-size:18px;font-weight:700;color:var(--dark);margin-bottom:16px';
-    header.textContent = '📞 Contatos dos Bancos';
-    panel.appendChild(header);
-    var typeIcons = {SAC:'📞',Ouvidoria:'🔔',Comercial:'💼',WhatsApp:'💬','E-mail':'✉️',Outro:'📌'};
+
+    // Título
+    var title = document.createElement('div');
+    title.style.cssText = 'font-family:var(--fh);font-size:17px;font-weight:700;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px';
+    title.innerHTML = '📞 <span>Contatos dos Bancos</span>';
+    panel.appendChild(title);
+
+    // Grid de cards
+    var grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px';
+
+    var typeConfig = {
+      SAC:       {icon:'📞', color:'#0E7EC0', bg:'#EBF7FE'},
+      Ouvidoria: {icon:'🔔', color:'#D97706', bg:'#FFF7ED'},
+      Comercial: {icon:'💼', color:'#16A34A', bg:'#F0FDF4'},
+      WhatsApp:  {icon:'💬', color:'#16A34A', bg:'#F0FDF4'},
+      'E-mail':  {icon:'✉️', color:'#9333EA', bg:'#FDF4FF'},
+      Outro:     {icon:'📌', color:'#64748B', bg:'#F8FAFC'}
+    };
+
     var sorted = banks.slice().sort(function(a,b){ return a.name.localeCompare(b.name,'pt-BR'); });
     var hasAny = false;
+
     sorted.forEach(function(bank){
-      var items = contacts[bank.id]||[];
+      var items = contacts[bank.id] || [];
       if(!items.length) return;
       hasAny = true;
+
       var card = document.createElement('div');
-      card.style.cssText = 'background:var(--white);border:1.5px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:8px';
-      var bankTitle = document.createElement('div');
-      bankTitle.style.cssText = 'font-family:var(--fh);font-size:14px;font-weight:700;color:var(--dark);margin-bottom:10px';
-      bankTitle.textContent = '🏦 '+bank.name;
-      card.appendChild(bankTitle);
+      card.style.cssText = 'background:var(--white);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)';
+
+      // Header do banco
+      var head = document.createElement('div');
+      head.style.cssText = 'background:var(--dark);padding:10px 14px;display:flex;align-items:center;gap:8px';
+      head.innerHTML = '<span style="font-size:14px">🏦</span>'
+        +'<span style="font-family:var(--fh);font-size:13px;font-weight:700;color:#fff">'+bank.name+'</span>'
+        +'<span style="margin-left:auto;font-size:10px;font-weight:600;color:rgba(255,255,255,.4);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:10px">'+items.length+' contato'+(items.length>1?'s':'')+'</span>';
+      card.appendChild(head);
+
+      // Contatos
+      var body = document.createElement('div');
+      body.style.cssText = 'padding:8px';
+
       items.forEach(function(c){
+        var tc = typeConfig[c.tipo] || typeConfig.Outro;
+        var isPhone = /^[\d\s\(\)\-\+]+$/.test(c.valor.replace(/\s/g,''));
+        var isWA = c.tipo === 'WhatsApp';
+        var isEmail = c.tipo === 'E-mail';
+
         var row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--mc-ll)';
-        var icon = typeIcons[c.tipo]||'📌';
-        var isPhone = /^[\d\s\(\)\-\+]+$/.test(c.valor);
-        var isWA = c.tipo==='WhatsApp';
-        row.innerHTML = '<span style="font-size:16px">'+icon+'</span>'
-          +'<div style="flex:1"><div style="font-size:11px;font-weight:700;color:var(--lbl)">'+c.tipo+' — '+c.desc+'</div>'
-          +'<div style="font-size:13px;font-weight:600;color:var(--dark)">'+c.valor+'</div></div>'
-          +((isPhone||isWA)?'<a href="'+(isWA?'https://wa.me/55'+c.valor.replace(/\D/g,''):'tel:'+c.valor.replace(/\D/g,''))+'" style="padding:5px 12px;background:var(--mc-l);border:1px solid var(--mc);border-radius:20px;font-size:10px;font-weight:700;color:var(--mc);text-decoration:none">'+(isWA?'Abrir':'Ligar')+'</a>':'');
-        card.appendChild(row);
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:8px;transition:background .15s;cursor:default';
+        row.onmouseover = function(){ this.style.background='var(--mc-ll)'; };
+        row.onmouseout  = function(){ this.style.background=''; };
+
+        var iconWrap = document.createElement('div');
+        iconWrap.style.cssText = 'width:32px;height:32px;border-radius:8px;background:'+tc.bg+';display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0';
+        iconWrap.textContent = tc.icon;
+
+        var info = document.createElement('div');
+        info.style.flex = '1';
+        info.innerHTML = '<div style="font-size:10px;font-weight:700;color:'+tc.color+';text-transform:uppercase;letter-spacing:.06em">'+cleanText(c.tipo)+(c.desc&&c.desc!==c.tipo?' · '+cleanText(c.desc):'')+'</div>'
+          +'<div style="font-size:13px;font-weight:600;color:var(--dark);margin-top:1px">'+c.valor+'</div>';
+
+        row.appendChild(iconWrap);
+        row.appendChild(info);
+
+        // Botão de ação
+        if(isWA || isPhone || isEmail) {
+          var link = isWA ? 'https://wa.me/55'+c.valor.replace(/\D/g,'')
+                   : isEmail ? 'mailto:'+c.valor
+                   : 'tel:'+c.valor.replace(/\D/g,'');
+          var lbl = isWA ? '💬 Abrir' : isEmail ? '✉️ Email' : '📞 Ligar';
+          var btn = document.createElement('a');
+          btn.href = link;
+          btn.style.cssText = 'padding:5px 10px;background:'+tc.bg+';border:1px solid '+tc.color+'44;border-radius:20px;font-size:10px;font-weight:700;color:'+tc.color+';text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .2s';
+          btn.onmouseover = function(){ this.style.background=tc.color; this.style.color='#fff'; };
+          btn.onmouseout  = function(){ this.style.background=tc.bg; this.style.color=tc.color; };
+          btn.textContent = lbl;
+          row.appendChild(btn);
+        }
+
+        body.appendChild(row);
       });
-      panel.appendChild(card);
+
+      card.appendChild(body);
+      grid.appendChild(card);
     });
+
     if(!hasAny){
       var empty = document.createElement('div');
-      empty.style.cssText='text-align:center;padding:40px;color:var(--lbl);font-size:13px';
-      empty.innerHTML='<div style="font-size:36px;margin-bottom:12px">📞</div><div>Nenhum contato cadastrado ainda.</div>';
-      panel.appendChild(empty);
+      empty.style.cssText = 'text-align:center;padding:40px;color:var(--lbl);font-size:13px;grid-column:span 2';
+      empty.innerHTML = '<div style="font-size:36px;margin-bottom:12px">📞</div><div>Nenhum contato cadastrado ainda.</div>';
+      grid.appendChild(empty);
     }
-  }catch(e){ panel.innerHTML='<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar contatos.</div>'; }
-}
 
-
-// ═══════════════════════════════════════
-// PAINEL SWITCHER
-// ═══════════════════════════════════════
-async function showPanel(type) {
-  var msgs  = document.getElementById('msgs');
-  var pCont = document.getElementById('panel-contacts');
-  var pNot  = document.getElementById('panel-notices');
-  var cinp  = document.querySelector('.cinp');
-  var bChat = document.getElementById('btn-panel-chat');
-  var bCont = document.getElementById('btn-panel-contacts');
-  var bNot  = document.getElementById('btn-panel-notices');
-
-  // Esconde tudo
-  if(msgs)  msgs.style.display  = 'none';
-  if(pCont) pCont.style.display = 'none';
-  if(pNot)  pNot.style.display  = 'none';
-
-  // Reset botões
-  [bChat, bCont, bNot].forEach(function(b){
-    if(!b) return;
-    b.style.background   = 'var(--white)';
-    b.style.borderColor  = 'var(--bdr)';
-    b.style.color        = 'var(--lbl)';
-    b.style.fontWeight   = '500';
-  });
-
-  if(type === 'chat') {
-    if(msgs){ msgs.style.display='flex'; msgs.style.flexDirection='column'; }
-    if(cinp) cinp.style.display = 'block';
-    if(bChat){ bChat.style.background='var(--mc-l)'; bChat.style.borderColor='var(--mc)'; bChat.style.color='var(--mc)'; bChat.style.fontWeight='700'; }
-
-  } else if(type === 'contacts') {
-    if(pCont){ pCont.style.display='flex'; pCont.style.flexDirection='column'; }
-    if(cinp) cinp.style.display = 'none';
-    if(bCont){ bCont.style.background='var(--mc-l)'; bCont.style.borderColor='var(--mc)'; bCont.style.color='var(--mc)'; bCont.style.fontWeight='700'; }
-    await renderContactsPanel();
-
-  } else if(type === 'notices') {
-    if(pNot){ pNot.style.display='flex'; pNot.style.flexDirection='column'; }
-    if(cinp) cinp.style.display = 'none';
-    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; }
-    var badge = document.getElementById('notice-badge');
-    if(badge) badge.style.display = 'none';
-    await renderNoticesPanel();
+    panel.appendChild(grid);
+  }catch(e){
+    panel.innerHTML='<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar contatos.</div>';
   }
 }
 
-
-// ═══════════════════════════════════════
-// BUSCA RÁPIDA (sem selecionar banco)
-// ═══════════════════════════════════════
-async function sendQuickMsg() {
-  var inp = document.getElementById('quick-input');
-  var txt = inp.value.trim();
-  if(!txt) return;
-  inp.value = '';
-
-  // Mostra no chat principal
-  var msgs = document.getElementById('msgs');
-  msgs.style.display = 'flex';
-  msgs.style.flexDirection = 'column';
-  document.getElementById('panel-contacts').style.display = 'none';
-  document.getElementById('panel-notices').style.display = 'none';
-
-  // Reseta botões do painel
-  var bChat = document.getElementById('btn-panel-chat');
-  var bCont = document.getElementById('btn-panel-contacts');
-  var bNot  = document.getElementById('btn-panel-notices');
-  if(bChat){ bChat.style.background='var(--mc-l)'; bChat.style.borderColor='var(--mc)'; bChat.style.color='var(--mc)'; }
-  if(bCont){ bCont.style.background='var(--white)'; bCont.style.borderColor='var(--bdr)'; bCont.style.color='var(--lbl)'; }
-  if(bNot) { bNot.style.background='var(--white)';  bNot.style.borderColor='var(--bdr)';  bNot.style.color='var(--lbl)'; }
-
-  // Remove empty state
-  var es = msgs.querySelector('.es'); if(es) es.remove();
-
-  // Adiciona mensagem do usuário
-  var now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  var userDiv = document.createElement('div'); userDiv.className = 'msg u';
-  var uav = ST.user ? ST.user.login.slice(0,2).toUpperCase() : 'EU';
-  userDiv.innerHTML = '<div class="mav" style="background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;font-size:11px;font-weight:700">'+uav+'</div>'
-    +'<div style="display:flex;flex-direction:column;align-items:flex-end">'
-    +'<div class="mb" style="background:linear-gradient(135deg,var(--mc),var(--mc-d));color:#fff;border-bottom-right-radius:4px">'+txt+'</div>'
-    +'<div class="mt">'+now+'</div></div>';
-  msgs.appendChild(userDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  // Typing
-  var typDiv = document.createElement('div'); typDiv.className = 'msg ai'; typDiv.id = 'quick-typ';
-  typDiv.innerHTML = '<div class="mav" style="background:var(--dark);font-size:15px">🤖</div>'
-    +'<div class="mb"><div class="tdots"><span></span><span></span><span></span></div></div>';
-  msgs.appendChild(typDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  // Monta contexto completo (todos os bancos, contatos, comunicados)
-  try {
-    var banks = _banks.length ? _banks : await getBanks();
-    var allContacts = await getContacts();
-    var notices = await getNotices();
-
-    // Contatos de todos os bancos
-    var contLines = [];
-    banks.forEach(function(b){
-      var items = allContacts[b.id]||[];
-      if(items.length){
-        contLines.push('=== '+b.name+' ===');
-        items.forEach(function(c){ contLines.push(c.tipo+': '+c.desc+' — '+c.valor); });
-      }
-    });
-
-    // Comunicados recentes
-    var noticeLines = notices.slice(0,5).map(function(n){
-      return '['+n.tipo.toUpperCase()+'] '+(n.bank?n.bank+' — ':'')+n.title+(n.body?' | '+n.body:'');
-    });
-
-    var sys = 'Voce e o Consultor MC da Melhor Credito. Responda sobre roteiros e contatos. '
-      +(contLines.length ? 'CONTATOS: '+contLines.join(' | ')+' ' : '')
-      +(noticeLines.length ? 'COMUNICADOS: '+noticeLines.join(' | ')+' ' : '')
-      +'Para roteiros especificos, o parceiro deve selecionar o banco na sidebar.';
-
-    var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
-      body:JSON.stringify({
-        model:'llama-3.3-70b-versatile',
-        max_tokens:600,
-        messages:[{role:'system',content:sys},{role:'user',content:txt}]
-      })
-    });
-    var data = await res.json();
-    var reply = (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'Erro ao obter resposta.';
-
-    var t = document.getElementById('quick-typ'); if(t) t.remove();
-    var aiDiv = document.createElement('div'); aiDiv.className = 'msg ai';
-    var now2 = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    aiDiv.innerHTML = '<div class="mav" style="background:var(--dark);font-size:15px">🤖</div>'
-      +'<div style="display:flex;flex-direction:column;align-items:flex-start">'
-      +'<div class="mb" style="background:var(--white);border:1.5px solid var(--bdr);border-bottom-left-radius:4px">'+fmtMsg(reply)+'</div>'
-      +'<div class="mt">'+now2+'</div></div>';
-    msgs.appendChild(aiDiv);
-    msgs.scrollTop = msgs.scrollHeight;
-
-    addLog(ST.user?ST.user.login:'?', 'Busca rápida', '—', txt);
-  } catch(e) {
-    var t = document.getElementById('quick-typ'); if(t) t.remove();
-    addMsg('ai', 'Erro de conexão. Tente novamente.');
-  }
-}
 
 async function checkNotices() {
   try{
