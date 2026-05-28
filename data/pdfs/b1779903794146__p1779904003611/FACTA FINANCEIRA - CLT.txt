@@ -1,0 +1,98 @@
+Idade (assinatura do contrato)
+
+Mínima mulheres: 21 anos
+Máxima mulheres: 57 anos 11 meses e 29 dias
+Mínima homens: 21 anos
+Máxima homens: 62 anos 11 meses e 29 dias
+
+Documentação obrigatória: CPF ou RG (não será aceito qualquer documento digital que não seja CNH).
+
+Status do CPF: CPF regular obrigatório, ativo e sem restrições na receita federal.
+
+Máximo de contratos por cliente: Máximo de 9 contratos por CPF.
+
+Situação funcional:
+
+Não serão aceitos funcionários com data-fim de contrato ou estagiários, sendo considerados fora do regime celetista;
+Mínimo de 9 meses de vínculo empregatício na mesma empresa, com diferenciação aplicada na oferta.
+
+Forma de liberação do empréstimo: Em conta disponibilizada pelo cliente no momento da formalização.
+
+Data corte para REFIN, PORT e NOVO: Sempre no dia 21.
+
+Risco Máximo por CPF:
+
+Qtd. de Funcionários Tempo de Vínculo Prazo em meses
+
+Valor contratado
+
+Mín. Max.
+
+3 De 9 a 11 meses Mín. 36 / Máx 36 R$500,00 R$ 3.000,00
+
+3 De 12 a 17 meses Mín. 24 / Máx 24 R$500,00 R$ 4.000,00
+
+3 De 18 a 23 meses Mín. 24 / Máx 24 R$500,00 R$ 9.000,00
+
+3 De 24 a 35 meses Mín. 24 / Máx 36 R$500,00 R$ 15.000,00
+
+3 De 36 a 60 meses Mín. 24 / Máx 48 R$500,00 R$ 26.000,00
+
+3 De 61 a 120 meses Mín. 24 / Máx 60 R$500,00 R$ 26.000,00
+
+3 De 121 a 999 meses Mín. 24 / Máx 60 R$500,00 R$ 26.000,00
+
+
+Portabilidade com margem zerada? Sim.
+Portabilidade com margem negativa? Sim.
+Agrega margem? Sim, respeitando o limite da política de margem.
+Troco mínimo? R$ 100,00
+Prazo mínimo do Refin Da Port: Mín. 36x / Máx. 48x.
+Prazo mínimo Refin: Mín. 36x / Máx. 48x.
+Realiza operações com margem negativa? Não.
+Faz portabilidade com mínimo de parcelas
+pagas?
+
+1 parcela paga.
+
+Portabilidade com redução de parcela? Sim. Desde que cubra o saldo devedor, ficando dentro da taxa e regra do troco. Valor da parcela portada deverá ser mínimo
+
+de R$ 200,00.
+
+Limite de idade Port: Mulheres: de 21 a 57 anos
+Homens: 21 até 62 anos
+
+Porta 2 ou mais contratos numa única
+proposta?
+
+Não.
+
+Qual é o Saldo da Portabilidade? Saldo da portabilidade sempre vai variar conforme retorno da CIP.
+Parcela mínima na Portabilidade? Portabilidade sem regra de valor mínimo, desde que o Refin da Portabilidade, tenha a parcela mínima de R$ 200,00.
+Unifica parcelas? Não.
+
+PESSOA FÍSICA:
+
+• Restrições não serão utilizadas como critério eliminatório, mas serão consideradas na definição da oferta;
+• Score de crédito não será um filtro, mas servirá como indicador complementar para avaliação do perfil do cliente;
+• O vínculo do trabalhador deve estar ativo no sistema eSocial, ou seja, não pode haver data de desligamento registrado;
+• Atualmente, são considerados elegíveis apenas as seguintes categorias de trabalhador, conforme classificação do eSocial:
+- 101 - Empregado Geral (inclusive empregados públicos celetistas da administração direta ou indireta);
+- 721 - Contribuinte Individual – Diretor não empregado, com FGTS;
+• Funcionários com menos de 6 meses de vínculo trabalhista, deverão ter mais de 25 anos de idade.
+
+PUBLICO NÃO ATENDIDO 
+• Não serão aceitos clientes com restrições cadastrais, como falência pessoal ou envolvimento em atividades ilícitas;
+• PEP (pessoas expostas politicamente) não serão aceitas;
+• Não atende estrangeiros;
+• Clientes com histórico de contestações judiciais contra a Facta;
+• Clientes que possuírem alertas de afastamento temporário ou aviso prévio;
+• Vínculos trabalhistas que possuam empréstimos consignados legados, registrados no eSocial ou informados diretamente por instituições financeiras
+serão considerados inelegíveis.
+
+BANCO DIGITAIS
+ACEITOS: ✓ C6 ✓ PAN ✓ NUBANK ✓ INTER ✓ BANCO ORIGINAL ✓ PICPAY ✓ BANCO DIGIO
+NÃO ACEITOS: ꭗ PAGBANK ꭗ PAGSEGURO ꭗ MERCADO PAGO ꭗ ITI (ITAÚ) ꭗ XP ꭗ PEFISA ꭗ SUPERDIGITAL ꭗ SOFISA ꭗ NEON ꭗ STONE ꭗ VOTORANTIM ꭗ NEXT ꭗ BANCO DIGIMAIS ꭗ CEF AG 3880 (Contas
+Poupança Social, que
+possuem limite de
+movimentação mensal)
