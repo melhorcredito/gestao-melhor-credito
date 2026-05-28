@@ -1498,20 +1498,39 @@ var typeConfig = {
 
 function fixEncoding(str) {
   if(!str) return str;
-  try {
-    // Tenta corrigir latin1/cp1252 mal interpretado como UTF-8
-    var enc = new TextEncoder();
-    var dec = new TextDecoder('utf-8', {fatal: false});
-    return dec.decode(enc.encode(str));
-  } catch(e) {
-    try { return decodeURIComponent(escape(str)); } 
-    catch(e2) { return str; }
-  }
+  try { return decodeURIComponent(escape(str)); } catch(e) { return str; }
 }
 
 function cleanText(str) {
   if(!str) return str;
-  return str.normalize('NFC');
+  // Mapa de correção de caracteres corrompidos (latin1 interpretado como UTF-8)
+  var map = {
+    'Ã£':'ã','Ã ':'à','Ã¡':'á','Ã¢':'â','Ã¤':'ä',
+    'Ã©':'é','Ã¨':'è','Ãª':'ê','Ã«':'ë',
+    'Ã­':'í','Ã¬':'ì','Ã®':'î','Ã¯':'ï',
+    'Ã³':'ó','Ã²':'ò','Ã´':'ô','Ã¶':'ö','Ãµ':'õ',
+    'Ãº':'ú','Ã¹':'ù','Ã»':'û','Ã¼':'ü',
+    'Ã§':'ç','Ã±':'ñ',
+    'Ã‡':'Ç','Ã'':'Ñ',
+    'Ã':'Á','Ã€':'À','Ã‚':'Â','Ãƒ':'Ã','Ã„':'Ä',
+    'Ã‰':'É','Ãˆ':'È','ÃŠ':'Ê','Ã‹':'Ë',
+    'Ã':'Í','ÃŒ':'Ì','ÃŽ':'Î','Ã':'Ï',
+    'Ã"':'Ó','Ã'':'Ò','Ã"':'Ô','Ã–':'Ö','Ã•':'Õ',
+    'Ãš':'Ú','Ã™':'Ù','Ã›':'Û','Ãœ':'Ü',
+    'â€™':"'",'â€œ':'"','â€':'"','â€"':'—','â€"':'–',
+    'Â°':'°','Â©':'©','Â®':'®','Âº':'º','Âª':'ª',
+    'Ã£o':'ão','Ã§Ã£o':'ção','Ã§Ãµes':'ções',
+    'verificaÃ§Ã£o':'verificação',
+    'ÃÂ§ÃÂ£':'ã'
+  };
+  var result = str;
+  // Aplica correções do mapa
+  for(var wrong in map) {
+    result = result.split(wrong).join(map[wrong]);
+  }
+  // Tenta normalização NFC
+  try { result = result.normalize('NFC'); } catch(e) {}
+  return result;
 }
 
 
@@ -1824,6 +1843,35 @@ async function checkNotices() {
 // Listener contatos
 var selCont = document.getElementById('sel-cont-bank');
 if(selCont) selCont.addEventListener('change', onSelContBank);
+
+// Listener paste - normaliza texto colado nos campos de comunicado
+function setupPasteNorm(id) {
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('paste', function(e) {
+    e.preventDefault();
+    // Pega texto puro sem formatação
+    var text = '';
+    if(e.clipboardData) {
+      text = e.clipboardData.getData('text/plain');
+    } else if(window.clipboardData) {
+      text = window.clipboardData.getData('Text');
+    }
+    // Aplica limpeza de encoding
+    text = cleanText(text);
+    // Insere no campo
+    var start = el.selectionStart || 0;
+    var end = el.selectionEnd || 0;
+    el.value = el.value.slice(0, start) + text + el.value.slice(end);
+    el.selectionStart = el.selectionEnd = start + text.length;
+    el.dispatchEvent(new Event('input'));
+  });
+}
+setupPasteNorm('notice-title');
+setupPasteNorm('notice-body');
+setupPasteNorm('notice-bank');
+setupPasteNorm('inp-rot-txt');
+setupPasteNorm('inp-rot-nome');
 
 // Listener paste - limpa encoding ao colar nos campos de comunicado
 function addPasteListener(id) {
