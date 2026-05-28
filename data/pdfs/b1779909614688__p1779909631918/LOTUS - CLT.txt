@@ -1,0 +1,373 @@
+## Resumo detalhado – Roteiro LotusFast CLT+
+
+O material apresenta o funcionamento completo do produto **Crédito CLT+ da LotusFast**, explicando as regras de elegibilidade, documentação, fluxo operacional dentro da plataforma e o processo de formalização do empréstimo consignado privado para trabalhadores CLT. 
+
+---
+
+# 1. O que é o Crédito CLT+
+
+O CLT+ é uma modalidade de empréstimo consignado voltada para trabalhadores com carteira assinada (CLT), onde as parcelas são descontadas diretamente na folha de pagamento via eSocial. O produto busca oferecer:
+
+* Taxas mais acessíveis
+* Processo 100% digital
+* Liberação rápida
+* Segurança operacional
+* Facilidade na contratação 
+
+---
+
+# 2. Regras e critérios de elegibilidade
+
+## Regras do cliente
+
+Para contratar o crédito, o cliente precisa atender aos seguintes critérios:
+| Idade mínima                    | 18 anos           |
+| Idade máxima no fim do contrato | 58 anos           |
+| Tempo mínimo na empresa         | 6 meses           |
+| Valor mínimo do empréstimo      | R$ 700,00         |
+| Valor máximo do empréstimo      | R$ 15.000,00      |
+| Quantidade mínima de parcelas   | 6 parcelas        |
+| Quantidade máxima de parcelas   | 24 parcelas       |
+| Valor mínimo da parcela         | Não possui mínimo |
+
+## Regras da empresa empregadora
+
+A empresa do trabalhador também precisa cumprir requisitos específicos:
+| Tempo mínimo de existência        | 12 meses                               |
+| Tipo de empresa                   | Não pode ser MEI                       |
+| Quantidade mínima de funcionários | Mais de 50 funcionários                |
+| Situação FGTS e certidões         | Regular, sem dívidas                   |
+| Situação jurídica                 | Não pode estar em recuperação judicial |
+
+
+# 3. Condições do empréstimo
+
+## Forma de desconto
+
+As parcelas são descontadas diretamente no salário do trabalhador por meio do eSocial. 
+
+---
+
+## Margem consignável
+
+* A margem total permitida é de 35%
+* Porém, a operação utiliza somente 70% dessa margem disponível 
+
+---
+
+## Liberação do dinheiro
+
+O valor só pode ser liberado para conta bancária de titularidade do próprio cliente, podendo ser:
+
+* Conta corrente
+* Conta poupança 
+
+---
+
+## Horário de pagamento
+
+Existe bloqueio operacional entre:
+
+* 22h00 até 06h00 da manhã 
+
+---
+
+## Restrições cadastrais
+
+O cliente não pode estar cadastrado no sistema “Não Me Perturbe” para esse produto. 
+
+---
+
+# 4. Documentação aceita
+
+Os documentos aceitos para contratação são:
+
+* RG físico ou digital
+* CNH física ou digital
+* CPF físico 
+
+O documento deve estar válido. Documentos vencidos não são aceitos. 
+
+---
+
+# 5. Bancos aceitos para pagamento
+
+A plataforma aceita contas dos seguintes bancos:
+
+* Banco do Brasil
+* Santander
+* Caixa
+* Bradesco
+* Itaú
+* Nubank
+* Inter
+* PicPay
+* C6 Bank
+* Banco Pan
+* Banco Original
+* Banco Safra
+* XP
+* BTG Pactual
+* Mercantil
+* Digio
+* DM
+* Banrisul
+* Banestes
+* Banese
+* BRB
+* Banpará
+* Banco da Amazônia
+* Banco do Nordeste
+* Pefisa
+
+Entre outros listados no material. 
+
+---
+
+# 6. Passo a passo operacional na plataforma Lotus+
+
+## Acesso à plataforma
+
+O operador deve acessar a plataforma Lotus+ pelo endereço:
+
+app.lotusmais.com.br 
+
+Depois:
+
+1. Inserir o código enviado por e-mail
+2. Ler e aceitar os termos
+3. Prosseguir no sistema 
+
+---
+
+## Acesso ao módulo CLT+
+
+Dentro da plataforma:
+
+* Clicar no primeiro ícone localizado no canto superior esquerdo da tela para acessar o módulo CLT+. 
+
+---
+
+# 7. Cadastro inicial da proposta
+
+No primeiro passo da operação é realizado o cadastro do cliente para:
+
+* Solicitar consentimento
+* Consultar margem consignável
+
+Os dados obrigatórios são:
+
+* CPF
+* Nome completo
+* Telefone/WhatsApp 
+
+---
+
+# 8. Consentimento do cliente
+
+Após o cadastro:
+
+* O sistema gera um link de consentimento
+* Esse link pode:
+
+  * Ser copiado manualmente
+  * Ser enviado automaticamente via WhatsApp 
+
+O cliente recebe o link para autorizar a consulta de dados na Dataprev. 
+
+---
+
+# 9. Consulta da margem
+
+Depois que o cliente concede o consentimento:
+
+* O sistema atualiza automaticamente a margem disponível
+* O operador deve aguardar o processamento da consulta 
+
+---
+
+# 10. Simulação e escolha da proposta
+
+Após a análise:
+
+O sistema apresenta:
+
+* Nome e CPF do cliente
+* Valor liberado
+* Quantidade de parcelas 
+
+O operador pode:
+
+* Continuar com os valores sugeridos
+* Alterar os valores e parcelamentos 
+
+---
+
+## Alteração de valores
+
+Na opção “Alterar valores”:
+
+* O sistema mostra novas possibilidades de parcelamento
+* O valor exibido inicialmente é o máximo liberado
+* O valor pode ser reduzido conforme a necessidade do cliente 
+
+---
+
+# 11. Dados bancários
+
+Depois da escolha da proposta:
+
+* Devem ser inseridos os dados bancários do cliente para recebimento do crédito. 
+
+---
+
+# 12. Revisão final
+
+Antes do envio:
+
+O sistema apresenta um resumo da operação contendo:
+
+* Nome do cliente
+* CPF
+* Valor liberado
+* Quantidade de parcelas 
+
+---
+
+# 13. Formalização da proposta
+
+Ao finalizar:
+
+* A proposta é enviada
+* O cliente recebe automaticamente o link de assinatura digital
+* O contrato é assinado de forma online 
+
+---
+
+# 14. Boas práticas operacionais
+
+O material orienta seguir algumas práticas para evitar falhas:
+
+* Utilizar Google Chrome
+* Fechar outras abas
+* Limpar histórico do navegador
+* Evitar óculos, boné e acessórios na selfie
+* Se o Wi-Fi falhar, usar dados móveis 
+
+---
+
+## Prazo do link
+
+* O link fica disponível por até 2 dias
+* No segundo dia ele expira às 21h 
+
+---
+
+# 15. Fluxo da esteira operacional
+
+O processo completo acontece nesta sequência:
+
+1. Cliente autoriza consulta dos dados
+2. Sistema consulta informações e margem
+3. Plataforma mostra:
+
+   * valor
+   * parcelas
+   * condições
+4. Cliente escolhe a melhor opção
+5. Cliente assina o contrato
+6. Empréstimo é confirmado
+7. Dinheiro cai na conta do cliente 
+
+---
+
+# 16. Principais perguntas do FAQ
+
+## Quem pode contratar?
+
+* Trabalhadores CLT ativos
+* Clientes com margem disponível 
+
+---
+
+## Cliente negativado pode contratar?
+
+Sim. O produto aceita clientes negativados (SPC/Serasa). 
+
+---
+
+## Quem aderiu ao saque-aniversário pode contratar?
+
+Sim. O saque-aniversário não impede a contratação. 
+
+---
+
+## Quando não é possível contratar?
+
+Mesmo sendo CLT, o cliente não poderá contratar se:
+
+* A empresa não atender os critérios
+* Estiver afastado
+* Estiver em férias prolongadas
+* Estiver em aviso prévio
+* Não possuir margem disponível 
+
+---
+
+## Como ocorre o pagamento das parcelas?
+
+As parcelas são descontadas automaticamente do salário. 
+
+---
+
+## O que acontece em caso de demissão?
+
+### Sem justa causa:
+
+* Pode usar:
+
+  * até 100% da multa rescisória
+  * mais até 10% das verbas rescisórias
+
+### Pedido de demissão ou justa causa:
+
+* Pode usar até 35% das verbas rescisórias
+
+Se restar saldo:
+
+* Pode migrar para novo vínculo CLT
+* Ou ser negociado com o banco parceiro 
+
+---
+
+## Mudança de empresa
+
+Se o cliente mudar de emprego:
+
+* O desconto é transferido automaticamente via eSocial para o novo empregador. 
+
+---
+
+## Prazo de liberação
+
+Após assinatura do contrato:
+
+* O dinheiro normalmente é liberado em poucos minutos. 
+
+---
+
+# 17. Suporte
+
+O suporte da plataforma funciona:
+
+### Segunda a sexta:
+
+* 08h00 às 20h30
+
+### Sábados e feriados:
+
+* 09h30 às 14h00 
+
+O atendimento é feito diretamente pela plataforma na opção:
+
+* “Precisa de ajuda?”
