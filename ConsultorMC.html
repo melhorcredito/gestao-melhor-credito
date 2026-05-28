@@ -548,11 +548,21 @@ header{
       </div>
       <div class="frow"><input type="text" id="notice-title" placeholder="Título do comunicado"></div>
       <textarea id="notice-body" style="width:100%;min-height:90px;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r8);font-family:var(--font);font-size:13px;color:var(--text);background:var(--mc-ll);outline:none;resize:vertical;margin-bottom:4px" placeholder="Detalhes do comunicado (opcional)..."></textarea>
-      <div class="img-upload">
-        <input type="file" accept="image/*" id="notice-img" onchange="previewImg(this)">
-        <p>🖼️ <strong>Foto opcional</strong> — clique ou arraste uma imagem</p>
+      <div style="margin-top:6px">
+        <div style="font-size:11px;font-weight:700;color:var(--lbl);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">🖼️ Imagem opcional</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="notice-img-url" placeholder="Cole o link da imagem (https://...)" 
+            style="flex:1;padding:9px 11px;border:1.5px solid var(--bdr);border-radius:var(--r8);font-family:var(--font);font-size:12px;color:var(--text);background:var(--mc-ll);outline:none"
+            oninput="previewImgUrl(this.value)">
+          <button onclick="document.getElementById('notice-img-file').click()" 
+            style="padding:9px 12px;background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--r8);font-family:var(--font);font-size:11px;color:var(--lbl);cursor:pointer;white-space:nowrap">
+            📁 Upload
+          </button>
+          <input type="file" accept="image/*" id="notice-img-file" style="display:none" onchange="uploadImgLocal(this)">
+        </div>
+        <div style="font-size:10px;color:var(--lbl);margin-top:4px;opacity:.7">💡 Cole um link do WhatsApp Web, Google Drive (público) ou faça upload direto</div>
+        <img id="notice-img-preview" style="width:100%;height:auto;border-radius:var(--r8);margin-top:8px;display:none;max-height:200px;object-fit:contain">
       </div>
-      <img id="notice-img-preview" class="img-preview">
       <button class="badd" style="width:100%;padding:11px;margin-top:10px" onclick="publishNotice()">📢 Publicar para todos os parceiros</button>
       <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px">Comunicados publicados</div>
       <div id="notices-adm-list" style="display:flex;flex-direction:column;gap:6px"></div>
@@ -617,18 +627,29 @@ header{
 
 <script>
 // Preview de imagem
-function previewImg(input) {
+function previewImgUrl(url) {
   var preview = document.getElementById('notice-img-preview');
-  if(input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
+  if(url && (url.startsWith('http') || url.startsWith('data:'))) {
+    preview.src = url;
+    preview.style.display = 'block';
+    preview.onerror = function(){ preview.style.display='none'; };
   } else {
     preview.style.display = 'none';
   }
+}
+
+function uploadImgLocal(input) {
+  if(!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('notice-img-url').value = e.target.result;
+    previewImgUrl(e.target.result);
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function previewImg(input) {
+  uploadImgLocal(input);
 }
 
 
@@ -1677,11 +1698,11 @@ async function publishNotice() {
   if(!title){ toast('Digite um título!','err'); return; }
   showLov('Publicando comunicado...');
   try{
-    // Processa foto se houver
+    // Pega URL da imagem
     var imgData = '';
-    var fileEl = document.getElementById('notice-img');
-    if(fileEl && fileEl.files && fileEl.files[0]) {
-      imgData = await toImgBase64(fileEl.files[0]);
+    var urlEl = document.getElementById('notice-img-url');
+    if(urlEl && urlEl.value.trim()) {
+      imgData = urlEl.value.trim();
     }
     var notices = await getNotices();
     notices.unshift({
@@ -1692,7 +1713,7 @@ async function publishNotice() {
     document.getElementById('notice-title').value='';
     document.getElementById('notice-body').value='';
     document.getElementById('notice-bank').value='';
-    if(fileEl) fileEl.value='';
+    if(urlEl) urlEl.value='';
     document.getElementById('notice-img-preview').style.display='none';
     // Envia notificação push para todos
     sendPushNotification(title, bank ? bank+' — '+tipo : tipo);
