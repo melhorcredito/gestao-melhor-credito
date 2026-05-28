@@ -1934,6 +1934,51 @@ async function renderContactsPanel() {
 }
 
 
+
+// ═══════════════════════════════════════
+// PAINEL SWITCHER
+// ═══════════════════════════════════════
+async function showPanel(type) {
+  var msgs  = document.getElementById('msgs');
+  var pCont = document.getElementById('panel-contacts');
+  var pNot  = document.getElementById('panel-notices');
+  var cinp  = document.querySelector('.cinp');
+  var bChat = document.getElementById('btn-panel-chat');
+  var bCont = document.getElementById('btn-panel-contacts');
+  var bNot  = document.getElementById('btn-panel-notices');
+
+  // Esconde tudo
+  if(msgs)  { msgs.style.display  = 'none'; }
+  if(pCont) { pCont.style.display = 'none'; }
+  if(pNot)  { pNot.style.display  = 'none'; }
+
+  // Reset botões
+  [bChat, bCont, bNot].forEach(function(b){
+    if(!b) return;
+    b.classList.remove('act');
+  });
+
+  if(type === 'chat') {
+    if(msgs)  { msgs.style.display = 'flex'; msgs.style.flexDirection = 'column'; }
+    if(cinp)  { cinp.style.display = 'block'; }
+    if(bChat) { bChat.classList.add('act'); }
+
+  } else if(type === 'contacts') {
+    if(pCont) { pCont.style.display = 'flex'; pCont.style.flexDirection = 'column'; }
+    if(cinp)  { cinp.style.display = 'none'; }
+    if(bCont) { bCont.classList.add('act'); }
+    await renderContactsPanel();
+
+  } else if(type === 'notices') {
+    if(pNot)  { pNot.style.display = 'flex'; pNot.style.flexDirection = 'column'; }
+    if(cinp)  { cinp.style.display = 'none'; }
+    if(bNot)  { bNot.classList.add('act'); }
+    var badge = document.getElementById('notice-badge');
+    if(badge) badge.style.display = 'none';
+    await renderNoticesPanel();
+  }
+}
+
 async function checkNotices() {
   try{
     var notices = await getNotices();
