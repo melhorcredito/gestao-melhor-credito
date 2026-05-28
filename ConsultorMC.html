@@ -1704,23 +1704,9 @@ async function publishNotice() {
 
 function toImgBase64(file) {
   return new Promise(function(res,rej){
-    // Redimensiona imagem antes de salvar
+    // Salva imagem diretamente como base64 sem processamento
     var reader = new FileReader();
-    reader.onload = function(e) {
-      var img = new Image();
-      img.onload = function() {
-        var canvas = document.createElement('canvas');
-        // Mantém resolução original, só limita se for muito grande
-        var maxW = 1200;
-        var w = img.width, h = img.height;
-        if(w > maxW){ h = Math.round(h*maxW/w); w = maxW; }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        // Alta qualidade (0.92)
-        res(canvas.toDataURL('image/jpeg', 0.92));
-      };
-      img.src = e.target.result;
-    };
+    reader.onload = function(e) { res(e.target.result); };
     reader.onerror = rej;
     reader.readAsDataURL(file);
   });
