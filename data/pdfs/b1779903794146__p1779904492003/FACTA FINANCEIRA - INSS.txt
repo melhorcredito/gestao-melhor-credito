@@ -1,0 +1,135 @@
+Público atendido
+
+• Regras IDOSOS PARAÍBA (PB), AMAPÁ (AP) E TOCANTINS (TO) e RORAIMA (RR) 60 ANOS+:
+- Obrigatoriamente formalização digital;
+- Obrigatório via assinada pelo cliente a partir de 60 anos (CCB, Termo de adesão ou Seguro)(PB/AP/TO/RR);
+
+MATERIAL UF PB/AP/TO/RR
+
+• Regras aposentados e pensionistas do estado Ceará (CE): Conforme comunicado FF06/24.
+
+Público não atendido
+
+• Pensão alimentícia; • Previdência complementar (Ex. Correios, Banco do Brasil, Petrobrás); • Deficientes visuais/surdos/mudos; • Procurador outorgado mediante instrumento de procuração particular ou público
+;
+
+• Não alfabetizados, impossibilitados de assinar; • Perícia anterior a Janeiro/2018; • Clientes com benefício no Piauí (PI); • Espécie 87/88.
+
+BENEFÍCIOS NÃO CONSIGNÁVEIS
+BENEFÍCIOS NÃO CONSIGNÁVEIS
+
+Risco Máximo por CPF:
+
+Idade Assinatura Valor máximo Prazo máximo
+21 a 71 anos, 11 meses e 29 dias R$ 150.000,00 108x
+21 a 72 anos, 11 meses e 29 dias R$ 150.000,00 96x
+21 a 72 anos, 11 meses e 29 dias R$ 150.000,00 84x
+21 a 72 anos, 11 meses e 29 dias R$ 50.000,00 72x
+21 a 72 anos, 11 meses e 29 dias R$ 30.000,00 60x
+21 a 72 anos, 11 meses e 29 dias R$ 20.000,00 48x
+
+Carência:
+
+Para as novas operações (tipo Operação NOVO) dos benefícios concedidos na UF RS poderá ser concedido, excepcionalmente pelo prazo de
+90 dias, a contar de 28/06/2024, a carência de até 180 dias - IN INSS 169 de 27/06/2024. Favor observar na digitação a tabela correta.
+
+Limite de Idade Estado
+(PB/AP/TO/RR):
+
+Contratação até 59 anos 11 meses e 29 dias para clientes dos Estados da Paraíba (Lei n°12.027/21), Amapá (Lei n°2.840/23) e
+Tocantins (Lei n° 4.221/23), Roraima (Lei n° 1.895) . A partir deste limite,segue regra conforme página 4.
+
+Limite mínimo de valor da operação: Líquido Refin de Carteira:100,00
+Líquido Refin Cedido: R$ 100,00
+Líquido Refin da portabilidade: R$ 50,00
+Parcela mínima de contrato Novo e Refin: R$ 35,00
+Parcela mínima Refin da Port. R$50,00
+
+Dia de corte mensal: 2 dia útil.
+Forma de liberação do empréstimo: Liberação na mesma conta onde o cliente recebe o benefício.
+Simulador aumento de margem: SIMULADOR AUMENTO
+
+Limites operacionais
+• Troco mínimo R$ 100,00;
+• Faz unificação de parcela (desde que o líquido mínimo do cliente seja R$ 250,00);
+• É preciso que o cliente esteja enquadrado dentro das regras da normativa;
+• Não faz Refinanciamento com Redução de parcela;
+• Sem mínimo de parcelas pagas (carteira cedida);
+• Mínimo de 4 parcelas pagas (refin de carteira e refin cedido NBC). Os contratos que não possuírem a quantidade mínima de parcelas pagas serão sinalizados com a mensagem "Não passível para
+refinanciamento“;
+• Mínimo de margem a ser agregada R$ 06,00.
+
+Portabilidade com margem zerada? Sim
+Portabilidade com margem negativa? Sim
+Faz portabilidade com mínimo de parcelas pagas?  AGIBANK: Mínimo 15 parcelas pagas;
+- BMG: Mínimo 12 parcelas pagas;
+- C6: Mínimo 12 parcelas pagas;
+- DAYCOVAL: Mínimo 24 parcelas pagas;
+- PAN: Mínimo 30 parcelas pagas;
+- PARANÁ: Mínimo 15 parcelas pagas;
+- Santander/Olé: 12 pagas;
+- Demais Bancos: 0 pagas 
+
+Prazo mínimo do Refin. Da Port.: 40x 
+
+Portabilidade com redução de parcela? Sim. Desde que cubra o saldo devedor, ficando dentro da taxa e regra do troco.
+Limite de idade para Port: Até 72 anos, 11 meses e 29 dias.
+Porta 2 ou mais contratos numa única proposta? não
+Formas de portar o contrato? TED STR47, via CIP.
+Bancos que não porta: - PAULISTA: Cujo o contrato seja originado pela Facta Financeira;
+- Zema: Cujo o contrato seja originado pela Facta Financeira.
+- BANCO PINE;
+- SOCICRED 917.
+- INBURSA (BI);
+
+Qual é o Saldo da Portabilidade? Saldo da portabilidade sempre vai variar conforme retorno da CIP.
+Parcela mínima na Portabilidade? Portabilidade sem regra de valor mínimo, desde que o Refin da Portabilidade, tenha a parcela mínima de R$ 50,00.
+Parcela mínima na Port. Pura: R$50,00. 
+Unifica parcelas? Não 
+
+Documentos na digitação
+Quais documentos de identificação são aceitos? (1 cópia) Aceita somente RG ou CNH;
+A CNH mesmo que vencida,será válida para contratação das operações;
+Não aceita CTPS;
+Não aceita qualquer outro documento digital que não seja CNH.
+
+Documentos obrigatórios na jornada de formalização digital/digitação manual.
+* Obrigatoriedade: Selfie do cliente no processo de digitação;
+* FICHA CADASTRAL (em todas as operações);
+* DOCUMENTO DE IDENTIFICAÇÃO DO CLIENTE;
+* COMPROVANTE DE RESIDÊNCIA;
+* Para Público não alfabetizado, obrigatoriamente deve ser anexado o documento de identificação do A Rogo.
+
+CPF precisa imprimir o resultado da consulta?
+Precisa estar regular?
+A situação do CPF no site da Receita Federal deve ser “REGULAR”, necessário imprimir o resultado da consulta.
+SITE RECEITA FEDERAL
+
+Necessário comprovante de renda? Sim, (1 cópia) impressão do DETALHAMENTO DE CRÉDITO atualizado. 
+
+Necessário comprovante de conta bancária? De acordo com o item acima.
+Importante: Clientes/correntistas HSBC deverão apresentar *extrato bancário, seguindo as regras supracitadas, juntamente com a cópia
+do cartão (*No extrato HSBC não é mencionado o nome do cliente).
+-Cópia do cartão magnético (Somente quando na consulta IN100 o cliente receber via cartão magnético)
+SITE PREVIDÊNCIA SOCIAL
+
+Unifica parcelas? Não 
+
+Há seguro prestamista? Sim, de acordo com a tabela selecionada o seguro prestamista será ativado.
+Script Vídeo Seguro prestamista na contratação: Na formalização presencial, é necessário o envio de um áudio separadamente contendo o script abaixo:
+Clique aqui para acessar o script.
+
+Seguro na contratação: Ativação do serviço de telemedicina 24 horas após o cadastro da proposta. Atendimento médico por vídeo chamada através do
+WHATSAPP, podendo agendar um horário ou consultar na hora. Limitando a no máximo 03 consultas nos últimos 30 dias (plano
+individual), chegando neste limite a próxima consulta é paga separadamente através da plataforma do telemedicina.
+Contatos: 0800.942.7455 | +55 (51) 3027-5323
+
+Restringe ação judicial? Restringe se houver ações contra a financeira.
+
+Informar no de telefones? Sim, telefone celular próprio ou para recado. Informar celular caso o fixo seja para recado. 
+
+Precisa de referências? Não 
+
+Bancos digitais
+ACEITOS: ✓ C6 ✓ PAN ✓ NUBANK ✓ INTER ✓ BANCO ORIGINAL ✓ PICPAY ✓ BANCO DIGIO
+NÃO ACEITOS: ꭗ PAGBANK ꭗ PAGSEGURO ꭗ MERCADO PAGO ꭗ ITI (ITAÚ) ꭗ XP ꭗ PEFISA ꭗ SUPERDIGITAL ꭗ SOFISA ꭗ NEON ꭗ STONE ꭗ VOTORANTIM ꭗ NEXT
