@@ -1,0 +1,117 @@
+REGRAS GERAIS DA OPERAÇÃO
+Pré-requisitos
+Cliente com vínculo CLT ativo há mais de 6 meses.
+Empregador com mais de 24 meses de existência e
+capital social mínimo de R$15.000,00 (se ainda
+aplicável).
+Conta bancária válida (corrente ou poupança) fora
+da lista de bancos bloqueados.
+Idade no término do contrato: de 21 a 55 anos.
+Cliente fora do cadastro “Não Me Perturbe”.
+Parâmetros de contratação
+Máximo de 9 contratos ativos.
+
+Margem consignável: 35% do salário líquido (utiliza-
+se apenas 70% desse valor).
+
+Valor do empréstimo: mínimo R$1000 / máximo
+R$20.000.
+Valor da parcela: mínimo R$ 100 / máximo R$2.000.
+Prazo: mínimo 19 parcelas / máximo 24 parcelas.
+Taxa de juros: 4,97%
+Observações
+O valor é liberado apenas em conta do titular.
+O desconto é feito direto na folha via eSocial.
+O contrato pode ser liquidado antecipadamente.
+O sistema SCR pode apresentar defasagem,
+impactando a análise de crédito.
+
+PÚBLICO-ALVO E RESTRIÇÕES
+
+Quem pode contratar
+Trabalhadores CLT com categoria 101 – Empregado Geral.
+Contrato por tempo indeterminado.
+Registro de remuneração ativa no último mês no eSocial.
+Vínculo empregatício ativo há mais de 6 meses.
+Idade conforme regra 21 a 55
+
+Quem não pode contratar
+
+Intermitentes.
+Temporários.
+Jovem Aprendiz.
+Servidores públicos estatutários.
+
+LIBERAÇÃO NA CARTEIRA DIGITAL
+
+Passo a passo para o cliente
+1.Baixe o app Carteira de Trabalho Digital.
+2.Faça login com CPF e senha do Gov.br.
+3.Clique em “Crédito do Trabalhador” ou no ícone de
+dinheiro.
+4.Selecione “Faça uma simulação”.
+5.Informe valor desejado e número de parcelas.
+6.Clique em “Simular Empréstimo”.
+7.Escolha a oferta
+
+LIMITAÇÕES: LIBERAÇÃO DO RECURSO
+PARA O CLIENTE
+
+Bancos Digitais Bloqueados para Pagamento
+Atenção! As propostas cadastradas com qualquer um
+dos bancos listados abaixo como conta para
+pagamento serão automaticamente reprovadas, pois
+esses bancos estão bloqueados para liberação de
+recursos:
+
+IMPORTANTE: Esses bancos também estão bloqueados
+para regularizações de pagamento, incluindo o banco
+digital 323 – MercadoPago.com.
+
+Banco Bankpar S/A
+11 Credit Suisse Hedgin
+12 Banco Inbursa S/A
+21 Espírito Santo
+26 Estado do Acre S/A
+35 Estado do Ceará S/A
+77 Banco Inter S.A.
+79 Banco Original do AG
+93 SCM Polocred
+106 Itabanco S/A
+107 Banco BBM S/A
+136 CC Unicred do Brasil
+149 Facta Financeira S/A
+208 Pactual S/A
+239 Bancred S/A
+261 Varig S/A
+286 Coop. de Crédito Rural de Ouro Sulcredi/Ouro
+290 PagSeguro Internet S.A.
+
+Sorocred – Crédito, Financiamento e
+Investimentos
+
+309 Cambionet Corretora de Câmbio Ltda
+316 Sicredi Vanguarda PR
+329 QI Sociedade de Crédito Direto S.A.
+349 Amaggi S.A. – Crédito, Financiamento e
+
+Investimento
+380 PicPay Serviços S.A.
+480 Banco Wachovia S/A
+623 Banco PAN
+655 Banco Votorantim S.A.
+736 United S/A
+741 Ribeirão Preto
+746 Modal S/A
+816 Sicoob São Miguel
+826 Sicoob Ouro Verde
+827 Sicoob Credfaz
+888 Banco Virtual
+935 FACTA FINANCEIRA S/A
+
+MOTIVOS DE REPROVAÇÃO
+Tempo de admissão inferior a 6 meses + 1 dia.
+Idade fora da faixa permitida conforme seguro.
+Parcela inferior a R$100,00.
+Prazo inferior a 6 meses.
+Conta cadastrada em banco digital bloqueado.
