@@ -1878,12 +1878,16 @@ async function salvarCon(){
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
-  if(conEditId){
-    await updateDoc(doc(db,'contratos',conEditId),{parceiro,grupo,link,obs});
-  } else {
-    await addDoc(collection(db,'contratos'),{parceiro,grupo,link,obs,data:hoje()});
+  try {
+    if(conEditId){
+      await updateDoc(doc(db,'contratos',conEditId),{parceiro,link,obs});
+    } else {
+      await addDoc(collection(db,'contratos'),{parceiro,link,obs,data:hoje()});
+    }
+    closeConModal();
+  } catch(e) {
+    alert('Erro ao salvar: ' + e.message);
   }
-  closeConModal();
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
