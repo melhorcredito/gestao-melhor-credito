@@ -239,16 +239,16 @@ function verDetalhe(id) {
 }
 
 function montarMsg(d) {
-  return 'MELHOR CREDITO — COMISSAO ATRASADA
-
-Parceiro: '+d.parceiro+'
-CPF: '+d.cpf+'
-Proposta: #'+d.proposta+'
-Banco: '+d.banco+'
-Produto: '+d.produto+'
-Valor: '+d.valor+'
-Data Pgto: '+(d.data||'—')+(d.obs?'
-Obs: '+d.obs:'');
+  var nl = '\n';
+  return 'MELHOR CREDITO - COMISSAO ATRASADA'+nl+nl
+    +'Parceiro: '+d.parceiro+nl
+    +'CPF: '+d.cpf+nl
+    +'Proposta: #'+d.proposta+nl
+    +'Banco: '+d.banco+nl
+    +'Produto: '+d.produto+nl
+    +'Valor: '+d.valor+nl
+    +'Data Pgto: '+(d.data||'-')
+    +(d.obs ? nl+'Obs: '+d.obs : '');
 }
 
 function abrirWA() {
