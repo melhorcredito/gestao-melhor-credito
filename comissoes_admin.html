@@ -145,8 +145,28 @@ var WA_NUM   = '5547997075847';
 var DADOS    = [];
 var itemAtual = null;
 
-document.getElementById('btn-entrar').addEventListener('click', doLogin);
-document.getElementById('l-senha').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btn-entrar').addEventListener('click', doLogin);
+  document.getElementById('l-senha').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+  document.getElementById('btn-sair').addEventListener('click', function() {
+    document.getElementById('s-login').style.display = 'flex';
+    document.getElementById('s-main').style.display = 'none';
+    document.getElementById('l-senha').value = '';
+  });
+  document.getElementById('btn-ref').addEventListener('click', carregarDados);
+  document.getElementById('fsrch').addEventListener('input', renderTabela);
+  document.getElementById('fstatus').addEventListener('change', renderTabela);
+  document.getElementById('btn-wa-modal').addEventListener('click', function() {
+    if(!itemAtual) return;
+    window.open('https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(montarMsg(itemAtual)), '_blank');
+  });
+  document.getElementById('btn-modal-close').addEventListener('click', function() {
+    document.getElementById('modal-lov').classList.remove('open'); itemAtual=null;
+  });
+  document.getElementById('modal-lov').addEventListener('click', function(e){
+    if(e.target===this){ document.getElementById('modal-lov').classList.remove('open'); itemAtual=null; }
+  });
+});
 
 function doLogin() {
   if(document.getElementById('l-senha').value === SENHA) {
@@ -158,11 +178,7 @@ function doLogin() {
   }
 }
 
-document.getElementById('btn-sair').addEventListener('click', function() {
-  document.getElementById('s-login').style.display = 'flex';
-  document.getElementById('s-main').style.display = 'none';
-  document.getElementById('l-senha').value = '';
-});
+
 
 async function ghGet() {
   var r = await fetch(GH_RAW + 'data/comissoes.json?t=' + Date.now());
@@ -192,9 +208,7 @@ async function carregarDados() {
   } catch(e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-document.getElementById('btn-ref').addEventListener('click', carregarDados);
-document.getElementById('fsrch').addEventListener('input', renderTabela);
-document.getElementById('fstatus').addEventListener('change', renderTabela);
+
 
 function renderTabela() {
   var srch = document.getElementById('fsrch').value.toLowerCase();
@@ -265,13 +279,7 @@ Data Pgto: '+(d.data||'—')+'
 ':'');
 }
 
-document.getElementById('btn-wa-modal').addEventListener('click', function() {
-  if(!itemAtual) return;
-  window.open('https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(montarMsg(itemAtual)), '_blank');
-});
 
-document.getElementById('btn-modal-close').addEventListener('click', function() { document.getElementById('modal-lov').classList.remove('open'); itemAtual=null; });
-document.getElementById('modal-lov').addEventListener('click', function(e){ if(e.target===this){ document.getElementById('modal-lov').classList.remove('open'); itemAtual=null; }});
 
 async function excluir(id) {
   if(!confirm('Excluir?')) return;
