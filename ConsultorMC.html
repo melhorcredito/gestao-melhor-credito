@@ -579,7 +579,10 @@ async function getUsers()  {
   });
   if (!r.ok) throw new Error('getUsers '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setUsers(v) { return await ghSet('data/users.json', v, 'update users'); }
 async function getBanks()  {
@@ -589,7 +592,10 @@ async function getBanks()  {
   });
   if (!r.ok) throw new Error('getBanks '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setBanks(v) { return await ghSet('data/banks.json', v, 'update banks'); }
 async function getLogs()   {
@@ -598,7 +604,10 @@ async function getLogs()   {
   });
   if (!r.ok) throw new Error('getLogs '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
 async function getContacts() {
@@ -607,7 +616,10 @@ async function getContacts() {
   });
   if (!r.ok) return {};
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setContacts(v){ return await ghSet('data/contacts.json', v, 'update contacts'); }
 
@@ -617,7 +629,13 @@ async function getNotices() {
   });
   if (!r.ok) return [];
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  // Usa TextDecoder para suportar UTF-8 (acentos, emojis)
+  var b64 = info.content.replace(/\n/g,'');
+  var bin = atob(b64);
+  var bytes = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  var decoded = new TextDecoder('utf-8').decode(bytes);
+  return JSON.parse(decoded);
 }
 async function setNotices(v){ return await ghSet('data/notices.json', v, 'update notices'); }
 
@@ -632,7 +650,10 @@ async function getPdfIdx() {
   });
   if (!r.ok) throw new Error('getPdfIdx '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setPdfIdx(v){ return await ghSet('data/pdfs_index.json', v, 'update pdf index'); }
 
