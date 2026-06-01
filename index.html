@@ -192,7 +192,7 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas E-mail</span></div>
     <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros Sub</span></div>
     <div class="sb-section">Gestão</div>
-    <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
+    <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Ajuste de Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
     <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Comunicados</span></div>
     <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Documentos Parceiros</span></div>
     <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos Parceiros</span></div>
@@ -229,7 +229,7 @@ header{display:none}
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
-    <div class="tab" onclick="switchTab('comissoes',this)">💰 Comissões <span id="cm-badge" style="display:none;background:#e53e3e;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 6px;margin-left:4px">🔔</span></div>
+    <div class="tab" onclick="switchTab('comissoes',this)">💰 Ajuste de Comissões <span id="cm-badge" style="display:none;background:#e53e3e;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 6px;margin-left:4px">🔔</span></div>
     <div class="tab" onclick="switchTab('parceiros',this)">👥 Parceiros</div>
     <div class="tab" onclick="switchTab('contratos',this)">📄 Contratos</div>
   </div>
@@ -1657,6 +1657,7 @@ function renderCom(){
 
   // Atualiza badge na aba
   var alertas = COMISSOES.filter(function(it){
+    if((it.status||'pendente') === 'finalizado') return false;
     if(!it.criado) return false;
     var partes = it.criado.split('/');
     if(partes.length!==3) return false;
@@ -1681,7 +1682,7 @@ function renderCom(){
     el.innerHTML = items.map(function(it){
     var tabelas = it.tabelas||[];
     var alerta = '';
-    if(it.criado){
+    if(it.criado && (it.status||'pendente') !== 'finalizado'){
       var partes = it.criado.split('/');
       if(partes.length===3){
         var criado = new Date(partes[2],partes[1]-1,partes[0]).getTime();
@@ -1913,12 +1914,16 @@ async function salvarCon(){
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
-  if(conEditId){
-    await updateDoc(doc(db,'contratos',conEditId),{parceiro,grupo,link,obs});
-  } else {
-    await addDoc(collection(db,'contratos'),{parceiro,grupo,link,obs,data:hoje()});
+  try {
+    if(conEditId){
+      await updateDoc(doc(db,'contratos',conEditId),{parceiro,link,obs});
+    } else {
+      await addDoc(collection(db,'contratos'),{parceiro,link,obs,data:hoje()});
+    }
+    closeConModal();
+  } catch(e) {
+    alert('Erro ao salvar: ' + e.message);
   }
-  closeConModal();
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
