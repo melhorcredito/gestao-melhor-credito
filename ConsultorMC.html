@@ -696,7 +696,8 @@ async function doLogin() {
     document.getElementById('btn-login').disabled = false;
     showScreen('s-main');
     await loadSidebar();
-    checkNotices();
+    setTimeout(checkNotices, 1000);
+    setInterval(checkNotices, 60000); // verifica a cada 1 minuto
     addLog(found.login,'—','—','Entrou no sistema');
   } catch(e) {
     document.getElementById('lerr').textContent = 'Erro de conexão. Tente novamente.';
