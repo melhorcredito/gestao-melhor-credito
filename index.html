@@ -647,7 +647,6 @@ header{display:none}
 
 <!-- ══════════════ ABA 10: COMISSÕES ══════════════ -->
 <div class="tab-content" id="tab-comissoes">
-  
   <div style="background:var(--bg)">
     <div class="toolbar" style="padding-top:16px">
       <div class="toolbar-l">
@@ -655,8 +654,25 @@ header{display:none}
       </div>
       <button class="btn-add" onclick="openCmModal()">＋ Nova Comissão</button>
     </div>
-    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="cm-grid">
-      <div class="empty" style="grid-column:1/-1">Nenhuma comissão cadastrada</div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 8px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="width:10px;height:10px;background:#f59e0b;border-radius:50%;display:inline-block"></span>
+        <span style="font-size:13px;font-weight:700;color:#92400e">⏳ Pendentes</span>
+        <span id="cm-cnt-pend" style="background:#f59e0b;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px">0</span>
+      </div>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="cm-grid-pend">
+      <div class="empty" style="grid-column:1/-1">Nenhuma comissão pendente</div>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 8px;border-top:1.5px solid var(--bdr);padding-top:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="width:10px;height:10px;background:#10b981;border-radius:50%;display:inline-block"></span>
+        <span style="font-size:13px;font-weight:700;color:#065f46">✅ Finalizadas</span>
+        <span id="cm-cnt-fin" style="background:#10b981;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px">0</span>
+      </div>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="cm-grid-fin">
+      <div class="empty" style="grid-column:1/-1">Nenhuma comissão finalizada</div>
     </div>
   </div>
 </div>
@@ -682,7 +698,8 @@ header{display:none}
       <div class="mf"><label>Percentual para Ajuste <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="cm-perc" placeholder="Ex: 2,5%"></div>
       <div class="mf" id="cmw-data"><label>Data Realizada *</label><input type="date" id="cm-data"><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Prazo <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input type="text" id="cm-prazo" placeholder="Ex: 30 dias, até 10/06/2026..."></div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="cm-obs" placeholder="Alguma observação sobre essa comissão..."></textarea></div>
+      <div class="mf"><label>Status</label><select id="cm-status"><option value="pendente">⏳ Pendente</option><option value="finalizado">✅ Finalizado</option></select></div>
+    <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="cm-obs" placeholder="Alguma observação sobre essa comissão..."></textarea></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeCmModal()">Cancelar</button>
@@ -1652,8 +1669,18 @@ function renderCom(){
   var badge = document.getElementById('cm-badge');
   if(badge){ badge.style.display = alertas.length ? 'inline' : 'none'; badge.textContent = '🔔 '+alertas.length; }
 
-  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhuma comissão cadastrada</div>'; return; }
-  grid.innerHTML = list.map(function(it){
+  // Separa pendentes e finalizadas
+  var pend = list.filter(function(it){ return (it.status||'pendente') !== 'finalizado'; });
+  var fin  = list.filter(function(it){ return it.status === 'finalizado'; });
+
+  var gp = document.getElementById('cm-grid-pend');
+  var gf = document.getElementById('cm-grid-fin');
+  document.getElementById('cm-cnt-pend').textContent = pend.length;
+  document.getElementById('cm-cnt-fin').textContent  = fin.length;
+
+  function renderCards(items, el, emptyMsg) {
+    if(!items.length){ el.innerHTML='<div class="empty" style="grid-column:1/-1">'+emptyMsg+'</div>'; return; }
+    el.innerHTML = items.map(function(it){
     var tabelas = it.tabelas||[];
     var alerta = '';
     if(it.criado){
@@ -1665,8 +1692,11 @@ function renderCom(){
         else if(horas >= 24) alerta = '<div style="background:#fef9c3;color:#854d0e;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:600;margin-bottom:8px">⚠️ Verifique! +24h sem verificação</div>';
       }
     }
-    return '<div class="card" style="background:#fff;'+(alerta.includes('48h')?'border-color:#fca5a5':alerta.includes('24h')?'border-color:#fde68a':'')+'">'
-      +alerta
+    var statusBadge = it.status==='finalizado'
+      ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-bottom:6px">✅ Finalizado</span><br>'
+      : '<span style="display:inline-flex;align-items:center;gap:4px;background:#fef9c3;color:#92400e;border:1px solid #fde68a;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-bottom:6px">⏳ Pendente</span><br>';
+    return '<div class="card" style="background:#fff;'+(alerta.includes('48h')?'border-color:#fca5a5':alerta.includes('24h')?'border-color:#fde68a':it.status==='finalizado'?'border-color:#bbf7d0':'')+'">'
+      +statusBadge+alerta
       +'<div class="card-top"><div class="card-name">💰 '+it.parceiro+'</div>'
       +'<div class="card-actions">'
       +'<button class="act-btn" onclick="openCmEdit(\''+it.id+'\')">✏️</button>'
@@ -1681,13 +1711,18 @@ function renderCom(){
       +(tabelas.length?'<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Tabelas</div>'
         +tabelas.map(function(t){ return '<div style="font-size:12px;color:var(--text);background:var(--blue-p);border-radius:6px;padding:6px 10px;margin-bottom:4px;line-height:1.4">📋 '+t+'</div>'; }).join('')+'</div>':'')
       +'</div>';
-  }).join('');
+    }).join('');
+  }
+
+  renderCards(pend, gp, 'Nenhuma comissão pendente');
+  renderCards(fin,  gf, 'Nenhuma comissão finalizada');
 }
 
 function openCmModal(){
   cmEditId=null;
   document.getElementById('cm-modal-title').textContent='Nova Comissão';
   ['cm-parceiro','cm-banco','cm-perc','cm-data','cm-prazo','cm-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('cm-status').value='pendente';
   ['cmw-parceiro','cmw-banco','cmw-data'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('tabela-fields').innerHTML='<input class="tabela-input" placeholder="Ex: FINANTO INSS NOVO 96X - TAXA 1,85% - CÓD 1008" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">';
   document.getElementById('cm-overlay').classList.add('open');
@@ -1730,9 +1765,11 @@ async function salvarCm(){
   });
   if(!ok) return;
   if(cmEditId){
-    await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,prazo,obs,tabelas});
+    var status=document.getElementById('cm-status').value;
+    await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,prazo,obs,tabelas,status});
   } else {
-    await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,prazo,obs,tabelas,criado:hoje()});
+    var status=document.getElementById('cm-status').value;
+    await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,prazo,obs,tabelas,status,criado:hoje()});
   }
   closeCmModal();
 }
@@ -1878,16 +1915,12 @@ async function salvarCon(){
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
-  try {
-    if(conEditId){
-      await updateDoc(doc(db,'contratos',conEditId),{parceiro,link,obs});
-    } else {
-      await addDoc(collection(db,'contratos'),{parceiro,link,obs,data:hoje()});
-    }
-    closeConModal();
-  } catch(e) {
-    alert('Erro ao salvar: ' + e.message);
+  if(conEditId){
+    await updateDoc(doc(db,'contratos',conEditId),{parceiro,grupo,link,obs});
+  } else {
+    await addDoc(collection(db,'contratos'),{parceiro,grupo,link,obs,data:hoje()});
   }
+  closeConModal();
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
