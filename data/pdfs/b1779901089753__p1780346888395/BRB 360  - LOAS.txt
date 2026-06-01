@@ -1,0 +1,60 @@
+Informe Consig360 Caixa – *Prazo de Parcelas para ESP 87 e 88
+
+As espécies abaixo passam a ter *prazo máximo de 36 parcelas*:
+
+* *BPC/LOAS – Espécie 87:* Pessoa com Deficiência  
+* *BPC/LOAS – Espécie 88:* Idoso  
+
+*Observação:* As demais espécies (ESP) permanecem com prazo máximo de até 108 parcelas
+
+🏦 CAIXA – INSS (NOVO)
+
+📌 IDADE X PRAZO
+• 18 a 71a 11m 29d → até 108x
+• 72 a 79 anos → até 12x
+• Finalização obrigatória antes dos 80 anos
+
+⚠️ PRAZO ESPECÍFICO – BPC/LOAS
+• ESP 87 (Pessoa com Deficiência) → até 36x
+• ESP 88 (Idoso) → até 36x
+• Demais espécies permanecem com prazo máximo de até 108x
+
+🔐 FLUXO OPERACIONAL
+1️⃣ Digitação no C360 → geração do 1º Link (IN100)
+2️⃣ Cliente realiza apenas a selfie para validação da IN100 no INSS
+3️⃣ IN100 aprovada e benefício desbloqueado → geração do 2º Link (RG + selfie)
+4️⃣ Auditoria → Averbação → Represa LOAS (5 dias, quando aplicável) → Anuência → Pagamento
+
+✔️ REQUISITO ATUAL PARA CRÉDITO EM CONTA
+• Atende clientes que recebem por cartão magnético
+• Obrigatório possuir conta CAIXA para elegibilidade da operação
+
+⚠️ A conta CAIXA é utilizada exclusivamente para validação da elegibilidade
+
+• Crédito via PIX para qualquer instituição financeira
+• Contas digitais também são aceitas (CAIXA Tem e demais modalidades)
+
+🔧 Em desenvolvimento atualização para remoção da obrigatoriedade da conta CAIXA
+
+✔️ DIFERENCIAIS
+• Todos os benefícios consignáveis, inclusive BPC/LOAS (87 e 88)
+• Espécie 32 e demais benefícios por invalidez (sem restrição de idade)
+• Comissão igual em todos os prazos
+• Parcela mínima: R$ 20,00
+
+✔️ REGRAS
+• LOAS → represa de 5 dias úteis após efetivação
+• Benefício bloqueado → proposta pode ser digitada; seguirá após desbloqueio
+• Não permite reapresentação de contrato
+• Banco realiza até 2 tentativas de envio dos dados
+• Caso não conclua → contrato cancelado e desaverbado
+• Prazo máximo para conclusão após geração da CCB: 48h
+• AP • PB • TO • SE e MG (Poços de Caldas): assinatura física obrigatória para clientes 60+
+
+✔️ NÃO ATENDE
+• Débito na CAIXA
+• Representante Legal (RL)
+• Cliente analfabeto (em desenvolvimento)
+• Tabelas de carência
+
+⚠️ SRCC / NMP → contrato cancelado e sem pagamento
