@@ -186,6 +186,11 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
 .lspin{width:36px;height:36px;border:3px solid var(--mc-l);border-top-color:var(--mc);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:600px){.sb{display:none}}
+.nbadge-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid var(--white);display:none}
+@keyframes pulse-btn{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6);transform:scale(1)}70%{box-shadow:0 0 0 8px rgba(239,68,68,0);transform:scale(1.04)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);transform:scale(1)}}
+@keyframes badge-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.8}}
+.ptab.has-news{animation:pulse-btn 1.5s infinite;border-color:#EF4444!important;color:#EF4444!important;background:#FEF2F2!important;font-weight:700!important}
+.ptab.has-news .nbadge-dot{display:block!important;animation:badge-pulse 1s infinite}
 </style>
 </head>
 <body>
@@ -1744,7 +1749,7 @@ async function showPanel(type) {
   } else if(type === 'notices') {
     if(pNot){ pNot.style.display='flex'; pNot.style.flexDirection='column'; }
     if(cinp) cinp.style.display = 'none';
-    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; }
+    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; bNot.classList.remove('has-news'); }
     var badge = document.getElementById('notice-badge');
     if(badge) badge.style.display = 'none';
     await renderNoticesPanel();
@@ -1869,10 +1874,15 @@ async function checkNotices() {
   try{
     var notices = await getNotices();
     var badge = document.getElementById('notice-badge');
-    if(badge && notices.length > 0){
-      var d24 = new Date(); d24.setDate(d24.getDate()-1);
-      var recentes = notices.filter(function(n){ return new Date(n.date)>=d24; });
-      if(recentes.length) badge.style.display='block';
+    var btn   = document.getElementById('btn-panel-notices');
+    var d24   = new Date(); d24.setDate(d24.getDate()-1);
+    var recentes = notices.filter(function(n){ return new Date(n.date)>=d24; });
+    if(recentes.length > 0){
+      if(badge) badge.style.display='block';
+      if(btn)   btn.classList.add('has-news');
+    } else {
+      if(badge) badge.style.display='none';
+      if(btn)   btn.classList.remove('has-news');
     }
   }catch(e){}
 }
