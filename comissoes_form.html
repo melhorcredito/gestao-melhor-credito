@@ -122,16 +122,11 @@ header{background:var(--dark);padding:0 24px;height:58px;display:flex;align-item
           </div>
         </div>
         <div class="grid-2">
-          <div class="field" id="fw-valor">
-            <label>Valor da Proposta <span class="req">*</span></label>
-            <input type="text" id="f-valor" placeholder="R$ 0,00">
-            <div class="errmsg">Campo obrigatório</div>
-          </div>
+
           <div class="field" id="fw-data">
             <label>Data do Pagamento ao Cliente <span class="req">*</span></label>
             <input type="date" id="f-data">
             <div class="errmsg">Campo obrigatório</div>
-          </div>
         </div>
       </div>
 
@@ -163,15 +158,8 @@ function maskCPF(el) {
   el.value = v;
 }
 
-function maskMoney(el) {
-  var v = el.value.replace(/\D/g,'');
-  if(!v){ el.value=''; return; }
-  v = (parseInt(v)/100).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-  el.value = 'R$ ' + v;
-}
 
 document.getElementById('f-cpf').addEventListener('input', function(){ maskCPF(this); });
-document.getElementById('f-valor').addEventListener('input', function(){ maskMoney(this); });
 
 async function ghGet(path) {
   var r = await fetch(GH_BASE + path + '?t=' + Date.now(), {
@@ -201,7 +189,6 @@ document.getElementById('btn-enviar').addEventListener('click', async function()
     ['fw-proposta','f-proposta'],
     ['fw-banco','f-banco'],
     ['fw-produto','f-produto'],
-    ['fw-valor','f-valor'],
     ['fw-data','f-data'],
   ];
 
@@ -257,7 +244,6 @@ document.getElementById('btn-enviar').addEventListener('click', async function()
     + '🔢 *Nº da Proposta:* ' + proposta + '\n'
     + '🏦 *Banco:* ' + banco + '\n'
     + '📦 *Produto:* ' + produto + '\n'
-    + '💰 *Valor da Proposta:* ' + valor + '\n'
     + '📅 *Data do Pgto ao Cliente:* ' + dataBR + '\n'
     + (obs ? '💬 *Obs:* ' + obs + '\n' : '')
     + '\n⚠️ _Solicitação enviada via formulário Melhor Crédito_';
