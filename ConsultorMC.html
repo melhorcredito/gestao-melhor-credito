@@ -313,7 +313,6 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
     <button class="atab" onclick="showTab('t-contacts',this)">📞 Contatos</button>
     <button class="atab" onclick="showTab('t-notices',this)">📢 Comunicados</button>
     <button class="atab" onclick="showTab('t-users',this)">🔑 Usuários</button>
-    <button class="atab" onclick="showTab('t-logs',this)">📊 Logs</button>
     <button class="atab" onclick="showTab('t-uso',this)">📈 Painel de Uso</button>
   </div>
   <div class="asec act" id="t-banks">
@@ -440,6 +439,14 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         <div class="ncred" id="ncred"></div>
       </div>
       <div class="acard"><h3>👥 Usuários cadastrados</h3><div class="litems" id="users-list"></div></div>
+    </div>
+  </div>
+  <div class="asec" id="t-uso">
+    <div class="acard full">
+      <h3>📈 Painel de Uso</h3>
+      <div id="uso-content" style="display:flex;flex-direction:column;gap:16px">
+        <div style="text-align:center;padding:20px;color:var(--lbl);font-size:13px">Clique em "📈 Painel de Uso" para carregar os dados...</div>
+      </div>
     </div>
   </div>
   <div class="asec" id="t-uso">
@@ -1479,6 +1486,7 @@ function showTab(id,btn){
   if (id==='t-notices'){ renderNoticesAdm(); }
   if (id==='t-uso'){ renderUsoPainel(); }
   if (id==='t-pdfs'){ carregarRoteiroEspecial('contatos'); carregarRoteiroEspecial('links'); }
+  if (id==='t-uso'){ renderUsoPainel(); }
 }
 
 // ═══════════════════════════════════════
