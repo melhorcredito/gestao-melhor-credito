@@ -647,20 +647,13 @@ async function getBanks()  {
   return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setBanks(v) { return await ghSet('data/banks.json', v, 'update banks'); }
-async function getLogs()   {
-  var r = await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/data/logs.json?t='+Date.now(), {
-    headers: {'Authorization': 'token '+GH_TOKEN, 'Accept': 'application/vnd.github.v3+json'}
-  });
-  if (!r.ok) throw new Error('getLogs '+r.status);
-  var info = await r.json();
-  var b64x=info.content.replace(/\n/g,'');
-  if(!b64x) return [];
+async function getLogs() {
   try {
-    var binx=atob(b64x);var bx=new Uint8Array(binx.length);
-    for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
-    var decoded = new TextDecoder('utf-8').decode(bx);
-    if(!decoded || !decoded.trim()) return [];
-    return JSON.parse(decoded);
+    var r = await fetch('https://raw.githubusercontent.com/'+GH_REPO+'/main/data/logs.json?t='+Date.now());
+    if(!r.ok) return [];
+    var txt = await r.text();
+    if(!txt || !txt.trim()) return [];
+    return JSON.parse(txt);
   } catch(e) { return []; }
 }
 async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
