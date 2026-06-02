@@ -186,6 +186,20 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
 .lspin{width:36px;height:36px;border:3px solid var(--mc-l);border-top-color:var(--mc);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:600px){.sb{display:none}}
+.nbadge-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:var(--red);border-radius:50%;border:1.5px solid var(--white);display:none}
+@keyframes pulse-btn{0%{box-shadow:0 0 0 0 rgba(239,68,68,.6);transform:scale(1)}70%{box-shadow:0 0 0 8px rgba(239,68,68,0);transform:scale(1.04)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);transform:scale(1)}}
+@keyframes badge-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.8}}
+.ptab.has-news{animation:pulse-btn 1.5s infinite;border-color:#EF4444!important;color:#EF4444!important;background:#FEF2F2!important;font-weight:700!important}
+.ptab.has-news .nbadge-dot{display:block!important;animation:badge-pulse 1s infinite}
+
+/* FAVORITOS */
+.fav-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:2px 4px;opacity:.4;transition:all .2s;flex-shrink:0;line-height:1}
+.fav-btn:hover{opacity:1;transform:scale(1.2)}
+.fav-btn.faved{opacity:1;filter:drop-shadow(0 0 3px #f59e0b)}
+.sb-fav-section{padding:6px 6px 0}
+.sb-fav-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:4px 4px 6px;display:flex;align-items:center;gap:6px}
+.sb-fav-lbl::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
+.sb-sep{height:1px;background:rgba(255,255,255,.06);margin:4px 6px}
 </style>
 </head>
 <body>
@@ -223,6 +237,13 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
     <div class="sb-top">
       <div class="sb-lbl">Bancos disponíveis</div>
       <input class="bsrch" type="text" placeholder="Buscar banco..." oninput="filterBanks(this.value)">
+    </div>
+    <div id="fav-section" style="display:none">
+      <div class="sb-fav-section">
+        <div class="sb-fav-lbl">⭐ Favoritos</div>
+        <div id="fav-list"></div>
+      </div>
+      <div class="sb-sep"></div>
     </div>
     <div class="bl" id="bl"></div>
     <div class="sb-bot">
@@ -292,6 +313,7 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
     <button class="atab" onclick="showTab('t-notices',this)">📢 Comunicados</button>
     <button class="atab" onclick="showTab('t-users',this)">🔑 Usuários</button>
     <button class="atab" onclick="showTab('t-logs',this)">📊 Logs</button>
+    <button class="atab" onclick="showTab('t-uso',this)">📈 Painel de Uso</button>
   </div>
   <div class="asec act" id="t-banks">
     <div class="agrid">
@@ -371,6 +393,14 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         <input type="text" id="notice-title" placeholder="Título do comunicado (ex: BMG suspende portabilidade INSS)">
       </div>
       <textarea id="notice-body" style="width:100%;min-height:100px;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--mc-ll);outline:none;resize:vertical;margin-bottom:8px" placeholder="Detalhes do comunicado..."></textarea>
+      <div style="margin-bottom:8px">
+        <label style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px">🖼️ Imagem (opcional)</label>
+        <input type="text" id="notice-img-url" placeholder="Cole o link da imagem (https://...)" 
+          style="width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:12px;background:var(--mc-ll);outline:none;color:var(--text)"
+          oninput="prevImgNotice(this.value)">
+        <div style="font-size:10px;color:var(--lbl);margin-top:3px">💡 Suba a imagem no <strong>ImgBB.com</strong> gratuitamente e cole o link "Direct link" aqui</div>
+        <img id="notice-img-prev" src="" style="display:none;width:100%;height:auto;border-radius:8px;margin-top:8px;max-height:200px;object-fit:contain">
+      </div>
       <button class="badd" style="width:100%;padding:11px" onclick="publishNotice()">📢 Publicar para todos os parceiros</button>
       <div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 10px">Comunicados publicados</div>
       <div id="notices-adm-list" style="display:flex;flex-direction:column;gap:8px"></div>
@@ -391,6 +421,14 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         <div class="ncred" id="ncred"></div>
       </div>
       <div class="acard"><h3>👥 Usuários cadastrados</h3><div class="litems" id="users-list"></div></div>
+    </div>
+  </div>
+  <div class="asec" id="t-uso">
+    <div class="acard full">
+      <h3>📈 Painel de Uso</h3>
+      <div id="uso-content" style="display:flex;flex-direction:column;gap:16px">
+        <div style="text-align:center;padding:20px;color:var(--lbl);font-size:13px">Clique em "📈 Painel de Uso" para carregar os dados...</div>
+      </div>
     </div>
   </div>
   <div class="asec" id="t-logs">
@@ -571,7 +609,10 @@ async function getUsers()  {
   });
   if (!r.ok) throw new Error('getUsers '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setUsers(v) { return await ghSet('data/users.json', v, 'update users'); }
 async function getBanks()  {
@@ -581,7 +622,10 @@ async function getBanks()  {
   });
   if (!r.ok) throw new Error('getBanks '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setBanks(v) { return await ghSet('data/banks.json', v, 'update banks'); }
 async function getLogs()   {
@@ -590,7 +634,15 @@ async function getLogs()   {
   });
   if (!r.ok) throw new Error('getLogs '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  if(!b64x) return [];
+  try {
+    var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+    for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+    var decoded = new TextDecoder('utf-8').decode(bx);
+    if(!decoded || !decoded.trim()) return [];
+    return JSON.parse(decoded);
+  } catch(e) { return []; }
 }
 async function setLogs(v)  { return await ghSet('data/logs.json', v, 'update logs'); }
 async function getContacts() {
@@ -599,7 +651,10 @@ async function getContacts() {
   });
   if (!r.ok) return {};
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setContacts(v){ return await ghSet('data/contacts.json', v, 'update contacts'); }
 
@@ -609,7 +664,13 @@ async function getNotices() {
   });
   if (!r.ok) return [];
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  // Usa TextDecoder para suportar UTF-8 (acentos, emojis)
+  var b64 = info.content.replace(/\n/g,'');
+  var bin = atob(b64);
+  var bytes = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  var decoded = new TextDecoder('utf-8').decode(bytes);
+  return JSON.parse(decoded);
 }
 async function setNotices(v){ return await ghSet('data/notices.json', v, 'update notices'); }
 
@@ -624,7 +685,10 @@ async function getPdfIdx() {
   });
   if (!r.ok) throw new Error('getPdfIdx '+r.status);
   var info = await r.json();
-  return JSON.parse(atob(info.content.replace(/\n/g,'')));
+  var b64x=info.content.replace(/\n/g,'');
+  var binx=atob(b64x);var bx=new Uint8Array(binx.length);
+  for(var i=0;i<binx.length;i++) bx[i]=binx.charCodeAt(i);
+  return JSON.parse(new TextDecoder('utf-8').decode(bx));
 }
 async function setPdfIdx(v){ return await ghSet('data/pdfs_index.json', v, 'update pdf index'); }
 
@@ -662,7 +726,8 @@ async function doLogin() {
     document.getElementById('btn-login').disabled = false;
     showScreen('s-main');
     await loadSidebar();
-    checkNotices();
+    setTimeout(checkNotices, 1000);
+    setInterval(checkNotices, 60000); // verifica a cada 1 minuto
     addLog(found.login,'—','—','Entrou no sistema');
   } catch(e) {
     document.getElementById('lerr').textContent = 'Erro de conexão. Tente novamente.';
@@ -710,6 +775,7 @@ var _banks = [];
 async function loadSidebar() {
   _banks = await getBanks();
   renderSidebar(_banks);
+  renderFavs();
 }
 function renderSidebar(banks) {
   var bl = document.getElementById('bl');
@@ -727,8 +793,11 @@ function renderSidebar(banks) {
     var prods = (bank.products||[]).map(function(p) {
       return '<button class="pbtn" id="pb-'+bank.id+'-'+p.id+'" onclick="selCtx(\''+bank.id+'\',\''+p.id+'\',\''+esc(bank.name)+'\',\''+esc(p.name)+'\')">'+p.name+'</button>';
     }).join('');
+    var isFav = getFavs().indexOf(bank.id) >= 0;
     div.innerHTML = '<div class="bh" onclick="toggleB(\''+bank.id+'\')">'
-      +'<div class="bico">🏦</div><span class="bnm">'+bank.name+'</span><span class="barr">›</span>'
+      +'<div class="bico">🏦</div><span class="bnm">'+bank.name+'</span>'
+      +'<button class="fav-btn'+(isFav?' faved':'')+'" id="fav-'+bank.id+'" onclick="event.stopPropagation();toggleFav(\''+bank.id+'\',\''+esc(bank.name)+'\')">⭐</button>'
+      +'<span class="barr">›</span>'
       +'</div><div class="bprods">'+prods+'</div>';
     bl.appendChild(div);
   });
@@ -766,15 +835,11 @@ async function selCtx(bankId, prodId, bankName, prodName) {
   var msgs = document.getElementById('msgs');
   msgs.innerHTML = '';
   var es = document.createElement('div'); es.className = 'es';
+  var sugs = getSuggestions(prodName);
+  var sugsHtml = sugs.map(function(s){ return '<button class="qq" onclick="sendQ(\''+s.replace(/'/g,"\\'")+'\')">' + s + '</button>'; }).join('');
   es.innerHTML = '<div class="esico">📄</div><h3>'+bankName+'</h3>'
     +'<p>Produto: <strong>'+prodName+'</strong><br>Faça sua pergunta abaixo.</p>'
-    +'<div class="qqs">'
-    +'<button class="qq" onclick="sendQ(\'Quantas parcelas pagas são necessárias para portabilidade?\')">Parcelas p/ portabilidade</button>'
-    +'<button class="qq" onclick="sendQ(\'Qual o prazo mínimo do contrato?\')">Prazo mínimo</button>'
-    +'<button class="qq" onclick="sendQ(\'Quais são as taxas de juros?\')">Taxas de juros</button>'
-    +'<button class="qq" onclick="sendQ(\'Quais documentos são necessários?\')">Documentos</button>'
-    +'<button class="qq" onclick="sendQ(\'Quais as regras de elegibilidade?\')">Elegibilidade</button>'
-    +'</div>';
+    +'<div class="qqs">'+sugsHtml+'</div>';
   msgs.appendChild(es);
 
   // Carrega PDFs do GitHub se ainda não estão em memória
@@ -1390,6 +1455,7 @@ function showTab(id,btn){
   if (id==='t-pdfs') renderAdminBanks();
   if (id==='t-contacts'){ renderAdminBanks(); loadContactsAdmin(); }
   if (id==='t-notices'){ renderNoticesAdm(); }
+  if (id==='t-uso'){ renderUsoPainel(); }
 }
 
 // ═══════════════════════════════════════
@@ -1511,7 +1577,16 @@ function fixEncoding(str) {
 
 function cleanText(str) {
   if(!str) return str;
-  return str.normalize('NFC');
+  // Corrige encoding latin1/cp1252 corrompido
+  var map = {
+    'Ã£':'ã','Ã§':'ç','Ã©':'é','Ã­':'í','Ã³':'ó','Ãº':'ú','Ã ':'à','Ã¡':'á','Ã¢':'â','Ãµ':'õ','Ã´':'ô','Ãª':'ê','Ã»':'û',
+    'Ã‡':'Ç','Ã‰':'É','Ã':'Á','Ã"':'Ó','Ãš':'Ú','Ã€':'À','Ã‚':'Â','Ã"':'Ô','Ã•':'Õ',
+    'â€™':"'",'â€œ':'“','â€':'”','â€"':'—','â€"':'–','Â°':'°','Â©':'©'
+  };
+  var result = str;
+  for(var k in map) result = result.split(k).join(map[k]);
+  try { result = result.normalize('NFC'); } catch(e){}
+  return result;
 }
 
 
@@ -1523,15 +1598,20 @@ async function publishNotice() {
   if(!title){ toast('Digite um título!','err'); return; }
   showLov('Publicando comunicado...');
   try{
+    var imgUrl = (document.getElementById('notice-img-url')||{value:''}).value.trim();
     var notices = await getNotices();
     notices.unshift({
       id:'n'+Date.now(), tipo:tipo, bank:bank, title:title,
-      body:body, date:new Date().toISOString(), author:ST.user.login
+      body:body, img:imgUrl, date:new Date().toISOString(), author:ST.user.login
     });
     await setNotices(notices);
     document.getElementById('notice-title').value='';
     document.getElementById('notice-body').value='';
     document.getElementById('notice-bank').value='';
+    var imgInp = document.getElementById('notice-img-url');
+    if(imgInp){ imgInp.value=''; }
+    var imgPrev = document.getElementById('notice-img-prev');
+    if(imgPrev){ imgPrev.style.display='none'; imgPrev.src=''; }
     await renderNoticesAdm();
     toast('Comunicado publicado para todos!','ok');
   }catch(e){ toast('Erro: '+e.message,'err'); }
@@ -1701,7 +1781,7 @@ async function showPanel(type) {
   } else if(type === 'notices') {
     if(pNot){ pNot.style.display='flex'; pNot.style.flexDirection='column'; }
     if(cinp) cinp.style.display = 'none';
-    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; }
+    if(bNot){ bNot.style.background='var(--mc-l)'; bNot.style.borderColor='var(--mc)'; bNot.style.color='var(--mc)'; bNot.style.fontWeight='700'; bNot.classList.remove('has-news'); }
     var badge = document.getElementById('notice-badge');
     if(badge) badge.style.display = 'none';
     await renderNoticesPanel();
@@ -1809,14 +1889,238 @@ async function sendQuickMsg() {
   }
 }
 
+function prevImgNotice(url) {
+  var prev = document.getElementById('notice-img-prev');
+  if(!prev) return;
+  if(url && url.startsWith('http')) {
+    prev.src = url;
+    prev.style.display = 'block';
+    prev.onerror = function(){ prev.style.display='none'; };
+  } else {
+    prev.style.display = 'none';
+    prev.src = '';
+  }
+}
+
+
+
+
+// ═══════════════════════════════════════
+// PAINEL DE USO
+// ═══════════════════════════════════════
+async function renderUsoPainel() {
+  var el = document.getElementById('uso-content');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--lbl)">⏳ Carregando...</div>';
+
+  try {
+    var logs = await getLogs();
+    if(!logs || !logs.length){
+      el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--lbl)">Nenhum dado de uso ainda.</div>';
+      return;
+    }
+
+    // Stats gerais
+    var hoje = new Date().toLocaleDateString('pt-BR');
+    var logsHoje = logs.filter(function(l){ return (l.date||'').startsWith(new Date().toISOString().slice(0,10)); });
+    var usuarios = {};
+    var bancos = {};
+    var produtos = {};
+    var porDia = {};
+
+    logs.forEach(function(l){
+      if(l.user) usuarios[l.user] = (usuarios[l.user]||0) + 1;
+      if(l.bank && l.bank !== '—') bancos[l.bank] = (bancos[l.bank]||0) + 1;
+      if(l.prod && l.prod !== '—') produtos[l.prod] = (produtos[l.prod]||0) + 1;
+      var dia = (l.date||'').slice(0,10);
+      if(dia) porDia[dia] = (porDia[dia]||0) + 1;
+    });
+
+    // Top bancos
+    var topBancos = Object.keys(bancos).sort(function(a,b){ return bancos[b]-bancos[a]; }).slice(0,8);
+    var maxB = topBancos.length ? bancos[topBancos[0]] : 1;
+
+    // Top usuários
+    var topUsers = Object.keys(usuarios).sort(function(a,b){ return usuarios[b]-usuarios[a]; }).slice(0,6);
+
+    // Últimos 7 dias
+    var dias = [];
+    for(var i=6;i>=0;i--){
+      var d = new Date(); d.setDate(d.getDate()-i);
+      dias.push(d.toISOString().slice(0,10));
+    }
+
+    el.innerHTML = '';
+
+    // Cards de resumo
+    var resumo = document.createElement('div');
+    resumo.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:12px';
+    var cards = [
+      {n: logs.length, l: 'Total de perguntas', c: 'var(--mc)'},
+      {n: logsHoje.length, l: 'Perguntas hoje', c: '#10B981'},
+      {n: Object.keys(usuarios).length, l: 'Usuários ativos', c: '#F59E0B'},
+      {n: Object.keys(bancos).length, l: 'Bancos consultados', c: '#9333EA'},
+    ];
+    cards.forEach(function(c){
+      var d = document.createElement('div');
+      d.style.cssText = 'background:var(--white);border:1px solid var(--bdr);border-radius:12px;padding:16px;text-align:center';
+      d.innerHTML = '<div style="font-family:var(--fh);font-size:28px;font-weight:700;color:'+c.c+'">'+c.n+'</div>'
+        +'<div style="font-size:11px;color:var(--lbl);margin-top:4px">'+c.l+'</div>';
+      resumo.appendChild(d);
+    });
+    el.appendChild(resumo);
+
+    // Gráfico 7 dias
+    var maxDia = Math.max.apply(null, dias.map(function(d){ return porDia[d]||0; })) || 1;
+    var g = document.createElement('div');
+    g.style.cssText = 'background:var(--white);border:1px solid var(--bdr);border-radius:14px;padding:18px';
+    var barsHtml = dias.map(function(d){
+      var v = porDia[d]||0;
+      var h = Math.round((v/maxDia)*60);
+      var label = d.slice(8)+'/'+d.slice(5,7);
+      return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">'
+        +'<span style="font-size:10px;font-weight:600;color:var(--mc)">'+v+'</span>'
+        +'<div style="width:100%;background:linear-gradient(180deg,var(--mc),var(--mc-d));border-radius:4px 4px 0 0;height:'+h+'px;min-height:4px;transition:height .3s"></div>'
+        +'<span style="font-size:9px;color:var(--lbl)">'+label+'</span>'
+        +'</div>';
+    }).join('');
+    g.innerHTML = '<div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">📊 Perguntas — últimos 7 dias</div>'
+      +'<div style="display:flex;align-items:flex-end;gap:6px;height:80px">'+barsHtml+'</div>';
+    el.appendChild(g);
+
+    // Top bancos + top usuários lado a lado
+    var grid2 = document.createElement('div');
+    grid2.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:14px';
+
+    // Top bancos
+    var tb = document.createElement('div');
+    tb.style.cssText = 'background:var(--white);border:1px solid var(--bdr);border-radius:14px;padding:18px';
+    tb.innerHTML = '<div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">🏆 Bancos mais consultados</div>';
+    topBancos.forEach(function(b, i){
+      var pct = Math.round((bancos[b]/maxB)*100);
+      var d = document.createElement('div');
+      d.style.cssText = 'margin-bottom:8px';
+      d.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'
+        +'<span style="font-weight:600;color:var(--dark)">'+b+'</span>'
+        +'<span style="color:var(--lbl)">'+bancos[b]+'</span>'
+        +'</div>'
+        +'<div style="height:5px;background:var(--mc-l);border-radius:3px">'
+        +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--mc),var(--mc-d));border-radius:3px"></div>'
+        +'</div>';
+      tb.appendChild(d);
+    });
+    grid2.appendChild(tb);
+
+    // Top usuários
+    var tu = document.createElement('div');
+    tu.style.cssText = 'background:var(--white);border:1px solid var(--bdr);border-radius:14px;padding:18px';
+    tu.innerHTML = '<div style="font-size:10px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">👥 Parceiros mais ativos</div>';
+    var maxU = topUsers.length ? usuarios[topUsers[0]] : 1;
+    topUsers.forEach(function(u){
+      var pct = Math.round((usuarios[u]/maxU)*100);
+      var d = document.createElement('div');
+      d.style.cssText = 'margin-bottom:8px';
+      d.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'
+        +'<span style="font-weight:600;color:var(--dark)">'+u+'</span>'
+        +'<span style="color:var(--lbl)">'+usuarios[u]+' perguntas</span>'
+        +'</div>'
+        +'<div style="height:5px;background:var(--mc-l);border-radius:3px">'
+        +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#10B981,#059669);border-radius:3px"></div>'
+        +'</div>';
+      tu.appendChild(d);
+    });
+    grid2.appendChild(tu);
+
+    el.appendChild(grid2);
+
+  } catch(e) {
+    el.innerHTML = '<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar: '+e.message+'</div>';
+  }
+}
+
+// ═══════════════════════════════════════
+// SUGESTÕES DINÂMICAS POR PRODUTO
+// ═══════════════════════════════════════
+function getSuggestions(prodName) {
+  var p = prodName.toLowerCase();
+  var base = ['Quais os documentos necessários?','Qual o prazo mínimo do contrato?','Quais as taxas de juros?','Quais as regras de elegibilidade?'];
+  if(p.includes('portabilidade') || p.includes('port')) return [
+    'Quantas parcelas pagas p/ portar?','Qual o saldo devedor mínimo?','Pode portar com atraso?','Prazo mínimo do contrato original?','Como calcular o benefício da portabilidade?'
+  ];
+  if(p.includes('refinanciamento') || p.includes('refin')) return [
+    'Quantas parcelas pagas p/ refin?','Qual o percentual liberado?','Tem período de carência?','Pode refinar mais de uma vez?','Qual o troco mínimo?'
+  ];
+  if(p.includes('fgts')) return [
+    'Qual o limite de antecipação?','Quais saldos são elegíveis?','Como calcular o valor liberado?','Tem restrição de idade?','Pode antecipar todo o saldo?'
+  ];
+  if(p.includes('rmc') || p.includes('cartão')) return [
+    'Qual o limite do cartão?','Taxa de saque do RMC?','Como calcular a margem?','Tem anuidade?','Pode acumular RMC com RCC?'
+  ];
+  if(p.includes('rcc')) return [
+    'Qual o limite do RCC?','Taxa de uso do RCC?','Como calcular a margem?','Pode acumular com RMC?','Prazo de vencimento?'
+  ];
+  if(p.includes('novo') || p.includes('new')) return [
+    'Qual a margem mínima?','Prazo máximo do contrato?','Quais documentos exigidos?','Tem restrição de cadastro?','Qual o valor mínimo da operação?'
+  ];
+  return base;
+}
+
+// ═══════════════════════════════════════
+// FAVORITOS
+// ═══════════════════════════════════════
+function getFavs() {
+  try { return JSON.parse(localStorage.getItem('mc_favs_'+(ST.user?ST.user.login:'')) || '[]'); } catch(e){ return []; }
+}
+function setFavs(favs) {
+  localStorage.setItem('mc_favs_'+(ST.user?ST.user.login:''), JSON.stringify(favs));
+}
+function toggleFav(bankId, bankName) {
+  var favs = getFavs();
+  var idx = favs.indexOf(bankId);
+  if(idx >= 0) favs.splice(idx,1); else favs.push(bankId);
+  setFavs(favs);
+  renderFavs();
+  // Atualiza botão
+  var btn = document.getElementById('fav-'+bankId);
+  if(btn){ btn.classList.toggle('faved', favs.indexOf(bankId)>=0); }
+}
+function renderFavs() {
+  var favs = getFavs();
+  var sec = document.getElementById('fav-section');
+  var list = document.getElementById('fav-list');
+  if(!sec || !list) return;
+  if(!favs.length){ sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = '';
+  favs.forEach(function(bankId) {
+    var bank = _banks.find(function(b){ return b.id===bankId; });
+    if(!bank) return;
+    var d = document.createElement('div'); d.className = 'bi'; d.id = 'fav-bi-'+bankId;
+    var prods = (bank.products||[]).map(function(p){
+      return '<button class="pbtn" id="fpb-'+bankId+'-'+p.id+'" onclick="selCtx(\''+bankId+'\',\''+p.id+'\',\''+esc(bank.name)+'\',\''+esc(p.name)+'\')">'+p.name+'</button>';
+    }).join('');
+    d.innerHTML = '<div class="bh" onclick="toggleB(\'fav-bi-'+bankId+'\')">'
+      +'<div class="bico" style="background:rgba(245,158,11,.2)">⭐</div>'
+      +'<span class="bnm">'+bank.name+'</span>'
+      +'<span class="barr">›</span>'
+      +'</div><div class="bprods">'+prods+'</div>';
+    list.appendChild(d);
+  });
+}
+
 async function checkNotices() {
   try{
     var notices = await getNotices();
     var badge = document.getElementById('notice-badge');
-    if(badge && notices.length > 0){
-      var d24 = new Date(); d24.setDate(d24.getDate()-1);
-      var recentes = notices.filter(function(n){ return new Date(n.date)>=d24; });
-      if(recentes.length) badge.style.display='block';
+    var btn   = document.getElementById('btn-panel-notices');
+    var d24   = new Date(); d24.setDate(d24.getDate()-1);
+    var recentes = notices.filter(function(n){ return new Date(n.date)>=d24; });
+    if(recentes.length > 0){
+      if(badge) badge.style.display='block';
+      if(btn)   btn.classList.add('has-news');
+    } else {
+      if(badge) badge.style.display='none';
+      if(btn)   btn.classList.remove('has-news');
     }
   }catch(e){}
 }
