@@ -793,8 +793,7 @@ function renderSidebar(banks) {
     var prods = (bank.products||[]).map(function(p) {
       return '<button class="pbtn" id="pb-'+bank.id+'-'+p.id+'" onclick="selCtx(\''+bank.id+'\',\''+p.id+'\',\''+esc(bank.name)+'\',\''+esc(p.name)+'\')">'+p.name+'</button>';
     }).join('');
-    // Adiciona opção de Contatos como produto especial
-    prods += '<button class="pbtn" style="color:var(--mc);font-weight:600" onclick="selCtxContatos(\''+bank.id+'\',\''+esc(bank.name)+'\')" id="pb-'+bank.id+'-contatos">📞 Contatos</button>';
+
     var isFav = getFavs().indexOf(bank.id) >= 0;
     div.innerHTML = '<div class="bh" onclick="toggleB(\''+bank.id+'\')">'
       +'<div class="bico">🏦</div><span class="bnm">'+bank.name+'</span>'
@@ -2044,14 +2043,47 @@ async function renderUsoPainel() {
 // ═══════════════════════════════════════
 // CONTATOS VIA CHAT
 // ═══════════════════════════════════════
-function abrirChatContatos() {
-  // Foca no campo de busca rápida e sugere pergunta de contatos
-  showPanel('chat');
-  var inp = document.getElementById('quick-input');
-  if(inp){ 
-    inp.focus();
-    inp.placeholder = 'Ex: Qual o telefone do BMG? WhatsApp da Facta?';
+async function abrirChatContatos() {
+  // Ativa o banco "Contatos Bancos" se existir, senão usa busca rápida
+  var banks = _banks.length ? _banks : await getBanks();
+  var contBank = banks.find(function(b){ 
+    return b.name.toLowerCase().includes('contato') || b.name.toLowerCase().includes('contact');
+  });
+
+  if(contBank && contBank.products && contBank.products.length) {
+    // Seleciona automaticamente o banco de contatos
+    var prod = contBank.products[0];
+    await selCtx(contBank.id, prod.id, contBank.name, prod.name);
+  } else {
+    // Fallback: usa busca rápida com sugestão
+    showPanel('chat');
+    var msgs = document.getElementById('msgs');
+    msgs.innerHTML = '';
+    var es = document.createElement('div'); es.className = 'es';
+    var sugs = [
+      'Qual o telefone do BMG?',
+      'Qual o WhatsApp da Facta?',
+      'Qual o SAC do C6 Bank?',
+      'Qual o e-mail do ICRED?',
+      'Quais os contatos do BRB 360?'
+    ];
+    var sugsHtml = sugs.map(function(s){
+      return '<button class="qq" onclick="sendQuickQ(\''+s.replace(/'/g,"\\'")+'\')">'+s+'</button>';
+    }).join('');
+    es.innerHTML = '<div class="esico">📞</div>'
+      +'<h3>Contatos dos Bancos</h3>'
+      +'<p>Cadastre um banco chamado <strong>"Contatos Bancos"</strong> no Admin com um roteiro contendo todos os contatos.</p>'
+      +'<div class="qqs">'+sugsHtml+'</div>';
+    msgs.appendChild(es);
+    var inp = document.getElementById('cinput');
+    if(inp){ inp.disabled=false; inp.placeholder='Qual o contato de qual banco?'; }
+    document.getElementById('bsc').disabled = false;
   }
+}
+
+function sendQuickQ(txt) {
+  var inp = document.getElementById('quick-input');
+  if(inp){ inp.value = txt; sendQuickMsg(); }
 }
 
 async function selCtxContatos(bankId, bankName) {
