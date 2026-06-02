@@ -1,0 +1,185 @@
+Público -alvo
+
+Pensões por Morte - Regras por Faixa Etária:
+Idade: de 18 a 20 anos | Regra: Encerrar contrato 2 meses antes de o cliente completar 21 anos
+Idade: Acima de 21 anos | Regra: Conforme o item “Limites por Idade”, deste Roteiro Operacional
+
+Público impedido de operar
+
+Clientes que NÃO podem contratar empréstimos:
+▪ Benefícios concedidos por acordos internacionais (residentes no exterior)
+▪ Pagamentos feitos por Empresa Convenente
+▪ Benefícios recebidos por representante
+
+Limites Operacionais
+Como calcular o limite de crédito :
+1) Somar os saldos devedores das operações em aberto (valor presente)
+2) Adicionar o valor de AF da nova proposta
+3) Descontar o valor do IOF
+
+Limites de Valor por Operação
+Valores permitidos :
+Contrato de Refinanciamento – Mínimo: R$ 100,00
+Contrato Novo – Mínimo: R$ 700,00
+Valor Máximo: R$ 70.000,00
+Parcela mínima por operação: R$ 8,00
+Desde que atenda ao valor mínimo liberado, conforme tipo de operação.
+
+Limites de Valor por Operação
+
+Valores permitidos :
+Idade Valor Máximo
+De 18 a 65 anos -  R$ 70.000,00
+De 66 a 69 anos - R$ 50.000,00
+De 70 a 73 anos - R$ 40.000,00
+De 74 a 75 anos - R$ 15.000,00
+Prazo máximo permitido no convênio, desde
+que o vencimento da última prestação ocorra
+1 (um) mês antes do cliente completar 78 anos.
+
+Formas de Liberação do Crédito
+Como o valor do empréstimo é liberado:
+• Conta Corrente: depósito direto na conta bancária onde o cliente recebe o benefício.
+• Cartão Magnético: crédito deve ser feito em Conta Corrente ou Poupança de
+titularidade do beneficiário.
+
+CONTRATO NOVO
+Uso da margem livre para novo empréstimo
+consignado.
+
+REFINANCIAMENTO 
+Mínimo 10 parcelas pagas
+Ou mínimo 5 parcelas pagas com financiamento a partir de R$ 5.000,00
+Até 5 contratos podem ser refinanciados juntos
+Pode ser feito com agregação de margem, se houver 1 linha de desconto
+disponível
+
+PORTABILIDADE
+Manual de Portabilidade - Banrisul Como
+Proponente
+Acesse em: Portal de Negócios Bem Web >
+Crédito Consignado Banrisul > Documentação >
+Manuais
+
+COMPRA
+Definição: a operação de compra é utilizada exclusivamente para contratos em situação
+BRW.
+Critério Específico: aplicável somente quando a proposta apresenta crítica da Regra 218
+no sistema.
+Procedimento: o Ponto de Venda (PDV) deve abrir chamado junto ao Apoio Operacional
+para verificação e liberação da operação.
+
+Documentos Exigidos para Liberação
+▪ Documento de Identificação conforme descritos a seguir
+
+Assinatura Figital
+▪ Documento de Identificação conforme descritos a seguir
+▪ CPF
+▪ Comprovante de Residência
+▪ 2 vias da CCB (assinadas e rubricadas)
+▪ Formulário de Solicitação de Portabilidade
+▪ Proposta da Operação (FOR/10), rubricada e assinada
+
+Regras para Documentação:
+❑ Assinatura do contrato deve ser compatível com a do documento de identidade
+❑ CCB deve ser rubricada em todas as páginas sem assinatura
+❑ Anexar todos os documentos exigidos no sistema: Portal de Negócios Bem Web > Crédito Consignado Banrisul > Digitação Venda 4.0
+❑ Pode haver solicitação de Detalhamento de Crédito mediante análise
+
+Documentação
+Documentos aceitos 
+RG (Carteira de Identidade Civil)
+▪ CNH (válida)
+▪ Passaporte (brasileiro ou estrangeiro com visto/carimbo válido)
+▪ Carteira de Registro Nacional Migratório
+▪ Protocolos com foto e assinatura da PF
+▪ Cédulas de Identidade de Estrangeiro ou Entidades Profissionais (válidas)
+Não é aceito: Carteira de Trabalho (CTPS)
+
+Atenção: Em caso de cliente Impossibilitado de assinar/Não assina, as
+testemunhas que o representam NÃO devem ser colaboradores,
+
+CPF
+▪ Não precisa apresentar o original se estiver no RG, CNH, IR ou
+comprovante da Receita Federal
+CPF com status “Cancelado” ou “Nulo” → Não aceito
+CPF “Pendente” ou “Suspenso” → Aceito com documento de
+regularização
+
+**Comprovante de Residência**
+* Deve conter: nome, endereço completo, CEP e UF
+✅ **Aceitos:**
+* Contas de luz, água, gás, telefone
+* IPTU, escritura ou contrato de imóvel
+* Serviços de Telecom (celular, internet, TV)
+* Contrato de aluguel + pagamento
+* Carta de concessão do INSS
+
+🚫 **Não aceito:** contas emitidas pelo DMAE
+## Situações Especiais de Residência
+
+✅ **Aceito em nome de:**
+* Pais ou filhos que residem juntos
+* Cônjuge ou companheiro (com certidão ou declaração)
+* Irmãos (com nome da mãe/pai coincidente)
+
+📌 Deve ser anexada cópia do documento de quem está no comprovante
+
+## Declaração de Residência
+
+📄 **Quando o cliente não tem comprovante:**
+* Preencher **FOR/03 – Declaração de Residência**
+* Disponível no **Portal Bem Web**
+
+**Deve conter:**
+* Assinatura do cliente
+* Data de emissão de no máximo 60 dias
+
+QUANTIDADES DE OPERAÇÃO
+O Cliente pode ter até:
+13 contratos ativos por benefício
+Desde que não haja inadimplência vinculada ao CPF
+
+CONSULTA DE MARGEM
+A consulta de margem é realizada mediante a autorização do beneficiário e
+ocorre de forma online após a digitação da proposta
+
+As informações obtidas na consulta são:
+▪ Valor do benefício
+▪ Espécie do benefício
+▪ Forma de recebimento (Conta Corrente ou Cartão Magnético)
+▪ Descontos aplicados
+
+Cálculo e Limites da Margem Consignável
+Fórmula para Cálculo da Parcela Máxima:
+Salário Base × 40% - Descontos de empréstimos já existentes
+
+Considerar:
+▪ Financiamentos
+▪ Operações de arrendamento
+Total da Margem: até 40% do benefício
+▪ 40% → Empréstimos consignados
+
+Formalização da Operação Figital
+
+Após Proposta Efetivada
+▪ Situação da proposta: “Efetivada”
+▪ Enviar à New Space o Kit de Formalização
+completo
+▪ Prazo máximo: até 5 dias úteis
+▪ Para formalização, acesse: BemWeb >
+Protocolo Formalização
+O Kit deve conter toda a documentação
+exigida do Cliente, conforme este Roteiro
+
+Auditoria de Documentos
+▪ A documentação será auditada pela New
+Space
+▪ Descumprimentos das regras podem resultar
+em:
+Penalização ao Ponto de Venda
+
+Importante:
+Para contratos com assinatura eletrônica,
+não é necessário o envio de documentos à New
+Space.
