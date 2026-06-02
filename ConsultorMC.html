@@ -960,11 +960,19 @@ async function sendMsg() {
     if(contLines.length) contTxt = 'CONTATOS DOS BANCOS:\n'+contLines.join('\n');
   } catch(e){}
 
+  // Verifica modo especial
+  var isContatosMode = ST.bank && ST.bank.id === '_contatos';
+  var isLinksMode    = ST.bank && ST.bank.id === '_links';
+
   var sys = 'Você é o Consultor MC, assistente especializado em crédito consignado da Melhor Crédito.\n'
-    +'Responda com base no roteiro e nos contatos disponíveis. Seja claro e objetivo.\n'
-    +'Banco atual: '+ST.bank.name+' | Produto: '+ST.prod.name+'\n'
-    +(pdfTxt ? 'ROTEIRO:\n'+pdfTxt : 'ATENÇÃO: Nenhum roteiro disponível para este banco/produto.')
-    +(contTxt ? '\n\n'+contTxt : '');
+    +'Responda de forma clara e direta com base nas informações fornecidas.\n'
+    +'Banco: '+ST.bank.name+' | Produto: '+ST.prod.name+'\n'
+    +(isContatosMode && ST._contatosEspecial
+      ? 'CONTATOS DOS BANCOS:\n'+ST._contatosEspecial
+      : isLinksMode && ST._linksEspecial
+        ? 'LINKS DOS BANCOS:\n'+ST._linksEspecial+'\nQuando informar links, mostre o link completo.'
+        : (pdfTxt ? 'ROTEIRO:\n'+pdfTxt : 'ATENÇÃO: Nenhum roteiro disponível para este banco/produto.'))
+    +(!isContatosMode && !isLinksMode && contTxt ? '\n\n'+contTxt : '');
 
   var messages = ST.hist.concat([{role:'user',content:txt}]);
   try {
