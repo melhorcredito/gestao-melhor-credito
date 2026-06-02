@@ -2137,40 +2137,36 @@ async function carregarRoteiroEspecial(tipo) {
 // CONTATOS VIA CHAT
 // ═══════════════════════════════════════
 async function abrirChatContatos() {
-  // Ativa o banco "Contatos Bancos" se existir, senão usa busca rápida
-  var banks = _banks.length ? _banks : await getBanks();
-  var contBank = banks.find(function(b){ 
-    return b.name.toLowerCase().includes('contato') || b.name.toLowerCase().includes('contact');
-  });
-
-  if(contBank && contBank.products && contBank.products.length) {
-    // Seleciona automaticamente o banco de contatos
-    var prod = contBank.products[0];
-    await selCtx(contBank.id, prod.id, contBank.name, prod.name);
-  } else {
-    // Fallback: usa busca rápida com sugestão
+  var contatosTxt = await getTxtRoteiro('data/roteiro_contatos.txt');
+  if(contatosTxt) {
+    ST._contatosEspecial = contatosTxt;
+    ST._linksEspecial = null;
+    ST.bank = {id:'_contatos', name:'Contatos Bancos'};
+    ST.prod = {id:'geral', name:'Geral'};
+    ST.hist = [];
     showPanel('chat');
     var msgs = document.getElementById('msgs');
     msgs.innerHTML = '';
     var es = document.createElement('div'); es.className = 'es';
-    var sugs = [
-      'Qual o telefone do BMG?',
-      'Qual o WhatsApp da Facta?',
-      'Qual o SAC do C6 Bank?',
-      'Qual o e-mail do ICRED?',
-      'Quais os contatos do BRB 360?'
-    ];
-    var sugsHtml = sugs.map(function(s){
-      return '<button class="qq" onclick="sendQuickQ(\''+s.replace(/'/g,"\\'")+'\')">'+s+'</button>';
-    }).join('');
-    es.innerHTML = '<div class="esico">📞</div>'
-      +'<h3>Contatos dos Bancos</h3>'
-      +'<p>Cadastre um banco chamado <strong>"Contatos Bancos"</strong> no Admin com um roteiro contendo todos os contatos.</p>'
-      +'<div class="qqs">'+sugsHtml+'</div>';
+    var sugs = ['Qual o telefone do BMG?','Qual o WhatsApp da Facta?','Qual o SAC do C6 Bank?','Quais os contatos do ICRED?','Qual o e-mail do BRB 360?'];
+    var sugsHtml = sugs.map(function(s){ return '<button class="qq" onclick="sendQ(\''+s.replace(/'/g,"\\'")+'\')">'+s+'</button>'; }).join('');
+    es.innerHTML = '<div class="esico">📞</div><h3>Contatos dos Bancos</h3><p>Pergunte sobre o contato de qualquer banco.</p><div class="qqs">'+sugsHtml+'</div>';
     msgs.appendChild(es);
-    var inp = document.getElementById('cinput');
-    if(inp){ inp.disabled=false; inp.placeholder='Qual o contato de qual banco?'; }
+    var inp = document.getElementById('cinput'); if(inp){ inp.disabled=false; inp.placeholder='Ex: Qual o telefone do BMG?'; }
     document.getElementById('bsc').disabled = false;
+    document.getElementById('ctx-e').style.display='none';
+    document.getElementById('ctx-i').style.display='block';
+    document.getElementById('ctx-bank').textContent='Contatos Bancos';
+    document.getElementById('ctx-prod').textContent='Geral';
+    document.getElementById('ctx-badge').style.display='block';
+  } else {
+    showPanel('chat');
+    var msgs = document.getElementById('msgs');
+    msgs.innerHTML = '';
+    var es = document.createElement('div'); es.className = 'es';
+    es.innerHTML = '<div class="esico">📞</div><h3>Contatos dos Bancos</h3>'
+      +'<p>Vá em <strong>Admin → Roteiros</strong> e cadastre o Roteiro de Contatos Bancos.</p>';
+    msgs.appendChild(es);
   }
 }
 
