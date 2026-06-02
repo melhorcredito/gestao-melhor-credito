@@ -347,6 +347,24 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
       <div class="uprog" id="uprog" style="margin-top:8px">⏳ Salvando roteiro...</div>
       <div class="plist" id="plist" style="margin-top:14px"></div>
     </div>
+
+    <!-- CONTATOS BANCOS -->
+    <div class="acard full" style="border-left:4px solid #10B981">
+      <h3 style="color:#065f46">📞 Roteiro de Contatos Bancos</h3>
+      <p style="font-size:12px;color:var(--lbl);margin-bottom:12px">Cole aqui todos os contatos dos bancos. O parceiro pergunta no chat e a IA responde.</p>
+      <textarea class="rot-area" id="inp-contatos-txt" placeholder="BMG&#10;SAC: 0800 xxx xxxx&#10;WhatsApp: (xx) xxxxx-xxxx&#10;&#10;Facta Financeira&#10;SAC: 0800 942 0462&#10;..."></textarea>
+      <button class="badd" style="width:100%;padding:12px;margin-top:10px;background:linear-gradient(135deg,#10B981,#059669);font-size:13px" onclick="salvarContatosRoteiro()">💾 Salvar Contatos</button>
+      <div id="contatos-rot-status" style="font-size:12px;margin-top:8px;display:none"></div>
+    </div>
+
+    <!-- LINKS BANCOS -->
+    <div class="acard full" style="border-left:4px solid #9333EA">
+      <h3 style="color:#6b21a8">🔗 Roteiro de Links Bancos</h3>
+      <p style="font-size:12px;color:var(--lbl);margin-bottom:12px">Cole aqui todos os links dos bancos. O parceiro pergunta no chat e a IA responde.</p>
+      <textarea class="rot-area" id="inp-links-txt" placeholder="BMG&#10;Portal parceiros: https://...&#10;iFlow: https://...&#10;&#10;Facta Financeira&#10;Portal: https://...&#10;..."></textarea>
+      <button class="badd" style="width:100%;padding:12px;margin-top:10px;background:linear-gradient(135deg,#9333EA,#7e22ce);font-size:13px" onclick="salvarLinksRoteiro()">💾 Salvar Links</button>
+      <div id="links-rot-status" style="font-size:12px;margin-top:8px;display:none"></div>
+    </div>
   </div>
   <!-- CONTATOS -->
   <div class="asec" id="t-contacts">
@@ -1458,6 +1476,7 @@ function showTab(id,btn){
   if (id==='t-contacts'){ renderAdminBanks(); loadContactsAdmin(); }
   if (id==='t-notices'){ renderNoticesAdm(); }
   if (id==='t-uso'){ renderUsoPainel(); }
+  if (id==='t-pdfs'){ carregarRoteiroEspecial('contatos'); carregarRoteiroEspecial('links'); }
 }
 
 // ═══════════════════════════════════════
@@ -2041,6 +2060,70 @@ async function renderUsoPainel() {
 }
 
 
+
+// ═══════════════════════════════════════
+// ROTEIROS ESPECIAIS: CONTATOS E LINKS
+// ═══════════════════════════════════════
+async function salvarContatosRoteiro() {
+  var txt = document.getElementById('inp-contatos-txt').value.trim();
+  if(!txt){ alert('Cole o conteúdo dos contatos!'); return; }
+  var status = document.getElementById('contatos-rot-status');
+  status.style.display='block'; status.style.color='var(--mc)'; status.textContent='⏳ Salvando...';
+  try {
+    await ghSetTxt('data/roteiro_contatos.txt', txt, 'update roteiro contatos');
+    status.style.color='#10B981'; status.textContent='✅ Contatos salvos com sucesso!';
+  } catch(e) {
+    status.style.color='var(--red)'; status.textContent='❌ Erro: '+e.message;
+  }
+}
+
+async function salvarLinksRoteiro() {
+  var txt = document.getElementById('inp-links-txt').value.trim();
+  if(!txt){ alert('Cole o conteúdo dos links!'); return; }
+  var status = document.getElementById('links-rot-status');
+  status.style.display='block'; status.style.color='var(--mc)'; status.textContent='⏳ Salvando...';
+  try {
+    await ghSetTxt('data/roteiro_links.txt', txt, 'update roteiro links');
+    status.style.color='#9333EA'; status.textContent='✅ Links salvos com sucesso!';
+  } catch(e) {
+    status.style.color='var(--red)'; status.textContent='❌ Erro: '+e.message;
+  }
+}
+
+async function ghSetTxt(path, txt, msg) {
+  var encoded = btoa(unescape(encodeURIComponent(txt)));
+  var sha = null;
+  try {
+    var r = await fetch(GH_BASE + path, {
+      headers: {'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(r.ok){ var info = await r.json(); sha = info.sha; }
+  } catch(e){}
+  var body = {message: msg, content: encoded};
+  if(sha) body.sha = sha;
+  var r2 = await fetch(GH_BASE + path, {
+    method:'PUT',
+    headers:{'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  if(!r2.ok) throw new Error('Erro ao salvar');
+}
+
+async function getTxtRoteiro(path) {
+  try {
+    var r = await fetch('https://raw.githubusercontent.com/'+GH_REPO+'/main/'+path+'?t='+Date.now());
+    if(!r.ok) return '';
+    return await r.text();
+  } catch(e){ return ''; }
+}
+
+async function carregarRoteiroEspecial(tipo) {
+  var path = tipo==='contatos' ? 'data/roteiro_contatos.txt' : 'data/roteiro_links.txt';
+  var id   = tipo==='contatos' ? 'inp-contatos-txt' : 'inp-links-txt';
+  var txt = await getTxtRoteiro(path);
+  if(txt) document.getElementById(id).value = txt;
+}
+
 // ═══════════════════════════════════════
 // CONTATOS VIA CHAT
 // ═══════════════════════════════════════
@@ -2083,16 +2166,31 @@ async function abrirChatContatos() {
 }
 
 async function abrirChatLinks() {
-  // Ativa o banco "Links Bancos" se existir, senão usa busca rápida
-  var banks = _banks.length ? _banks : await getBanks();
-  var linkBank = banks.find(function(b){ 
-    return b.name.toLowerCase().includes('link');
-  });
-
-  if(linkBank && linkBank.products && linkBank.products.length) {
-    var prod = linkBank.products[0];
-    await selCtx(linkBank.id, prod.id, linkBank.name, prod.name);
-  } else {
+  var linksTxt = await getTxtRoteiro('data/roteiro_links.txt');
+  if(linksTxt) {
+    ST._linksEspecial = linksTxt;
+    ST._contatosEspecial = null;
+    ST.bank = {id:'_links', name:'Links Bancos'};
+    ST.prod = {id:'geral', name:'Geral'};
+    ST.hist = [];
+    showPanel('chat');
+    var msgs = document.getElementById('msgs');
+    msgs.innerHTML = '';
+    var es = document.createElement('div'); es.className = 'es';
+    var sugs = ['Qual o link do BMG?','Qual o link da Facta?','Qual o link do iFlow?','Qual o link do ICRED?','Qual o link do C6 Bank?'];
+    var sugsHtml = sugs.map(function(s){ return '<button class="qq" onclick="sendQ(\''+s.replace(/'/g,"\\'")+'\')">'+s+'</button>'; }).join('');
+    es.innerHTML = '<div class="esico">🔗</div><h3>Links dos Bancos</h3><p>Pergunte sobre o link de qualquer banco.</p><div class="qqs">'+sugsHtml+'</div>';
+    msgs.appendChild(es);
+    var inp = document.getElementById('cinput'); if(inp){ inp.disabled=false; inp.placeholder='Ex: Qual o link do BMG?'; }
+    document.getElementById('bsc').disabled = false;
+    document.getElementById('ctx-e').style.display='none';
+    document.getElementById('ctx-i').style.display='block';
+    document.getElementById('ctx-bank').textContent='Links Bancos';
+    document.getElementById('ctx-prod').textContent='Geral';
+    document.getElementById('ctx-badge').style.display='block';
+    return;
+  }
+  {
     showPanel('chat');
     var msgs = document.getElementById('msgs');
     msgs.innerHTML = '';
