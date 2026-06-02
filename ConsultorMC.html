@@ -275,7 +275,7 @@ header{background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 60%,var(--d
         <button onclick="sendQuickMsg()" style="background:var(--mc);border:none;border-radius:16px;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;cursor:pointer;font-family:var(--font);white-space:nowrap">Enviar</button>
       </div>
       <button onclick="showPanel('chat')" id="btn-panel-chat" style="padding:5px 12px;background:var(--mc-l);border:1px solid var(--mc);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--mc);cursor:pointer">💬 Chat</button>
-      
+      <button onclick="abrirChatContatos()" id="btn-contatos" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .2s" onmouseover="this.style.borderColor='var(--mc)';this.style.color='var(--mc)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--lbl)'">📞 Contatos</button>
       <button onclick="showPanel('notices')" id="btn-panel-notices" style="padding:5px 12px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-family:var(--font);font-size:10px;font-weight:700;color:var(--lbl);cursor:pointer;position:relative">📢 Avisos <span id="notice-badge" style="display:none;position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:var(--red);border-radius:50%"></span></button>
     </div>
     <div id="panel-notices" style="display:none;flex:1;overflow-y:auto;padding:24px 20px;flex-direction:column;gap:12px"></div>
@@ -793,6 +793,8 @@ function renderSidebar(banks) {
     var prods = (bank.products||[]).map(function(p) {
       return '<button class="pbtn" id="pb-'+bank.id+'-'+p.id+'" onclick="selCtx(\''+bank.id+'\',\''+p.id+'\',\''+esc(bank.name)+'\',\''+esc(p.name)+'\')">'+p.name+'</button>';
     }).join('');
+    // Adiciona opção de Contatos como produto especial
+    prods += '<button class="pbtn" style="color:var(--mc);font-weight:600" onclick="selCtxContatos(\''+bank.id+'\',\''+esc(bank.name)+'\')" id="pb-'+bank.id+'-contatos">📞 Contatos</button>';
     var isFav = getFavs().indexOf(bank.id) >= 0;
     div.innerHTML = '<div class="bh" onclick="toggleB(\''+bank.id+'\')">'
       +'<div class="bico">🏦</div><span class="bnm">'+bank.name+'</span>'
@@ -2036,6 +2038,78 @@ async function renderUsoPainel() {
   } catch(e) {
     el.innerHTML = '<div style="color:var(--red);text-align:center;padding:20px">Erro ao carregar: '+e.message+'</div>';
   }
+}
+
+
+// ═══════════════════════════════════════
+// CONTATOS VIA CHAT
+// ═══════════════════════════════════════
+function abrirChatContatos() {
+  // Foca no campo de busca rápida e sugere pergunta de contatos
+  showPanel('chat');
+  var inp = document.getElementById('quick-input');
+  if(inp){ 
+    inp.focus();
+    inp.placeholder = 'Ex: Qual o telefone do BMG? WhatsApp da Facta?';
+  }
+}
+
+async function selCtxContatos(bankId, bankName) {
+  // Seleciona o banco no modo contatos
+  ST.bank = {id:bankId, name:bankName};
+  ST.prod = {id:'contatos', name:'Contatos'};
+  ST.hist = [];
+
+  document.querySelectorAll('.bh').forEach(function(h){ h.classList.remove('abk'); });
+  document.querySelectorAll('.pbtn').forEach(function(b){ b.classList.remove('ap'); });
+  var bh = document.querySelector('#bi-'+bankId+' .bh'); if(bh) bh.classList.add('abk');
+  var pb = document.getElementById('pb-'+bankId+'-contatos'); if(pb) pb.classList.add('ap');
+
+  document.getElementById('ctx-e').style.display = 'none';
+  document.getElementById('ctx-i').style.display = 'block';
+  document.getElementById('ctx-bank').textContent = bankName;
+  document.getElementById('ctx-prod').textContent = '📞 Contatos';
+  document.getElementById('ctx-badge').style.display = 'block';
+
+  // Habilita input
+  var inp = document.getElementById('cinput');
+  inp.disabled = false;
+  inp.placeholder = 'Pergunte sobre os contatos do ' + bankName + '...';
+  document.getElementById('bsc').disabled = false;
+
+  // Monta contexto de contatos para a IA
+  try {
+    var allContacts = await getContacts();
+    var items = allContacts[bankId] || [];
+    var contTxt = 'CONTATOS DO ' + bankName.toUpperCase() + ':' + '\n';
+    if(items.length) {
+      items.forEach(function(c){ contTxt += c.tipo + ' — ' + c.desc + ': ' + c.valor + '\n'; });
+    } else {
+      contTxt += 'Nenhum contato cadastrado para este banco.';
+    }
+    ST.contatosCtx = contTxt;
+  } catch(e) { ST.contatosCtx = ''; }
+
+  // Mostra tela de contatos no chat
+  showPanel('chat');
+  var msgs = document.getElementById('msgs');
+  msgs.innerHTML = '';
+  var es = document.createElement('div'); es.className = 'es';
+  var sugs = [
+    'Qual o telefone do ' + bankName + '?',
+    'Qual o WhatsApp do ' + bankName + '?',
+    'Qual o SAC do ' + bankName + '?',
+    'Qual o e-mail do ' + bankName + '?',
+    'Quais todos os contatos disponíveis?'
+  ];
+  var sugsHtml = sugs.map(function(s){ 
+    return '<button class="qq" onclick="sendQ(\''+s.replace(/'/g,"\\'")+'\')">'+s+'</button>'; 
+  }).join('');
+  es.innerHTML = '<div class="esico">📞</div>'
+    +'<h3>Contatos — '+bankName+'</h3>'
+    +'<p>Pergunte sobre telefones, WhatsApp, SAC e outros contatos deste banco.</p>'
+    +'<div class="qqs">'+sugsHtml+'</div>';
+  msgs.appendChild(es);
 }
 
 // ═══════════════════════════════════════
