@@ -1,0 +1,81 @@
+2S - https://proposta.2sconsig.com.br/
+
+► Banco Happy Consig - https://portal.happyconsig.com.br/servicos
+
+► BRB 360 - https://nova.consig360.com.br/ 
+
+► Banco LÓTUS - https://app.lotusmais.com.br/login
+
+► Banco MeuCash - https://front.meucashcard.com.br/WebAppBPOCartao/Login/ICLogin?ReturnUrl=%2FWebAppBPOCartao%2FPages%2FSimulacao%2FICSimulacao
+
+► Banco PARANÁ - https://portalcentralcorrespondente.paranabanco.com.br/
+
+► Banco BANRISUL - https://bemweb.bempromotora.com.br/
+
+► Banco BMG - https://www.bmgconsig.com.br/Index.do?method=prepare
+
+► Banco BRB - https://simulador.incontadigital.com.br/login
+
+► Banco C6 - https://c6.c6consig.com.br/WebAutorizador/Login/AC.UI.LOGIN.aspx
+
+►Banco C6 AUTO - https://c6auto.com.br/originacaolojista/login
+
+► Banco CREFISA - App1.gerencialcredito.com.br/CREFISA
+
+► CRIAÇÃO DE USUÁRIOS AVERBADORES - dox.novafinanceira.com/v2/bpm/instancias/criar/49
+
+► Banco DAYCOVAL - https://consignado.daycoval.com.br/Autorizador/Login/AC.UI.LOGIN.aspx
+
+► Banco DAYCOVAL DIGITAL - https://portaldecredito.daycoval.com.br/login
+
+► Banco DIGIO - https://funcaoconsig.digio.com.br/FIMENU/Login/AC.UI.LOGIN.aspx?FISession=6eea4e009b9
+
+► Banco FACTA - https://desenv.facta.com.br/sistemaNovo/login.php
+
+► Banco  ICRED - https://corban.icred.digital/#/home
+
+► Banco ITAÚ - https://www.ibconsigweb.com.br/Index.do?method=prepare
+
+► Banco ITAÚ 360 - https://openid.itau.com.br/services/oauth/authorize?client_id=f3c7c3bc-b4bb-48a4-8dad-07e0489cce70&redirect_uri=https:%2F%2Fic360.com.br%2Flogin%2Fcallback-partner-sts&scope=openid&response_type=code
+
+► Banco MERCANTIL - https://mb-ui-pcb-site-pcb.meumb.mercantil.com.br/login
+
+► Banco NOVO SAQUE - https://sistema.novosaque.com.br/login
+
+► Banco PAN - panconsig.pansolucoes.com.br/WebAutorizador
+
+► Banco PRESENÇA BANK - https://portal.presencabank.com.br/sign-in
+
+► Banco PRATA - https://admin-cb.pratadigital.com.br/
+
+► Banco SAFRA - https://epfweb.safra.com.br/Home/Login
+
+► Banco SANTANDER - https://www.parceirosantander.com.br/spa-base/access-area/login
+
+► SISTEMA NOVA DE VENDAS - https://novavendas.consignadorapido.com/
+
+► Banco TA QUITADO - https://dashboard.ta-quitado.com/usuarios/login/
+
+►Banco V8 - https://app.v8sistema.com/fgts
+
+► Banco V8 Cartão - https://v8digital.app/WebFIMenuMVC/Login/AC.UI.LOGIN.aspx?FISession=b1ba671662ef
+
+► Banco HUB CREDITO - https://fgts.hubcredito.com.br/#/login
+
+► Banco  FINANTO BANK - https://app.finantobank.com.br/
+
+► Banco FUTURO - https://kashdigital.webagente.app.dimensa.com.br
+
+► Banco AMIGOZ - https://amigozconsig.com.br/login
+
+►Banco  PEGCARD - https://pegcard.ercard.com.br:7430/ErCardWeb/
+
+► Banco Quero+ Credito (portal de digitação) - https://portaldecredito.queromaisconsignado.com.br/app/simulacao-ofertas/simulacao/ODg4MDAz
+
+► Banco Quero+ Credito (portal de acompanhamento) - https://cartaocredito.queromaisconsignado.com.br/Proposta/Proposta.aspx?Menu=Consulta
+
+► Banco Quero+ Credito (Demais operações) - https://consignado.queromaisconsignado.com.br/WebAutorizadorQueroMais/Login/AC.UI.LOGIN.aspx?FISession=c3008523617e
+
+► Banco Capital Consig - https://capitalconsig.app/WebFIMenuMVC/?FISession=c85ed41bc447
+
+► Banco PICPAY - https://sso-loan.picpay.com/auth/realms/loan-cns-picpay-ext/protocol/openid-connect/auth?client_id=ms-loan-cns-esteira-web&redirect_uri=https%3A%2F%2Fconsignado.picpay.com%2Fauth%2Fpicpay_keycloak%2Fcallback&response_type=code&scope=openid&state=7bc2979297cdfda7f08b596054c25dcf9c495f1605f42eaa
