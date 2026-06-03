@@ -1,0 +1,43 @@
+BANCOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCOS QUE PORTA 
+Porta os bancos de rede
+com 1 parcela paga
+Bancos consignáveis a
+partir de 12 parcelas pagas
+Daycoval - 25 parcelas
+pagas
+Pan - 25 parcelas pagas
+Itaú (029) - 25 parcelas
+pagas
+Facta - 25 parcelas pagas
+
+BANCOS QUE NÃO PORTA 
+Picpay
+Agibank
+C6
+C6 Consignado
+Bmg
+Presença
+Inbursa
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Mínimo por operação: R$4.000,01
+Valor mínimo de simulação de troco: R$ 100,00
+
+REDUÇÃO DE PARCELA
+Margem negativa: Não
+pode finalizar apenas na
+portabilidade. É
+preciso subtrair o valor
+negativo da parcela do
+contrato portado
+durante a simulação para
+garantir que haverá troco no
+refinanciamento.
+
+PORTABILIDADE PURA:
+Não atendemos essa
+modalidade, somente
+com refinanciamento
+atrelado.
