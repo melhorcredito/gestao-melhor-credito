@@ -1,0 +1,270 @@
+PUBLICO ALVO
+Atendidos: Estatutários, Efetivo Comissionado, Estágio Probatório,
+Regime Militar, Militares ativos efetivos, Civil ativo efetivo, os das
+Empresas Públicas Federais do Poder Executivo; Inativos/Aposentados;
+Pensionistas Vitalícios; pensionistas de natureza temporária, desde que
+do gênero feminino e conforme as regras contidas na página 6.
+Será autorizada contração de empréstimo para servidores com as
+situações funcionais: Ativo Permanente, Ativo em Outro Órgão
+(conforme regra de atendido), Cedido SUS/Lei 8270 (conforme regra de
+atendimento), Aposentado, Aposentado TCU 733/94, Ativo PERM Lei
+8878/94, Reforma CBM/PM, Reserva CBM/PM, Pensionista,
+Beneficiário Pensão, Pensão Graciosa Vitalícia, Pensão Vitalícia.
+
+Não Atendidos: comissionados, celetistas, temporários; pensionistas
+curatelados/tutelados; contratados; analfabetos ou impossibilitados de
+assinar; servidores de UPAGS não atendidas relacionadas no RO.
+Não será autorizada contração de empréstimo para servidores com
+determinadas situações funcionais (conforme quadro “Situação
+Funcional não atendida”).
+
+PLANO
+Mínimo: de acordo com as tabelas vigentes.
+Máximo: 96 parcelas
+
+NÚMERO DE CONTRATOS 
+09 contratos por matrícula.
+
+IDADE MAXIMA E MINIMA
+Mínima: 21 anos.
+Pensionistas: acima de 25 anos (quando pensão vitalícia).
+Máxima: 79 anos e 11 meses completos no final do contrato
+
+IDADE X VALOR DE CONTRATO
+Propostas com e sem Seguro:
+De 21 a 65 anos e 11 meses - R$ 270.000
+De 66 a 69 anos e 11 meses - R$ 230.000
+De 70 a 75 anos e 11 meses - R$ 190.000
+De 76 a 79 anos e 11 meses* - R$ 110.000
+
+Informações complementares:
+1. Para a faixa etária de 76 a 79 anos e 11 meses, a digitação de proposta será
+preferencialmente com seguro. Os casos de exceção devem ser enviados para análise
+e aprovação da área de produtos, com alçada mínima do gerente. As exceções devem
+ser registradas no Sydle para atuação da equipe de parametrização.
+2. Exclusivamente para o produto NOVO, o limite de idade é de 77 anos e 11 meses
+
+MARGEM DE SEGURANÇA
+Conforme instruções do item “Margem de Segurança”
+
+CONSULTA DE MARGEM
+Ver detalhes no item “Consulta e averbação da margem”.
+
+REFINANCIAMENTO
+Troco mínimo R$ 300,00. É permitido unificar parcelas, exceto nas
+operações de renegociação.
+
+FORMA DE PAGAMENTO
+O crédito será disponibilizado exclusivamente na conta informada no
+contracheque do servidor.
+Exceto quando:
+• o crédito for liberado na conta do Banco Inter; ou
+• o cliente contratante do produto REFIN DE CARTEIRA ou REFIN
+DA RETENÇÃO indicar a mesma conta que recebeu o crédito do
+contrato de empréstimo anterior; ou
+• a conta cadastrada no contracheque seja conta salário. Neste
+caso, o cliente deverá apresentar o extrato bancário que confirme
+a situação de “conta salário” juntamente com o extrato de outra
+conta bancária de sua titularidade, para que a área de operações
+efetive a retransmissão da TED.
+Nota 1
+Fica dispensado de apresentar o extrato de outra conta, o cliente que
+indicar os mesmos dados bancários que recebeu crédito de um
+empréstimo anterior, desde que seja um contrato com no mínimo 3
+parcelas baixadas.
+
+DIGITAÇÃO DE DADOS BANCARIOS
+No contracheque do SIAPE, o campo "AGÊNCIA" apresenta 6 dígitos. Ao
+inserir o número da agência no FrontBank, desconsidere o primeiro e o último
+dígito do campo "AGÊNCIA". Utilize apenas os 4 dígitos centrais.
+Exemplo: Se no contracheque constar: Agência 000108, o correto é
+informar: 0010.
+
+REGULARIZAÇÃO DE PAGAMENTO 
+Atenção aos seguintes pontos:
+O extrato bancário deve ser legível e atual: emitido em até 90 dias pelo
+Internet Banking ou Caixa Eletrônico.
+As informações precisam estar completas: nome ou CPF do titular da
+conta, dados bancários e movimentações.
+Para conta Banco do Inter não será necessário apresentação do extrato
+bancário.
+
+FORMALIZAÇÃO
+Formalização através de assinatura Eletrônica ou Manual.
+
+MARGEM DE SEGURANÇA
+A margem de segurança não é aplicada para convênio SIAPE, exceto para as UPAGs abaixo
+relacionadas:
+
+Código / Descrição
+26243 / UNIVERSIDADE FED. DO RIO GRANDE DO NORTE - UFRN
+26264 / UNIVERSIDADE FED. RURAL DO SEMI-ARIDO - UFERSA-RN
+26254 / UNIVERSIDADE FED.DO TRIANGULO MINEIRO - UFTM
+26240 / UNIVERSIDADE FEDERAL DA PARAIBA
+26231 / UNIVERSIDADE FEDERAL DE ALAGOAS - UFAL
+26252 / UNIVERSIDADE FEDERAL DE CAMPINA GRANDE - UFCG
+26242 / UNIVERSIDADE FEDERAL DE PERNAMBUCO - UFPE
+26250 / UNIVERSIDADE FEDERAL DE RORAIMA - UFRR
+26275 / UNIVERSIDADE FEDERAL DO ACRE - UFAC
+26233  /UNIVERSIDADE FEDERAL DO CEARA - UFCE
+26239  /UNIVERSIDADE FEDERAL DO PARA - UFPA
+26279  / UNIVERSIDADE FEDERAL DO PIAUI – UFPI
+25000 / MINISTÉRIO DA SAÚDE
+
+Margem de segurança R$ 50,00: Contrato Novo > Refin da Carteira agregando margem > Refin da
+Portabilidade agregando margem > Portabilidade sem Refin.
+Não aplicar Margem de Segurança: quando estiver mantendo o valor da parcela. Refin da Carteira >
+Refin da Portabilidade > Refin Retenção > Portabilidade > Renegociação e Refin Inadimplência.
+
+OBSERVAÇOES DO CONVENIO 
+✓ A situação funcional de todos os servidores ativos deverá ser consultada no “Portal da
+Transparência” (www.portaltransparencia.gov.br/servidores/Servidor-ListaServidores.asp). A
+validação ocorre pelo CPF do servidor. O site não disponibiliza dados para consulta dos
+aposentados e pensionistas.
+✓ A identificação da situação do servidor no órgão deverá ser verificada no campo “Situação
+Funcional” do contracheque.
+✓ Contratos para pensionistas serão liberados após 3 meses de vigência da pensão. Esta data
+deverá ser verificada no campo “início da pensão” do contracheque.
+✓ Quando o site do Siape retorna a informação "CPF não possui vínculos ativos", significa que o
+servidor/pensionista não possui mais vínculo com o cargo. Nesse caso, a proposta deverá ser
+reprovada, pois não temos como prossegui
+✓ Servidores com situação funcional SERVIDOR CEDIDO SUS/LEI 8.270 podem ser atendidos,
+desde que a averbação ocorra no órgão de origem. Além disso, o campo do contracheque REG.
+JURÍDICO deve conter uma das seguintes informações: “EST” para Estatutário ou “RMI” para
+Reforma Militar. Propostas de servidores cedido SUS e com regime jurídico diferente devem ser
+reprovadas.
+✓ Servidores com situação funcional ATIVO EM OUTRO ÓRGÃO poderão ser atendidos desde que
+a averbação ocorra no órgão de origem.
+✓ Para análise dos servidores ATIVO EM OUTRO ÓRGÃO e SERVIDOR CEDIDO SUS/LEI 8.270,
+basta verificar a informação descrita no contracheque e no site de consignação, conforme indicado
+abaixo:
+
+REGRAS PARA O PÚBLICO EFETIVO COMISISONADO
+✓ Para atendimento aos servidores efetivos comissionados o consultor comercial deverá realizar o
+cálculo da margem manual na calculadora para seguir com a digitação da proposta, e anexar o
+print do cálculo junto com a documentação exigida;
+✓ A digitação da proposta deverá ser realizada nos produtos abaixo:
+628 - CFE SIAPE GRATIF COMISSIONADA NOVO
+664  - CFE SIAPE PORT GRATIF COMISSIONADA
+630  - CFE SIAPE REFIN DA PORTABILIDADE GRATIF COMISSIONADA
+663 - CFE SIAPE REFIN DA RETENÇÃO GRATIF COMISSIONADA
+629 - CFE SIAPE REFIN GRATIF COMISSIONADA
+✓ Após a digitação o cálculo da margem será validado pela equipe de formalização;
+
+CONSULTA E AVERBAÇÃO DA MARGEM
+✓ Para consulta e averbação da margem, o cliente deverá autorizar o Banco Inter a acessar sua
+margem. A autorização deverá ser gerada no site do Sigepe, por meio do seguinte link:
+https://servidor.gov.br, na opção “Sigepe Servidor e Pensionista”. A autorização terá validade por
+30 dias e o mesmo código de autorização poderá ser utilizado para uma ou mais consignações
+dentro desse período. Caso o cliente solicite uma nova autorização para a mesma instituição
+financeira, a primeira se tornará inválida.
+✓ Após a autorização dada pelo cliente, a margem estará disponível para consulta no Portal Siapenet
+(https://www.siapenet.gov.br/Portal/Consignataria.asp). Selecionar a opção "Serviços", em seguida
+"Contratos" e depois "Consultar Margem Consignável / Autorizações". Será necessário informar o
+CPF do servidor.
+✓ A inclusão de um novo contrato de empréstimo e a renovação de um contrato de empréstimo já
+existente exigirão a anuência do servidor ou pensionista antes da averbação do desconto.
+✓ As consignações incluídas ficarão na situação de Aguardando Anuência. Isso significa a que a
+averbação será efetivada após a aprovação cliente.
+✓ A anuência é feita pelo servidor por meio de uma funcionalidade específica do SIGEPE (Sistema
+de Gestão de Pessoas) e tem uma validade de até 10 dias após a inclusão.
+✓ O valor do contrato será provisionado na margem consignável do servidor ou pensionista após a
+inclusão do contrato. Esse valor só será liberado caso o servidor não aceite o contrato ou caso o
+prazo para a anuência do contrato tenha expirad
+
+MATRÍCULA
+✓ A matrícula do servidor/pensionista possui no máximo 8 caracteres, incluindo os zeros à esquerda.
+✓ A matrícula do instituidor (gerador da pensão) possui no máximo 7 caracteres, incluindo os zeros
+à esquerda.
+✓ A matrícula deverá ser informada no sistema igual à cadastrada no site do SIGEPE
+
+PENSIONISTA TEMPORÁRIO
+ Conforme entendimento da Lei 8.112/90, que foi alterada pela Lei 13.135/15, o atendimento para
+pensionistas temporários só será permitido para clientes do gênero feminino e conforme as regras
+abaixo:
+▪ Sem restrição para pensionistas que seja filha do instituidor(a); e
+▪ Para cônjuge o atendimento será sem restrição, caso ela estivesse com 44 anos de idade
+ou mais na data do início da pensão. Caso contrário o atendimento será conforme a tabela
+abaixo:
+
+IDADE DO PENSIONISTA / DURAÇÃO DO BENEFÍCIO
+Entre 25 e 26 anos / 6 (seis) anos
+Entre 27 e 29 anos / 10 (dez) anos
+Entre 30 e 40 anos / 15 (quinze) anos
+Entre 41 e 43 anos / 20 (vinte) anos
+Para essa validação, a idade será calculada considerando a data do início da pensão que consta no
+contracheque e a data de nascimento da cliente.
+IMPORTANTE: Para agilizar a análise da proposta na esteira, é muito IMPORTANTE informar o nome
+do pai da cliente, caso ela o possua registrado no documento de identificação.
+
+REGRAS ATENDIMENTO UPAG MINISTÉRIO DA SAÚDE
+Aposentados e Pensionistas: atendimento para todos os produtos.
+Servidor Ativo - regras para atendimento:
+Produtos: novo | portabilidade | refin da portabilidade:
+Regras:
+✓ Idade até 65 anos na data da contratação.
+✓ Margem de segurança: R$ 50,00
+Produto: Refinanciamento Carteira | Retenção:
+Regras:
+✓ não possuir contrato em atraso;
+✓ os contratos refinanciados devem ter ao menos 6 parcelas pagas (performadas/adimplentes);
+✓ não será permitido agregar margem nas parcelas refinanciadas.
+O Consultor Comercial deverá anexar na proposta os prints do sistema Função, tais como:
+✓ quantidade de contratos que o cliente possui em andamento;
+✓ print que demonstre a pontualidade do contrato; e
+✓ quantidade de parcelas pagas (próximo item).
+DOCUMENTAÇÃO EXIGIDAQuando se tratar de uma proposta de refinanciamento de um servidor vinculado a uma UPAG não
+atendida deverão ser consideradas as seguintes regras:
+✓ não possuir contrato em atraso;
+✓ os contratos refinanciados devem ter ao menos 6 parcelas pagas (performadas/adimplentes);
+✓ não será permitido agregar margem nas parcelas refinanciadas.
+O Consultor Comercial deverá anexar na proposta os prints do sistema Função, tais como:
+✓ quantidade de contratos que o cliente possui em andamento;
+✓ print que demonstre a pontualidade do contrato; e
+✓ quantidade de parcelas pagas (próximo item).
+
+REFINANCIAMENTO DE CARTEIRA PARA AS UPAGs NÃO ATENDIDAS
+Quando se tratar de uma proposta de refinanciamento de um servidor vinculado a uma UPAG não
+atendida deverão ser consideradas as seguintes regras:
+✓ não possuir contrato em atraso;
+✓ os contratos refinanciados devem ter ao menos 6 parcelas pagas (performadas/adimplentes);
+✓ não será permitido agregar margem nas parcelas refinanciadas.
+O Consultor Comercial deverá anexar na proposta os prints do sistema Função, tais como:
+✓ quantidade de contratos que o cliente possui em andamento;
+✓ print que demonstre a pontualidade do contrato; e
+✓ quantidade de parcelas pagas (próximo item).
+
+DOCUMENTAÇÃO EXIGIDA
+✓ Contracheque mais recente legível;
+✓ Documento de identificação pessoal;
+Identidade Civil - RG;
+CNH - Carteira Nacional de Habilitação;
+RNE - Registro Nacional de Estrangeiro (válida);
+Identidade Militar: Bombeiros, Exército, Marinha, Aeronáutica e Polícia;
+Carteira de Conselho de Classe - COREN, OAB, COFEN etc. (válida);
+Cópia da certidão de casamento (caso tenha divergência no nome);
+✓ Print da calculadora de margem (somente para propostas de servidores efetivos
+comissionados)
+✓ Comprovante de residência, seguindo as regras abaixo:
+
+Assinatura Eletrônica:
+✓ Atestado de residência será enviado no kit de formulários, junto ao contrato; e
+✓ Não será necessário comprovante de endereço.
+
+Assinatura por E-mail:
+✓ Atestado de residência será enviado no kit de formulários para assinatura do
+cliente;
+✓ Caso não seja assinado, faremos a consulta à base interna e aos bureaus (PNL
+e Credilink); e
+✓ Se a validação não for aprovada, o comprovante de endereço será solicitado.
+
+Assinatura Presencial e Vias em Branco:
+✓ Consulta inicial na base interna e nos bureaus; e
+✓ Se a validação não for aprovada, o comprovante de endereço será solicitado.
+Documentos adicionais poderão ser solicitado caso haja necessidade.
+
+Formulários:
+Novo
+Cédula de Crédito Bancária (CCB)
+Refinanciamento
+Cédula de Crédito Bancária (CCB), Termo de Autorização para Liquidação de Empréstimo – REFIN/Retenção
