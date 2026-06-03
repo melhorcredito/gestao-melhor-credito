@@ -1,0 +1,150 @@
+O QUE ACONTECE SE : 
+
+Mudar de emprego
+O desconto continua automaticamente no novo emprego via eSocial.
+O sistema transfere a informação para o novo empregador que passa a fazer o desconto em folha.
+
+For demitido
+Em caso de demissão sem justa causa, é utilizado até 100% da multa rescisória, 10% do saldo do FGTS e 35% das verbas rescisórias para quitar a dívida.
+Se ainda assim tiver saldo remanescente, é transferido o saldo devedor para um novo emprego.
+
+Pedir demissão
+Caso ainda tenha saldo em aberto, o desconto continuará automaticamente no novo emprego via eSocial.
+O sistema transfere a informação para o novo empregador para que possa fazer o desconto em folha.
+
+Ter aderido ao Saque Aniversário
+Poderá contratar o empréstimo consignado privado normalmente.
+
+Pedir o Cancelamento
+O cliente poderá solicitar o cancelamento do contrato até 7 dias corridos após o recebimento do crédito, mediante devolução integral do valor recebido para a instituição.
+Em caso de dúvidas, contate a central de atendimento ao cliente:
+sac@v8digital.online
+
+Quitação do Contrato
+Para o cliente conseguir quitar antecipadamente o contrato, liquidar parcelas ou renegociar dívida a qualquer momento, inclusive durante transição de empregos para não gerar nova averbação no seu novo vínculo empregatício, é necessário informar o Setor de RH da empresa vigente para que o departamento entre em contato com a V8 e prossiga com as etapas de geração do boleto.
+ouvidoria@v8digital.online
+
+Como Funcionam os descontos das Parcelas do CLT:
+
+* Na simulação do contrato aparece a **data de vencimento da primeira parcela** (por exemplo: **28/12/2025**).
+
+  * Essa data indica **quando a parcela vence**, ou seja, o prazo para pagamento daquela parcela.
+
+* O **desconto efetivo em folha** ocorre na data em que o trabalhador recebe o salário.
+
+  * Portanto, mesmo que a parcela vença em **28/12/2025**, o débito será feito quando o empregador pagar o salário do trabalhador (data de pagamento da folha).
+
+* A **competência salarial** usada para identificar a parcela será sempre o mês anterior ao do pagamento.
+
+  * Ex.: se a parcela vence em **28/12/2025**, a competência será **11/2025**, porque o salário pago em dezembro corresponde ao trabalho do mês de novembro.
+
+Exemplo prático
+
+* Simulação mostra: *1ª parcela — vencimento 28/12/2025**.
+* Se o empregado receber o salário em **08/12/2025** (data de pagamento da folha), o desconto será efetuado nessa data.
+* A parcela será identificada como referente à competência **11/2025** (mês de referência do salário).
+
+Pontos Importantes
+A data de vencimento mostrada na simulação não
+muda a regra: ela é o prazo da parcela, mas o
+desconto só sai quando houver o pagamento da folha.
+Em empresas onde o pagamento de salários ocorre
+em outra data (por exemplo dia 30, 31, dia útil anterior,
+ou data fixa diferente), o desconto seguirá a data real
+de pagamento adotada pelo empregador.
+Caso haja dúvidas sobre a data exata em que o
+empregador paga a folha, o trabalhador pode
+confirmar com o RH para saber em qual dia o
+desconto será processado.
+
+ATENÇÃO
+Contratos gerados antes do período da maciça do mês
+vigente serão averbados e encaminhados para cobrança
+já para o mês seguinte, enquanto contratos gerados após
+a maciça do mês vigente terão a cobrança realizada no
+mês subsequente.
+
+Exemplo
+Contrato realizado no dia 15/01, será averbado e terá desconto no
+pagamento de Fevereiro do funcionário (Competência Janeiro) e a
+Parcela terá vencimento para o dia 28/02.
+Contrato realizado no dia 24/01, será averbado na próxima
+maciça (Fevereiro), com desconto para o pagamento de Março do
+funcionário (Competência Fevereiro) e a parcela terá vencimento
+para o dia 28/03.
+
+Critérios para a empresa empregadora
+Requisitos mínimos:
+Fundação mínima de 3 anos / 36 meses
+CNPJ Regular na Receita Federal
+
+Não elegível se houver:
+Histórico de PLD
+Trabalho análogo à escravidão
+Atrasos no FGTS
+Pendências no INSS
+Dívida ativa com a União ou Estados
+Situação falimentar
+
+REGRAS
+Valor Liberado - De R$ 300,00 a R$ R$ 50.000,00
+Idade - 21 a 65 anos
+Prazos da Operação - 6, 12, 18,24, 36 e 46 meses.
+Pagamento - Via PIX, em conta corrente individual de
+titularidade do cliente
+Pagamento ao cliente em até 24 horas
+
+Tempo de Empresa / Número de Parcelas
+De 3 a 6 meses / Contratos de 6 parcelas
+De 6 a 12 meses  / Contratos de 6 a 12 parcelas
+Acima de 12 meses / Contratos de 6 a 46 parcelas
+
+Documentação necessária
+Formalização digital com selfie do
+cliente. CPF sem restrições, e arquivo
+do RG, CNH, Passaporte, RNE,
+Carteira de Trabalho e Carteira
+Profissional (OAB, COREN, ...)
+
+Condições do produto
+IDADE
+21 a 65 anos
+
+VALOR
+R$ 300 a R$ 50.000
+
+PRAZOS
+6 a 46 meses
+
+PAGAMENTO AO CLIENTE
+Via PIX
+
+FORMALIZAÇÃO
+100% Digital
+
+TAXAS E JUROS
+Variáveis conforme o perfil
+
+Tempo mínimo carteira assinada:
+3 meses
+
+CONTRATOS
+Até 9 por CPF
+
+GARANTIAS
+Margem + FGTS em
+caso de demissão
+
+*Margem Consignável - 35% da renda líquida
+*Margem Liberada para Empréstimo - 100% da
+Margem (Sujeito à análise de crédito interno)
+.
+Seguro consignado Crédito CLT - PRESTAMISTA
+
+COBERTURAS
+Morte QC + IPTA : Quitação do saldo limitada a R$ 30.000,00 
+Carência : Verificar as condições detalhadas do produto! 
+Morte QC / IPTA
+
+Morte QC = Morte qualquer causa
+IPTA = Invalidez Permanente Total por Acidente.
