@@ -1,0 +1,40 @@
+BANVOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCOS QUE PORTAM 
+Banco Inbursa (012 e
+055) - 12 parcelas pagas
+Banco Agibank S.A - 12
+parcelas pagas
+Daycoval - 25 parcelas
+pagas
+C6 - 25 parcelas pagas
+Pan - 25 parcelas pagas
+ Picpay - 25 parcelas
+pagas
+Itaú (029) - 25 parcelas
+pagas 
+
+BANCOS QUE NÃO PORTAM
+Facta Financeira
+Barigui
+Mercantil
+BMG
+Presença
+
+REDUÇÃO DE PARCELA
+Opera com
+margem negativa
+realizando os ajustes
+na parcela
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Parcela mínima no
+refin da port de R$
+15,00
+Parcela mínimo de
+R$ 100,00
+
+PORTABILIDADE PURA:
+Faz portabilidade
+pura, parcela mínima de
+R$ 100,00
