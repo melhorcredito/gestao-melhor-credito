@@ -1,0 +1,42 @@
+BANCOS QUE PORTAM E BANCOS QUE NÃO PORTAM
+
+BANCOS QUE PORTAM 
+Inbursa - 12 parcelas pagas
+QI Tech - 12 parcelas pagas
+Zema - 12 parcelas pagas
+Pine (BPC Loas) - 12
+parcelas pagas
+Safra - 15 parcelas pagas
+Daycoval - 25 parcelas
+pagas
+Pan - 25 parcelas pagas
+Itaú (029) - 25 parcelas
+pagas
+Facta - 25 parcelas pagas
+Banrisul - 30 parcelas
+pagas
+C6 - 36 parcelas pagas
+ Picpay - 25 parcelas pagas
+
+BANCOS QUE NÃO PORTAM 
+Agibank
+Máxima
+BRB
+BMG
+Caixa 
+Presença
+
+REDUÇÃO DE PARCELA
+Faz redução de
+parcela abatendo o
+negativo na port e
+no refin da port
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Saldo mínimo de
+R$ 5.000,00
+
+PORTABILIDADE PURA:
+Faz porta pura -
+saldo mínimo
+conforme a taxa
