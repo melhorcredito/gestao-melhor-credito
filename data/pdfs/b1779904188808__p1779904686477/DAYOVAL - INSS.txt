@@ -1,0 +1,50 @@
+BANOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCOS QUE PORTAM
+Bancos de Rede
+Contratos originados em agência:
+SIM remunera com mínimo 6
+parcelas pagas
+Bancos de Rede
+Contratos originados em Corban:
+SIM remunera: igual ou superior a
+360 dias
+NÃO remunera inferior a 360 dias.
+OBS: as regras se aplicam para
+contratos portados originados por
+todos os bancos, inclusive os não
+aderentes à autorregulação
+Agibank - 15 parcelas pagas
+Inbursa - 13 parcelas pagas
+Itaú (341) - 12 pagas
+PINE - 0 pagas
+BRB - 0 pagas
+QI SOCIEDADE DE CRÉDITO - 0
+pagas.
+Pan - 25 parcelas pagas
+Itaú (029) - 25 parcelas pagas
+Facta - 25 parcelas pagas
+ Picpay - 25 parcelas pagas
+
+BANCOS QUE NÃO PORTAM
+C6
+Safra
+Máster
+Alfa
+BMG
+Presença
+
+REDUÇÃO DE PARCELA
+Faz redução de
+parcela para clientes
+negativos;
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Troco Mínimo:
+2% ou R$100,00
+ (o que for maior)
+
+PORTABILIDADE PURA:
+Somente
+Portabilidade com
+Refinanciamento
