@@ -1,0 +1,49 @@
+BANCOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCOS QUE PORTAM
+Porta com menos de 12
+parcelas pagas todos os bancos
+vinculados à CIP com exceção
+dos seguintes bancos:
+Paraná Banco - 13 parcelas
+pagas
+Facta - 25 parcelas pagas
+Itaú (029) - 25 parcelas pagas
+Pan - 37 parcelas pagas
+ Picpay - 25 parcelas pagas
+O contrato só é remunerado
+desde que após retorno CIP venha
+a informação que o contrato foi
+originado por canal próprio do
+banco portado;
+
+BANCOS QUE NÃO PORTAM
+Daycoval
+Agibank
+Inbursa
+Safra
+BRB
+QI TECH
+Bmg
+Presença
+
+REDUÇÃO DE PARCELA
+Clientes com margem
+negativa, o valor negativo
+da margem deverá ser
+deduzido do valor da
+parcela do contrato
+portado.
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Valor mínimo financiado a
+partir de 2.000,00;
+Troco mínimo no Refin da
+Port de 100,00;
+Soma do saldo + troco do
+Refin;
+
+PORTABILIDADE PURA:
+Portabilidade com
+taxa abaixo de 1,75% é
+obrigatório Refin.
