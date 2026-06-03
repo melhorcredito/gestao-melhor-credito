@@ -1,0 +1,35 @@
+BANCOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCO QUE PORTA 
+Não porta com menos
+de 365 dias, exceto
+bancos de rede acima de 1
+paga;
+Daycoval - 25 parcelas
+pagas
+C6 - 25 parcelas pagas
+Pan - 25 parcelas pagas
+Facta - 25 parcelas
+pagas
+Itaú (029) - 25 parcelas
+pagas
+
+BANVOS QUE NÃO PORTAM 
+Inbursa
+BRB
+Bmg
+Presença
+Mercantil 
+
+REDUÇÃO DE PARCELA
+Não opera com clientes negativos.
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+- Parcela mínima de
+R$ 50,00:
+ - Troco mínimo
+Refin da Port: R$
+100,00
+
+PORTABILIDADE PURA:
+Não opera com essa modalidade.
