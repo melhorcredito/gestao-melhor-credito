@@ -1335,30 +1335,54 @@ function renderSub(){
   var cols={and:[],pend:[],fin:[],rep:[]};
   SUBS.forEach(function(it){
     if(srch&&!it.nome.toLowerCase().includes(srch)&&!(it.cnpj||'').includes(srch)&&!it.banco.toLowerCase().includes(srch)) return;
-    cols[it.status]&&cols[it.status].push(it);
+    var st = it.status||'and';
+    if(cols[st]) cols[st].push(it);
   });
   ['and','pend','fin','rep'].forEach(function(s){
     var el=document.getElementById('s-col-'+s);
+    if(!el) return;
     document.getElementById('s-cnt-'+s).textContent=cols[s].length;
+    el.innerHTML='';
     if(!cols[s].length){ el.innerHTML='<div class="empty">Nenhum cadastro</div>'; return; }
-    el.innerHTML=cols[s].map(function(it){
-      var btns='';
-      if(s!=='and') btns+='<button class="mv-btn to-and" onclick="moveSub(''+it.id+'','and')">'+(s==='pend'?'➡ Andamento':'⬅ Andamento')+'</button>';
-      if(s!=='pend') btns+='<button class="mv-btn to-pend" onclick="moveSub(''+it.id+'','pend')">⬅ Pendente</button>';
-      if(s!=='fin') btns+='<button class="mv-btn to-fin" onclick="moveSub(''+it.id+'','fin')">✔ Finalizado</button>';
-      if(s!=='rep') btns+='<button class="mv-btn to-rep" onclick="moveSub(''+it.id+'','rep')">✖ Reprovado</button>';
-      return '<div class="card"><div class="card-top"><div class="card-name">'+it.nome+'</div>'
-        +'<div class="card-actions"><button class="act-btn" onclick="openSubEdit(''+it.id+'')">✏️</button>'
-        +'<button class="act-btn" onclick="openDel(''+it.id+'','sub',''+escHtml(it.nome)+'')">🗑️</button></div></div>'
-        +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.razao+'</span>'
+    cols[s].forEach(function(it){
+      var card=document.createElement('div'); card.className='card';
+      // Topo
+      var top=document.createElement('div'); top.className='card-top';
+      var nm=document.createElement('div'); nm.className='card-name'; nm.textContent=it.nome;
+      var acts=document.createElement('div'); acts.className='card-actions';
+      var be=document.createElement('button'); be.className='act-btn'; be.textContent='✏️';
+      be.onclick=(function(id){return function(){openSubEdit(id);};})(it.id);
+      var bd=document.createElement('button'); bd.className='act-btn'; bd.textContent='🗑️';
+      bd.onclick=(function(id,nm){return function(){openDel(id,'sub',nm);};})(it.id,it.nome);
+      acts.appendChild(be); acts.appendChild(bd);
+      top.appendChild(nm); top.appendChild(acts); card.appendChild(top);
+      // Meta
+      var meta=document.createElement('div'); meta.className='card-meta';
+      meta.innerHTML='<span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.razao+'</span>'
         +(it.cnpj?'<span class="tag chamado">CNPJ: '+it.cnpj+'</span>':'')
         +(it.cpf?'<span class="tag chamado">CPF: '+it.cpf+'</span>':'')
         +'<span class="tag banco">🏦 '+it.banco+'</span>'
-        +'<span class="tag data">📅 '+it.data+'</span></div>'
-        +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
-        +(it.oper?'<div style="margin-top:6px;font-size:11px;font-weight:600;color:#0369a1">👤 Operacional: '+it.oper+'</div>':'')
-        +'<div class="card-move">'+btns+'</div></div>';
-    }).join('');
+        +'<span class="tag data">📅 '+it.data+'</span>';
+      card.appendChild(meta);
+      if(it.obs){var ob=document.createElement('div');ob.style.cssText='margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5';ob.textContent='💬 '+it.obs;card.appendChild(ob);}
+      if(it.oper){var op=document.createElement('div');op.style.cssText='margin-top:6px;font-size:11px;font-weight:600;color:#0369a1';op.textContent='👤 Operacional: '+it.oper;card.appendChild(op);}
+      // Botões mover
+      var mv=document.createElement('div'); mv.className='card-move';
+      var btns=[
+        {st:'and', lbl: s==='pend'?'➡ Andamento':'⬅ Andamento', cls:'to-and'},
+        {st:'pend', lbl:'⬅ Pendente', cls:'to-pend'},
+        {st:'fin', lbl:'✔ Finalizado', cls:'to-fin'},
+        {st:'rep', lbl:'✖ Reprovado', cls:'to-rep'},
+      ];
+      btns.forEach(function(b){
+        if(b.st===s) return;
+        var btn=document.createElement('button'); btn.className='mv-btn '+b.cls; btn.textContent=b.lbl;
+        btn.onclick=(function(id,st){return function(){moveSub(id,st);};})(it.id,b.st);
+        mv.appendChild(btn);
+      });
+      card.appendChild(mv);
+      el.appendChild(card);
+    });
   });
   var tot=SUBS.filter(function(it){
     if(srch&&!it.nome.toLowerCase().includes(srch)&&!(it.cnpj||'').includes(srch)&&!it.banco.toLowerCase().includes(srch)) return false;
@@ -1368,8 +1392,9 @@ function renderSub(){
   document.getElementById('s-st-and').textContent=cols.and.length;
   document.getElementById('s-st-pend').textContent=cols.pend.length;
   document.getElementById('s-st-fin').textContent=cols.fin.length;
-  document.getElementById('s-st-rep') && (document.getElementById('s-st-rep').textContent=cols.rep.length);
+  if(document.getElementById('s-st-rep')) document.getElementById('s-st-rep').textContent=cols.rep.length;
 }
+
 function openSubModal(){
   sEditId=null;
   document.getElementById('s-modal-title').textContent='Novo Cadastro Sub';
