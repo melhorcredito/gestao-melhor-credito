@@ -1,0 +1,45 @@
+BANCOS QUE PORTAM E BANCOS QUE NÃO PORTAM 
+
+BANCOS QUE PORTAM
+Agibank - 15 parcelas
+pagas
+BMG - 12 parcelas pagas
+Santander/Olé - 12
+parcelas pagas
+Paraná - 15 parcelas pagas
+Itaú (029) - 25 parcelas
+pagas
+C6 - 25 parcelas pagas
+Daycoval - 25 parcelas
+pagas
+ Picpay - 25 parcelas pagas
+Pan - 30 parcelas pagas
+Demais bancos 0 parcelas
+pagas
+
+BANCOS QUE NÃO PORTAM 
+Paulista - Cujo contrato
+seja originado pela Facta
+Zema - Cujo contrato seja
+originado pela Facta
+Inbursa (BI)
+Banco Pine
+Socicred (917)
+Presença
+BMG
+
+REDUÇÃO DE PARCELA
+Reduz a parcela desde
+que cubra o saldo
+devedor, ficando dentro
+da taxa e regra do troco.
+
+PARCELA/SALDO/OPERAÇÃO MÍNIMA:
+Portabilidade sem regra
+de valor mínimo, desde que
+o Refin da Portabilidade
+tenha uma parcela mínima
+de 50,00.
+
+PORTABILIDADE PURA
+Faz Portabilidade PURA!
