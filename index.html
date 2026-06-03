@@ -428,6 +428,13 @@ header{display:none}
       </div>
       <div class="col-body" id="s-col-fin"></div>
     </div>
+    <div class="col">
+      <div class="col-head rep">
+        <div class="col-title rep"><span class="col-dot rep"></span>Reprovado</div>
+        <span class="col-count rep" id="s-cnt-rep">0</span>
+      </div>
+      <div class="col-body" id="s-col-rep"></div>
+    </div>
   </div>
 </div>
 
@@ -1325,23 +1332,24 @@ onSnapshot(collection(db,'subs'), function(snap){
 
 function renderSub(){
   var srch=document.getElementById('s-srch').value.trim().toLowerCase();
-  var cols={and:[],pend:[],fin:[]};
+  var cols={and:[],pend:[],fin:[],rep:[]};
   SUBS.forEach(function(it){
     if(srch&&!it.nome.toLowerCase().includes(srch)&&!(it.cnpj||'').includes(srch)&&!it.banco.toLowerCase().includes(srch)) return;
     cols[it.status]&&cols[it.status].push(it);
   });
-  ['and','pend','fin'].forEach(function(s){
+  ['and','pend','fin','rep'].forEach(function(s){
     var el=document.getElementById('s-col-'+s);
     document.getElementById('s-cnt-'+s).textContent=cols[s].length;
     if(!cols[s].length){ el.innerHTML='<div class="empty">Nenhum cadastro</div>'; return; }
     el.innerHTML=cols[s].map(function(it){
       var btns='';
-      if(s!=='and') btns+='<button class="mv-btn to-and" onclick="moveSub(\''+it.id+'\',\'and\')">'+(s==='pend'?'➡ Andamento':'⬅ Andamento')+'</button>';
-      if(s!=='pend') btns+='<button class="mv-btn to-pend" onclick="moveSub(\''+it.id+'\',\'pend\')">⬅ Pendente</button>';
-      if(s!=='fin') btns+='<button class="mv-btn to-fin" onclick="moveSub(\''+it.id+'\',\'fin\')">✔ Finalizado</button>';
+      if(s!=='and') btns+='<button class="mv-btn to-and" onclick="moveSub(''+it.id+'','and')">'+(s==='pend'?'➡ Andamento':'⬅ Andamento')+'</button>';
+      if(s!=='pend') btns+='<button class="mv-btn to-pend" onclick="moveSub(''+it.id+'','pend')">⬅ Pendente</button>';
+      if(s!=='fin') btns+='<button class="mv-btn to-fin" onclick="moveSub(''+it.id+'','fin')">✔ Finalizado</button>';
+      if(s!=='rep') btns+='<button class="mv-btn to-rep" onclick="moveSub(''+it.id+'','rep')">✖ Reprovado</button>';
       return '<div class="card"><div class="card-top"><div class="card-name">'+it.nome+'</div>'
-        +'<div class="card-actions"><button class="act-btn" onclick="openSubEdit(\''+it.id+'\')">✏️</button>'
-        +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'sub\',\''+escHtml(it.nome)+'\')">🗑️</button></div></div>'
+        +'<div class="card-actions"><button class="act-btn" onclick="openSubEdit(''+it.id+'')">✏️</button>'
+        +'<button class="act-btn" onclick="openDel(''+it.id+'','sub',''+escHtml(it.nome)+'')">🗑️</button></div></div>'
         +'<div class="card-meta"><span class="tag" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">🏢 '+it.razao+'</span>'
         +(it.cnpj?'<span class="tag chamado">CNPJ: '+it.cnpj+'</span>':'')
         +(it.cpf?'<span class="tag chamado">CPF: '+it.cpf+'</span>':'')
@@ -1360,8 +1368,8 @@ function renderSub(){
   document.getElementById('s-st-and').textContent=cols.and.length;
   document.getElementById('s-st-pend').textContent=cols.pend.length;
   document.getElementById('s-st-fin').textContent=cols.fin.length;
+  document.getElementById('s-st-rep') && (document.getElementById('s-st-rep').textContent=cols.rep.length);
 }
-
 function openSubModal(){
   sEditId=null;
   document.getElementById('s-modal-title').textContent='Novo Cadastro Sub';
