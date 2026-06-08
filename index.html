@@ -163,6 +163,10 @@ body{display:flex}
 .sidebar.collapsed ~ .main{margin-left:56px}
 header{display:none}
 .hero{display:none}
+.sb-subitem{display:flex;align-items:center;gap:10px;padding:7px 14px 7px 28px;border-radius:9px;cursor:pointer;color:rgba(255,255,255,.45);font-size:12px;font-weight:500;transition:all .15s;margin-bottom:1px}
+.sb-subitem:hover,.sb-subitem.active{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9)}
+.sb-arr{margin-left:auto;font-size:11px;opacity:.4;transition:transform .2s}
+.sb-arr.open{transform:rotate(90deg)}
 </style>
 </head>
 <body>
@@ -191,6 +195,15 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / Propostas</span></div>
     <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas E-mail</span></div>
     <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros Sub</span></div>
+    <div class="sb-item sb-expandable" id="sb-material" onclick="toggleMaterial()">
+      <span class="sb-icon">📚</span>
+      <span class="sb-label">Material de Apoio</span>
+      <span class="sb-arr" id="sb-material-arr">›</span>
+    </div>
+    <div id="sb-material-sub" style="display:none">
+      <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power Hub</span></div>
+      <div class="sb-subitem" onclick="switchTab('material-storm',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
+    </div>
     <div class="sb-section">Gestão</div>
     <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Ajuste de Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
     <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Comunicados</span></div>
@@ -1456,7 +1469,7 @@ function openDel(id,type,name){
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
 async function confirmDel(){
-  var col = delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':delType==='par'?'parceiros':delType==='con'?'contratos':'demandas';
+  var col = delType==='mat_powerhub'?'material_powerhub':delType==='mat_storm'?'material_storm':delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':delType==='par'?'parceiros':delType==='con'?'contratos':'demandas';
   await deleteDoc(doc(db,col,delId));
   closeDel();
 }
@@ -1960,7 +1973,7 @@ async function salvarCon(){
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay','mat-overlay'].forEach(function(id){
   var el = document.getElementById(id);
   if(!el) return;
   el.addEventListener('click',function(e){
