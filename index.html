@@ -2266,6 +2266,113 @@ async function salvarIn(){
 }
 
 
+
+// ══════════════════════════════════════
+// MATERIAL DE APOIO
+// ══════════════════════════════════════
+var MATERIAL_PH = [];
+var MATERIAL_ST = [];
+var matEditId = null;
+var matTipo = 'powerhub';
+
+function toggleMaterial() {
+  var sub = document.getElementById('sb-material-sub');
+  var arr = document.getElementById('sb-material-arr');
+  if(!sub) return;
+  var open = sub.style.display !== 'none';
+  sub.style.display = open ? 'none' : 'block';
+  if(arr) arr.classList.toggle('open', !open);
+}
+
+function openMatModal(tipo) {
+  matTipo = tipo || 'powerhub';
+  matEditId = null;
+  document.getElementById('mat-modal-title').textContent = 'Novo Material — ' + (tipo==='powerhub'?'Power Hub':'Storm');
+  document.getElementById('mat-titulo').value = '';
+  document.getElementById('mat-desc').value = '';
+  document.getElementById('mat-link').value = '';
+  document.getElementById('mat-tipo').value = 'pdf';
+  document.getElementById('mat-overlay').classList.add('open');
+}
+
+function closeMatModal() {
+  document.getElementById('mat-overlay').classList.remove('open');
+}
+
+function openMatEdit(id, tipo) {
+  matTipo = tipo;
+  matEditId = id;
+  var arr = tipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
+  var it = arr.find(function(m){ return m.id===id; });
+  if(!it) return;
+  document.getElementById('mat-modal-title').textContent = 'Editar Material';
+  document.getElementById('mat-titulo').value = it.titulo||'';
+  document.getElementById('mat-desc').value = it.desc||'';
+  document.getElementById('mat-link').value = it.link||'';
+  document.getElementById('mat-tipo').value = it.tipo||'pdf';
+  document.getElementById('mat-overlay').classList.add('open');
+}
+
+async function salvarMat() {
+  var titulo = document.getElementById('mat-titulo').value.trim();
+  var link   = document.getElementById('mat-link').value.trim();
+  var desc   = document.getElementById('mat-desc').value.trim();
+  var tipo   = document.getElementById('mat-tipo').value;
+  if(!titulo || !link){ alert('Preencha título e link!'); return; }
+  var col = matTipo==='powerhub' ? 'material_powerhub' : 'material_storm';
+  try {
+    if(matEditId) {
+      await updateDoc(doc(db,col,matEditId),{titulo,desc,link,tipo});
+    } else {
+      await addDoc(collection(db,col),{titulo,desc,link,tipo,data:hoje()});
+    }
+    closeMatModal();
+  } catch(e) { alert('Erro ao salvar: '+e.message); }
+}
+
+onSnapshot(collection(db,'material_powerhub'), function(snap){
+  MATERIAL_PH = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderMaterial('powerhub');
+});
+
+onSnapshot(collection(db,'material_storm'), function(snap){
+  MATERIAL_ST = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
+  renderMaterial('storm');
+});
+
+function renderMaterial(tipo) {
+  var arr  = tipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
+  var grid = document.getElementById(tipo==='powerhub' ? 'mph-grid' : 'mst-grid');
+  var srchEl = document.getElementById(tipo==='powerhub' ? 'mph-srch' : 'mst-srch');
+  var srch = srchEl ? srchEl.value.trim().toLowerCase() : '';
+  if(!grid) return;
+  var icons = {pdf:'📄',video:'🎥',planilha:'📊',apresentacao:'📑',outro:'📌'};
+  var list = arr.filter(function(m){ return !srch || (m.titulo||'').toLowerCase().includes(srch); });
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum material cadastrado</div>'; return; }
+  grid.innerHTML = '';
+  list.forEach(function(m){
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.style.cssText = 'background:#fff;border-radius:12px;padding:16px';
+    var icon = icons[m.tipo]||'📌';
+    var top = document.createElement('div'); top.className = 'card-top';
+    var nm = document.createElement('div'); nm.className = 'card-name'; nm.textContent = icon+' '+(m.titulo||'');
+    var acts = document.createElement('div'); acts.className = 'card-actions';
+    var be = document.createElement('button'); be.className = 'act-btn'; be.textContent = '✏️';
+    be.onclick = (function(id,t){ return function(){ openMatEdit(id,t); }; })(m.id, tipo);
+    var bd = document.createElement('button'); bd.className = 'act-btn'; bd.textContent = '🗑️';
+    bd.onclick = (function(id,nm){ return function(){ openDel(id,'mat_'+tipo,nm); }; })(m.id, m.titulo||'');
+    acts.appendChild(be); acts.appendChild(bd);
+    top.appendChild(nm); top.appendChild(acts); card.appendChild(top);
+    if(m.desc){ var d=document.createElement('div'); d.style.cssText='font-size:12px;color:var(--lbl);margin:8px 0;line-height:1.5'; d.textContent=m.desc; card.appendChild(d); }
+    var lnk = document.createElement('a'); lnk.href=m.link; lnk.target='_blank';
+    lnk.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--blue-p);border:1px solid var(--mc);border-radius:8px;font-size:12px;font-weight:600;color:var(--mc);text-decoration:none;margin-top:10px';
+    lnk.textContent='🔗 Abrir material'; card.appendChild(lnk);
+    if(m.data){ var dt=document.createElement('div'); dt.style.cssText='font-size:10px;color:var(--lbl);margin-top:8px'; dt.textContent='📅 '+m.data; card.appendChild(dt); }
+    grid.appendChild(card);
+  });
+}
+
 </script>
 
 </div><!-- /main -->
