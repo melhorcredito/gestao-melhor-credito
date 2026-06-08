@@ -2315,6 +2315,7 @@ function openMatModal(tipo) {
   document.getElementById('mat-titulo').value = '';
   document.getElementById('mat-desc').value = '';
   document.getElementById('mat-link').value = '';
+  document.getElementById('mat-link-sistema').value = '';
   document.getElementById('mat-tipo').value = 'pdf';
   document.getElementById('mat-overlay').classList.add('open');
 }
@@ -2333,6 +2334,7 @@ function openMatEdit(id, tipo) {
   document.getElementById('mat-titulo').value = it.titulo||'';
   document.getElementById('mat-desc').value = it.desc||'';
   document.getElementById('mat-link').value = it.link||'';
+  document.getElementById('mat-link-sistema').value = it.linkSistema||'';
   document.getElementById('mat-tipo').value = it.tipo||'pdf';
   document.getElementById('mat-overlay').classList.add('open');
 }
@@ -2342,13 +2344,14 @@ async function salvarMat() {
   var link   = document.getElementById('mat-link').value.trim();
   var desc   = document.getElementById('mat-desc').value.trim();
   var tipo   = document.getElementById('mat-tipo').value;
+  var linkSistema = document.getElementById('mat-link-sistema').value.trim();
   if(!titulo || !link){ alert('Preencha título e link!'); return; }
   var col = matTipo==='powerhub' ? 'material_powerhub' : 'material_storm';
   try {
     if(matEditId) {
-      await updateDoc(doc(db,col,matEditId),{titulo,desc,link,tipo});
+      await updateDoc(doc(db,col,matEditId),{titulo,desc,link,linkSistema,tipo});
     } else {
-      await addDoc(collection(db,col),{titulo,desc,link,tipo,data:hoje()});
+      await addDoc(collection(db,col),{titulo,desc,link,linkSistema,tipo,data:hoje()});
     }
     closeMatModal();
   } catch(e) { alert('Erro ao salvar: '+e.message); }
@@ -2392,6 +2395,7 @@ function renderMaterial(tipo) {
     var lnk = document.createElement('a'); lnk.href=m.link; lnk.target='_blank';
     lnk.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--blue-p);border:1px solid var(--mc);border-radius:8px;font-size:12px;font-weight:600;color:var(--mc);text-decoration:none;margin-top:10px';
     lnk.textContent='🔗 Abrir material'; card.appendChild(lnk);
+    if(m.linkSistema){ var lnk2=document.createElement('a'); lnk2.href=m.linkSistema; lnk2.target='_blank'; lnk2.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f0fdf4;border:1px solid #10b981;border-radius:8px;font-size:12px;font-weight:600;color:#065f46;text-decoration:none;margin-top:6px;margin-left:6px'; lnk2.textContent='🖥️ Acessar sistema'; card.appendChild(lnk2); }
     if(m.data){ var dt=document.createElement('div'); dt.style.cssText='font-size:10px;color:var(--lbl);margin-top:8px'; dt.textContent='📅 '+m.data; card.appendChild(dt); }
     grid.appendChild(card);
   });
@@ -2412,6 +2416,7 @@ function renderMaterial(tipo) {
       <div class="mf" id="matw-titulo"><label>Título *</label><input id="mat-titulo" placeholder="Ex: Manual de Vendas, Tabela de Taxas..."><span class="em">Campo obrigatório</span></div>
       <div class="mf"><label>Descrição <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="mat-desc" placeholder="Descrição do material..."></textarea></div>
       <div class="mf" id="matw-link"><label>Link *</label><input id="mat-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Link Sistema <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="mat-link-sistema" placeholder="https://..."></div>
       <div class="mf"><label>Tipo</label>
         <select id="mat-tipo">
           <option value="pdf">📄 PDF</option>
