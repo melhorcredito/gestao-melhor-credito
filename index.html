@@ -2406,33 +2406,23 @@ function renderMaterial(tipo) {
   <div class="modal">
     <div class="modal-head">
       <h2 id="mat-modal-title">Novo Material</h2>
-      <button class="modal-close" onclick="closeMatModal()">✕</button>
+      <button class="close-btn" onclick="closeMatModal()">✕</button>
     </div>
-    <div class="mf" id="matw-titulo">
-      <label>Título <span style="color:var(--red)">*</span></label>
-      <input id="mat-titulo" placeholder="Ex: Manual de Vendas, Tabela de Taxas...">
-      <span class="em">Campo obrigatório</span>
+    <div class="modal-body">
+      <div class="mf" id="matw-titulo"><label>Título *</label><input id="mat-titulo" placeholder="Ex: Manual de Vendas, Tabela de Taxas..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Descrição <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="mat-desc" placeholder="Descrição do material..."></textarea></div>
+      <div class="mf" id="matw-link"><label>Link *</label><input id="mat-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Tipo</label>
+        <select id="mat-tipo">
+          <option value="pdf">📄 PDF</option>
+          <option value="video">🎥 Vídeo</option>
+          <option value="planilha">📊 Planilha</option>
+          <option value="apresentacao">📑 Apresentação</option>
+          <option value="outro">📌 Outro</option>
+        </select>
+      </div>
     </div>
-    <div class="mf">
-      <label>Descrição <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label>
-      <textarea id="mat-desc" placeholder="Descrição do material..." style="min-height:80px"></textarea>
-    </div>
-    <div class="mf" id="matw-link">
-      <label>Link <span style="color:var(--red)">*</span></label>
-      <input id="mat-link" placeholder="https://drive.google.com/...">
-      <span class="em">Campo obrigatório</span>
-    </div>
-    <div class="mf">
-      <label>Tipo</label>
-      <select id="mat-tipo">
-        <option value="pdf">📄 PDF</option>
-        <option value="video">🎥 Vídeo</option>
-        <option value="planilha">📊 Planilha</option>
-        <option value="apresentacao">📑 Apresentação</option>
-        <option value="outro">📌 Outro</option>
-      </select>
-    </div>
-    <div class="modal-btns">
+    <div class="modal-footer">
       <button class="btn-cancel" onclick="closeMatModal()">Cancelar</button>
       <button class="btn-save" onclick="salvarMat()">Salvar</button>
     </div>
