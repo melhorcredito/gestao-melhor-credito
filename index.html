@@ -545,6 +545,30 @@ header{display:none}
 </div>
 
 <!-- ══════════════ ABA 7: CONTATOS INTERNO ══════════════ -->
+<!-- ══════════════ ABA: MATERIAL POWER HUB ══════════════ -->
+<div class="tab-content" id="tab-material-powerhub">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l"><input class="search" id="mph-srch" placeholder="🔍 Buscar material..." oninput="renderMaterial('powerhub')"></div>
+      <button class="btn-add" onclick="openMatModal('powerhub')">＋ Novo Material</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="mph-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum material cadastrado</div>
+    </div>
+  </div>
+</div>
+<div class="tab-content" id="tab-material-storm">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l"><input class="search" id="mst-srch" placeholder="🔍 Buscar material..." oninput="renderMaterial('storm')"></div>
+      <button class="btn-add" onclick="openMatModal('storm')">＋ Novo Material</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="mst-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum material cadastrado</div>
+    </div>
+  </div>
+</div>
+
 <div class="tab-content" id="tab-interno">
   
 
