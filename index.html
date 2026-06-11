@@ -1081,7 +1081,6 @@ function checkSysPass(){
 
   if(passInp.value === 'Melhor2026sistema@#'){
     USUARIO_ATUAL = nome;
-    try { localStorage.setItem('mc_usuario', nome); } catch(e){}
     document.getElementById('login-screen').style.display = 'none';
     passInp.value = '';
     carregarHistorico();
@@ -2531,7 +2530,7 @@ function initDashboard() {
   // Saudação com hora do dia
   var h = new Date().getHours();
   var greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
-  var nome = USUARIO_ATUAL || (function(){ try { return localStorage.getItem('mc_usuario')||''; } catch(e){ return ''; } })();
+  var nome = USUARIO_ATUAL || '';
   var el = document.getElementById('dash-greeting');
   if(el) el.textContent = greet + (nome ? ', ' + nome : '') + '! 👋';
 
