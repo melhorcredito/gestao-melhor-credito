@@ -1065,8 +1065,8 @@ function escHtml(s){ return (s||'').replace(/'/g,"\\'"); }
 // ── TABS ───────────────────────────────────────────────────────
 
 var USUARIO_ATUAL = '';
-// Limpa dados antigos do localStorage
-try { localStorage.removeItem('mc_usuario'); localStorage.removeItem('mc_historico'); } catch(e){}
+// Limpa nome antigo do localStorage para evitar 'ADMIN' persistido
+try { localStorage.removeItem('mc_usuario'); } catch(e){}
 
 function checkSysPass(){
   var nomeInp = document.getElementById('sys-nome');
@@ -1089,7 +1089,7 @@ function checkSysPass(){
     carregarHistorico();
     setTimeout(function(){
       initDashboard();
-      registrarHistorico('acesso', 'Acesso ao sistema', USUARIO_ATUAL);
+      registrarHistorico('acesso', 'Acesso ao sistema', '');
     }, 500);
   } else {
     document.getElementById('sys-pass-err').style.display = 'block';
@@ -1228,10 +1228,10 @@ async function salvarLogin(){
   if(!ok) return;
   if(lEditId){
     await updateDoc(doc(db,'logins',lEditId),{nome,banco,prom,obs,oper,status});
-    registrarHistorico('login','Login de '+nome+' ('+banco+') editado', USUARIO_ATUAL);
+    registrarHistorico('login','Login de '+nome+' ('+banco+') editado', oper);
   } else {
     await addDoc(collection(db,'logins'),{nome,banco,prom,obs,oper,status,data:hoje()});
-    registrarHistorico('login','Novo login criado: '+nome+' — '+banco+' ('+prom+')', USUARIO_ATUAL);
+    registrarHistorico('login','Novo login criado: '+nome+' — '+banco+' ('+prom+')', oper);
   }
   closeLoginModal();
 }
@@ -1239,7 +1239,7 @@ async function moveLogin(id,status){
   var it = LOGINS.find(function(l){ return l.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
   await updateDoc(doc(db,'logins',id),{status});
-  registrarHistorico('login','Login de '+(it?it.nome:'')+'  → '+label, USUARIO_ATUAL);
+  registrarHistorico('login','Login de '+(it?it.nome:'')+'  → '+label, (it?it.oper:'')||'');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1337,10 +1337,10 @@ async function salvarDemanda(){
   if(!ok) return;
   if(dEditId){
     await updateDoc(doc(db,'demandas',dEditId),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status});
-    registrarHistorico('demanda','Demanda de '+grupo+' ('+banco+') editada', USUARIO_ATUAL);
+    registrarHistorico('demanda','Demanda de '+grupo+' ('+banco+') editada', oper);
   } else {
     await addDoc(collection(db,'demandas'),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status,data:hoje()});
-    registrarHistorico('demanda','Nova demanda: '+grupo+' — '+banco, USUARIO_ATUAL);
+    registrarHistorico('demanda','Nova demanda: '+grupo+' — '+banco, oper);
   }
   closeDemandaModal();
 }
@@ -1348,7 +1348,7 @@ async function moveDemanda(id,status){
   var it = DEMANDAS.find(function(d){ return d.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':'Resolvido';
   await updateDoc(doc(db,'demandas',id),{status});
-  registrarHistorico('demanda','Demanda de '+(it?it.grupo:'')+'  → '+label, USUARIO_ATUAL);
+  registrarHistorico('demanda','Demanda de '+(it?it.grupo:'')+'  → '+label, (it?it.oper:'')||'');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1446,10 +1446,10 @@ async function salvarEmail(){
   if(!ok) return;
   if(eEditId){
     await updateDoc(doc(db,'emails',eEditId),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status});
-    registrarHistorico('email','Demanda e-mail de '+nome+' editada', USUARIO_ATUAL);
+    registrarHistorico('email','Demanda e-mail de '+nome+' editada', oper);
   } else {
     await addDoc(collection(db,'emails'),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status,data:hoje()});
-    registrarHistorico('email','Nova demanda e-mail: '+nome+' — '+demanda, USUARIO_ATUAL);
+    registrarHistorico('email','Nova demanda e-mail: '+nome+' — '+demanda, oper);
   }
   closeEmailModal();
 }
@@ -1457,7 +1457,7 @@ async function moveEmail(id,status){
   var it = EMAILS.find(function(e){ return e.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':'Resolvido';
   await updateDoc(doc(db,'emails',id),{status});
-  registrarHistorico('email','E-mail de '+(it?it.nome:'')+'  → '+label, USUARIO_ATUAL);
+  registrarHistorico('email','E-mail de '+(it?it.nome:'')+'  → '+label, (it?it.oper:'')||'');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1579,10 +1579,10 @@ async function salvarSub(){
   if(!ok) return;
   if(sEditId){
     await updateDoc(doc(db,'subs',sEditId),{nome,razao,cnpj,cpf,banco,obs,oper,status});
-    registrarHistorico('sub','Cadastro Sub de '+nome+' ('+banco+') editado', USUARIO_ATUAL);
+    registrarHistorico('sub','Cadastro Sub de '+nome+' ('+banco+') editado', oper);
   } else {
     await addDoc(collection(db,'subs'),{nome,razao,cnpj,cpf,banco,obs,oper,status,data:hoje()});
-    registrarHistorico('sub','Novo cadastro Sub: '+nome+' — '+banco, USUARIO_ATUAL);
+    registrarHistorico('sub','Novo cadastro Sub: '+nome+' — '+banco, oper);
   }
   closeSubModal();
 }
@@ -1590,7 +1590,7 @@ async function moveSub(id,status){
   var it = SUBS.find(function(s){ return s.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
   await updateDoc(doc(db,'subs',id),{status});
-  registrarHistorico('sub','Sub '+(it?it.nome:'')+'  → '+label, USUARIO_ATUAL);
+  registrarHistorico('sub','Sub '+(it?it.nome:'')+'  → '+label, (it?it.oper:'')||'');
 }
 
 // ── DELETE COMPARTILHADO ───────────────────────────────────────
@@ -1605,7 +1605,7 @@ async function confirmDel(){
   var col = delType==='mat_powerhub'?'material_powerhub':delType==='mat_storm'?'material_storm':delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':delType==='par'?'parceiros':delType==='con'?'contratos':'demandas';
   var tipoLabel = delType==='login'?'Login':delType==='demanda'?'Demanda':delType==='email'?'E-mail':delType==='sub'?'Cadastro Sub':delType==='com'?'Comunicado':delType==='contato'?'Contato':delType==='lb'?'Login banco':delType==='link'?'Link':delType==='cm'?'Comissão':delType==='par'?'Parceiro':delType==='con'?'Contrato':delType==='interno'?'Suporte':delType==='mat_powerhub'?'Material PowerHub':delType==='mat_storm'?'Material Storm':'Registro';
   await deleteDoc(doc(db,col,delId));
-  registrarHistorico('delete', tipoLabel+' removido: '+(delName||''), USUARIO_ATUAL);
+  registrarHistorico('delete', tipoLabel+' removido: '+(delName||''), '');
   closeDel();
 }
 
@@ -1947,11 +1947,11 @@ async function salvarCm(){
   if(cmEditId){
     var status=document.getElementById('cm-status').value;
     await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,prazo,obs,tabelas,status});
-    registrarHistorico('comissao','Comissão de '+parceiro+' ('+banco+') editada', USUARIO_ATUAL);
+    registrarHistorico('comissao','Comissão de '+parceiro+' ('+banco+') editada', '');
   } else {
     var status=document.getElementById('cm-status').value;
     await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,prazo,obs,tabelas,status,criado:hoje()});
-    registrarHistorico('comissao','Nova comissão cadastrada: '+parceiro+' — '+banco, USUARIO_ATUAL);
+    registrarHistorico('comissao','Nova comissão cadastrada: '+parceiro+' — '+banco, '');
   }
   closeCmModal();
 }
@@ -2100,10 +2100,10 @@ async function salvarCon(){
   try {
     if(conEditId){
       await updateDoc(doc(db,'contratos',conEditId),{parceiro,link,obs});
-      registrarHistorico('contrato','Contrato de '+parceiro+' editado', USUARIO_ATUAL);
+      registrarHistorico('contrato','Contrato de '+parceiro+' editado', '');
     } else {
       await addDoc(collection(db,'contratos'),{parceiro,link,obs,data:hoje()});
-      registrarHistorico('contrato','Novo contrato: '+parceiro, USUARIO_ATUAL);
+      registrarHistorico('contrato','Novo contrato: '+parceiro, '');
     }
     closeConModal();
   } catch(e) {
@@ -2212,10 +2212,10 @@ async function salvarCom(){
   if(!ok) return;
   if(cEditId){
     await updateDoc(doc(db,'comunicados',cEditId),{titulo,banco,texto});
-    registrarHistorico('comunicado','Comunicado "'+titulo+'" ('+banco+') editado', USUARIO_ATUAL);
+    registrarHistorico('comunicado','Comunicado "'+titulo+'" ('+banco+') editado', '');
   } else {
     await addDoc(collection(db,'comunicados'),{titulo,banco,texto,status:'and',data:hoje()});
-    registrarHistorico('comunicado','Novo comunicado: "'+titulo+'" — '+banco, USUARIO_ATUAL);
+    registrarHistorico('comunicado','Novo comunicado: "'+titulo+'" — '+banco, '');
   }
   closeComModal();
 }
@@ -2223,7 +2223,7 @@ async function moveCom(id,status){
   var it = COMUNICADOS ? COMUNICADOS.find(function(c){ return c.id===id; }) : null;
   var label = status==='and'?'Em Vigor':'Arquivado';
   await updateDoc(doc(db,'comunicados',id),{status});
-  registrarHistorico('comunicado','Comunicado '+(it?'"'+it.titulo+'"':'')+'  → '+label, USUARIO_ATUAL);
+  registrarHistorico('comunicado','Comunicado '+(it?'"'+it.titulo+'"':'')+'  → '+label, '');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2316,10 +2316,10 @@ async function salvarCt(){
   document.getElementById('ctw-banco').classList.remove('err');
   if(ctEditId){
     await updateDoc(doc(db,'contatos',ctEditId),{banco,tel,whats,email,localidades,sacs});
-    registrarHistorico('contato','Contato "'+banco+'" editado', USUARIO_ATUAL);
+    registrarHistorico('contato','Contato "'+banco+'" editado', '');
   } else {
     await addDoc(collection(db,'contatos'),{banco,tel,whats,email,localidades,sacs,data:hoje()});
-    registrarHistorico('contato','Novo contato cadastrado: '+banco, USUARIO_ATUAL);
+    registrarHistorico('contato','Novo contato cadastrado: '+banco, '');
   }
   closeCtModal();
 }
@@ -2636,7 +2636,7 @@ function renderDashHistorico() {
     var usuarioHtml = h.usuario ? ' por <strong>'+h.usuario+'</strong>' : '';
     d.innerHTML = '<div class="dash-hist-icon">'+icone+'</div>'
       +'<div class="dash-hist-txt"><div class="dash-hist-acao">'+h.acao+'</div>'
-      +'<div class="dash-hist-det">'+usuarioHtml+' · '+h.data+'</div></div>';
+      +'<div class="dash-hist-det">'+(usuarioHtml ? usuarioHtml+' · ' : '')+h.data+'</div></div>';
     el.appendChild(d);
   });
 }
