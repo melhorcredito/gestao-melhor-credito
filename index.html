@@ -1065,8 +1065,8 @@ function escHtml(s){ return (s||'').replace(/'/g,"\\'"); }
 // ── TABS ───────────────────────────────────────────────────────
 
 var USUARIO_ATUAL = '';
-// Limpa nome antigo do localStorage para evitar 'ADMIN' persistido
-try { localStorage.removeItem('mc_usuario'); } catch(e){}
+// Limpa dados antigos do localStorage
+try { localStorage.removeItem('mc_usuario'); localStorage.removeItem('mc_historico'); } catch(e){}
 
 function checkSysPass(){
   var nomeInp = document.getElementById('sys-nome');
