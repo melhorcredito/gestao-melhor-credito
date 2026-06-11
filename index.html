@@ -1063,7 +1063,10 @@ function promTag(p){ var cls=p==='GLM'?'glm':p==='Llamas'?'lla':'nov'; return '<
 function escHtml(s){ return (s||'').replace(/'/g,"\\'"); }
 
 // ── TABS ───────────────────────────────────────────────────────
+
 var USUARIO_ATUAL = '';
+// Limpa nome antigo do localStorage para evitar 'ADMIN' persistido
+try { localStorage.removeItem('mc_usuario'); } catch(e){}
 
 function checkSysPass(){
   var nomeInp = document.getElementById('sys-nome');
