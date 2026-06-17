@@ -454,47 +454,61 @@ function renderAll(){
 
 function renderSummary(){
   const {totalRenda,nubank,outro,debito,totalContas,totalGastos,sobra,sobraReal,totalFora,caixinha,dia20,dia20Disponivel}=calcTotals();
-  document.getElementById('sum-cards').innerHTML=`
-    <div class="sum-card blue"><div class="sum-label">Renda principal</div><div class="sum-value blue">${fmt(totalRenda)}</div></div>
-    <div class="sum-card"><div class="sum-label">💜 Nubank</div><div class="sum-value">${fmt(nubank)}</div></div>
-    <div class="sum-card"><div class="sum-label">💳 Hipercard</div><div class="sum-value">${fmt(outro)}</div></div>
-    <div class="sum-card"><div class="sum-label">Contas fixas</div><div class="sum-value">${fmt(debito)}</div></div>
-    <div class="sum-card"><div class="sum-label">Gastos extras</div><div class="sum-value">${fmt(totalGastos)}</div></div>
-    <div class="sum-card amber"><div class="sum-label">🏦 AK / Caixinha</div><div class="sum-value" style="color:#e65100">${fmt(caixinha)}</div></div>
-    <div class="sum-card ${sobraReal>=0?'green':'red'}"><div class="sum-label">Sobra real</div><div class="sum-value ${sobraReal>=0?'green':'red'}">${fmt(sobraReal)}</div></div>
-  `;
   const pct=totalRenda>0?Math.min(100,Math.round((totalContas+totalGastos)/totalRenda*100)):0;
-  const hlClass=sobraReal>=0?'highlight':'highlight red';
-  const hlMsg=sobraReal>=0?`✅ Você tem <strong>${fmt(sobraReal)}</strong> de sobra real (já descontando AK/Caixinha).`:`⚠️ Atenção! Você está <strong>${fmt(Math.abs(sobraReal))}</strong> no negativo (renda principal).`;
   const fillColor=pct>90?'#c62828':pct>70?'#e65100':'#2e7d32';
-  const dia20HTML=dia20&&dia20.valor>0?`
-    <div class="card" style="margin-bottom:16px;border-left:3px solid #1565c0">
+
+  // Painel esquerdo — renda principal
+  const sobraClass=sobraReal>=0?'#2e7d32':'#c62828';
+  const painelRenda=`
+    <div class="card" style="border-top:3px solid #1565c0">
+      <div class="card-head blue" style="font-size:13px">💵 Renda principal (salário + ajuda)</div>
       <div class="card-body">
-        <div style="font-size:12px;font-weight:600;color:#1565c0;margin-bottom:10px">📅 Entrada dia 20 — fora da renda principal</div>
-        <div style="display:flex;gap:16px;flex-wrap:wrap">
-          <div><div style="font-size:11px;color:#888">Entrou</div><div style="font-size:16px;font-weight:600;color:#1565c0">${fmt(dia20.valor)}</div></div>
-          <div><div style="font-size:11px;color:#888">🏦 Guardado</div><div style="font-size:16px;font-weight:600;color:#e65100">${fmt(dia20.caixinha)}</div></div>
-          ${dia20.conta>0?`<div><div style="font-size:11px;color:#888">📋 Conta</div><div style="font-size:16px;font-weight:600;color:#c62828">${fmt(dia20.conta)}</div></div>`:''}
-          <div><div style="font-size:11px;color:#888">Disponível</div><div style="font-size:16px;font-weight:700;color:#2e7d32">${fmt(dia20Disponivel)}</div></div>
+        <div class="list-item"><span style="color:#666">Renda total</span><span class="li-val" style="color:#1565c0">${fmt(totalRenda)}</span></div>
+        <div class="list-item"><span style="color:#666">💜 Nubank</span><span class="li-val">− ${fmt(nubank)}</span></div>
+        <div class="list-item"><span style="color:#666">💳 Hipercard</span><span class="li-val">− ${fmt(outro)}</span></div>
+        <div class="list-item"><span style="color:#666">Contas fixas</span><span class="li-val">− ${fmt(debito)}</span></div>
+        <div class="list-item"><span style="color:#666">Gastos extras</span><span class="li-val">− ${fmt(totalGastos)}</span></div>
+        ${caixinha>0?`<div class="list-item"><span style="color:#666">🏦 AK/Caixinha</span><span class="li-val">− ${fmt(caixinha)}</span></div>`:''}
+        <div class="total-row big" style="margin-top:8px">
+          <span style="color:${sobraClass}">Sobra</span>
+          <span style="color:${sobraClass};font-size:18px">${fmt(sobraReal)}</span>
         </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+          <div class="progress-lbl"><span>${pct}% comprometido</span><span>${fmt(totalContas+totalGastos)}</span></div>
+        </div>
+        ${totalFora>0?`<div style="font-size:11px;color:#6a1b9a;margin-top:8px">🟣 Fora do bolso: ${fmt(totalFora)}</div>`:''}
       </div>
-    </div>`:'';
-  document.getElementById('sum-highlight').innerHTML=`
-    <div class="${hlClass}">${hlMsg}</div>
-    ${dia20HTML}
-    <div class="card" style="margin-bottom:16px">
+    </div>`;
+
+  // Painel direito — extra dia 20
+  const d20=dia20&&dia20.valor>0;
+  const d20disp=d20?dia20Disponivel:0;
+  const d20dispClass=d20disp>=0?'#2e7d32':'#c62828';
+  const painelDia20=`
+    <div class="card" style="border-top:3px solid #e65100">
+      <div class="card-head" style="background:#fff3e0;color:#e65100;font-size:13px">📅 Extra dia 20</div>
       <div class="card-body">
-        <div style="font-size:12px;color:#888;margin-bottom:6px">Comprometimento da renda principal — contas + extras</div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${fillColor}"></div></div>
-        <div class="progress-lbl"><span>${fmt(totalContas+totalGastos)} comprometido</span><span>${pct}%</span></div>
-        ${totalFora>0?`<div style="font-size:12px;color:#6a1b9a;margin-top:8px">🟣 Fora do bolso (não entra no cálculo): ${fmt(totalFora)}</div>`:''}
-        ${caixinha>0?`<div style="font-size:12px;color:#e65100;margin-top:6px">🏦 AK/Caixinha separado: ${fmt(caixinha)}</div>`:''}
+        ${d20?`
+        <div class="list-item"><span style="color:#666">Entrou</span><span class="li-val" style="color:#e65100">${fmt(dia20.valor)}</span></div>
+        ${dia20.caixinha>0?`<div class="list-item"><span style="color:#666">🏦 Caixinha</span><span class="li-val">− ${fmt(dia20.caixinha)}</span></div>`:''}
+        ${dia20.conta>0?`<div class="list-item"><span style="color:#666">📋 Comprometido</span><span class="li-val">− ${fmt(dia20.conta)}</span></div>`:''}
+        <div class="total-row big" style="margin-top:8px">
+          <span style="color:${d20dispClass}">Disponível</span>
+          <span style="color:${d20dispClass};font-size:18px">${fmt(d20disp)}</span>
+        </div>`
+        :`<div class="empty" style="padding:16px">Lançar na aba Renda → Entrada dia 20</div>`}
       </div>
+    </div>`;
+
+  document.getElementById('sum-cards').innerHTML='';
+  document.getElementById('sum-highlight').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      ${painelRenda}${painelDia20}
     </div>
   `;
 
   // Visão contas
-  const m=S.currentMonth,y=S.currentYear;
   const fixas=S.contas.filter(c=>c.fora!=='sim'&&isAtiva(c)&&!c.cartao&&c.tipo==='fixo');
   const parcD=S.contas.filter(c=>c.fora!=='sim'&&isAtiva(c)&&!c.cartao&&c.tipo==='parc');
   const nubankL=S.contas.filter(c=>c.fora!=='sim'&&isAtiva(c)&&c.cartao==='nubank');
@@ -526,7 +540,7 @@ function renderSummary(){
   if(outroL.length){
     cartoesHTML+='<div class="card"><div class="card-head blue">💳 Hipercard</div><div class="card-body">';
     outroL.forEach(c=>cartoesHTML+=liItem(c));
-    cartoesHTML+=`<div class="total-row big"><span>Total outro</span><span style="color:#1565c0">${fmt(outroL.reduce((s,c)=>s+c.valor,0))}</span></div></div></div>`;
+    cartoesHTML+=`<div class="total-row big"><span>Total Hipercard</span><span style="color:#1565c0">${fmt(outroL.reduce((s,c)=>s+c.valor,0))}</span></div></div></div>`;
   }
   if(gastos.length){
     cartoesHTML+='<div class="card"><div class="card-head amber">🛒 Extras</div><div class="card-body">';
