@@ -143,6 +143,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a
     <div class="card">
       <div class="card-head green">Adicionar renda</div>
       <div class="card-body">
+        <div style="background:#fff3e0;border-radius:7px;padding:10px 12px;font-size:12px;color:#e65100;margin-bottom:12px">⚠️ <strong>Atenção:</strong> Coloque aqui apenas salário e ajuda fixa. O valor do dia 20 vai no campo <strong>"Entrada dia 20"</strong> abaixo — ele é separado e não entra na renda principal.</div>
         <div class="form-row">
           <input type="text" id="r-nome" placeholder="Ex: Salário, Freelance...">
           <input type="number" id="r-valor" placeholder="Valor R$" step="0.01" min="0">
@@ -611,38 +612,25 @@ function resetAll(){S={currentMonth:S.currentMonth,currentYear:S.currentYear,ren
 
 function loadExample(){
   S.rendas=[
-    {id:1,nome:'Renda principal',valor:3000,tipo:'fixo'},
-    {id:2,nome:'Extra junho',valor:1000,tipo:'extra',month:5,year:2025}
+    {id:1,nome:'Salário',valor:2500,tipo:'fixo'},
+    {id:2,nome:'Esposa',valor:500,tipo:'fixo'}
   ];
   S.contas=[
-    {id:10,nome:'Ajuda em casa',valor:250,tipo:'fixo',cartao:'',fora:'',startMonth:5,startYear:2025},
-    {id:11,nome:'Tim',valor:65,tipo:'fixo',cartao:'',fora:'',startMonth:5,startYear:2025},
-    {id:12,nome:'Mercado Livre',valor:97.47,tipo:'parc',cartao:'nubank',fora:'',parc:12,parcBase:12,startMonth:5,startYear:2025},
-    {id:13,nome:'Scooter',valor:166.66,tipo:'parc',cartao:'nubank',fora:'',parc:12,parcBase:12,startMonth:5,startYear:2025},
-    {id:14,nome:'Mercado Livre 2',valor:133.21,tipo:'parc',cartao:'nubank',fora:'',parc:12,parcBase:12,startMonth:5,startYear:2025},
-    {id:15,nome:'Mercado Livre 3',valor:55.13,tipo:'parc',cartao:'nubank',fora:'',parc:9,parcBase:9,startMonth:5,startYear:2025},
-    {id:16,nome:'Celular',valor:325.39,tipo:'parc',cartao:'nubank',fora:'',parc:12,parcBase:12,startMonth:5,startYear:2025},
-    {id:17,nome:'Cartão mãe',valor:1088.98,tipo:'fixo',cartao:'nubank',fora:'sim',startMonth:5,startYear:2025},
-    {id:18,nome:'Claude',valor:100,tipo:'fixo',cartao:'',fora:'sim',startMonth:5,startYear:2025},
-    {id:19,nome:'ChatGPT',valor:50,tipo:'fixo',cartao:'',fora:'sim',startMonth:5,startYear:2025},
-    {id:20,nome:'Vacina Amora',valor:110,tipo:'parc',cartao:'',fora:'',parc:2,parcBase:2,startMonth:5,startYear:2025}
+    {id:10,nome:'Ajuda de casa',valor:250,tipo:'fixo',cartao:'',fora:'',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:11,nome:'Tim',valor:66,tipo:'fixo',cartao:'',fora:'',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:12,nome:'Nubank fatura',valor:1088.98,tipo:'avista',cartao:'nubank',fora:'',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:13,nome:'Parcelas Hipercard',valor:777.86,tipo:'fixo',cartao:'outro',fora:'',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:14,nome:'Cartão mãe',valor:0,tipo:'fixo',cartao:'nubank',fora:'sim',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:15,nome:'Claude',valor:0,tipo:'fixo',cartao:'',fora:'sim',startMonth:S.currentMonth,startYear:S.currentYear},
+    {id:16,nome:'ChatGPT',valor:0,tipo:'fixo',cartao:'',fora:'sim',startMonth:S.currentMonth,startYear:S.currentYear}
   ];
-  S.gastos['2025-06']=[
-    {id:100,nome:'Fort',valor:110.66},{id:101,nome:'Uber',valor:10.10},
-    {id:102,nome:'Fort',valor:103.17},{id:103,nome:'Uber',valor:47.22},
-    {id:104,nome:'Festa Junina',valor:104},{id:105,nome:'Uber',valor:16.70},
-    {id:106,nome:'Lojão Astrsl',valor:27.98},{id:107,nome:'Farmácia',valor:31.65},
-    {id:108,nome:'Fort',valor:36.28},{id:109,nome:'Cosméticos',valor:39.69},
-    {id:110,nome:'Mariano',valor:47.83}
-  ];
-  S.currentMonth=5;S.currentYear=2025;
+  S.dia20[curKey()]={valor:1000,caixinha:0,conta:0};
   save();renderAll();
-  // switch to visao
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-visao').classList.add('active');
   document.querySelectorAll('.tab')[0].classList.add('active');
-  alert('Dados de exemplo carregados! ✅');
+  alert('Dados carregados! ✅ Confira e ajuste os valores conforme necessário.');
 }
 
 // ===== EDIÇÃO =====
