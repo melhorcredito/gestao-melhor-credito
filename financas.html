@@ -187,12 +187,15 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a
           <select id="c-tipo">
             <option value="fixo">Fixa (todo mês)</option>
             <option value="parc">Parcelada</option>
+            <option value="avista">Crédito à vista</option>
           </select>
         </div>
         <div class="form-row" id="parc-row" style="display:none">
-          <label style="font-size:13px;color:#666">Parcelas restantes:</label>
-          <input type="number" id="c-parc" placeholder="Ex: 12" min="1" max="120" style="width:90px">
-          <span style="font-size:12px;color:#999">O sistema desconta 1 por mês automaticamente</span>
+          <label style="font-size:13px;color:#666">Total de parcelas:</label>
+          <input type="number" id="c-parc-total" placeholder="Ex: 12" min="1" max="120" style="width:80px">
+          <label style="font-size:13px;color:#666">Faltam:</label>
+          <input type="number" id="c-parc-rest" placeholder="Ex: 2" min="1" max="120" style="width:80px">
+          <span style="font-size:12px;color:#999">Ex: 12x no total, faltam 2x</span>
         </div>
         <div class="form-row">
           <label style="font-size:13px;color:#888">Fora do meu bolso (não entra no total)?</label>
@@ -298,14 +301,14 @@ function changeMonth(d){
 // Calcula parcelas restantes para o mês atual
 function parcRestantes(c){
   if(c.tipo!=='parc')return null;
-  const base=c.parcBase||c.parc;
   const diffM=(S.currentYear-c.startYear)*12+(S.currentMonth-c.startMonth);
-  const rest=base-diffM;
+  const rest=(c.parcRestantes||c.parcBase||c.parc)-diffM;
   return rest;
 }
 
 function isAtiva(c){
   if(c.tipo==='fixo')return true;
+  if(c.tipo==='avista')return c.startMonth===S.currentMonth&&c.startYear===S.currentYear;
   const r=parcRestantes(c);
   return r!==null&&r>0;
 }
@@ -335,12 +338,16 @@ function addConta(){
   if(!nome||isNaN(valor)||valor<=0){alert('Preencha nome e valor');return}
   const c={id:Date.now(),nome,valor,cartao,tipo,fora,startMonth:S.currentMonth,startYear:S.currentYear};
   if(tipo==='parc'){
-    const p=parseInt(document.getElementById('c-parc').value);
-    if(!p||p<1){alert('Informe o número de parcelas');return}
-    c.parc=p;c.parcBase=p;
+    const pTotal=parseInt(document.getElementById('c-parc-total').value);
+    const pRest=parseInt(document.getElementById('c-parc-rest').value);
+    if(!pTotal||pTotal<1){alert('Informe o total de parcelas');return}
+    if(!pRest||pRest<1){alert('Informe quantas parcelas faltam');return}
+    if(pRest>pTotal){alert('As parcelas restantes não podem ser maior que o total');return}
+    c.parcTotal=pTotal;c.parcRestantes=pRest;c.parcBase=pRest;
   }
   S.contas.push(c);
-  document.getElementById('c-nome').value='';document.getElementById('c-valor').value='';document.getElementById('c-parc').value='';
+  document.getElementById('c-nome').value='';document.getElementById('c-valor').value='';
+  document.getElementById('c-parc-total').value='';document.getElementById('c-parc-rest').value='';
   save();renderAll();
 }
 
@@ -481,10 +488,12 @@ function renderSummary(){
 
 function liItem(c){
   const rest=parcRestantes(c);
-  const cartaoLabel=c.cartao==='nubank'?'<span class="badge b-nubank">Nubank</span>':c.cartao==='outro'?'<span class="badge b-outro">Cartão</span>':'';
-  const parcLabel=c.tipo==='parc'&&rest!==null?`<span class="badge parc-badge ${rest<=2?'parc-zero':''}">faltam ${rest}x</span>`:'';
+  const cartaoLabel=c.cartao==='nubank'?'<span class="badge b-nubank">Nubank</span>':c.cartao==='outro'?'<span class="badge b-outro">Hipercard</span>':'';
+  const totalLabel=c.parcTotal?`/${c.parcTotal}x`:'x';
+  const parcLabel=c.tipo==='parc'&&rest!==null?`<span class="badge parc-badge ${rest<=2?'parc-zero':''}">faltam ${rest}${totalLabel}</span>`:'';
+  const avistaLabel=c.tipo==='avista'?'<span class="badge" style="background:#fce4ec;color:#c62828">À vista</span>':'';
   const fixoBadge=c.tipo==='fixo'?'<span class="badge b-fixo">Fixo</span>':'';
-  return`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${[cartaoLabel,parcLabel,fixoBadge].filter(Boolean).join(' ')}</div></div><span class="li-val">${fmt(c.valor)}</span></div>`;
+  return`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${[cartaoLabel,parcLabel,avistaLabel,fixoBadge].filter(Boolean).join(' ')}</div></div><span class="li-val">${fmt(c.valor)}</span></div>`;
 }
 
 function renderRendas(){
