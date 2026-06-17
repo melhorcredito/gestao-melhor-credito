@@ -155,7 +155,21 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a
       </div>
     </div>
     <div class="card">
-      <div class="card-head" style="background:#fff3e0;color:#e65100">🏦 AK / Caixinha — reserva do mês</div>
+      <div class="card-head" style="background:#e3f2fd;color:#1565c0">📅 Entrada dia 20 — separado da renda</div>
+      <div class="card-body">
+        <p style="font-size:12px;color:#888;margin-bottom:10px">Esse valor não entra no cálculo da renda principal. Você define quanto vai pra caixinha e quanto fica disponível pra usar.</p>
+        <div class="form-row">
+          <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Valor que entrou</label>
+          <input type="number" id="dia20-valor" placeholder="Ex: 1000" step="0.01" min="0" style="width:130px"></div>
+          <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Guardar na caixinha</label>
+          <input type="number" id="dia20-caixinha" placeholder="Ex: 300" step="0.01" min="0" style="width:130px"></div>
+          <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Comprometido c/ conta</label>
+          <input type="number" id="dia20-conta" placeholder="Ex: 200" step="0.01" min="0" style="width:130px"></div>
+          <button class="btn btn-green" onclick="saveDia20()" style="align-self:flex-end">Salvar</button>
+        </div>
+        <div id="dia20-resumo"></div>
+      </div>
+    </div>
       <div class="card-body">
         <p style="font-size:12px;color:#888;margin-bottom:10px">Valor que você separa todo mês para reserva. É descontado da sobra mas não é uma conta.</p>
         <div class="form-row">
@@ -274,7 +288,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a
 
 <script>
 const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-let S={currentMonth:5,currentYear:2025,rendas:[],contas:[],gastos:{},caixinha:{}};
+let S={currentMonth:5,currentYear:2025,rendas:[],contas:[],gastos:{},caixinha:{},dia20:{}};
 
 function save(){localStorage.setItem('fin2',JSON.stringify(S))}
 function load(){const d=localStorage.getItem('fin2');if(d)S=JSON.parse(d)}
@@ -376,6 +390,20 @@ function saveCaixinha(){
   save();renderAll();
 }
 
+function saveDia20(){
+  const valor=parseFloat(document.getElementById('dia20-valor').value)||0;
+  const caixinha=parseFloat(document.getElementById('dia20-caixinha').value)||0;
+  const conta=parseFloat(document.getElementById('dia20-conta').value)||0;
+  if(valor<=0){alert('Informe o valor que entrou no dia 20');return}
+  if(caixinha+conta>valor){alert('Caixinha + conta não pode ser maior que o valor total');return}
+  if(!S.dia20)S.dia20={};
+  S.dia20[curKey()]={valor,caixinha,conta};
+  document.getElementById('dia20-valor').value='';
+  document.getElementById('dia20-caixinha').value='';
+  document.getElementById('dia20-conta').value='';
+  save();renderAll();
+}
+
 function calcTotals(){
   const m=S.currentMonth,y=S.currentYear;
   const rendaFixa=S.rendas.filter(r=>r.tipo==='fixo').reduce((s,r)=>s+r.valor,0);
@@ -391,9 +419,11 @@ function calcTotals(){
   const totalGastos=gastosList.reduce((s,g)=>s+g.valor,0);
   const totalFora=S.contas.filter(c=>c.fora==='sim'&&isAtiva(c)).reduce((s,c)=>s+c.valor,0);
   const caixinha=parseFloat((S.caixinha&&S.caixinha[curKey()])||0);
+  const dia20=S.dia20&&S.dia20[curKey()]?S.dia20[curKey()]:{valor:0,caixinha:0,conta:0};
+  const dia20Disponivel=dia20.valor-dia20.caixinha-(dia20.conta||0);
   const sobra=totalRenda-totalContas-totalGastos;
   const sobraReal=sobra-caixinha;
-  return{totalRenda,rendaFixa,rendaExtra,nubank,outro,debito,totalContas,gastosList,totalGastos,totalFora,caixinha,sobra,sobraReal};
+  return{totalRenda,rendaFixa,rendaExtra,nubank,outro,debito,totalContas,gastosList,totalGastos,totalFora,caixinha,sobra,sobraReal,dia20,dia20Disponivel};
 }
 
 function renderAll(){
@@ -403,13 +433,28 @@ function renderAll(){
   if(gl)gl.textContent=ml;
   const ca=document.getElementById('caixinha-atual');
   if(ca){const v=parseFloat((S.caixinha&&S.caixinha[curKey()])||0);ca.textContent=v>0?'Atual: '+fmt(v):'';}
+  const d20=document.getElementById('dia20-resumo');
+  if(d20){
+    const d=S.dia20&&S.dia20[curKey()];
+    if(d&&d.valor>0){
+      const disp=d.valor-d.caixinha-(d.conta||0);
+      d20.innerHTML=`<div style="margin-top:12px;background:#e3f2fd;border-radius:8px;padding:12px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#666">Entrou dia 20:</span><span style="font-weight:600;color:#1565c0">${fmt(d.valor)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#666">🏦 Guardado:</span><span style="font-weight:600;color:#e65100">${fmt(d.caixinha)}</span></div>
+        ${d.conta>0?`<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#666">📋 Comprometido c/ conta:</span><span style="font-weight:600;color:#c62828">${fmt(d.conta)}</span></div>`:''}
+        <div style="display:flex;justify-content:space-between;border-top:1px solid #90caf9;padding-top:6px"><span style="color:#1565c0;font-weight:600">Disponível pra usar:</span><span style="font-weight:700;color:#1565c0;font-size:15px">${fmt(disp)}</span></div>
+      </div>`;
+    } else {
+      d20.innerHTML='';
+    }
+  }
   renderSummary();renderRendas();renderContas();renderGastos();
 }
 
 function renderSummary(){
-  const {totalRenda,nubank,outro,debito,totalContas,totalGastos,sobra,sobraReal,totalFora,caixinha}=calcTotals();
+  const {totalRenda,nubank,outro,debito,totalContas,totalGastos,sobra,sobraReal,totalFora,caixinha,dia20,dia20Disponivel}=calcTotals();
   document.getElementById('sum-cards').innerHTML=`
-    <div class="sum-card blue"><div class="sum-label">Renda total</div><div class="sum-value blue">${fmt(totalRenda)}</div></div>
+    <div class="sum-card blue"><div class="sum-label">Renda principal</div><div class="sum-value blue">${fmt(totalRenda)}</div></div>
     <div class="sum-card"><div class="sum-label">💜 Nubank</div><div class="sum-value">${fmt(nubank)}</div></div>
     <div class="sum-card"><div class="sum-label">💳 Hipercard</div><div class="sum-value">${fmt(outro)}</div></div>
     <div class="sum-card"><div class="sum-label">Contas fixas</div><div class="sum-value">${fmt(debito)}</div></div>
@@ -419,13 +464,26 @@ function renderSummary(){
   `;
   const pct=totalRenda>0?Math.min(100,Math.round((totalContas+totalGastos)/totalRenda*100)):0;
   const hlClass=sobraReal>=0?'highlight':'highlight red';
-  const hlMsg=sobraReal>=0?`✅ Você tem <strong>${fmt(sobraReal)}</strong> de sobra real (já descontando AK/Caixinha).`:`⚠️ Atenção! Você está <strong>${fmt(Math.abs(sobraReal))}</strong> no negativo.`;
+  const hlMsg=sobraReal>=0?`✅ Você tem <strong>${fmt(sobraReal)}</strong> de sobra real (já descontando AK/Caixinha).`:`⚠️ Atenção! Você está <strong>${fmt(Math.abs(sobraReal))}</strong> no negativo (renda principal).`;
   const fillColor=pct>90?'#c62828':pct>70?'#e65100':'#2e7d32';
+  const dia20HTML=dia20&&dia20.valor>0?`
+    <div class="card" style="margin-bottom:16px;border-left:3px solid #1565c0">
+      <div class="card-body">
+        <div style="font-size:12px;font-weight:600;color:#1565c0;margin-bottom:10px">📅 Entrada dia 20 — fora da renda principal</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div style="font-size:11px;color:#888">Entrou</div><div style="font-size:16px;font-weight:600;color:#1565c0">${fmt(dia20.valor)}</div></div>
+          <div><div style="font-size:11px;color:#888">🏦 Guardado</div><div style="font-size:16px;font-weight:600;color:#e65100">${fmt(dia20.caixinha)}</div></div>
+          ${dia20.conta>0?`<div><div style="font-size:11px;color:#888">📋 Conta</div><div style="font-size:16px;font-weight:600;color:#c62828">${fmt(dia20.conta)}</div></div>`:''}
+          <div><div style="font-size:11px;color:#888">Disponível</div><div style="font-size:16px;font-weight:700;color:#2e7d32">${fmt(dia20Disponivel)}</div></div>
+        </div>
+      </div>
+    </div>`:'';
   document.getElementById('sum-highlight').innerHTML=`
     <div class="${hlClass}">${hlMsg}</div>
+    ${dia20HTML}
     <div class="card" style="margin-bottom:16px">
       <div class="card-body">
-        <div style="font-size:12px;color:#888;margin-bottom:6px">Comprometimento da renda — contas + extras</div>
+        <div style="font-size:12px;color:#888;margin-bottom:6px">Comprometimento da renda principal — contas + extras</div>
         <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${fillColor}"></div></div>
         <div class="progress-lbl"><span>${fmt(totalContas+totalGastos)} comprometido</span><span>${pct}%</span></div>
         ${totalFora>0?`<div style="font-size:12px;color:#6a1b9a;margin-top:8px">🟣 Fora do bolso (não entra no cálculo): ${fmt(totalFora)}</div>`:''}
@@ -549,7 +607,7 @@ function importData(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();r.onload=ev=>{try{S=JSON.parse(ev.target.result);save();renderAll();alert('Dados importados com sucesso!')}catch{alert('Arquivo inválido.')}};r.readAsText(f);
 }
-function resetAll(){S={currentMonth:S.currentMonth,currentYear:S.currentYear,rendas:[],contas:[],gastos:{},caixinha:{}};save();renderAll()}
+function resetAll(){S={currentMonth:S.currentMonth,currentYear:S.currentYear,rendas:[],contas:[],gastos:{},caixinha:{},dia20:{}};save();renderAll()}
 
 function loadExample(){
   S.rendas=[
