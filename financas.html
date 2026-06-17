@@ -493,7 +493,7 @@ function liItem(c){
   const parcLabel=c.tipo==='parc'&&rest!==null?`<span class="badge parc-badge ${rest<=2?'parc-zero':''}">faltam ${rest}${totalLabel}</span>`:'';
   const avistaLabel=c.tipo==='avista'?'<span class="badge" style="background:#fce4ec;color:#c62828">À vista</span>':'';
   const fixoBadge=c.tipo==='fixo'?'<span class="badge b-fixo">Fixo</span>':'';
-  return`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${[cartaoLabel,parcLabel,avistaLabel,fixoBadge].filter(Boolean).join(' ')}</div></div><span class="li-val">${fmt(c.valor)}</span></div>`;
+  return`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${[cartaoLabel,parcLabel,avistaLabel,fixoBadge].filter(Boolean).join(' ')}</div></div><span class="li-val">${fmt(c.valor)}</span><button class="btn btn-sm" onclick="editConta(${c.id})" style="color:#1565c0;border-color:#90caf9">✏️</button></div>`;
 }
 
 function renderRendas(){
@@ -501,8 +501,8 @@ function renderRendas(){
   const fixas=S.rendas.filter(r=>r.tipo==='fixo');
   const extras=S.rendas.filter(r=>r.tipo==='extra'&&r.month===S.currentMonth&&r.year===S.currentYear);
   let h='';
-  if(fixas.length){h+='<div class="section-label">Renda fixa (aparece todo mês)</div>';fixas.forEach(r=>h+=`<div class="list-item"><div class="li-info"><div class="li-name">${r.nome}</div></div><span class="badge b-fixo">Fixa</span><span class="li-val">${fmt(r.valor)}</span><button class="btn btn-red btn-sm" onclick="removeRenda(${r.id})">✕</button></div>`)}
-  if(extras.length){h+='<div class="section-label" style="margin-top:10px">Renda extra (só este mês)</div>';extras.forEach(r=>h+=`<div class="list-item"><div class="li-info"><div class="li-name">${r.nome}</div></div><span class="badge b-fixo" style="background:#fff3e0;color:#e65100">Extra</span><span class="li-val">${fmt(r.valor)}</span><button class="btn btn-red btn-sm" onclick="removeRenda(${r.id})">✕</button></div>`)}
+  if(fixas.length){h+='<div class="section-label">Renda fixa (aparece todo mês)</div>';fixas.forEach(r=>h+=`<div class="list-item"><div class="li-info"><div class="li-name">${r.nome}</div></div><span class="badge b-fixo">Fixa</span><span class="li-val">${fmt(r.valor)}</span><button class="btn btn-sm" onclick="editRenda(${r.id})" style="color:#1565c0;border-color:#90caf9">✏️</button><button class="btn btn-red btn-sm" onclick="removeRenda(${r.id})">✕</button></div>`)}
+  if(extras.length){h+='<div class="section-label" style="margin-top:10px">Renda extra (só este mês)</div>';extras.forEach(r=>h+=`<div class="list-item"><div class="li-info"><div class="li-name">${r.nome}</div></div><span class="badge b-fixo" style="background:#fff3e0;color:#e65100">Extra</span><span class="li-val">${fmt(r.valor)}</span><button class="btn btn-sm" onclick="editRenda(${r.id})" style="color:#1565c0;border-color:#90caf9">✏️</button><button class="btn btn-red btn-sm" onclick="removeRenda(${r.id})">✕</button></div>`)}
   if(!fixas.length&&!extras.length)h='<div class="empty">Nenhuma renda cadastrada</div>';
   h+=`<div class="total-row big" style="margin-top:12px"><span>Total do mês</span><span style="color:#2e7d32">${fmt([...fixas,...extras].reduce((s,r)=>s+r.valor,0))}</span></div>`;
   el.innerHTML=h;
@@ -525,7 +525,7 @@ function renderContas(){
     groups[k].forEach(c=>{
       const rest=parcRestantes(c);
       const pl=c.tipo==='parc'&&rest!==null?`<span class="badge parc-badge ${rest<=2?'parc-zero':''}">faltam ${rest}x</span>`:'';
-      h+=`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${pl}</div></div><span class="li-val">${fmt(c.valor)}</span><button class="btn btn-red btn-sm" onclick="removeConta(${c.id})">✕</button></div>`;
+      h+=`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div><div class="li-sub">${pl}</div></div><span class="li-val">${fmt(c.valor)}</span><button class="btn btn-sm" onclick="editConta(${c.id})" style="color:#1565c0;border-color:#90caf9">✏️</button><button class="btn btn-red btn-sm" onclick="removeConta(${c.id})">✕</button></div>`;
     });
     h+=`<div class="total-row"><span>Total</span><span>${fmt(groups[k].reduce((s,c)=>s+c.valor,0))}</span></div>`;
     el.innerHTML=h;
@@ -536,7 +536,7 @@ function renderGastos(){
   const el=document.getElementById('gasto-list');if(!el)return;
   const k=curKey();const list=S.gastos[k]||[];
   if(!list.length){el.innerHTML='<div class="empty">Nenhum gasto extra registrado neste mês</div>';return}
-  let h=list.map(g=>`<div class="list-item"><div class="li-info"><div class="li-name">${g.nome}</div></div><span class="li-val">${fmt(g.valor)}</span><button class="btn btn-red btn-sm" onclick="removeGasto(${g.id})">✕</button></div>`).join('');
+  let h=list.map(g=>`<div class="list-item"><div class="li-info"><div class="li-name">${g.nome}</div></div><span class="li-val">${fmt(g.valor)}</span><button class="btn btn-sm" onclick="editGasto(${g.id})" style="color:#1565c0;border-color:#90caf9">✏️</button><button class="btn btn-red btn-sm" onclick="removeGasto(${g.id})">✕</button></div>`).join('');
   h+=`<div class="total-row big"><span>Total extras</span><span>${fmt(list.reduce((s,g)=>s+g.valor,0))}</span></div>`;
   el.innerHTML=h;
 }
@@ -587,7 +587,158 @@ function loadExample(){
   alert('Dados de exemplo carregados! ✅');
 }
 
+// ===== EDIÇÃO =====
+function editConta(id){
+  const c=S.contas.find(x=>x.id===id);if(!c)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-nome').value=c.nome;
+  document.getElementById('edit-valor').value=c.valor;
+  document.getElementById('edit-cartao').value=c.cartao||'';
+  document.getElementById('edit-tipo').value=c.tipo;
+  document.getElementById('edit-fora').value=c.fora||'';
+  const showParc=c.tipo==='parc';
+  document.getElementById('edit-parc-row').style.display=showParc?'flex':'none';
+  if(showParc){
+    document.getElementById('edit-parc-total').value=c.parcTotal||c.parcBase||'';
+    const rest=parcRestantes(c);
+    document.getElementById('edit-parc-rest').value=rest||'';
+  }
+  document.getElementById('edit-modal').style.display='flex';
+}
+
+function editGasto(id){
+  const k=curKey();const g=(S.gastos[k]||[]).find(x=>x.id===id);if(!g)return;
+  document.getElementById('editg-id').value=id;
+  document.getElementById('editg-nome').value=g.nome;
+  document.getElementById('editg-valor').value=g.valor;
+  document.getElementById('editg-modal').style.display='flex';
+}
+
+function editRenda(id){
+  const r=S.rendas.find(x=>x.id===id);if(!r)return;
+  document.getElementById('editr-id').value=id;
+  document.getElementById('editr-nome').value=r.nome;
+  document.getElementById('editr-valor').value=r.valor;
+  document.getElementById('editr-modal').style.display='flex';
+}
+
+function saveEditConta(){
+  const id=parseInt(document.getElementById('edit-id').value);
+  const c=S.contas.find(x=>x.id===id);if(!c)return;
+  c.nome=document.getElementById('edit-nome').value.trim();
+  c.valor=parseFloat(document.getElementById('edit-valor').value);
+  c.cartao=document.getElementById('edit-cartao').value;
+  c.tipo=document.getElementById('edit-tipo').value;
+  c.fora=document.getElementById('edit-fora').value;
+  if(c.tipo==='parc'){
+    const pTotal=parseInt(document.getElementById('edit-parc-total').value);
+    const pRest=parseInt(document.getElementById('edit-parc-rest').value);
+    if(pTotal>0)c.parcTotal=pTotal;
+    if(pRest>0){c.parcRestantes=pRest;c.parcBase=pRest;c.startMonth=S.currentMonth;c.startYear=S.currentYear;}
+  }
+  closeModals();save();renderAll();
+}
+
+function saveEditGasto(){
+  const id=parseInt(document.getElementById('editg-id').value);
+  const k=curKey();const g=(S.gastos[k]||[]).find(x=>x.id===id);if(!g)return;
+  g.nome=document.getElementById('editg-nome').value.trim();
+  g.valor=parseFloat(document.getElementById('editg-valor').value);
+  closeModals();save();renderAll();
+}
+
+function saveEditRenda(){
+  const id=parseInt(document.getElementById('editr-id').value);
+  const r=S.rendas.find(x=>x.id===id);if(!r)return;
+  r.nome=document.getElementById('editr-nome').value.trim();
+  r.valor=parseFloat(document.getElementById('editr-valor').value);
+  closeModals();save();renderAll();
+}
+
+function closeModals(){
+  document.getElementById('edit-modal').style.display='none';
+  document.getElementById('editg-modal').style.display='none';
+  document.getElementById('editr-modal').style.display='none';
+}
+
+document.getElementById('edit-tipo').addEventListener('change',function(){
+  document.getElementById('edit-parc-row').style.display=this.value==='parc'?'flex':'none';
+});
+
 load();renderAll();
 </script>
+
+<!-- Modal editar conta -->
+<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:12px;padding:24px;width:90%;max-width:480px;box-shadow:0 4px 24px rgba(0,0,0,0.2)">
+    <div style="font-weight:600;font-size:15px;margin-bottom:16px;color:#1a1a1a">✏️ Editar conta</div>
+    <input type="hidden" id="edit-id">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Nome</label><input type="text" id="edit-nome" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Valor R$</label><input type="number" id="edit-valor" step="0.01" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Cartão</label>
+        <select id="edit-cartao" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px">
+          <option value="">Contas fixas / Boleto</option>
+          <option value="nubank">💜 Nubank</option>
+          <option value="outro">💳 Hipercard</option>
+        </select>
+      </div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Tipo</label>
+        <select id="edit-tipo" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px">
+          <option value="fixo">Fixa (todo mês)</option>
+          <option value="parc">Parcelada</option>
+          <option value="avista">Crédito à vista</option>
+        </select>
+      </div>
+      <div id="edit-parc-row" style="display:none;gap:10px;flex-wrap:wrap">
+        <div style="flex:1"><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Total de parcelas</label><input type="number" id="edit-parc-total" min="1" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+        <div style="flex:1"><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Faltam</label><input type="number" id="edit-parc-rest" min="1" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+      </div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Fora do meu bolso?</label>
+        <select id="edit-fora" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px">
+          <option value="">Não – é minha</option>
+          <option value="sim">Sim – terceiro paga</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
+      <button onclick="closeModals()" style="padding:8px 16px;border:1px solid #ddd;border-radius:7px;background:#fff;cursor:pointer;font-size:13px">Cancelar</button>
+      <button onclick="saveEditConta()" style="padding:8px 16px;border:none;border-radius:7px;background:#2e7d32;color:#fff;cursor:pointer;font-size:13px;font-weight:600">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal editar gasto -->
+<div id="editg-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:12px;padding:24px;width:90%;max-width:400px">
+    <div style="font-weight:600;font-size:15px;margin-bottom:16px;color:#1a1a1a">✏️ Editar gasto</div>
+    <input type="hidden" id="editg-id">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Nome</label><input type="text" id="editg-nome" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Valor R$</label><input type="number" id="editg-valor" step="0.01" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
+      <button onclick="closeModals()" style="padding:8px 16px;border:1px solid #ddd;border-radius:7px;background:#fff;cursor:pointer;font-size:13px">Cancelar</button>
+      <button onclick="saveEditGasto()" style="padding:8px 16px;border:none;border-radius:7px;background:#2e7d32;color:#fff;cursor:pointer;font-size:13px;font-weight:600">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal editar renda -->
+<div id="editr-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:12px;padding:24px;width:90%;max-width:400px">
+    <div style="font-weight:600;font-size:15px;margin-bottom:16px;color:#1a1a1a">✏️ Editar renda</div>
+    <input type="hidden" id="editr-id">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Nome</label><input type="text" id="editr-nome" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+      <div><label style="font-size:12px;color:#666;display:block;margin-bottom:3px">Valor R$</label><input type="number" id="editr-valor" step="0.01" style="width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:7px;font-size:13px"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
+      <button onclick="closeModals()" style="padding:8px 16px;border:1px solid #ddd;border-radius:7px;background:#fff;cursor:pointer;font-size:13px">Cancelar</button>
+      <button onclick="saveEditRenda()" style="padding:8px 16px;border:none;border-radius:7px;background:#2e7d32;color:#fff;cursor:pointer;font-size:13px;font-weight:600">Salvar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
