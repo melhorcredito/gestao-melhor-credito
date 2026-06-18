@@ -734,22 +734,24 @@ function closeModals(){
   document.getElementById('editr-modal').style.display='none';
 }
 
-const editTipoEl=document.getElementById('edit-tipo');
-if(editTipoEl)editTipoEl.addEventListener('change',function(){
-  document.getElementById('edit-parc-row').style.display=this.value==='parc'?'flex':'none';
-});
-
 load();
 if(!S.caixinha)S.caixinha={};
 if(!S.dia20)S.dia20={};
-// Testa se localStorage está funcionando
 try {
   localStorage.setItem('_test','1');
   localStorage.removeItem('_test');
 } catch(e) {
-  setTimeout(()=>alert('⚠️ Atenção: seu navegador está bloqueando o salvamento de dados. Vá em Configurações do Chrome → Privacidade → Cookies e permita cookies para este site.'),1000);
+  setTimeout(()=>alert('⚠️ Atenção: seu navegador está bloqueando o salvamento de dados.'),1000);
 }
-renderAll();
+
+// Aguarda o DOM carregar completamente antes de inicializar
+document.addEventListener('DOMContentLoaded', function(){
+  const editTipoEl2=document.getElementById('edit-tipo');
+  if(editTipoEl2)editTipoEl2.addEventListener('change',function(){
+    document.getElementById('edit-parc-row').style.display=this.value==='parc'?'flex':'none';
+  });
+  renderAll();
+});
 </script>
 
 <!-- Modal editar conta -->
