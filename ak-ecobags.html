@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AK Ecobags — Sistema de Gestão</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4a5e35;--cr:#f7f4ef;--cd:#ede9e1;--tx:#2c2e28;--mu:#7a7d74;--bd:#ddd9d0;--wh:#fff;--rd:#c0392b;--rdl:#fde8e8}
+body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--tx);min-height:100vh}
+.top{background:var(--wh);border-bottom:1px solid var(--bd);padding:0 1.2rem;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(74,94,53,.07);position:sticky;top:0;z-index:50}
+.logo{width:40px;height:40px;border-radius:50%;background:var(--cd);border:1.5px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--g);letter-spacing:1px;box-shadow:0 2px 8px rgba(74,94,53,.18);font-family:'Inter',sans-serif}
+.brand-name{font-size:15px;font-weight:600;color:var(--g)}
+.brand-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.tdate{font-size:12px;color:var(--mu);background:var(--cr);padding:5px 12px;border-radius:20px;border:1px solid var(--bd)}
+.nav{display:flex;background:var(--wh);border-bottom:1px solid var(--bd);padding:0 1.2rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nt{padding:13px 15px;font-size:13px;border:none;background:none;cursor:pointer;color:var(--mu);border-bottom:2.5px solid transparent;display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap;font-family:'Inter',sans-serif}
+.nt.on{color:var(--g);border-bottom-color:var(--g);font-weight:500}
+.nt:hover:not(.on){color:var(--tx)}
+.cnt{padding:1.2rem;max-width:1100px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+/* Sub-tabs estoque */
+.est-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.etab{padding:6px 16px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;font-family:'Inter',sans-serif}
+.etab.on{background:var(--g);border-color:var(--g);color:#fff;font-weight:500}
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.2rem}
+.mc{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:.9rem 1.1rem;position:relative;overflow:hidden;box-shadow:0 2px 10px rgba(74,94,53,.06)}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cd)}
+.mc.a::before{background:var(--g)}.mc.w::before{background:#d4a017}.mc.r::before{background:var(--rd)}
+.mlb{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.mv{font-size:20px;font-weight:600}
+.mv.ok{color:#3a5a28}.mv.wn{color:#a07010}.mv.dn{color:var(--rd)}
+/* Panels */
+.pnl{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1.1rem;box-shadow:0 1px 8px rgba(74,94,53,.05)}
+.ptit{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+/* Forms */
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+.fg input,.fg select{padding:9px 11px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;width:100%;transition:border .12s;font-family:'Inter',sans-serif}
+.fg input:focus,.fg select:focus{border-color:var(--g);background:var(--wh)}
+.bsv{background:var(--g);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .12s;font-family:'Inter',sans-serif}
+.bsv:hover{background:#3a4d2a}
+.bcan{background:none;color:var(--mu);border:1px solid var(--bd);padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+.bcan:hover{background:var(--cr)}
+.ff{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+/* Tables */
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--cr)}
+th{padding:9px 10px;text-align:left;font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--cd);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#faf9f6}
+tr.atrasado td{background:#fff8f8}
+tr.atrasado:hover td{background:#fff0f0}
+/* Badges */
+.bg{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.bok{background:#e8f0de;color:#3a5a28}.bwn{background:#fdf3d9;color:#7a5a10}.bdn{background:var(--rdl);color:#8c2222}
+.bpix{background:#e8f0de;color:#3a5a28}.bcrd{background:#e6f1fb;color:#0c447c}.bdeb{background:#eeedfe;color:#3c3489}.bprz{background:#fdf3d9;color:#7a5a10}
+.bpg{background:#e8f0de;color:#3a5a28}.bnpg{background:var(--rdl);color:#8c2222}
+.bpnd{background:#fdf3d9;color:#7a5a10}.bprd{background:#e6f1fb;color:#0c447c}.bprt{background:#e8f0de;color:#3a5a28}.bent{background:#f1efe8;color:#5f5e5a}.batr{background:var(--rdl);color:#8c2222}
+/* Pagamento forms */
+.fw{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.fo{padding:7px 14px;border:1px solid var(--bd);border-radius:9px;background:none;cursor:pointer;font-size:13px;color:var(--mu);transition:all .12s;display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif}
+.fo:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
+.fo.spix{background:#e8f0de;border-color:#4a5e35;color:#3a5a28;font-weight:500}
+.fo.scrd{background:#e6f1fb;border-color:#378add;color:#0c447c;font-weight:500}
+.fo.sdeb{background:#eeedfe;border-color:#7f77dd;color:#3c3489;font-weight:500}
+.fo.sprz{background:#fdf3d9;border-color:#c8941a;color:#7a5a10;font-weight:500}
+.pzb{display:none;margin-top:10px}.pzb.on{display:block}
+/* Actions */
+.acts{display:flex;gap:5px;flex-wrap:nowrap}
+.bedt{padding:3px 10px;border:1px solid var(--bd);border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
+.bedt:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
+.bdel{padding:3px 10px;border:1px solid #f0d0d0;border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--rd);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
+.bdel:hover{background:var(--rdl);border-color:var(--rd)}
+.bbx{padding:3px 10px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
+.bbx:hover{background:#e8f0de;border-color:var(--g);color:#3a5a28}
+.bbx.pg{background:#e8f0de;border-color:#4a5e35;color:#3a5a28;cursor:default}
+/* Alert */
+.alerta-box{background:var(--rdl);border:1px solid #f0c0c0;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;font-size:13px;color:#8c2222;display:flex;align-items:center;gap:8px}
+/* Status select */
+.ssel{padding:5px 9px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:var(--cr);color:var(--tx);cursor:pointer;width:auto;outline:none;font-family:'Inter',sans-serif}
+/* Empty */
+.emp{text-align:center;padding:2.5rem;color:var(--mu);font-size:13px}
+/* Month bar */
+.mbar{display:flex;align-items:center;gap:8px;margin-bottom:1.2rem}
+.mbar select{padding:7px 12px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--wh);color:var(--tx);width:auto;outline:none;font-family:'Inter',sans-serif}
+/* Clientes */
+.cli-inp{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;margin-bottom:1rem;font-family:'Inter',sans-serif}
+.cli-inp:focus{border-color:var(--g);background:var(--wh)}
+.cli-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
+.cli-chip{padding:6px 14px;border:1px solid var(--bd);border-radius:20px;font-size:12px;cursor:pointer;background:none;color:var(--tx);transition:all .12s;font-family:'Inter',sans-serif}
+.cli-chip:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
+.cli-chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.rel-resumo{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.rel-card{background:var(--cr);border:1px solid var(--bd);border-radius:9px;padding:.65rem 1rem;font-size:12px;color:var(--mu)}
+.rel-card span{display:block;font-size:17px;font-weight:600;color:var(--tx);margin-top:3px}
+/* Modal */
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.modal{background:var(--wh);border-radius:16px;padding:1.4rem;width:min(96%,500px);box-shadow:0 12px 40px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:14px;font-weight:600;color:var(--g);margin-bottom:1.1rem;display:flex;align-items:center;gap:7px}
+/* Responsive */
+@media(max-width:600px){
+  .fr{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .cnt{padding:.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div style="display:flex;align-items:center;gap:11px">
+    <div class="logo">AK</div>
+    <div>
+      <div class="brand-name">AK Ecobags</div>
+      <div class="brand-sub">Sistema de gestão</div>
+    </div>
+  </div>
+  <div class="tdate" id="tdt"></div>
+</div>
+
+<div class="nav">
+  <button class="nt on" onclick="go('est',this)"><i class="ti ti-box"></i> Estoque</button>
+  <button class="nt" onclick="go('pag',this)"><i class="ti ti-cash"></i> Pagamento</button>
+  <button class="nt" onclick="go('ped',this)"><i class="ti ti-clipboard-list"></i> Pedidos</button>
+  <button class="nt" onclick="go('cli',this)"><i class="ti ti-user"></i> Clientes</button>
+  <button class="nt" onclick="go('res',this)"><i class="ti ti-chart-bar"></i> Resumo</button>
+</div>
+
+<div class="cnt">
+
+  <!-- ESTOQUE -->
+  <div id="est" class="sec on">
+    <div class="cards" id="em"></div>
+    <div class="est-tabs">
+      <button class="etab on" onclick="goEst('prod',this)"><i class="ti ti-shopping-bag"></i> Produtos</button>
+      <button class="etab" onclick="goEst('mat',this)"><i class="ti ti-package"></i> Materiais</button>
+    </div>
+    <div id="est-prod">
+      <div class="pnl">
+        <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Produtos</div>
+        <div class="fr">
+          <div class="fg"><label>Produto</label><select id="sp"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
+          <div class="fg"><label>Qtd. mínima (alerta)</label><input type="number" id="sm" value="5" min="0"/></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>Qtd. em estoque</label><input type="number" id="sq" value="0" min="0"/></div>
+          <div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sc" value="0" min="0" step="0.01"/></div>
+        </div>
+        <div class="ff"><button class="bsv" onclick="savE('prod')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+      </div>
+      <div class="pnl">
+        <div class="ptit"><i class="ti ti-table"></i> Situação — Produtos</div>
+        <div class="twrap"><table><thead><tr><th>Produto</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo unit.</th></tr></thead><tbody id="etb-prod"></tbody></table></div>
+      </div>
+    </div>
+    <div id="est-mat" style="display:none">
+      <div class="pnl">
+        <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Materiais</div>
+        <div class="fr">
+          <div class="fg"><label>Material</label><select id="sm2"><option value="sg">Sacola Grande</option><option value="sp">Sacola Pequena</option><option value="cx">Caixinha</option><option value="tg">Tag</option><option value="ta">Tag Adesiva</option></select></div>
+          <div class="fg"><label>Qtd. mínima (alerta)</label><input type="number" id="sm2m" value="10" min="0"/></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>Qtd. em estoque</label><input type="number" id="sm2q" value="0" min="0"/></div>
+          <div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sm2c" value="0" min="0" step="0.01"/></div>
+        </div>
+        <div class="ff"><button class="bsv" onclick="savE('mat')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+      </div>
+      <div class="pnl">
+        <div class="ptit"><i class="ti ti-table"></i> Situação — Materiais</div>
+        <div class="twrap"><table><thead><tr><th>Material</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo unit.</th></tr></thead><tbody id="etb-mat"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGAMENTO -->
+  <div id="pag" class="sec">
+    <div class="cards" id="pm"></div>
+    <div class="pnl">
+      <div class="ptit"><i class="ti ti-plus"></i> Registrar pagamento</div>
+      <div class="fr">
+        <div class="fg"><label>Cliente</label><input type="text" id="pc" placeholder="Nome do cliente"/></div>
+        <div class="fg"><label>Data</label><input type="date" id="pd"/></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Descrição</label><input type="text" id="pdc" placeholder="Ex: 2x Broche Pequeno"/></div>
+        <div class="fg"><label>Valor (R$)</label><input type="number" id="pv" value="0" min="0" step="0.01"/></div>
+      </div>
+      <div class="fg" style="margin-bottom:12px">
+        <label>Forma de pagamento</label>
+        <div class="fw">
+          <button class="fo" onclick="sfm('pix',this)"><i class="ti ti-qrcode"></i> Pix</button>
+          <button class="fo" onclick="sfm('crd',this)"><i class="ti ti-credit-card"></i> Crédito</button>
+          <button class="fo" onclick="sfm('deb',this)"><i class="ti ti-credit-card"></i> Débito</button>
+          <button class="fo" onclick="sfm('prz',this)"><i class="ti ti-calendar-due"></i> A prazo</button>
+        </div>
+      </div>
+      <div class="pzb" id="pzb"><div class="fg"><label>Data combinada</label><input type="date" id="ppz"/></div></div>
+      <div class="ff"><button class="bsv" onclick="regP()"><i class="ti ti-check"></i> Registrar</button></div>
+    </div>
+    <div class="pnl">
+      <div class="ptit"><i class="ti ti-list"></i> Controle de pagamentos</div>
+      <div class="twrap" id="pl"><div class="emp">Nenhum pagamento registrado ainda.</div></div>
+    </div>
+  </div>
+
+  <!-- PEDIDOS -->
+  <div id="ped" class="sec">
+    <div id="ped-alerta"></div>
+    <div class="cards" id="dm"></div>
+    <div class="pnl">
+      <div class="ptit"><i class="ti ti-plus"></i> Novo pedido</div>
+      <div class="fr">
+        <div class="fg"><label>Cliente</label><input type="text" id="dc" placeholder="Nome do cliente"/></div>
+        <div class="fg"><label>Data do pedido</label><input type="date" id="dd"/></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Produto</label><select id="dp"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
+        <div class="fg"><label>Quantidade</label><input type="number" id="dq" value="1" min="1"/></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Previsão de entrega</label><input type="date" id="de"/></div>
+        <div class="fg"><label>Observações</label><input type="text" id="do" placeholder="Personalização, cor..."/></div>
+      </div>
+      <div class="ff"><button class="bsv" onclick="regD()"><i class="ti ti-clipboard-list"></i> Registrar pedido</button></div>
+    </div>
+    <div class="pnl">
+      <div class="ptit"><i class="ti ti-list"></i> Pedidos</div>
+      <div class="twrap" id="dl"><div class="emp">Nenhum pedido registrado ainda.</div></div>
+    </div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="cli" class="sec">
+    <div class="pnl">
+      <div class="ptit"><i class="ti ti-user-search"></i> Buscar cliente</div>
+      <input class="cli-inp" type="text" id="cli-inp" placeholder="Digite o nome do cliente..." oninput="filtCli()"/>
+      <div class="cli-list" id="cli-chips"></div>
+    </div>
+    <div id="cli-rel"></div>
+  </div>
+
+  <!-- RESUMO -->
+  <div id="res" class="sec">
+    <div class="mbar"><label style="font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px">Mês</label><select id="ms" onchange="rRes()"></select></div>
+    <div id="rc"></div>
+  </div>
+
+</div>
+
+<!-- MODAL EDITAR PAGAMENTO -->
+<div class="overlay" id="modal-pag">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-edit"></i> Editar pagamento</div>
+    <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="ep-c"/></div><div class="fg"><label>Data</label><input type="date" id="ep-dt"/></div></div>
+    <div class="fr"><div class="fg"><label>Descrição</label><input type="text" id="ep-d"/></div><div class="fg"><label>Valor (R$)</label><input type="number" id="ep-v" step="0.01"/></div></div>
+    <div class="fg" style="margin-bottom:12px"><label>Forma</label>
+      <div class="fw">
+        <button class="fo" onclick="sefm('pix',this)"><i class="ti ti-qrcode"></i> Pix</button>
+        <button class="fo" onclick="sefm('crd',this)"><i class="ti ti-credit-card"></i> Crédito</button>
+        <button class="fo" onclick="sefm('deb',this)"><i class="ti ti-credit-card"></i> Débito</button>
+        <button class="fo" onclick="sefm('prz',this)"><i class="ti ti-calendar-due"></i> A prazo</button>
+      </div>
+    </div>
+    <div class="pzb" id="ep-pzb"><div class="fg"><label>Data combinada</label><input type="date" id="ep-pz"/></div></div>
+    <div class="ff"><button class="bcan" onclick="closeModal('modal-pag')">Cancelar</button><button class="bsv" onclick="savEditP()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PEDIDO -->
+<div class="overlay" id="modal-ped">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-edit"></i> Editar pedido</div>
+    <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="ed-c"/></div><div class="fg"><label>Data do pedido</label><input type="date" id="ed-dt"/></div></div>
+    <div class="fr">
+      <div class="fg"><label>Produto</label><select id="ed-p"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
+      <div class="fg"><label>Quantidade</label><input type="number" id="ed-q" min="1"/></div>
+    </div>
+    <div class="fr"><div class="fg"><label>Previsão de entrega</label><input type="date" id="ed-e"/></div><div class="fg"><label>Observações</label><input type="text" id="ed-o"/></div></div>
+    <div class="ff"><button class="bcan" onclick="closeModal('modal-ped')">Cancelar</button><button class="bsv" onclick="savEditD()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+  </div>
+</div>
+
+<script>
+// ─── DADOS PRÉ-CARREGADOS ───────────────────────────────────────────────────
+const DADOS_INICIAIS = {
+  est: {"bp":{"q":18,"m":50,"c":0.49},"bg":{"q":31,"m":50,"c":0.7},"ez":{"q":0,"m":5,"c":0},"es":{"q":2,"m":0,"c":28.8}},
+  mat: {"sg":{"q":35,"m":0,"c":0.9},"sp":{"q":12,"m":0,"c":0.85},"cx":{"q":12,"m":50,"c":0.48},"tg":{"q":69,"m":50,"c":0.29},"ta":{"q":89,"m":50,"c":0.27}},
+  pag: [],
+  ped: [{"id":"1781801105356","c":"Bombeiro","p":"bp","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801128253","c":"Jesus","p":"bp","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801156843","c":"Boneca vermelha","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801171190","c":"Crocodilo","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801187681","c":"Vet","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801201627","c":"Família","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801229127","c":"Boneca vermelha","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"maior definição","s":"pendente"}]
+};
+
+// Inicializa localStorage apenas se ainda não tiver dados
+function initDados() {
+  if (!localStorage.getItem('ak_est')) localStorage.setItem('ak_est', JSON.stringify(DADOS_INICIAIS.est));
+  if (!localStorage.getItem('ak_mat')) localStorage.setItem('ak_mat', JSON.stringify(DADOS_INICIAIS.mat));
+  if (!localStorage.getItem('ak_pag')) localStorage.setItem('ak_pag', JSON.stringify(DADOS_INICIAIS.pag));
+  if (!localStorage.getItem('ak_ped')) localStorage.setItem('ak_ped', JSON.stringify(DADOS_INICIAIS.ped));
+}
+initDados();
+
+// ─── CONSTANTES ─────────────────────────────────────────────────────────────
+const PR = {bp:'Broche Pequeno',bg:'Broche Grande',ez:'Ecobag com Zíper',es:'Ecobag sem Zíper'};
+const MT = {sg:'Sacola Grande',sp:'Sacola Pequena',cx:'Caixinha',tg:'Tag',ta:'Tag Adesiva'};
+const FL = {pix:'Pix',crd:'Crédito',deb:'Débito',prz:'A prazo'};
+const FB = {pix:'bpix',crd:'bcrd',deb:'bdeb',prz:'bprz'};
+const SL = {pendente:'Pendente',producao:'Em produção',pronto:'Pronto',entregue:'Entregue'};
+const SB = {pendente:'bpnd',producao:'bprd',pronto:'bprt',entregue:'bent'};
+
+// ─── ESTADO ──────────────────────────────────────────────────────────────────
+let fm = null, efm = null, editPid = null, editDid = null;
+
+function getE()  { return JSON.parse(localStorage.getItem('ak_est')); }
+function getEM() { return JSON.parse(localStorage.getItem('ak_mat')); }
+function getPA() { return JSON.parse(localStorage.getItem('ak_pag')); }
+function getPE() { return JSON.parse(localStorage.getItem('ak_ped')); }
+function setE(v)  { localStorage.setItem('ak_est', JSON.stringify(v)); }
+function setEM(v) { localStorage.setItem('ak_mat', JSON.stringify(v)); }
+function setPA(v) { localStorage.setItem('ak_pag', JSON.stringify(v)); }
+function setPE(v) { localStorage.setItem('ak_ped', JSON.stringify(v)); }
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const fmt = n => 'R$ ' + Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const td  = () => new Date().toISOString().split('T')[0];
+const fd  = d => d ? d.split('-').reverse().join('/') : '—';
+
+function barHtml(q, m) {
+  const pct = m > 0 ? Math.min(100, Math.round(q / Math.max(m*2,1) * 100)) : (q > 0 ? 100 : 0);
+  const cl  = q === 0 ? '#c0392b' : q <= m ? '#c8941a' : 'var(--g)';
+  return `<div style="font-weight:500">${q} un.</div><div style="height:4px;background:var(--cd);border-radius:3px;margin-top:5px"><div style="height:100%;width:${pct}%;background:${cl};border-radius:3px"></div></div>`;
+}
+function sbg(q, m) {
+  if (q === 0) return '<span class="bg bdn">Sem estoque</span>';
+  if (q <= m)  return '<span class="bg bwn">Comprar</span>';
+  return '<span class="bg bok">OK</span>';
+}
+function closeModal(id) { document.getElementById(id).classList.remove('on'); }
+
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('on');
+}));
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+document.getElementById('tdt').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'long'});
+document.getElementById('pd').value = td();
+document.getElementById('dd').value = td();
+
+// ─── NAVEGAÇÃO ────────────────────────────────────────────────────────────────
+function go(t, el) {
+  document.querySelectorAll('.nt').forEach(e => e.classList.remove('on'));
+  document.querySelectorAll('.sec').forEach(e => e.classList.remove('on'));
+  document.getElementById(t).classList.add('on');
+  el.classList.add('on');
+  if (t==='est') rE();
+  if (t==='pag') rP();
+  if (t==='ped') rD();
+  if (t==='cli') rCli();
+  if (t==='res') rRes();
+}
+
+function goEst(t, el) {
+  document.querySelectorAll('.etab').forEach(e => e.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('est-prod').style.display = t==='prod' ? 'block' : 'none';
+  document.getElementById('est-mat').style.display  = t==='mat'  ? 'block' : 'none';
+  if (t==='prod') rEProd(); else rEMat();
+}
+
+// ─── ESTOQUE ─────────────────────────────────────────────────────────────────
+function rE() {
+  const E = getE(), EM = getEM();
+  const totP  = Object.values(E).reduce((a,b)=>a+b.q,0);
+  const totM  = Object.values(EM).reduce((a,b)=>a+b.q,0);
+  const precP = Object.values(E).filter(e=>e.q<=e.m&&e.m>0).length;
+  const precM = Object.values(EM).filter(e=>e.q<=e.m&&e.m>0).length;
+  const prec  = precP + precM;
+  document.getElementById('em').innerHTML = `
+    <div class="mc"><div class="mlb">Produtos em estoque</div><div class="mv">${totP} un.</div></div>
+    <div class="mc"><div class="mlb">Materiais em estoque</div><div class="mv">${totM} un.</div></div>
+    <div class="mc ${prec>0?'w':'a'}"><div class="mlb">Precisam repor</div><div class="mv ${prec>0?'wn':''}">${prec} item${prec!==1?'s':''}</div></div>`;
+  rEProd(); rEMat();
+}
+
+function rEProd() {
+  const E = getE();
+  document.getElementById('etb-prod').innerHTML = Object.entries(E).map(([k,v]) =>
+    `<tr><td style="font-weight:500">${PR[k]}</td><td>${barHtml(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`
+  ).join('');
+}
+
+function rEMat() {
+  const EM = getEM();
+  document.getElementById('etb-mat').innerHTML = Object.entries(EM).map(([k,v]) =>
+    `<tr><td style="font-weight:500">${MT[k]}</td><td>${barHtml(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`
+  ).join('');
+}
+
+function savE(tipo) {
+  if (tipo === 'prod') {
+    const E = getE();
+    const k = document.getElementById('sp').value;
+    E[k] = {q:parseInt(document.getElementById('sq').value)||0, m:parseInt(document.getElementById('sm').value)||0, c:parseFloat(document.getElementById('sc').value)||0};
+    setE(E);
+  } else {
+    const EM = getEM();
+    const k  = document.getElementById('sm2').value;
+    EM[k] = {q:parseInt(document.getElementById('sm2q').value)||0, m:parseInt(document.getElementById('sm2m').value)||0, c:parseFloat(document.getElementById('sm2c').value)||0};
+    setEM(EM);
+  }
+  rE();
+}
+
+// ─── PAGAMENTO ────────────────────────────────────────────────────────────────
+function sfm(t, el) {
+  fm = t;
+  document.querySelectorAll('#pag .fo').forEach(b => b.className='fo');
+  el.className = 'fo s' + t;
+  document.getElementById('pzb').classList.toggle('on', t==='prz');
+}
+function sefm(t, el) {
+  efm = t;
+  document.querySelectorAll('#modal-pag .fo').forEach(b => b.className='fo');
+  el.className = 'fo s' + t;
+  document.getElementById('ep-pzb').classList.toggle('on', t==='prz');
+}
+
+function rP() {
+  const PA = getPA();
+  const tot = PA.reduce((a,b)=>a+b.v,0);
+  const tpg = PA.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
+  const tpd = PA.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+  document.getElementById('pm').innerHTML = `
+    <div class="mc a"><div class="mlb">Total registrado</div><div class="mv">${fmt(tot)}</div></div>
+    <div class="mc a"><div class="mlb">Recebido</div><div class="mv ok">${fmt(tpg)}</div></div>
+    <div class="mc w"><div class="mlb">A receber</div><div class="mv wn">${fmt(tpd)}</div></div>`;
+  const el = document.getElementById('pl');
+  if (!PA.length) { el.innerHTML='<div class="emp">Nenhum pagamento registrado ainda.</div>'; return; }
+  const s = [...PA].sort((a,b)=>b.dt.localeCompare(a.dt));
+  el.innerHTML = `<table><thead><tr><th>Data</th><th>Cliente</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th><th></th></tr></thead><tbody>
+  ${s.map(p=>`<tr>
+    <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
+    <td style="font-weight:500">${p.c}</td>
+    <td style="color:var(--mu)">${p.d||'—'}</td>
+    <td><span class="bg ${FB[p.f]}">${FL[p.f]}${p.f==='prz'&&p.s==='pend'&&p.pz?' · '+fd(p.pz):''}</span></td>
+    <td style="font-weight:500;color:var(--g)">${fmt(p.v)}</td>
+    <td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td>
+    <td><div class="acts">
+      ${p.s!=='pago'?`<button class="bbx" onclick="bx('${p.id}')">Baixa</button>`:'<span class="bbx pg">✓</span>'}
+      <button class="bedt" onclick="openEditP('${p.id}')">Editar</button>
+      <button class="bdel" onclick="delP('${p.id}')">✕</button>
+    </div></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+function regP() {
+  const c=document.getElementById('pc').value.trim(), dt=document.getElementById('pd').value;
+  const d=document.getElementById('pdc').value.trim(), v=parseFloat(document.getElementById('pv').value)||0;
+  const pz=document.getElementById('ppz').value;
+  if(!c){alert('Informe o nome do cliente.');return;}
+  if(!v){alert('Informe o valor.');return;}
+  if(!fm){alert('Selecione a forma de pagamento.');return;}
+  if(fm==='prz'&&!pz){alert('Informe a data combinada.');return;}
+  const PA = getPA();
+  PA.push({id:String(Date.now()),c,dt,d,v,f:fm,pz:fm==='prz'?pz:null,s:fm==='prz'?'pend':'pago'});
+  setPA(PA); fm=null;
+  document.querySelectorAll('#pag .fo').forEach(b=>b.className='fo');
+  document.getElementById('pzb').classList.remove('on');
+  document.getElementById('pc').value=''; document.getElementById('pdc').value='';
+  document.getElementById('pv').value='0'; document.getElementById('ppz').value='';
+  rP();
+}
+
+function bx(id) {
+  const PA=getPA(), p=PA.find(p=>p.id===id);
+  if(p){p.s='pago';setPA(PA);rP();}
+}
+function delP(id) {
+  if(!confirm('Excluir este pagamento?'))return;
+  setPA(getPA().filter(p=>p.id!==id)); rP();
+}
+function openEditP(id) {
+  const p=getPA().find(p=>p.id===id); if(!p)return;
+  editPid=id; efm=p.f;
+  document.getElementById('ep-c').value=p.c; document.getElementById('ep-dt').value=p.dt;
+  document.getElementById('ep-d').value=p.d||''; document.getElementById('ep-v').value=p.v;
+  document.getElementById('ep-pz').value=p.pz||'';
+  document.querySelectorAll('#modal-pag .fo').forEach(b=>b.className='fo');
+  const btn=document.querySelector(`#modal-pag button[onclick*="'${p.f}'"]`);
+  if(btn) btn.className='fo s'+p.f;
+  document.getElementById('ep-pzb').classList.toggle('on',p.f==='prz');
+  document.getElementById('modal-pag').classList.add('on');
+}
+function savEditP() {
+  const PA=getPA(), p=PA.find(p=>p.id===editPid); if(!p)return;
+  p.c=document.getElementById('ep-c').value.trim(); p.dt=document.getElementById('ep-dt').value;
+  p.d=document.getElementById('ep-d').value.trim(); p.v=parseFloat(document.getElementById('ep-v').value)||0;
+  if(efm){p.f=efm; p.pz=efm==='prz'?document.getElementById('ep-pz').value:null; if(efm!=='prz')p.s='pago';}
+  setPA(PA); closeModal('modal-pag'); rP();
+}
+
+// ─── PEDIDOS ─────────────────────────────────────────────────────────────────
+function rD() {
+  const PE=getPE();
+  const atrasados=PE.filter(p=>p.s!=='entregue'&&p.e&&p.e<td());
+  const ab=PE.filter(p=>p.s!=='entregue');
+  const pr=PE.filter(p=>p.s==='pronto');
+  const en=PE.filter(p=>p.s==='entregue');
+  document.getElementById('ped-alerta').innerHTML = atrasados.length
+    ? `<div class="alerta-box"><i class="ti ti-alert-triangle"></i> <strong>${atrasados.length} pedido${atrasados.length>1?'s':''} atrasado${atrasados.length>1?'s':''}!</strong> Verifique os itens em vermelho abaixo.</div>` : '';
+  document.getElementById('dm').innerHTML = `
+    <div class="mc ${ab.length>0?'w':'a'}"><div class="mlb">Em aberto</div><div class="mv ${ab.length>0?'wn':''}">${ab.length}</div></div>
+    <div class="mc a"><div class="mlb">Prontos p/ entrega</div><div class="mv ok">${pr.length}</div></div>
+    <div class="mc ${atrasados.length>0?'r':''}"><div class="mlb">Atrasados</div><div class="mv ${atrasados.length>0?'dn':''}">${atrasados.length}</div></div>
+    <div class="mc"><div class="mlb">Entregues</div><div class="mv">${en.length}</div></div>`;
+  const el=document.getElementById('dl');
+  if(!PE.length){el.innerHTML='<div class="emp">Nenhum pedido registrado ainda.</div>';return;}
+  const s=[...PE].sort((a,b)=>{
+    const aA=a.s!=='entregue'&&a.e&&a.e<td()?-1:0;
+    const bA=b.s!=='entregue'&&b.e&&b.e<td()?-1:0;
+    if(aA!==bA)return aA-bA;
+    const o={pendente:0,producao:1,pronto:2,entregue:3};
+    return(o[a.s]||0)-(o[b.s]||0)||a.dt.localeCompare(b.dt);
+  });
+  el.innerHTML=`<table><thead><tr><th>Cliente</th><th>Produto</th><th>Qtd.</th><th>Pedido em</th><th>Entrega</th><th>Obs.</th><th>Status</th><th></th></tr></thead><tbody>
+  ${s.map(p=>{
+    const atr=p.s!=='entregue'&&p.e&&p.e<td();
+    return`<tr class="${atr?'atrasado':''}">
+      <td style="font-weight:500">${p.c}</td>
+      <td>${PR[p.p]}</td>
+      <td>${p.q} un.</td>
+      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
+      <td style="font-size:12px;font-weight:500;color:${atr?'var(--rd)':p.s!=='entregue'&&p.e?'var(--g)':'var(--mu)'}">${fd(p.e)}</td>
+      <td style="font-size:12px;color:var(--mu);font-style:italic">${p.o||'—'}</td>
+      <td>${atr?'<span class="bg batr">⚠ Atrasado</span>':`<select class="ssel" onchange="mudS('${p.id}',this.value)">${Object.entries(SL).map(([k,v])=>`<option value="${k}" ${p.s===k?'selected':''}>${v}</option>`).join('')}</select>`}</td>
+      <td><div class="acts"><button class="bedt" onclick="openEditD('${p.id}')">Editar</button><button class="bdel" onclick="delD('${p.id}')">✕</button></div></td>
+    </tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+function regD() {
+  const c=document.getElementById('dc').value.trim(), p=document.getElementById('dp').value;
+  const q=parseInt(document.getElementById('dq').value)||0, dt=document.getElementById('dd').value;
+  const e=document.getElementById('de').value, o=document.getElementById('do').value.trim();
+  if(!c){alert('Informe o nome do cliente.');return;}
+  if(!q||!dt){alert('Preencha quantidade e data.');return;}
+  const PE=getPE();
+  PE.push({id:String(Date.now()),c,p,q,dt,e,o,s:'pendente'});
+  setPE(PE);
+  document.getElementById('dc').value=''; document.getElementById('dq').value='1';
+  document.getElementById('de').value=''; document.getElementById('do').value='';
+  rD();
+}
+function mudS(id, ns) {
+  const PE=getPE(), p=PE.find(p=>p.id===id);
+  if(p){p.s=ns;setPE(PE);rD();}
+}
+function delD(id) {
+  if(!confirm('Excluir este pedido?'))return;
+  setPE(getPE().filter(p=>p.id!==id)); rD();
+}
+function openEditD(id) {
+  const p=getPE().find(p=>p.id===id); if(!p)return; editDid=id;
+  document.getElementById('ed-c').value=p.c; document.getElementById('ed-dt').value=p.dt;
+  document.getElementById('ed-p').value=p.p; document.getElementById('ed-q').value=p.q;
+  document.getElementById('ed-e').value=p.e||''; document.getElementById('ed-o').value=p.o||'';
+  document.getElementById('modal-ped').classList.add('on');
+}
+function savEditD() {
+  const PE=getPE(), p=PE.find(p=>p.id===editDid); if(!p)return;
+  p.c=document.getElementById('ed-c').value.trim(); p.dt=document.getElementById('ed-dt').value;
+  p.p=document.getElementById('ed-p').value; p.q=parseInt(document.getElementById('ed-q').value)||1;
+  p.e=document.getElementById('ed-e').value; p.o=document.getElementById('ed-o').value.trim();
+  setPE(PE); closeModal('modal-ped'); rD();
+}
+
+// ─── CLIENTES ────────────────────────────────────────────────────────────────
+let cliSel = null;
+function getAllClientes() {
+  const s=new Set();
+  getPA().forEach(p=>p.c&&s.add(p.c));
+  getPE().forEach(p=>p.c&&s.add(p.c));
+  return [...s].sort();
+}
+function filtCli() {
+  const q=document.getElementById('cli-inp').value.toLowerCase();
+  const all=getAllClientes().filter(c=>c.toLowerCase().includes(q));
+  document.getElementById('cli-chips').innerHTML = all.map(c=>
+    `<button class="cli-chip ${c===cliSel?'on':''}" onclick="selCli('${c}')">${c}</button>`
+  ).join('') || '<span style="font-size:13px;color:var(--mu)">Nenhum cliente encontrado.</span>';
+}
+function rCli() { cliSel=null; filtCli(); document.getElementById('cli-rel').innerHTML=''; }
+function selCli(nome) {
+  cliSel=nome; filtCli();
+  const pc=getPA().filter(p=>p.c===nome), pd=getPE().filter(p=>p.c===nome);
+  const tV=pc.reduce((a,b)=>a+b.v,0);
+  const tPg=pc.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
+  const tPd=pc.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+  document.getElementById('cli-rel').innerHTML=`<div class="pnl">
+    <div style="font-size:16px;font-weight:600;color:var(--g);margin-bottom:.8rem"><i class="ti ti-user" style="margin-right:6px"></i>${nome}</div>
+    <div class="rel-resumo">
+      <div class="rel-card">Total gasto<span style="color:var(--g)">${fmt(tV)}</span></div>
+      <div class="rel-card">Pago<span style="color:#3a5a28">${fmt(tPg)}</span></div>
+      <div class="rel-card">Pendente<span style="color:#a07010">${fmt(tPd)}</span></div>
+      <div class="rel-card">Pagamentos<span>${pc.length}</span></div>
+      <div class="rel-card">Pedidos<span>${pd.length}</span></div>
+    </div>
+    ${pc.length?`<div style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.6rem">Pagamentos</div>
+    <div class="twrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th></tr></thead>
+    <tbody>${[...pc].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr>
+      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
+      <td style="color:var(--mu)">${p.d||'—'}</td>
+      <td><span class="bg ${FB[p.f]}">${FL[p.f]}</span></td>
+      <td style="font-weight:500;color:var(--g)">${fmt(p.v)}</td>
+      <td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td>
+    </tr>`).join('')}</tbody></table></div>`:''}
+    ${pd.length?`<div style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin:.9rem 0 .6rem">Pedidos</div>
+    <div class="twrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Qtd.</th><th>Entrega</th><th>Status</th></tr></thead>
+    <tbody>${[...pd].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr>
+      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
+      <td>${PR[p.p]}</td>
+      <td>${p.q} un.</td>
+      <td style="font-size:12px;color:var(--mu)">${fd(p.e)}</td>
+      <td><span class="bg ${SB[p.s]}">${SL[p.s]}</span></td>
+    </tr>`).join('')}</tbody></table></div>`:''}
+  </div>`;
+}
+
+// ─── RESUMO ──────────────────────────────────────────────────────────────────
+function getMeses() {
+  const s=new Set();
+  getPA().forEach(p=>s.add(p.dt.substring(0,7)));
+  s.add(td().substring(0,7));
+  return [...s].sort().reverse();
+}
+function rRes() {
+  const sel=document.getElementById('ms'), ms=getMeses(), cur=sel.value||ms[0];
+  sel.innerHTML=ms.map(m=>{
+    const[y,mo]=m.split('-');
+    const l=new Date(y,mo-1,1).toLocaleString('pt-BR',{month:'long',year:'numeric'});
+    return`<option value="${m}" ${m===cur?'selected':''}>${l.charAt(0).toUpperCase()+l.slice(1)}</option>`;
+  }).join('');
+  const PA=getPA(), PE=getPE(), E=getE(), EM=getEM();
+  const mp=PA.filter(p=>p.dt.startsWith(cur));
+  const tR=mp.reduce((a,b)=>a+b.v,0);
+  const tPg=mp.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
+  const tPd=mp.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+  const pf={};mp.forEach(p=>{pf[p.f]=(pf[p.f]||0)+p.v;});
+  const pdm=PE.filter(p=>p.dt.startsWith(cur));
+  const atr=PE.filter(p=>p.s!=='entregue'&&p.e&&p.e<td()).length;
+  const precM=Object.values(EM).filter(e=>e.q<=e.m&&e.m>0).length;
+  document.getElementById('rc').innerHTML=`
+    <div class="cards">
+      <div class="mc a"><div class="mlb">Total do mês</div><div class="mv">${fmt(tR)}</div></div>
+      <div class="mc a"><div class="mlb">Recebido</div><div class="mv ok">${fmt(tPg)}</div></div>
+      <div class="mc w"><div class="mlb">A receber</div><div class="mv wn">${fmt(tPd)}</div></div>
+      <div class="mc ${atr>0?'r':''}"><div class="mlb">Pedidos atrasados</div><div class="mv ${atr>0?'dn':''}">${atr}</div></div>
+    </div>
+    ${precM>0?`<div class="alerta-box"><i class="ti ti-alert-triangle"></i> <strong>${precM} material${precM>1?'is':''} com estoque baixo.</strong> Verifique Estoque → Materiais.</div>`:''}
+    <div class="pnl"><div class="ptit"><i class="ti ti-credit-card"></i> Por forma de pagamento</div>
+    <table><thead><tr><th>Forma</th><th>Total</th></tr></thead><tbody>
+    ${Object.entries(pf).length?Object.entries(pf).map(([k,v])=>`<tr><td><span class="bg ${FB[k]}">${FL[k]}</span></td><td style="font-weight:500;color:var(--g)">${fmt(v)}</td></tr>`).join(''):'<tr><td colspan="2" style="color:var(--mu)">Sem registros neste mês.</td></tr>'}
+    </tbody></table></div>
+    ${pdm.length?`<div class="pnl"><div class="ptit"><i class="ti ti-clipboard-list"></i> Pedidos do mês</div>
+    <table><thead><tr><th>Cliente</th><th>Produto</th><th>Qtd.</th><th>Entrega</th><th>Status</th></tr></thead>
+    <tbody>${pdm.map(p=>{const a=p.s!=='entregue'&&p.e&&p.e<td();return`<tr><td style="font-weight:500">${p.c}</td><td>${PR[p.p]}</td><td>${p.q}</td><td style="font-size:12px;color:${a?'var(--rd)':'var(--mu)'}">${fd(p.e)}</td><td>${a?'<span class="bg batr">⚠ Atrasado</span>':`<span class="bg ${SB[p.s]}">${SL[p.s]}</span>`}</td></tr>`;}).join('')}</tbody></table></div>`:''}
+    <div class="pnl"><div class="ptit"><i class="ti ti-shopping-bag"></i> Estoque de produtos</div>
+    <table><thead><tr><th>Produto</th><th>Em estoque</th><th>Status</th></tr></thead>
+    <tbody>${Object.entries(E).map(([k,v])=>`<tr><td style="font-weight:500">${PR[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="pnl"><div class="ptit"><i class="ti ti-package"></i> Estoque de materiais</div>
+    <table><thead><tr><th>Material</th><th>Em estoque</th><th>Status</th></tr></thead>
+    <tbody>${Object.entries(EM).map(([k,v])=>`<tr><td style="font-weight:500">${MT[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+rE(); rP(); rD(); rRes();
+</script>
+</body>
+</html>
