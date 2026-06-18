@@ -8,680 +8,548 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#4a5e35;--cr:#f7f4ef;--cd:#ede9e1;--tx:#2c2e28;--mu:#7a7d74;--bd:#ddd9d0;--wh:#fff;--rd:#c0392b;--rdl:#fde8e8}
+:root{--g:#4a5e35;--g2:#3a4d2a;--gp:#eef2e6;--gpp:#dde8cc;--cr:#f8f5f0;--cd:#ede8df;--tx:#1e2018;--mu:#6b6d64;--bd:#d8d3c8;--wh:#fff;--rd:#c0392b;--rdl:#fde8e8;--yw:#c8941a;--ywl:#fdf3d9}
 body{font-family:'Inter',sans-serif;background:var(--cr);color:var(--tx);min-height:100vh}
-.top{background:var(--wh);border-bottom:1px solid var(--bd);padding:0 1.2rem;height:58px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(74,94,53,.07);position:sticky;top:0;z-index:50}
-.logo{width:40px;height:40px;border-radius:50%;background:var(--cd);border:1.5px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--g);letter-spacing:1px;box-shadow:0 2px 8px rgba(74,94,53,.18);font-family:'Inter',sans-serif}
-.brand-name{font-size:15px;font-weight:600;color:var(--g)}
-.brand-sub{font-size:11px;color:var(--mu);margin-top:1px}
-.tdate{font-size:12px;color:var(--mu);background:var(--cr);padding:5px 12px;border-radius:20px;border:1px solid var(--bd)}
-.nav{display:flex;background:var(--wh);border-bottom:1px solid var(--bd);padding:0 1.2rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nav::-webkit-scrollbar{display:none}
-.nt{padding:13px 15px;font-size:13px;border:none;background:none;cursor:pointer;color:var(--mu);border-bottom:2.5px solid transparent;display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap;font-family:'Inter',sans-serif}
-.nt.on{color:var(--g);border-bottom-color:var(--g);font-weight:500}
-.nt:hover:not(.on){color:var(--tx)}
-.cnt{padding:1.2rem;max-width:1100px;margin:0 auto}
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;flex-shrink:0;background:var(--g2);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.sidebar-logo{padding:1.4rem 1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.ak-circle{width:44px;height:44px;border-radius:50%;background:var(--cd);border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--g2);letter-spacing:1px;margin-bottom:.6rem}
+.ak-name{font-size:14px;font-weight:600;color:#fff}
+.ak-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.sidebar-nav{padding:.8rem 0;flex:1;overflow-y:auto}
+.nav-s{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;padding:.6rem 1.2rem .3rem}
+.nt{display:flex;align-items:center;gap:9px;padding:.65rem 1.2rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:3px solid transparent;font-family:'Inter',sans-serif;transition:all .12s}
+.nt i{font-size:16px;opacity:.8}
+.nt:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nt.on{color:#fff;background:rgba(255,255,255,.1);border-left-color:var(--gpp);font-weight:500}
+.sb-bot{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.35);line-height:1.5}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{background:var(--wh);border-bottom:1px solid var(--bd);padding:.8rem 1.4rem;position:sticky;top:0;z-index:10}
+.pg-t{font-size:16px;font-weight:600;color:var(--tx)}
+.pg-s{font-size:12px;color:var(--mu);margin-top:1px}
+.cnt{padding:1.2rem 1.4rem;max-width:1100px}
 .sec{display:none}.sec.on{display:block}
-/* Sub-tabs estoque */
-.est-tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
-.etab{padding:6px 16px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;font-family:'Inter',sans-serif}
-.etab.on{background:var(--g);border-color:var(--g);color:#fff;font-weight:500}
-/* Cards */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.2rem}
-.mc{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:.9rem 1.1rem;position:relative;overflow:hidden;box-shadow:0 2px 10px rgba(74,94,53,.06)}
-.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cd)}
-.mc.a::before{background:var(--g)}.mc.w::before{background:#d4a017}.mc.r::before{background:var(--rd)}
-.mlb{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.mv{font-size:20px;font-weight:600}
+.etabs{display:flex;gap:6px;margin-bottom:1.1rem;flex-wrap:wrap}
+.etab{padding:6px 16px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;font-weight:500;transition:all .12s}
+.etab.on{background:var(--g);border-color:var(--g);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.2rem}
+.mc{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:.9rem 1.1rem;position:relative;overflow:hidden}
+.mcb{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gpp)}
+.mcb.g{background:var(--g)}.mcb.w{background:var(--yw)}.mcb.r{background:var(--rd)}
+.mci{position:absolute;top:.9rem;right:.9rem;width:30px;height:30px;border-radius:8px;background:var(--gp);display:flex;align-items:center;justify-content:center;color:var(--g);font-size:15px}
+.mlb{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:500}
+.mv{font-size:19px;font-weight:600;color:var(--tx)}
 .mv.ok{color:#3a5a28}.mv.wn{color:#a07010}.mv.dn{color:var(--rd)}
-/* Panels */
-.pnl{background:var(--wh);border:1px solid var(--bd);border-radius:14px;padding:1.1rem 1.2rem;margin-bottom:1.1rem;box-shadow:0 1px 8px rgba(74,94,53,.05)}
+.pnl{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:1.1rem 1.2rem;margin-bottom:1rem}
 .ptit{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
-/* Forms */
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
 .fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
-.fg input,.fg select{padding:9px 11px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;width:100%;transition:border .12s;font-family:'Inter',sans-serif}
+.fg label{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;font-weight:500}
+.fg input,.fg select{padding:8px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;width:100%;font-family:'Inter',sans-serif;transition:border .12s}
 .fg input:focus,.fg select:focus{border-color:var(--g);background:var(--wh)}
-.bsv{background:var(--g);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .12s;font-family:'Inter',sans-serif}
-.bsv:hover{background:#3a4d2a}
-.bcan{background:none;color:var(--mu);border:1px solid var(--bd);padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
-.bcan:hover{background:var(--cr)}
-.ff{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-/* Tables */
-.twrap{overflow-x:auto}
+.fg input[readonly]{color:var(--g);font-weight:600;background:var(--gp);border-color:var(--gpp)}
+.fg input.di{border-color:#f0c8c8;background:#fff8f8}
+.fg input.di:focus{border-color:var(--rd)}
+.bsv{background:var(--g);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:'Inter',sans-serif;transition:background .12s}
+.bsv:hover{background:var(--g2)}
+.bcan{background:none;color:var(--mu);border:1px solid var(--bd);padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+.bskip{background:none;color:var(--mu);border:none;padding:9px 0;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:underline}
+.ff{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;align-items:center}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead tr{background:var(--cr)}
-th{padding:9px 10px;text-align:left;font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{padding:9px 10px;text-align:left;font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);font-weight:500;white-space:nowrap}
 td{padding:10px;border-bottom:1px solid var(--cd);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#faf9f6}
-tr.atrasado td{background:#fff8f8}
-tr.atrasado:hover td{background:#fff0f0}
-/* Badges */
+tr.atr td{background:#fff8f8}
 .bg{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
-.bok{background:#e8f0de;color:#3a5a28}.bwn{background:#fdf3d9;color:#7a5a10}.bdn{background:var(--rdl);color:#8c2222}
-.bpix{background:#e8f0de;color:#3a5a28}.bcrd{background:#e6f1fb;color:#0c447c}.bdeb{background:#eeedfe;color:#3c3489}.bprz{background:#fdf3d9;color:#7a5a10}
+.bok{background:#e8f0de;color:#3a5a28}.bwn{background:var(--ywl);color:#7a5a10}.bdn{background:var(--rdl);color:#8c2222}
+.bpix{background:#e8f0de;color:#3a5a28}.bcrd{background:#e6f1fb;color:#0c447c}.bdeb{background:#eeedfe;color:#3c3489}.bprz{background:var(--ywl);color:#7a5a10}
 .bpg{background:#e8f0de;color:#3a5a28}.bnpg{background:var(--rdl);color:#8c2222}
-.bpnd{background:#fdf3d9;color:#7a5a10}.bprd{background:#e6f1fb;color:#0c447c}.bprt{background:#e8f0de;color:#3a5a28}.bent{background:#f1efe8;color:#5f5e5a}.batr{background:var(--rdl);color:#8c2222}
-/* Pagamento forms */
+.bpnd{background:var(--ywl);color:#7a5a10}.bprd{background:#e6f1fb;color:#0c447c}.bprt{background:#e8f0de;color:#3a5a28}.bent{background:var(--cd);color:#5f5e5a}.batr{background:var(--rdl);color:#8c2222}
+.bdsc{background:#fff0f0;color:#8c2222}
 .fw{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
-.fo{padding:7px 14px;border:1px solid var(--bd);border-radius:9px;background:none;cursor:pointer;font-size:13px;color:var(--mu);transition:all .12s;display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif}
-.fo:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
-.fo.spix{background:#e8f0de;border-color:#4a5e35;color:#3a5a28;font-weight:500}
+.fo{padding:7px 14px;border:1px solid var(--bd);border-radius:8px;background:none;cursor:pointer;font-size:13px;color:var(--mu);display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;transition:all .12s}
+.fo:hover{border-color:var(--g);color:var(--g);background:var(--gp)}
+.fo.spix{background:#e8f0de;border-color:var(--g);color:#3a5a28;font-weight:500}
 .fo.scrd{background:#e6f1fb;border-color:#378add;color:#0c447c;font-weight:500}
 .fo.sdeb{background:#eeedfe;border-color:#7f77dd;color:#3c3489;font-weight:500}
-.fo.sprz{background:#fdf3d9;border-color:#c8941a;color:#7a5a10;font-weight:500}
+.fo.sprz{background:var(--ywl);border-color:var(--yw);color:#7a5a10;font-weight:500}
 .pzb{display:none;margin-top:10px}.pzb.on{display:block}
-/* Actions */
 .acts{display:flex;gap:5px;flex-wrap:nowrap}
-.bedt{padding:3px 10px;border:1px solid var(--bd);border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
-.bedt:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
-.bdel{padding:3px 10px;border:1px solid #f0d0d0;border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--rd);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
-.bdel:hover{background:var(--rdl);border-color:var(--rd)}
-.bbx{padding:3px 10px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);transition:all .12s;white-space:nowrap;font-family:'Inter',sans-serif}
+.bedt{padding:3px 9px;border:1px solid var(--bd);border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif}
+.bedt:hover{border-color:var(--g);color:var(--g);background:var(--gp)}
+.bdel{padding:3px 9px;border:1px solid #f0c8c8;border-radius:20px;font-size:11px;background:none;cursor:pointer;color:var(--rd);font-family:'Inter',sans-serif}
+.bdel:hover{background:var(--rdl)}
+.bbx{padding:3px 9px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:none;cursor:pointer;color:var(--mu);font-family:'Inter',sans-serif;white-space:nowrap}
 .bbx:hover{background:#e8f0de;border-color:var(--g);color:#3a5a28}
-.bbx.pg{background:#e8f0de;border-color:#4a5e35;color:#3a5a28;cursor:default}
-/* Alert */
-.alerta-box{background:var(--rdl);border:1px solid #f0c0c0;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;font-size:13px;color:#8c2222;display:flex;align-items:center;gap:8px}
-/* Status select */
+.bbx.pg{background:#e8f0de;border-color:var(--g);color:#3a5a28;cursor:default}
+.alerta{background:var(--rdl);border-left:3px solid var(--rd);border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;font-size:13px;color:#8c2222;display:flex;align-items:center;gap:8px}
+.alerta-yw{background:var(--ywl);border-left:3px solid var(--yw);border-radius:8px;padding:.75rem 1rem;margin-bottom:.6rem;font-size:13px;color:#7a5a10;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ssel{padding:5px 9px;border:1px solid var(--bd);border-radius:20px;font-size:12px;background:var(--cr);color:var(--tx);cursor:pointer;width:auto;outline:none;font-family:'Inter',sans-serif}
-/* Empty */
+.twrap{overflow-x:auto}
 .emp{text-align:center;padding:2.5rem;color:var(--mu);font-size:13px}
-/* Month bar */
 .mbar{display:flex;align-items:center;gap:8px;margin-bottom:1.2rem}
-.mbar select{padding:7px 12px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--wh);color:var(--tx);width:auto;outline:none;font-family:'Inter',sans-serif}
-/* Clientes */
-.cli-inp{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:9px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;margin-bottom:1rem;font-family:'Inter',sans-serif}
+.mbar select{padding:7px 12px;border:1px solid var(--bd);border-radius:8px;font-size:13px;background:var(--wh);color:var(--tx);width:auto;outline:none;font-family:'Inter',sans-serif}
+.cli-inp{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:8px;font-size:13px;background:var(--cr);color:var(--tx);outline:none;margin-bottom:1rem;font-family:'Inter',sans-serif}
 .cli-inp:focus{border-color:var(--g);background:var(--wh)}
-.cli-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
-.cli-chip{padding:6px 14px;border:1px solid var(--bd);border-radius:20px;font-size:12px;cursor:pointer;background:none;color:var(--tx);transition:all .12s;font-family:'Inter',sans-serif}
-.cli-chip:hover{border-color:var(--g);color:var(--g);background:#eef1e8}
-.cli-chip.on{background:var(--g);border-color:var(--g);color:#fff}
-.rel-resumo{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
-.rel-card{background:var(--cr);border:1px solid var(--bd);border-radius:9px;padding:.65rem 1rem;font-size:12px;color:var(--mu)}
-.rel-card span{display:block;font-size:17px;font-weight:600;color:var(--tx);margin-top:3px}
-/* Modal */
-.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
-.overlay.on{display:flex}
-.modal{background:var(--wh);border-radius:16px;padding:1.4rem;width:min(96%,500px);box-shadow:0 12px 40px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
-.modal-title{font-size:14px;font-weight:600;color:var(--g);margin-bottom:1.1rem;display:flex;align-items:center;gap:7px}
-/* Responsive */
-@media(max-width:600px){
-  .fr{grid-template-columns:1fr}
-  .cards{grid-template-columns:repeat(2,1fr)}
-  .cnt{padding:.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
+.chip{padding:6px 14px;border:1px solid var(--bd);border-radius:20px;font-size:12px;cursor:pointer;background:none;color:var(--tx);font-family:'Inter',sans-serif;transition:all .12s}
+.chip:hover{border-color:var(--g);color:var(--g);background:var(--gp)}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.rc-sum{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem}
+.rc-c{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:.65rem 1rem;font-size:12px;color:var(--mu)}
+.rc-c span{display:block;font-size:17px;font-weight:600;color:var(--tx);margin-top:3px}
+.cbox{background:var(--gp);border:1px solid var(--gpp);border-radius:10px;padding:.85rem 1rem;margin-top:10px}
+.ctit{font-size:11px;font-weight:600;color:var(--g);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem}
+.cchecks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:.75rem}
+.cc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx);cursor:pointer;user-select:none}
+.cc input{width:15px;height:15px;accent-color:var(--g);cursor:pointer}
+.clin{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);padding:2px 0}
+.ctot{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--g);border-top:1px solid var(--gpp);margin-top:6px;padding-top:6px}
+.dres{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:.75rem 1rem;margin-bottom:10px;display:none;align-items:center;gap:14px;flex-wrap:wrap}
+.dres.on{display:flex}
+.dri{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.dri-l{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.3px}
+.dri-v{font-weight:600}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pitem{background:var(--cr);border:1px solid var(--bd);border-radius:8px;padding:.65rem .9rem;display:flex;justify-content:space-between;align-items:center}
+.pitem-n{font-size:12px;color:var(--mu)}
+.pitem-v{font-size:14px;font-weight:600;color:var(--g)}
+.mwrap{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.mwrap.on{display:flex}
+.modal{background:var(--wh);border-radius:14px;padding:1.4rem;width:min(96%,520px);max-height:90vh;overflow-y:auto}
+.mtit{font-size:14px;font-weight:600;color:var(--g);margin-bottom:.5rem;display:flex;align-items:center;gap:7px}
+.msub{font-size:12px;color:var(--mu);margin-bottom:1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--bd)}
+.ptag{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;font-size:11px;background:var(--gp);color:var(--g);font-weight:500;margin-left:6px}
+@media(max-width:640px){
+  .sidebar{width:60px}.ak-name,.ak-sub,.nav-s,.nt span{display:none}
+  .ak-circle{margin:0 auto}.nt{justify-content:center;padding:.7rem}
+  .fr,.fr3{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="ak-circle">AK</div>
+      <div class="ak-name">AK Ecobags</div>
+      <div class="ak-sub">Sistema de gestão</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-s">Principal</div>
+      <button class="nt on" onclick="go('est',this,'Estoque','Controle de produtos e materiais')"><i class="ti ti-box"></i> <span>Estoque</span></button>
+      <button class="nt" onclick="go('pag',this,'Pagamento','Controle de recebimentos')"><i class="ti ti-cash"></i> <span>Pagamento</span></button>
+      <button class="nt" onclick="go('ped',this,'Pedidos','Acompanhamento de pedidos')"><i class="ti ti-clipboard-list"></i> <span>Pedidos</span></button>
+      <div class="nav-s">Análise</div>
+      <button class="nt" onclick="go('cli',this,'Clientes','Histórico por cliente')"><i class="ti ti-user"></i> <span>Clientes</span></button>
+      <button class="nt" onclick="go('res',this,'Resumo mensal','Visão geral do mês')"><i class="ti ti-chart-bar"></i> <span>Resumo mensal</span></button>
+    </div>
+    <div class="sb-bot" id="sdt"></div>
+  </div>
+  <div class="main">
+    <div class="topbar"><div class="pg-t" id="pgt">Estoque</div><div class="pg-s" id="pgs">Controle de produtos e materiais</div></div>
+    <div class="cnt">
 
-<div class="top">
-  <div style="display:flex;align-items:center;gap:11px">
-    <div class="logo">AK</div>
-    <div>
-      <div class="brand-name">AK Ecobags</div>
-      <div class="brand-sub">Sistema de gestão</div>
+      <!-- ESTOQUE -->
+      <div id="est" class="sec on">
+        <div class="cards" id="em"></div>
+        <div class="etabs">
+          <button class="etab on" onclick="goE('prod',this)"><i class="ti ti-shopping-bag"></i> Produtos</button>
+          <button class="etab" onclick="goE('mat',this)"><i class="ti ti-package"></i> Materiais</button>
+          <button class="etab" onclick="goE('prec',this)"><i class="ti ti-tag"></i> Preços de venda</button>
+        </div>
+        <div id="eprod">
+          <div class="pnl">
+            <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Produtos</div>
+            <div class="fr"><div class="fg"><label>Produto</label><select id="sp"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div><div class="fg"><label>Qtd. mínima</label><input type="number" id="sm" value="5" min="0"/></div></div>
+            <div class="fr"><div class="fg"><label>Qtd. em estoque</label><input type="number" id="sq" value="0" min="0"/></div><div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sc" value="0" min="0" step="0.01"/></div></div>
+            <div class="ff"><button class="bsv" onclick="svE('prod')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+          </div>
+          <div class="pnl"><div class="ptit"><i class="ti ti-table"></i> Situação — Produtos</div><div class="twrap"><table><thead><tr><th>Produto</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo</th></tr></thead><tbody id="etbp"></tbody></table></div></div>
+        </div>
+        <div id="emat" style="display:none">
+          <div class="pnl">
+            <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Materiais</div>
+            <div class="fr"><div class="fg"><label>Material</label><select id="sm2"><option value="sg">Sacola Grande</option><option value="sp">Sacola Pequena</option><option value="cx">Caixinha</option><option value="tg">Tag</option><option value="ta">Tag Adesiva</option></select></div><div class="fg"><label>Qtd. mínima</label><input type="number" id="sm2m" value="10" min="0"/></div></div>
+            <div class="fr"><div class="fg"><label>Qtd. em estoque</label><input type="number" id="sm2q" value="0" min="0"/></div><div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sm2c" value="0" min="0" step="0.01"/></div></div>
+            <div class="ff"><button class="bsv" onclick="svE('mat')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+          </div>
+          <div class="pnl"><div class="ptit"><i class="ti ti-table"></i> Situação — Materiais</div><div class="twrap"><table><thead><tr><th>Material</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo</th></tr></thead><tbody id="etbm"></tbody></table></div></div>
+        </div>
+        <div id="eprec" style="display:none">
+          <div class="pnl">
+            <div class="ptit"><i class="ti ti-tag"></i> Preços de venda</div>
+            <div class="pgrid" id="pgrid"></div>
+            <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bd)">
+              <div class="ptit" style="margin-bottom:.7rem"><i class="ti ti-pencil"></i> Editar preço</div>
+              <div class="fr"><div class="fg"><label>Produto</label><select id="pp" onchange="fillP()"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div><div class="fg"><label>Preço de venda (R$)</label><input type="number" id="pv2" min="0" step="0.01"/></div></div>
+              <div class="ff"><button class="bsv" onclick="svP()"><i class="ti ti-device-floppy"></i> Salvar preço</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGAMENTO -->
+      <div id="pag" class="sec">
+        <div id="cobalrt"></div>
+        <div class="cards" id="pm"></div>
+        <div class="pnl">
+          <div class="ptit"><i class="ti ti-plus"></i> Registrar pagamento avulso</div>
+          <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="pc" placeholder="Nome do cliente"/></div><div class="fg"><label>Data</label><input type="date" id="pd"/></div></div>
+          <div class="fr"><div class="fg"><label>Descrição</label><input type="text" id="pdc" placeholder="Ex: 2x Broche Pequeno"/></div><div class="fg"><label>Valor (R$)</label><input type="number" id="pval" value="0" min="0" step="0.01"/></div></div>
+          <div class="fg" style="margin-bottom:12px"><label>Forma de pagamento</label>
+            <div class="fw"><button class="fo" onclick="sfm('pix',this,'pg')"><i class="ti ti-qrcode"></i> Pix</button><button class="fo" onclick="sfm('crd',this,'pg')"><i class="ti ti-credit-card"></i> Crédito</button><button class="fo" onclick="sfm('deb',this,'pg')"><i class="ti ti-credit-card"></i> Débito</button><button class="fo" onclick="sfm('prz',this,'pg')"><i class="ti ti-calendar-due"></i> A prazo</button></div>
+          </div>
+          <div class="pzb" id="pzb"><div class="fg"><label>Data combinada</label><input type="date" id="ppz"/></div></div>
+          <div class="ff"><button class="bsv" onclick="regP()"><i class="ti ti-check"></i> Registrar</button></div>
+        </div>
+        <div class="pnl"><div class="ptit"><i class="ti ti-list"></i> Controle de pagamentos</div><div class="twrap" id="pl"><div class="emp">Nenhum pagamento registrado ainda.</div></div></div>
+      </div>
+
+      <!-- PEDIDOS -->
+      <div id="ped" class="sec">
+        <div class="mwrap" id="mpw">
+          <div class="modal">
+            <div class="mtit"><i class="ti ti-cash"></i> Pagamento do pedido</div>
+            <div class="msub">Pedido registrado! Como <strong id="mpc"></strong> vai pagar?</div>
+            <div class="fr"><div class="fg"><label>Descrição</label><input type="text" id="mpd" readonly/></div><div class="fg"><label>Valor final (R$)</label><input type="number" id="mpv" min="0" step="0.01"/></div></div>
+            <div class="fr"><div class="fg"><label>Data</label><input type="date" id="mpdt"/></div><div class="fg"></div></div>
+            <div class="fg" style="margin-bottom:12px"><label>Forma de pagamento</label>
+              <div class="fw" id="mpfw"><button class="fo" onclick="sfm('pix',this,'mp')"><i class="ti ti-qrcode"></i> Pix</button><button class="fo" onclick="sfm('crd',this,'mp')"><i class="ti ti-credit-card"></i> Crédito</button><button class="fo" onclick="sfm('deb',this,'mp')"><i class="ti ti-credit-card"></i> Débito</button><button class="fo" onclick="sfm('prz',this,'mp')"><i class="ti ti-calendar-due"></i> A prazo</button></div>
+            </div>
+            <div class="pzb" id="mppzb"><div class="fg"><label>Data combinada</label><input type="date" id="mppz"/></div></div>
+            <div class="ff"><button class="bskip" onclick="skipP()">Registrar sem pagamento</button><button class="bsv" onclick="confP()"><i class="ti ti-check"></i> Confirmar</button></div>
+          </div>
+        </div>
+        <div class="mwrap" id="medw">
+          <div class="modal">
+            <div class="mtit"><i class="ti ti-edit"></i> Editar pedido</div>
+            <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="edc"/></div><div class="fg"><label>Data</label><input type="date" id="eddt"/></div></div>
+            <div class="fr"><div class="fg"><label>Produto</label><select id="edp" onchange="fillEdP()"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div><div class="fg"><label>Quantidade</label><input type="number" id="edq" min="1" oninput="calcEdT()"/></div></div>
+            <div class="fr3"><div class="fg"><label>Preço unit. (R$)</label><input type="number" id="edpr" min="0" step="0.01" oninput="calcEdT()"/></div><div class="fg"><label>Desconto (R$)</label><input type="number" id="eddc" min="0" step="0.01" value="0" oninput="calcEdT()" class="di"/></div><div class="fg"><label>Total final</label><input type="text" id="edtot" readonly/></div></div>
+            <div class="fr"><div class="fg"><label>Previsão de entrega</label><input type="date" id="ede"/></div><div class="fg"><label>Observações</label><input type="text" id="edo"/></div></div>
+            <div class="ff"><button class="bcan" onclick="closeED()">Cancelar</button><button class="bsv" onclick="svED()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+          </div>
+        </div>
+        <div id="palrt"></div>
+        <div class="cards" id="dm"></div>
+        <div class="pnl">
+          <div class="ptit"><i class="ti ti-plus"></i> Novo pedido</div>
+          <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="dc" placeholder="Nome do cliente"/></div><div class="fg"><label>Data do pedido</label><input type="date" id="dd"/></div></div>
+          <div class="fr"><div class="fg"><label>Produto</label><select id="dp" onchange="fillPr()"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div><div class="fg"><label>Quantidade</label><input type="number" id="dq" value="1" min="1" oninput="calcT()"/></div></div>
+          <div class="fr3">
+            <div class="fg"><label>Preço unit. (R$) — automático</label><input type="number" id="dpr" value="0" min="0" step="0.01" oninput="calcT()"/></div>
+            <div class="fg"><label>Desconto (R$)</label><input type="number" id="ddc" value="0" min="0" step="0.01" oninput="calcT()" class="di" placeholder="0,00"/></div>
+            <div class="fg"><label>Total final</label><input type="text" id="dtot" readonly/></div>
+          </div>
+          <div class="dres" id="dres">
+            <div class="dri"><span class="dri-l">Preço cheio</span><span class="dri-v" id="drc">—</span></div>
+            <div style="color:var(--mu);font-size:18px;align-self:center">−</div>
+            <div class="dri"><span class="dri-l">Desconto</span><span class="dri-v" style="color:var(--rd)" id="drd">—</span></div>
+            <div style="color:var(--mu);font-size:18px;align-self:center">=</div>
+            <div class="dri"><span class="dri-l">Total final</span><span class="dri-v" style="color:var(--g)" id="drf">—</span></div>
+            <div class="dri" style="margin-left:auto"><span class="dri-l">Desconto %</span><span class="dri-v" style="color:var(--rd)" id="drp">—</span></div>
+          </div>
+          <div class="fr"><div class="fg"><label>Previsão de entrega</label><input type="date" id="de"/></div><div class="fg"><label>Observações</label><input type="text" id="do" placeholder="Personalização, cor..."/></div></div>
+          <div class="cbox">
+            <div class="ctit"><i class="ti ti-package" style="font-size:13px"></i> Materiais usados neste pedido</div>
+            <div class="cchecks">
+              <label class="cc"><input type="checkbox" id="cta" onchange="calcC()"> Tag Adesiva</label>
+              <label class="cc"><input type="checkbox" id="ctg" onchange="calcC()"> Tag</label>
+              <label class="cc"><input type="checkbox" id="ccx" onchange="calcC()"> Caixinha</label>
+              <label class="cc"><input type="checkbox" id="csg" onchange="calcC()"> Sacola Grande</label>
+              <label class="cc"><input type="checkbox" id="csp" onchange="calcC()"> Sacola Pequena</label>
+              <label class="cc"><input type="checkbox" id="cimp" onchange="calcC()" checked> Impressão (R$ 0,25)</label>
+            </div>
+            <div id="clin"></div>
+            <div class="ctot"><span>Custo total do pedido</span><span id="ctotv">R$ 0,00</span></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:12px;color:var(--mu)">Margem estimada</span><span id="mrgv" style="font-size:12px;font-weight:600">R$ 0,00</span></div>
+          </div>
+          <div class="ff" style="margin-top:14px"><button class="bsv" onclick="regD()"><i class="ti ti-clipboard-list"></i> Registrar pedido</button></div>
+        </div>
+        <div class="pnl"><div class="ptit"><i class="ti ti-list"></i> Pedidos</div><div class="twrap" id="dl"><div class="emp">Nenhum pedido registrado ainda.</div></div></div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div id="cli" class="sec">
+        <div class="pnl">
+          <div class="ptit"><i class="ti ti-user-search"></i> Buscar cliente</div>
+          <input class="cli-inp" type="text" id="ci" placeholder="Digite o nome do cliente..." oninput="filtC()"/>
+          <div class="chips" id="cchips"></div>
+        </div>
+        <div id="crel"></div>
+      </div>
+
+      <!-- RESUMO -->
+      <div id="res" class="sec">
+        <div class="mbar"><label style="font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;font-weight:500">Mês</label><select id="ms" onchange="rRes()"></select></div>
+        <div id="rc"></div>
+      </div>
     </div>
   </div>
-  <div class="tdate" id="tdt"></div>
 </div>
 
-<div class="nav">
-  <button class="nt on" onclick="go('est',this)"><i class="ti ti-box"></i> Estoque</button>
-  <button class="nt" onclick="go('pag',this)"><i class="ti ti-cash"></i> Pagamento</button>
-  <button class="nt" onclick="go('ped',this)"><i class="ti ti-clipboard-list"></i> Pedidos</button>
-  <button class="nt" onclick="go('cli',this)"><i class="ti ti-user"></i> Clientes</button>
-  <button class="nt" onclick="go('res',this)"><i class="ti ti-chart-bar"></i> Resumo</button>
-</div>
-
-<div class="cnt">
-
-  <!-- ESTOQUE -->
-  <div id="est" class="sec on">
-    <div class="cards" id="em"></div>
-    <div class="est-tabs">
-      <button class="etab on" onclick="goEst('prod',this)"><i class="ti ti-shopping-bag"></i> Produtos</button>
-      <button class="etab" onclick="goEst('mat',this)"><i class="ti ti-package"></i> Materiais</button>
-    </div>
-    <div id="est-prod">
-      <div class="pnl">
-        <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Produtos</div>
-        <div class="fr">
-          <div class="fg"><label>Produto</label><select id="sp"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
-          <div class="fg"><label>Qtd. mínima (alerta)</label><input type="number" id="sm" value="5" min="0"/></div>
-        </div>
-        <div class="fr">
-          <div class="fg"><label>Qtd. em estoque</label><input type="number" id="sq" value="0" min="0"/></div>
-          <div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sc" value="0" min="0" step="0.01"/></div>
-        </div>
-        <div class="ff"><button class="bsv" onclick="savE('prod')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
-      </div>
-      <div class="pnl">
-        <div class="ptit"><i class="ti ti-table"></i> Situação — Produtos</div>
-        <div class="twrap"><table><thead><tr><th>Produto</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo unit.</th></tr></thead><tbody id="etb-prod"></tbody></table></div>
-      </div>
-    </div>
-    <div id="est-mat" style="display:none">
-      <div class="pnl">
-        <div class="ptit"><i class="ti ti-adjustments-horizontal"></i> Ajustar estoque — Materiais</div>
-        <div class="fr">
-          <div class="fg"><label>Material</label><select id="sm2"><option value="sg">Sacola Grande</option><option value="sp">Sacola Pequena</option><option value="cx">Caixinha</option><option value="tg">Tag</option><option value="ta">Tag Adesiva</option></select></div>
-          <div class="fg"><label>Qtd. mínima (alerta)</label><input type="number" id="sm2m" value="10" min="0"/></div>
-        </div>
-        <div class="fr">
-          <div class="fg"><label>Qtd. em estoque</label><input type="number" id="sm2q" value="0" min="0"/></div>
-          <div class="fg"><label>Custo unit. (R$)</label><input type="number" id="sm2c" value="0" min="0" step="0.01"/></div>
-        </div>
-        <div class="ff"><button class="bsv" onclick="savE('mat')"><i class="ti ti-device-floppy"></i> Salvar</button></div>
-      </div>
-      <div class="pnl">
-        <div class="ptit"><i class="ti ti-table"></i> Situação — Materiais</div>
-        <div class="twrap"><table><thead><tr><th>Material</th><th>Em estoque</th><th>Mínimo</th><th>Status</th><th>Custo unit.</th></tr></thead><tbody id="etb-mat"></tbody></table></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PAGAMENTO -->
-  <div id="pag" class="sec">
-    <div class="cards" id="pm"></div>
-    <div class="pnl">
-      <div class="ptit"><i class="ti ti-plus"></i> Registrar pagamento</div>
-      <div class="fr">
-        <div class="fg"><label>Cliente</label><input type="text" id="pc" placeholder="Nome do cliente"/></div>
-        <div class="fg"><label>Data</label><input type="date" id="pd"/></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label>Descrição</label><input type="text" id="pdc" placeholder="Ex: 2x Broche Pequeno"/></div>
-        <div class="fg"><label>Valor (R$)</label><input type="number" id="pv" value="0" min="0" step="0.01"/></div>
-      </div>
-      <div class="fg" style="margin-bottom:12px">
-        <label>Forma de pagamento</label>
-        <div class="fw">
-          <button class="fo" onclick="sfm('pix',this)"><i class="ti ti-qrcode"></i> Pix</button>
-          <button class="fo" onclick="sfm('crd',this)"><i class="ti ti-credit-card"></i> Crédito</button>
-          <button class="fo" onclick="sfm('deb',this)"><i class="ti ti-credit-card"></i> Débito</button>
-          <button class="fo" onclick="sfm('prz',this)"><i class="ti ti-calendar-due"></i> A prazo</button>
-        </div>
-      </div>
-      <div class="pzb" id="pzb"><div class="fg"><label>Data combinada</label><input type="date" id="ppz"/></div></div>
-      <div class="ff"><button class="bsv" onclick="regP()"><i class="ti ti-check"></i> Registrar</button></div>
-    </div>
-    <div class="pnl">
-      <div class="ptit"><i class="ti ti-list"></i> Controle de pagamentos</div>
-      <div class="twrap" id="pl"><div class="emp">Nenhum pagamento registrado ainda.</div></div>
-    </div>
-  </div>
-
-  <!-- PEDIDOS -->
-  <div id="ped" class="sec">
-    <div id="ped-alerta"></div>
-    <div class="cards" id="dm"></div>
-    <div class="pnl">
-      <div class="ptit"><i class="ti ti-plus"></i> Novo pedido</div>
-      <div class="fr">
-        <div class="fg"><label>Cliente</label><input type="text" id="dc" placeholder="Nome do cliente"/></div>
-        <div class="fg"><label>Data do pedido</label><input type="date" id="dd"/></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label>Produto</label><select id="dp"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
-        <div class="fg"><label>Quantidade</label><input type="number" id="dq" value="1" min="1"/></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label>Previsão de entrega</label><input type="date" id="de"/></div>
-        <div class="fg"><label>Observações</label><input type="text" id="do" placeholder="Personalização, cor..."/></div>
-      </div>
-      <div class="ff"><button class="bsv" onclick="regD()"><i class="ti ti-clipboard-list"></i> Registrar pedido</button></div>
-    </div>
-    <div class="pnl">
-      <div class="ptit"><i class="ti ti-list"></i> Pedidos</div>
-      <div class="twrap" id="dl"><div class="emp">Nenhum pedido registrado ainda.</div></div>
-    </div>
-  </div>
-
-  <!-- CLIENTES -->
-  <div id="cli" class="sec">
-    <div class="pnl">
-      <div class="ptit"><i class="ti ti-user-search"></i> Buscar cliente</div>
-      <input class="cli-inp" type="text" id="cli-inp" placeholder="Digite o nome do cliente..." oninput="filtCli()"/>
-      <div class="cli-list" id="cli-chips"></div>
-    </div>
-    <div id="cli-rel"></div>
-  </div>
-
-  <!-- RESUMO -->
-  <div id="res" class="sec">
-    <div class="mbar"><label style="font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.4px">Mês</label><select id="ms" onchange="rRes()"></select></div>
-    <div id="rc"></div>
-  </div>
-
-</div>
-
-<!-- MODAL EDITAR PAGAMENTO -->
-<div class="overlay" id="modal-pag">
+<!-- modal editar pagamento -->
+<div class="mwrap" id="epw">
   <div class="modal">
-    <div class="modal-title"><i class="ti ti-edit"></i> Editar pagamento</div>
-    <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="ep-c"/></div><div class="fg"><label>Data</label><input type="date" id="ep-dt"/></div></div>
-    <div class="fr"><div class="fg"><label>Descrição</label><input type="text" id="ep-d"/></div><div class="fg"><label>Valor (R$)</label><input type="number" id="ep-v" step="0.01"/></div></div>
+    <div class="mtit"><i class="ti ti-edit"></i> Editar pagamento</div>
+    <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="epc"/></div><div class="fg"><label>Data</label><input type="date" id="epdt"/></div></div>
+    <div class="fr"><div class="fg"><label>Descrição</label><input type="text" id="epd"/></div><div class="fg"><label>Valor (R$)</label><input type="number" id="epv" step="0.01"/></div></div>
     <div class="fg" style="margin-bottom:12px"><label>Forma</label>
-      <div class="fw">
-        <button class="fo" onclick="sefm('pix',this)"><i class="ti ti-qrcode"></i> Pix</button>
-        <button class="fo" onclick="sefm('crd',this)"><i class="ti ti-credit-card"></i> Crédito</button>
-        <button class="fo" onclick="sefm('deb',this)"><i class="ti ti-credit-card"></i> Débito</button>
-        <button class="fo" onclick="sefm('prz',this)"><i class="ti ti-calendar-due"></i> A prazo</button>
-      </div>
+      <div class="fw" id="epfw"><button class="fo" onclick="sefm('pix',this)"><i class="ti ti-qrcode"></i> Pix</button><button class="fo" onclick="sefm('crd',this)"><i class="ti ti-credit-card"></i> Crédito</button><button class="fo" onclick="sefm('deb',this)"><i class="ti ti-credit-card"></i> Débito</button><button class="fo" onclick="sefm('prz',this)"><i class="ti ti-calendar-due"></i> A prazo</button></div>
     </div>
-    <div class="pzb" id="ep-pzb"><div class="fg"><label>Data combinada</label><input type="date" id="ep-pz"/></div></div>
-    <div class="ff"><button class="bcan" onclick="closeModal('modal-pag')">Cancelar</button><button class="bsv" onclick="savEditP()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
-  </div>
-</div>
-
-<!-- MODAL EDITAR PEDIDO -->
-<div class="overlay" id="modal-ped">
-  <div class="modal">
-    <div class="modal-title"><i class="ti ti-edit"></i> Editar pedido</div>
-    <div class="fr"><div class="fg"><label>Cliente</label><input type="text" id="ed-c"/></div><div class="fg"><label>Data do pedido</label><input type="date" id="ed-dt"/></div></div>
-    <div class="fr">
-      <div class="fg"><label>Produto</label><select id="ed-p"><option value="bp">Broche Pequeno</option><option value="bg">Broche Grande</option><option value="ez">Ecobag com Zíper</option><option value="es">Ecobag sem Zíper</option></select></div>
-      <div class="fg"><label>Quantidade</label><input type="number" id="ed-q" min="1"/></div>
-    </div>
-    <div class="fr"><div class="fg"><label>Previsão de entrega</label><input type="date" id="ed-e"/></div><div class="fg"><label>Observações</label><input type="text" id="ed-o"/></div></div>
-    <div class="ff"><button class="bcan" onclick="closeModal('modal-ped')">Cancelar</button><button class="bsv" onclick="savEditD()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
+    <div class="pzb" id="eppzb"><div class="fg"><label>Data combinada</label><input type="date" id="eppz"/></div></div>
+    <div class="ff"><button class="bcan" onclick="closeEP()">Cancelar</button><button class="bsv" onclick="svEP()"><i class="ti ti-device-floppy"></i> Salvar</button></div>
   </div>
 </div>
 
 <script>
-// ─── DADOS PRÉ-CARREGADOS ───────────────────────────────────────────────────
-const DADOS_INICIAIS = {
-  est: {"bp":{"q":18,"m":50,"c":0.49},"bg":{"q":31,"m":50,"c":0.7},"ez":{"q":0,"m":5,"c":0},"es":{"q":2,"m":0,"c":28.8}},
-  mat: {"sg":{"q":35,"m":0,"c":0.9},"sp":{"q":12,"m":0,"c":0.85},"cx":{"q":12,"m":50,"c":0.48},"tg":{"q":69,"m":50,"c":0.29},"ta":{"q":89,"m":50,"c":0.27}},
-  pag: [],
-  ped: [{"id":"1781801105356","c":"Bombeiro","p":"bp","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801128253","c":"Jesus","p":"bp","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801156843","c":"Boneca vermelha","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801171190","c":"Crocodilo","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801187681","c":"Vet","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801201627","c":"Família","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"","s":"pendente"},{"id":"1781801229127","c":"Boneca vermelha","p":"bg","q":1,"dt":"2026-06-18","e":"2026-06-19","o":"maior definição","s":"pendente"}]
+const PR={bp:'Broche Pequeno',bg:'Broche Grande',ez:'Ecobag com Zíper',es:'Ecobag sem Zíper'};
+const MT={sg:'Sacola Grande',sp:'Sacola Pequena',cx:'Caixinha',tg:'Tag',ta:'Tag Adesiva'};
+const FL={pix:'Pix',crd:'Crédito',deb:'Débito',prz:'A prazo'};
+const FB={pix:'bpix',crd:'bcrd',deb:'bdeb',prz:'bprz'};
+const SL={pendente:'Pendente',producao:'Em produção',pronto:'Pronto',entregue:'Entregue'};
+const SB={pendente:'bpnd',producao:'bprd',pronto:'bprt',entregue:'bent'};
+const CIMP=0.25;
+let fm=null,mpfm=null,efm=null,ePid=null,eDid=null,ppId=null;
+
+const INIT={
+  est:{bp:{q:18,m:50,c:0.49},bg:{q:31,m:50,c:0.7},ez:{q:0,m:5,c:0},es:{q:2,m:0,c:28.8}},
+  mat:{sg:{q:35,m:0,c:0.9},sp:{q:12,m:0,c:0.85},cx:{q:12,m:50,c:0.48},tg:{q:69,m:50,c:0.29},ta:{q:89,m:50,c:0.27}},
+  pag:[],
+  ped:[{id:'1',c:'Bombeiro',p:'bp',q:1,pr:8,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'2',c:'Jesus',p:'bp',q:1,pr:8,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'3',c:'Boneca vermelha',p:'bg',q:1,pr:12,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'4',c:'Crocodilo',p:'bg',q:1,pr:12,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'5',c:'Vet',p:'bg',q:1,pr:12,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'6',c:'Família',p:'bg',q:1,pr:12,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'',s:'pendente',mats:[]},{id:'7',c:'Boneca vermelha',p:'bg',q:1,pr:12,dc:0,dt:'2026-06-18',e:'2026-06-19',o:'maior definição',s:'pendente',mats:[]}],
+  prv:{bp:8,bg:12,ez:75,es:70}
 };
 
-// Inicializa localStorage apenas se ainda não tiver dados
-function initDados() {
-  if (!localStorage.getItem('ak_est')) localStorage.setItem('ak_est', JSON.stringify(DADOS_INICIAIS.est));
-  if (!localStorage.getItem('ak_mat')) localStorage.setItem('ak_mat', JSON.stringify(DADOS_INICIAIS.mat));
-  if (!localStorage.getItem('ak_pag')) localStorage.setItem('ak_pag', JSON.stringify(DADOS_INICIAIS.pag));
-  if (!localStorage.getItem('ak_ped')) localStorage.setItem('ak_ped', JSON.stringify(DADOS_INICIAIS.ped));
+function initD(){
+  if(!localStorage.getItem('ak_est'))localStorage.setItem('ak_est',JSON.stringify(INIT.est));
+  if(!localStorage.getItem('ak_mat'))localStorage.setItem('ak_mat',JSON.stringify(INIT.mat));
+  if(!localStorage.getItem('ak_pag'))localStorage.setItem('ak_pag',JSON.stringify(INIT.pag));
+  if(!localStorage.getItem('ak_ped'))localStorage.setItem('ak_ped',JSON.stringify(INIT.ped));
+  if(!localStorage.getItem('ak_prv'))localStorage.setItem('ak_prv',JSON.stringify(INIT.prv));
 }
-initDados();
+initD();
 
-// ─── CONSTANTES ─────────────────────────────────────────────────────────────
-const PR = {bp:'Broche Pequeno',bg:'Broche Grande',ez:'Ecobag com Zíper',es:'Ecobag sem Zíper'};
-const MT = {sg:'Sacola Grande',sp:'Sacola Pequena',cx:'Caixinha',tg:'Tag',ta:'Tag Adesiva'};
-const FL = {pix:'Pix',crd:'Crédito',deb:'Débito',prz:'A prazo'};
-const FB = {pix:'bpix',crd:'bcrd',deb:'bdeb',prz:'bprz'};
-const SL = {pendente:'Pendente',producao:'Em produção',pronto:'Pronto',entregue:'Entregue'};
-const SB = {pendente:'bpnd',producao:'bprd',pronto:'bprt',entregue:'bent'};
+const gE=()=>JSON.parse(localStorage.getItem('ak_est'));
+const gM=()=>JSON.parse(localStorage.getItem('ak_mat'));
+const gP=()=>JSON.parse(localStorage.getItem('ak_pag'));
+const gD=()=>JSON.parse(localStorage.getItem('ak_ped'));
+const gV=()=>JSON.parse(localStorage.getItem('ak_prv'));
+const sE=v=>localStorage.setItem('ak_est',JSON.stringify(v));
+const sM=v=>localStorage.setItem('ak_mat',JSON.stringify(v));
+const sP=v=>localStorage.setItem('ak_pag',JSON.stringify(v));
+const sD=v=>localStorage.setItem('ak_ped',JSON.stringify(v));
+const sV=v=>localStorage.setItem('ak_prv',JSON.stringify(v));
 
-// ─── ESTADO ──────────────────────────────────────────────────────────────────
-let fm = null, efm = null, editPid = null, editDid = null;
+const fmt=n=>'R$ '+Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const td=()=>new Date().toISOString().split('T')[0];
+const fd=d=>d?d.split('-').reverse().join('/'):'—';
+const dAtras=d=>Math.floor((new Date()-new Date(d))/(864e5));
+const totP=p=>Math.max(0,(p.pr||0)*(p.q||1)-(p.dc||0));
 
-function getE()  { return JSON.parse(localStorage.getItem('ak_est')); }
-function getEM() { return JSON.parse(localStorage.getItem('ak_mat')); }
-function getPA() { return JSON.parse(localStorage.getItem('ak_pag')); }
-function getPE() { return JSON.parse(localStorage.getItem('ak_ped')); }
-function setE(v)  { localStorage.setItem('ak_est', JSON.stringify(v)); }
-function setEM(v) { localStorage.setItem('ak_mat', JSON.stringify(v)); }
-function setPA(v) { localStorage.setItem('ak_pag', JSON.stringify(v)); }
-function setPE(v) { localStorage.setItem('ak_ped', JSON.stringify(v)); }
+document.getElementById('sdt').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('pd').value=td();
+document.getElementById('dd').value=td();
+document.getElementById('mpdt').value=td();
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
-const fmt = n => 'R$ ' + Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-const td  = () => new Date().toISOString().split('T')[0];
-const fd  = d => d ? d.split('-').reverse().join('/') : '—';
-
-function barHtml(q, m) {
-  const pct = m > 0 ? Math.min(100, Math.round(q / Math.max(m*2,1) * 100)) : (q > 0 ? 100 : 0);
-  const cl  = q === 0 ? '#c0392b' : q <= m ? '#c8941a' : 'var(--g)';
-  return `<div style="font-weight:500">${q} un.</div><div style="height:4px;background:var(--cd);border-radius:3px;margin-top:5px"><div style="height:100%;width:${pct}%;background:${cl};border-radius:3px"></div></div>`;
+function go(t,el,tt,ss){
+  document.querySelectorAll('.nt').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.sec').forEach(e=>e.classList.remove('on'));
+  document.getElementById(t).classList.add('on');el.classList.add('on');
+  document.getElementById('pgt').textContent=tt;document.getElementById('pgs').textContent=ss;
+  if(t==='est')rE();if(t==='pag')rP();if(t==='ped'){fillPr();calcT();calcC();rD();}if(t==='cli')rCli();if(t==='res')rRes();
 }
-function sbg(q, m) {
-  if (q === 0) return '<span class="bg bdn">Sem estoque</span>';
-  if (q <= m)  return '<span class="bg bwn">Comprar</span>';
-  return '<span class="bg bok">OK</span>';
+function goE(t,el){
+  document.querySelectorAll('.etab').forEach(e=>e.classList.remove('on'));el.classList.add('on');
+  document.getElementById('eprod').style.display=t==='prod'?'block':'none';
+  document.getElementById('emat').style.display=t==='mat'?'block':'none';
+  document.getElementById('eprec').style.display=t==='prec'?'block':'none';
+  if(t==='prod')rEP();else if(t==='mat')rEM();else rPrec();
 }
-function closeModal(id) { document.getElementById(id).classList.remove('on'); }
-
-document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', function(e) {
-  if (e.target === this) this.classList.remove('on');
-}));
-
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-document.getElementById('tdt').textContent = new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'long'});
-document.getElementById('pd').value = td();
-document.getElementById('dd').value = td();
-
-// ─── NAVEGAÇÃO ────────────────────────────────────────────────────────────────
-function go(t, el) {
-  document.querySelectorAll('.nt').forEach(e => e.classList.remove('on'));
-  document.querySelectorAll('.sec').forEach(e => e.classList.remove('on'));
-  document.getElementById(t).classList.add('on');
-  el.classList.add('on');
-  if (t==='est') rE();
-  if (t==='pag') rP();
-  if (t==='ped') rD();
-  if (t==='cli') rCli();
-  if (t==='res') rRes();
+function sfm(t,el,ctx){
+  if(ctx==='pg'){fm=t;document.querySelectorAll('#pag .fo').forEach(b=>b.className='fo');document.getElementById('pzb').classList.toggle('on',t==='prz');}
+  else if(ctx==='mp'){mpfm=t;document.querySelectorAll('#mpfw .fo').forEach(b=>b.className='fo');document.getElementById('mppzb').classList.toggle('on',t==='prz');}
+  el.className='fo s'+t;
 }
+function sefm(t,el){efm=t;document.querySelectorAll('#epfw .fo').forEach(b=>b.className='fo');el.className='fo s'+t;document.getElementById('eppzb').classList.toggle('on',t==='prz');}
+function sbg(q,m){if(q===0)return'<span class="bg bdn">Sem estoque</span>';if(m>0&&q<=m)return'<span class="bg bwn">Comprar</span>';return'<span class="bg bok">OK</span>';}
+function bar(q,m){const pct=m>0?Math.min(100,Math.round(q/Math.max(m*2,1)*100)):(q>0?100:0);const cl=q===0?'#c0392b':m>0&&q<=m?'#c8941a':'var(--g)';return`<div style="font-weight:500">${q} un.</div><div style="height:4px;background:var(--cd);border-radius:3px;margin-top:5px"><div style="height:100%;width:${pct}%;background:${cl};border-radius:3px"></div></div>`;}
+function closeEP(){document.getElementById('epw').classList.remove('on');}
+function closeED(){document.getElementById('medw').classList.remove('on');}
 
-function goEst(t, el) {
-  document.querySelectorAll('.etab').forEach(e => e.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('est-prod').style.display = t==='prod' ? 'block' : 'none';
-  document.getElementById('est-mat').style.display  = t==='mat'  ? 'block' : 'none';
-  if (t==='prod') rEProd(); else rEMat();
+function fillPr(){const k=document.getElementById('dp').value;document.getElementById('dpr').value=(gV()[k]||0).toFixed(2);document.getElementById('ddc').value='0';calcT();}
+function fillEdP(){const k=document.getElementById('edp').value;document.getElementById('edpr').value=(gV()[k]||0).toFixed(2);calcEdT();}
+function fillP(){const k=document.getElementById('pp').value;document.getElementById('pv2').value=(gV()[k]||0).toFixed(2);}
+function calcT(){
+  const q=parseInt(document.getElementById('dq').value)||0,pr=parseFloat(document.getElementById('dpr').value)||0,dc=parseFloat(document.getElementById('ddc').value)||0;
+  const cheio=q*pr,final=Math.max(0,cheio-dc);
+  document.getElementById('dtot').value=fmt(final);
+  const dres=document.getElementById('dres');
+  if(dc>0){dres.classList.add('on');document.getElementById('drc').textContent=fmt(cheio);document.getElementById('drd').textContent=fmt(dc);document.getElementById('drf').textContent=fmt(final);document.getElementById('drp').textContent=(cheio>0?((dc/cheio)*100).toFixed(1):0)+'%';}
+  else dres.classList.remove('on');
+  calcC();
 }
-
-// ─── ESTOQUE ─────────────────────────────────────────────────────────────────
-function rE() {
-  const E = getE(), EM = getEM();
-  const totP  = Object.values(E).reduce((a,b)=>a+b.q,0);
-  const totM  = Object.values(EM).reduce((a,b)=>a+b.q,0);
-  const precP = Object.values(E).filter(e=>e.q<=e.m&&e.m>0).length;
-  const precM = Object.values(EM).filter(e=>e.q<=e.m&&e.m>0).length;
-  const prec  = precP + precM;
-  document.getElementById('em').innerHTML = `
-    <div class="mc"><div class="mlb">Produtos em estoque</div><div class="mv">${totP} un.</div></div>
-    <div class="mc"><div class="mlb">Materiais em estoque</div><div class="mv">${totM} un.</div></div>
-    <div class="mc ${prec>0?'w':'a'}"><div class="mlb">Precisam repor</div><div class="mv ${prec>0?'wn':''}">${prec} item${prec!==1?'s':''}</div></div>`;
-  rEProd(); rEMat();
+function calcEdT(){const q=parseInt(document.getElementById('edq').value)||0,pr=parseFloat(document.getElementById('edpr').value)||0,dc=parseFloat(document.getElementById('eddc').value)||0;document.getElementById('edtot').value=fmt(Math.max(0,q*pr-dc));}
+function calcC(){
+  const q=parseInt(document.getElementById('dq').value)||1,pr=parseFloat(document.getElementById('dpr').value)||0,dc=parseFloat(document.getElementById('ddc').value)||0,k=document.getElementById('dp').value;
+  const E=gE(),M=gM(),cp=(E[k]?.c||0)*q;
+  const mks={ta:'cta',tg:'ctg',cx:'ccx',sg:'csg',sp:'csp'};
+  let cm=0;const lns=[{n:'Produto ('+PR[k]+')',v:cp}];
+  for(const[mk,ck] of Object.entries(mks)){if(document.getElementById(ck)?.checked){const c=(M[mk]?.c||0)*q;cm+=c;lns.push({n:MT[mk]+(q>1?' x'+q:''),v:c});}}
+  let ci=0;if(document.getElementById('cimp')?.checked){ci=CIMP*q;lns.push({n:'Impressão x'+q,v:ci});}
+  const tot=cp+cm+ci,rec=Math.max(0,pr*q-dc),mrg=rec-tot;
+  document.getElementById('clin').innerHTML=lns.map(l=>`<div class="clin"><span>${l.n}</span><span>${fmt(l.v)}</span></div>`).join('');
+  document.getElementById('ctotv').textContent=fmt(tot);
+  document.getElementById('mrgv').textContent=fmt(mrg);
+  document.getElementById('mrgv').style.color=mrg>=0?'#3a5a28':'#c0392b';
 }
+function rPrec(){const v=gV();document.getElementById('pgrid').innerHTML=Object.entries(PR).map(([k,n])=>`<div class="pitem"><span class="pitem-n">${n}</span><span class="pitem-v">${fmt(v[k]||0)}</span></div>`).join('');fillP();}
+function svP(){const k=document.getElementById('pp').value,v=parseFloat(document.getElementById('pv2').value)||0;const prv=gV();prv[k]=v;sV(prv);rPrec();fillPr();}
 
-function rEProd() {
-  const E = getE();
-  document.getElementById('etb-prod').innerHTML = Object.entries(E).map(([k,v]) =>
-    `<tr><td style="font-weight:500">${PR[k]}</td><td>${barHtml(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`
-  ).join('');
+function rE(){
+  const E=gE(),EM=gM();
+  const tP=Object.values(E).reduce((a,b)=>a+b.q,0),tM=Object.values(EM).reduce((a,b)=>a+b.q,0);
+  const pr=Object.values(E).filter(e=>e.m>0&&e.q<=e.m).length+Object.values(EM).filter(e=>e.m>0&&e.q<=e.m).length;
+  document.getElementById('em').innerHTML=`<div class="mc"><div class="mci"><i class="ti ti-shopping-bag"></i></div><div class="mcb g"></div><div class="mlb">Produtos</div><div class="mv">${tP} un.</div></div><div class="mc"><div class="mci"><i class="ti ti-package"></i></div><div class="mcb g"></div><div class="mlb">Materiais</div><div class="mv">${tM} un.</div></div><div class="mc"><div class="mci"><i class="ti ti-alert-circle"></i></div><div class="mcb ${pr>0?'w':'g'}"></div><div class="mlb">Precisam repor</div><div class="mv ${pr>0?'wn':''}">${pr} item${pr!==1?'s':''}</div></div>`;
+  rEP();rEM();
 }
-
-function rEMat() {
-  const EM = getEM();
-  document.getElementById('etb-mat').innerHTML = Object.entries(EM).map(([k,v]) =>
-    `<tr><td style="font-weight:500">${MT[k]}</td><td>${barHtml(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`
-  ).join('');
-}
-
-function savE(tipo) {
-  if (tipo === 'prod') {
-    const E = getE();
-    const k = document.getElementById('sp').value;
-    E[k] = {q:parseInt(document.getElementById('sq').value)||0, m:parseInt(document.getElementById('sm').value)||0, c:parseFloat(document.getElementById('sc').value)||0};
-    setE(E);
-  } else {
-    const EM = getEM();
-    const k  = document.getElementById('sm2').value;
-    EM[k] = {q:parseInt(document.getElementById('sm2q').value)||0, m:parseInt(document.getElementById('sm2m').value)||0, c:parseFloat(document.getElementById('sm2c').value)||0};
-    setEM(EM);
-  }
+function rEP(){document.getElementById('etbp').innerHTML=Object.entries(gE()).map(([k,v])=>`<tr><td style="font-weight:500">${PR[k]}</td><td>${bar(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`).join('');}
+function rEM(){document.getElementById('etbm').innerHTML=Object.entries(gM()).map(([k,v])=>`<tr><td style="font-weight:500">${MT[k]}</td><td>${bar(v.q,v.m)}</td><td style="color:var(--mu)">${v.m} un.</td><td>${sbg(v.q,v.m)}</td><td style="color:var(--mu)">${fmt(v.c)}</td></tr>`).join('');}
+function svE(t){
+  if(t==='prod'){const E=gE(),k=document.getElementById('sp').value;E[k]={q:parseInt(document.getElementById('sq').value)||0,m:parseInt(document.getElementById('sm').value)||0,c:parseFloat(document.getElementById('sc').value)||0};sE(E);}
+  else{const M=gM(),k=document.getElementById('sm2').value;M[k]={q:parseInt(document.getElementById('sm2q').value)||0,m:parseInt(document.getElementById('sm2m').value)||0,c:parseFloat(document.getElementById('sm2c').value)||0};sM(M);}
   rE();
 }
 
-// ─── PAGAMENTO ────────────────────────────────────────────────────────────────
-function sfm(t, el) {
-  fm = t;
-  document.querySelectorAll('#pag .fo').forEach(b => b.className='fo');
-  el.className = 'fo s' + t;
-  document.getElementById('pzb').classList.toggle('on', t==='prz');
-}
-function sefm(t, el) {
-  efm = t;
-  document.querySelectorAll('#modal-pag .fo').forEach(b => b.className='fo');
-  el.className = 'fo s' + t;
-  document.getElementById('ep-pzb').classList.toggle('on', t==='prz');
+function rAlrts(){
+  const PA=gP(),v=PA.filter(p=>p.s==='pend'&&p.f==='prz'&&p.pz&&p.pz<td());
+  document.getElementById('cobalrt').innerHTML=v.map(p=>{const d=dAtras(p.pz);return`<div class="alerta-yw"><div><i class="ti ti-bell" style="margin-right:6px"></i><strong>${p.c}</strong> — ${p.d||'pagamento'} de ${fmt(p.v)} em atraso há <strong>${d} dia${d>1?'s':''}</strong></div><button class="bsv" style="padding:5px 12px;font-size:12px" onclick="bx('${p.id}')">Dar baixa</button></div>`;}).join('');
 }
 
-function rP() {
-  const PA = getPA();
-  const tot = PA.reduce((a,b)=>a+b.v,0);
-  const tpg = PA.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
-  const tpd = PA.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
-  document.getElementById('pm').innerHTML = `
-    <div class="mc a"><div class="mlb">Total registrado</div><div class="mv">${fmt(tot)}</div></div>
-    <div class="mc a"><div class="mlb">Recebido</div><div class="mv ok">${fmt(tpg)}</div></div>
-    <div class="mc w"><div class="mlb">A receber</div><div class="mv wn">${fmt(tpd)}</div></div>`;
-  const el = document.getElementById('pl');
-  if (!PA.length) { el.innerHTML='<div class="emp">Nenhum pagamento registrado ainda.</div>'; return; }
-  const s = [...PA].sort((a,b)=>b.dt.localeCompare(a.dt));
-  el.innerHTML = `<table><thead><tr><th>Data</th><th>Cliente</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th><th></th></tr></thead><tbody>
-  ${s.map(p=>`<tr>
-    <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
-    <td style="font-weight:500">${p.c}</td>
-    <td style="color:var(--mu)">${p.d||'—'}</td>
-    <td><span class="bg ${FB[p.f]}">${FL[p.f]}${p.f==='prz'&&p.s==='pend'&&p.pz?' · '+fd(p.pz):''}</span></td>
-    <td style="font-weight:500;color:var(--g)">${fmt(p.v)}</td>
-    <td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td>
-    <td><div class="acts">
-      ${p.s!=='pago'?`<button class="bbx" onclick="bx('${p.id}')">Baixa</button>`:'<span class="bbx pg">✓</span>'}
-      <button class="bedt" onclick="openEditP('${p.id}')">Editar</button>
-      <button class="bdel" onclick="delP('${p.id}')">✕</button>
-    </div></td>
-  </tr>`).join('')}</tbody></table>`;
+function rP(){
+  rAlrts();
+  const PA=gP(),tot=PA.reduce((a,b)=>a+b.v,0),tpg=PA.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0),tpd=PA.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+  const atr=PA.filter(p=>p.s==='pend'&&p.f==='prz'&&p.pz&&p.pz<td()).length;
+  document.getElementById('pm').innerHTML=`<div class="mc"><div class="mci"><i class="ti ti-cash"></i></div><div class="mcb g"></div><div class="mlb">Total registrado</div><div class="mv">${fmt(tot)}</div></div><div class="mc"><div class="mci"><i class="ti ti-check"></i></div><div class="mcb g"></div><div class="mlb">Recebido</div><div class="mv ok">${fmt(tpg)}</div></div><div class="mc"><div class="mci"><i class="ti ti-clock"></i></div><div class="mcb w"></div><div class="mlb">A receber</div><div class="mv wn">${fmt(tpd)}</div></div><div class="mc"><div class="mci"><i class="ti ti-bell"></i></div><div class="mcb ${atr>0?'r':'g'}"></div><div class="mlb">Em atraso</div><div class="mv ${atr>0?'dn':''}">${atr}</div></div>`;
+  const el=document.getElementById('pl');
+  if(!PA.length){el.innerHTML='<div class="emp">Nenhum pagamento registrado ainda.</div>';return;}
+  const s=[...PA].sort((a,b)=>{const aA=a.s==='pend'&&a.pz&&a.pz<td()?-1:0,bA=b.s==='pend'&&b.pz&&b.pz<td()?-1:0;if(aA!==bA)return aA-bA;return b.dt.localeCompare(a.dt);});
+  el.innerHTML=`<table><thead><tr><th>Data</th><th>Cliente</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th><th>Vence</th><th></th></tr></thead><tbody>${s.map(p=>{const at=p.s==='pend'&&p.f==='prz'&&p.pz&&p.pz<td();const d=at?dAtras(p.pz):0;return`<tr style="${at?'background:#fff8f8':''}"><td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td><td style="font-weight:500">${p.c}${p.pid?'<span class="ptag"><i class="ti ti-clipboard-list" style="font-size:11px"></i> pedido</span>':''}</td><td style="color:var(--mu)">${p.d||'—'}</td><td><span class="bg ${FB[p.f]}">${FL[p.f]}</span></td><td style="font-weight:600;color:var(--g)">${fmt(p.v)}</td><td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td><td style="font-size:12px">${p.pz?`<span style="color:${at?'var(--rd)':'var(--mu)'}">${fd(p.pz)}${at?` <strong>(${d}d)</strong>`:''}</span>`:'—'}</td><td><div class="acts">${p.s!=='pago'?`<button class="bbx" onclick="bx('${p.id}')">Baixa</button>`:'<span class="bbx pg">✓</span>'}<button class="bedt" onclick="oEP('${p.id}')">Editar</button><button class="bdel" onclick="dP('${p.id}')">✕</button></div></td></tr>`;}).join('')}</tbody></table>`;
+}
+function regP(){
+  const c=document.getElementById('pc').value.trim(),dt=document.getElementById('pd').value,d=document.getElementById('pdc').value.trim(),v=parseFloat(document.getElementById('pval').value)||0,pz=document.getElementById('ppz').value;
+  if(!c){alert('Informe o nome do cliente.');return;}if(!v){alert('Informe o valor.');return;}if(!fm){alert('Selecione a forma de pagamento.');return;}if(fm==='prz'&&!pz){alert('Informe a data combinada.');return;}
+  const PA=gP();PA.push({id:String(Date.now()),c,dt,d,v,f:fm,pz:fm==='prz'?pz:null,s:fm==='prz'?'pend':'pago'});sP(PA);
+  fm=null;document.querySelectorAll('#pag .fo').forEach(b=>b.className='fo');document.getElementById('pzb').classList.remove('on');
+  document.getElementById('pc').value='';document.getElementById('pdc').value='';document.getElementById('pval').value='0';document.getElementById('ppz').value='';rP();
+}
+function bx(id){const PA=gP(),p=PA.find(p=>p.id===id);if(p){p.s='pago';sP(PA);rP();}}
+function dP(id){if(!confirm('Excluir este pagamento?'))return;sP(gP().filter(p=>p.id!==id));rP();}
+function oEP(id){
+  const p=gP().find(p=>p.id===id);if(!p)return;ePid=id;efm=p.f;
+  document.getElementById('epc').value=p.c;document.getElementById('epdt').value=p.dt;document.getElementById('epd').value=p.d||'';document.getElementById('epv').value=p.v;document.getElementById('eppz').value=p.pz||'';
+  document.querySelectorAll('#epfw .fo').forEach(b=>b.className='fo');
+  const btn=document.querySelector(`#epfw button[onclick*="'${p.f}'"]`);if(btn)btn.className='fo s'+p.f;
+  document.getElementById('eppzb').classList.toggle('on',p.f==='prz');
+  document.getElementById('epw').classList.add('on');
+}
+function svEP(){
+  const PA=gP(),p=PA.find(p=>p.id===ePid);if(!p)return;
+  p.c=document.getElementById('epc').value.trim();p.dt=document.getElementById('epdt').value;p.d=document.getElementById('epd').value.trim();p.v=parseFloat(document.getElementById('epv').value)||0;
+  if(efm){p.f=efm;p.pz=efm==='prz'?document.getElementById('eppz').value:null;if(efm!=='prz')p.s='pago';}
+  sP(PA);closeEP();rP();
 }
 
-function regP() {
-  const c=document.getElementById('pc').value.trim(), dt=document.getElementById('pd').value;
-  const d=document.getElementById('pdc').value.trim(), v=parseFloat(document.getElementById('pv').value)||0;
-  const pz=document.getElementById('ppz').value;
-  if(!c){alert('Informe o nome do cliente.');return;}
-  if(!v){alert('Informe o valor.');return;}
-  if(!fm){alert('Selecione a forma de pagamento.');return;}
-  if(fm==='prz'&&!pz){alert('Informe a data combinada.');return;}
-  const PA = getPA();
-  PA.push({id:String(Date.now()),c,dt,d,v,f:fm,pz:fm==='prz'?pz:null,s:fm==='prz'?'pend':'pago'});
-  setPA(PA); fm=null;
-  document.querySelectorAll('#pag .fo').forEach(b=>b.className='fo');
-  document.getElementById('pzb').classList.remove('on');
-  document.getElementById('pc').value=''; document.getElementById('pdc').value='';
-  document.getElementById('pv').value='0'; document.getElementById('ppz').value='';
-  rP();
-}
-
-function bx(id) {
-  const PA=getPA(), p=PA.find(p=>p.id===id);
-  if(p){p.s='pago';setPA(PA);rP();}
-}
-function delP(id) {
-  if(!confirm('Excluir este pagamento?'))return;
-  setPA(getPA().filter(p=>p.id!==id)); rP();
-}
-function openEditP(id) {
-  const p=getPA().find(p=>p.id===id); if(!p)return;
-  editPid=id; efm=p.f;
-  document.getElementById('ep-c').value=p.c; document.getElementById('ep-dt').value=p.dt;
-  document.getElementById('ep-d').value=p.d||''; document.getElementById('ep-v').value=p.v;
-  document.getElementById('ep-pz').value=p.pz||'';
-  document.querySelectorAll('#modal-pag .fo').forEach(b=>b.className='fo');
-  const btn=document.querySelector(`#modal-pag button[onclick*="'${p.f}'"]`);
-  if(btn) btn.className='fo s'+p.f;
-  document.getElementById('ep-pzb').classList.toggle('on',p.f==='prz');
-  document.getElementById('modal-pag').classList.add('on');
-}
-function savEditP() {
-  const PA=getPA(), p=PA.find(p=>p.id===editPid); if(!p)return;
-  p.c=document.getElementById('ep-c').value.trim(); p.dt=document.getElementById('ep-dt').value;
-  p.d=document.getElementById('ep-d').value.trim(); p.v=parseFloat(document.getElementById('ep-v').value)||0;
-  if(efm){p.f=efm; p.pz=efm==='prz'?document.getElementById('ep-pz').value:null; if(efm!=='prz')p.s='pago';}
-  setPA(PA); closeModal('modal-pag'); rP();
-}
-
-// ─── PEDIDOS ─────────────────────────────────────────────────────────────────
-function rD() {
-  const PE=getPE();
-  const atrasados=PE.filter(p=>p.s!=='entregue'&&p.e&&p.e<td());
-  const ab=PE.filter(p=>p.s!=='entregue');
-  const pr=PE.filter(p=>p.s==='pronto');
-  const en=PE.filter(p=>p.s==='entregue');
-  document.getElementById('ped-alerta').innerHTML = atrasados.length
-    ? `<div class="alerta-box"><i class="ti ti-alert-triangle"></i> <strong>${atrasados.length} pedido${atrasados.length>1?'s':''} atrasado${atrasados.length>1?'s':''}!</strong> Verifique os itens em vermelho abaixo.</div>` : '';
-  document.getElementById('dm').innerHTML = `
-    <div class="mc ${ab.length>0?'w':'a'}"><div class="mlb">Em aberto</div><div class="mv ${ab.length>0?'wn':''}">${ab.length}</div></div>
-    <div class="mc a"><div class="mlb">Prontos p/ entrega</div><div class="mv ok">${pr.length}</div></div>
-    <div class="mc ${atrasados.length>0?'r':''}"><div class="mlb">Atrasados</div><div class="mv ${atrasados.length>0?'dn':''}">${atrasados.length}</div></div>
-    <div class="mc"><div class="mlb">Entregues</div><div class="mv">${en.length}</div></div>`;
+function getMats(){const m=[];const cks={ta:'cta',tg:'ctg',cx:'ccx',sg:'csg',sp:'csp'};for(const[k,ck] of Object.entries(cks))if(document.getElementById(ck)?.checked)m.push(k);if(document.getElementById('cimp')?.checked)m.push('imp');return m;}
+function rD(){
+  const PE=gD(),at=PE.filter(p=>p.s!=='entregue'&&p.e&&p.e<td()),ab=PE.filter(p=>p.s!=='entregue'),pr=PE.filter(p=>p.s==='pronto'),en=PE.filter(p=>p.s==='entregue');
+  document.getElementById('palrt').innerHTML=at.length?`<div class="alerta"><i class="ti ti-alert-triangle"></i> <strong>${at.length} pedido${at.length>1?'s':''} atrasado${at.length>1?'s':''}!</strong></div>`:'';
+  document.getElementById('dm').innerHTML=`<div class="mc"><div class="mci"><i class="ti ti-clock"></i></div><div class="mcb ${ab.length>0?'w':'g'}"></div><div class="mlb">Em aberto</div><div class="mv ${ab.length>0?'wn':''}">${ab.length}</div></div><div class="mc"><div class="mci"><i class="ti ti-check"></i></div><div class="mcb g"></div><div class="mlb">Prontos</div><div class="mv ok">${pr.length}</div></div><div class="mc"><div class="mci"><i class="ti ti-alert-triangle"></i></div><div class="mcb ${at.length>0?'r':'g'}"></div><div class="mlb">Atrasados</div><div class="mv ${at.length>0?'dn':''}">${at.length}</div></div><div class="mc"><div class="mci"><i class="ti ti-truck"></i></div><div class="mcb g"></div><div class="mlb">Entregues</div><div class="mv">${en.length}</div></div>`;
   const el=document.getElementById('dl');
   if(!PE.length){el.innerHTML='<div class="emp">Nenhum pedido registrado ainda.</div>';return;}
-  const s=[...PE].sort((a,b)=>{
-    const aA=a.s!=='entregue'&&a.e&&a.e<td()?-1:0;
-    const bA=b.s!=='entregue'&&b.e&&b.e<td()?-1:0;
-    if(aA!==bA)return aA-bA;
-    const o={pendente:0,producao:1,pronto:2,entregue:3};
-    return(o[a.s]||0)-(o[b.s]||0)||a.dt.localeCompare(b.dt);
-  });
-  el.innerHTML=`<table><thead><tr><th>Cliente</th><th>Produto</th><th>Qtd.</th><th>Pedido em</th><th>Entrega</th><th>Obs.</th><th>Status</th><th></th></tr></thead><tbody>
-  ${s.map(p=>{
-    const atr=p.s!=='entregue'&&p.e&&p.e<td();
-    return`<tr class="${atr?'atrasado':''}">
-      <td style="font-weight:500">${p.c}</td>
-      <td>${PR[p.p]}</td>
-      <td>${p.q} un.</td>
-      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
-      <td style="font-size:12px;font-weight:500;color:${atr?'var(--rd)':p.s!=='entregue'&&p.e?'var(--g)':'var(--mu)'}">${fd(p.e)}</td>
-      <td style="font-size:12px;color:var(--mu);font-style:italic">${p.o||'—'}</td>
-      <td>${atr?'<span class="bg batr">⚠ Atrasado</span>':`<select class="ssel" onchange="mudS('${p.id}',this.value)">${Object.entries(SL).map(([k,v])=>`<option value="${k}" ${p.s===k?'selected':''}>${v}</option>`).join('')}</select>`}</td>
-      <td><div class="acts"><button class="bedt" onclick="openEditD('${p.id}')">Editar</button><button class="bdel" onclick="delD('${p.id}')">✕</button></div></td>
-    </tr>`;
-  }).join('')}</tbody></table>`;
+  const s=[...PE].sort((a,b)=>{const aA=a.s!=='entregue'&&a.e&&a.e<td()?-1:0,bA=b.s!=='entregue'&&b.e&&b.e<td()?-1:0;if(aA!==bA)return aA-bA;const o={pendente:0,producao:1,pronto:2,entregue:3};return(o[a.s]||0)-(o[b.s]||0)||a.dt.localeCompare(b.dt);});
+  const E=gE(),M=gM();
+  el.innerHTML=`<table><thead><tr><th>Cliente</th><th>Produto</th><th>Qtd.</th><th>Venda</th><th>Desconto</th><th>Custo</th><th>Margem</th><th>Entrega</th><th>Obs.</th><th>Status</th><th></th></tr></thead><tbody>${s.map(p=>{const isat=p.s!=='entregue'&&p.e&&p.e<td();const venda=totP(p),dc=p.dc||0;let custo=(E[p.p]?.c||0)*(p.q||1);for(const mk of(p.mats||[])){if(mk==='imp')custo+=CIMP*(p.q||1);else custo+=(M[mk]?.c||0)*(p.q||1);}const mrg=venda-custo,temP=gP().some(pg=>pg.pid===p.id);return`<tr class="${isat?'atr':''}"><td style="font-weight:500">${p.c}</td><td>${PR[p.p]}</td><td>${p.q}</td><td style="font-weight:600;color:var(--g)">${venda>0?fmt(venda):'—'}</td><td>${dc>0?`<span class="bg bdsc">-${fmt(dc)}</span>`:'—'}</td><td style="font-size:12px;color:var(--mu)">${custo>0?fmt(custo):'—'}</td><td style="font-size:12px;font-weight:600;color:${mrg>0?'#3a5a28':mrg<0?'var(--rd)':'var(--mu)'}">${venda>0?fmt(mrg):'—'}</td><td style="font-size:12px;color:${isat?'var(--rd)':'var(--mu)'};font-weight:${isat?600:400}">${fd(p.e)}</td><td style="font-size:12px;color:var(--mu);font-style:italic">${p.o||'—'}</td><td>${isat?'<span class="bg batr">⚠ Atrasado</span>':`<select class="ssel" onchange="mudS('${p.id}',this.value)">${Object.entries(SL).map(([k,v])=>`<option value="${k}" ${p.s===k?'selected':''}>${v}</option>`).join('')}</select>`}</td><td><div class="acts">${!temP&&venda>0?`<button class="bbx" onclick="aPgto('${p.id}')" style="color:var(--g);border-color:var(--gpp)" title="Registrar pagamento"><i class="ti ti-cash" style="font-size:11px"></i></button>`:''}<button class="bedt" onclick="oED('${p.id}')">Editar</button><button class="bdel" onclick="dD('${p.id}')">✕</button></div></td></tr>`;}).join('')}</tbody></table>`;
+}
+function regD(){
+  const c=document.getElementById('dc').value.trim(),p=document.getElementById('dp').value,q=parseInt(document.getElementById('dq').value)||0,pr=parseFloat(document.getElementById('dpr').value)||0,dc=parseFloat(document.getElementById('ddc').value)||0,dt=document.getElementById('dd').value,e=document.getElementById('de').value,o=document.getElementById('do').value.trim();
+  if(!c){alert('Informe o nome do cliente.');return;}if(!q||!dt){alert('Preencha quantidade e data.');return;}
+  const mats=getMats(),id=String(Date.now());
+  const PE=gD();PE.push({id,c,p,q,pr,dc,dt,e,o,s:'pendente',mats});sD(PE);
+  document.getElementById('dc').value='';document.getElementById('dq').value='1';document.getElementById('ddc').value='0';document.getElementById('de').value='';document.getElementById('do').value='';
+  ['cta','ctg','ccx','csg','csp'].forEach(i=>document.getElementById(i).checked=false);
+  document.getElementById('cimp').checked=true;
+  const final=Math.max(0,pr*q-dc);
+  ppId=id;document.getElementById('mpc').textContent=c;document.getElementById('mpd').value=q+'x '+PR[p]+(dc>0?' (c/ desconto)':'');document.getElementById('mpv').value=final.toFixed(2);document.getElementById('mpdt').value=dt;
+  mpfm=null;document.querySelectorAll('#mpfw .fo').forEach(b=>b.className='fo');document.getElementById('mppzb').classList.remove('on');document.getElementById('mppz').value='';
+  fillPr();calcT();calcC();document.getElementById('mpw').classList.add('on');rD();
+}
+function aPgto(pid){
+  const p=gD().find(p=>p.id===pid);if(!p)return;ppId=pid;
+  document.getElementById('mpc').textContent=p.c;document.getElementById('mpd').value=p.q+'x '+PR[p.p]+(p.dc>0?' (c/ desconto)':'');document.getElementById('mpv').value=totP(p).toFixed(2);document.getElementById('mpdt').value=td();
+  mpfm=null;document.querySelectorAll('#mpfw .fo').forEach(b=>b.className='fo');document.getElementById('mppzb').classList.remove('on');document.getElementById('mppz').value='';document.getElementById('mpw').classList.add('on');
+}
+function confP(){
+  if(!mpfm){alert('Selecione a forma de pagamento.');return;}
+  const ped=gD().find(p=>p.id===ppId);if(!ped)return;
+  const v=parseFloat(document.getElementById('mpv').value)||0,dt=document.getElementById('mpdt').value,pz=document.getElementById('mppz').value;
+  if(mpfm==='prz'&&!pz){alert('Informe a data combinada.');return;}
+  const PA=gP();PA.push({id:String(Date.now()),c:ped.c,dt,d:ped.q+'x '+PR[ped.p]+(ped.dc>0?' (c/ desconto)':''),v,f:mpfm,pz:mpfm==='prz'?pz:null,s:mpfm==='prz'?'pend':'pago',pid:ppId});
+  sP(PA);document.getElementById('mpw').classList.remove('on');ppId=null;mpfm=null;rD();
+}
+function skipP(){document.getElementById('mpw').classList.remove('on');ppId=null;mpfm=null;}
+function mudS(id,ns){const PE=gD(),p=PE.find(p=>p.id===id);if(p){p.s=ns;sD(PE);rD();}}
+function dD(id){if(!confirm('Excluir este pedido?'))return;sD(gD().filter(p=>p.id!==id));rD();}
+function oED(id){
+  const p=gD().find(p=>p.id===id);if(!p)return;eDid=id;
+  document.getElementById('edc').value=p.c;document.getElementById('eddt').value=p.dt;document.getElementById('edp').value=p.p;document.getElementById('edq').value=p.q;document.getElementById('edpr').value=p.pr||0;document.getElementById('eddc').value=p.dc||0;document.getElementById('ede').value=p.e||'';document.getElementById('edo').value=p.o||'';
+  calcEdT();document.getElementById('medw').classList.add('on');
+}
+function svED(){
+  const PE=gD(),p=PE.find(p=>p.id===eDid);if(!p)return;
+  p.c=document.getElementById('edc').value.trim();p.dt=document.getElementById('eddt').value;p.p=document.getElementById('edp').value;p.q=parseInt(document.getElementById('edq').value)||1;p.pr=parseFloat(document.getElementById('edpr').value)||0;p.dc=parseFloat(document.getElementById('eddc').value)||0;p.e=document.getElementById('ede').value;p.o=document.getElementById('edo').value.trim();
+  sD(PE);closeED();rD();
 }
 
-function regD() {
-  const c=document.getElementById('dc').value.trim(), p=document.getElementById('dp').value;
-  const q=parseInt(document.getElementById('dq').value)||0, dt=document.getElementById('dd').value;
-  const e=document.getElementById('de').value, o=document.getElementById('do').value.trim();
-  if(!c){alert('Informe o nome do cliente.');return;}
-  if(!q||!dt){alert('Preencha quantidade e data.');return;}
-  const PE=getPE();
-  PE.push({id:String(Date.now()),c,p,q,dt,e,o,s:'pendente'});
-  setPE(PE);
-  document.getElementById('dc').value=''; document.getElementById('dq').value='1';
-  document.getElementById('de').value=''; document.getElementById('do').value='';
-  rD();
+let cSel=null;
+function allC(){const s=new Set();gP().forEach(p=>p.c&&s.add(p.c));gD().forEach(p=>p.c&&s.add(p.c));return[...s].sort();}
+function filtC(){
+  const q=document.getElementById('ci').value.toLowerCase();
+  const all=allC().filter(c=>c.toLowerCase().includes(q));
+  document.getElementById('cchips').innerHTML=all.map(c=>`<button class="chip ${c===cSel?'on':''}" onclick="selC('${c}')">${c}</button>`).join('')||'<span style="font-size:13px;color:var(--mu)">Nenhum cliente encontrado.</span>';
 }
-function mudS(id, ns) {
-  const PE=getPE(), p=PE.find(p=>p.id===id);
-  if(p){p.s=ns;setPE(PE);rD();}
-}
-function delD(id) {
-  if(!confirm('Excluir este pedido?'))return;
-  setPE(getPE().filter(p=>p.id!==id)); rD();
-}
-function openEditD(id) {
-  const p=getPE().find(p=>p.id===id); if(!p)return; editDid=id;
-  document.getElementById('ed-c').value=p.c; document.getElementById('ed-dt').value=p.dt;
-  document.getElementById('ed-p').value=p.p; document.getElementById('ed-q').value=p.q;
-  document.getElementById('ed-e').value=p.e||''; document.getElementById('ed-o').value=p.o||'';
-  document.getElementById('modal-ped').classList.add('on');
-}
-function savEditD() {
-  const PE=getPE(), p=PE.find(p=>p.id===editDid); if(!p)return;
-  p.c=document.getElementById('ed-c').value.trim(); p.dt=document.getElementById('ed-dt').value;
-  p.p=document.getElementById('ed-p').value; p.q=parseInt(document.getElementById('ed-q').value)||1;
-  p.e=document.getElementById('ed-e').value; p.o=document.getElementById('ed-o').value.trim();
-  setPE(PE); closeModal('modal-ped'); rD();
-}
-
-// ─── CLIENTES ────────────────────────────────────────────────────────────────
-let cliSel = null;
-function getAllClientes() {
-  const s=new Set();
-  getPA().forEach(p=>p.c&&s.add(p.c));
-  getPE().forEach(p=>p.c&&s.add(p.c));
-  return [...s].sort();
-}
-function filtCli() {
-  const q=document.getElementById('cli-inp').value.toLowerCase();
-  const all=getAllClientes().filter(c=>c.toLowerCase().includes(q));
-  document.getElementById('cli-chips').innerHTML = all.map(c=>
-    `<button class="cli-chip ${c===cliSel?'on':''}" onclick="selCli('${c}')">${c}</button>`
-  ).join('') || '<span style="font-size:13px;color:var(--mu)">Nenhum cliente encontrado.</span>';
-}
-function rCli() { cliSel=null; filtCli(); document.getElementById('cli-rel').innerHTML=''; }
-function selCli(nome) {
-  cliSel=nome; filtCli();
-  const pc=getPA().filter(p=>p.c===nome), pd=getPE().filter(p=>p.c===nome);
-  const tV=pc.reduce((a,b)=>a+b.v,0);
-  const tPg=pc.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
-  const tPd=pc.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
-  document.getElementById('cli-rel').innerHTML=`<div class="pnl">
-    <div style="font-size:16px;font-weight:600;color:var(--g);margin-bottom:.8rem"><i class="ti ti-user" style="margin-right:6px"></i>${nome}</div>
-    <div class="rel-resumo">
-      <div class="rel-card">Total gasto<span style="color:var(--g)">${fmt(tV)}</span></div>
-      <div class="rel-card">Pago<span style="color:#3a5a28">${fmt(tPg)}</span></div>
-      <div class="rel-card">Pendente<span style="color:#a07010">${fmt(tPd)}</span></div>
-      <div class="rel-card">Pagamentos<span>${pc.length}</span></div>
-      <div class="rel-card">Pedidos<span>${pd.length}</span></div>
-    </div>
-    ${pc.length?`<div style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.6rem">Pagamentos</div>
-    <div class="twrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th></tr></thead>
-    <tbody>${[...pc].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr>
-      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
-      <td style="color:var(--mu)">${p.d||'—'}</td>
-      <td><span class="bg ${FB[p.f]}">${FL[p.f]}</span></td>
-      <td style="font-weight:500;color:var(--g)">${fmt(p.v)}</td>
-      <td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td>
-    </tr>`).join('')}</tbody></table></div>`:''}
-    ${pd.length?`<div style="font-size:11px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin:.9rem 0 .6rem">Pedidos</div>
-    <div class="twrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Qtd.</th><th>Entrega</th><th>Status</th></tr></thead>
-    <tbody>${[...pd].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr>
-      <td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td>
-      <td>${PR[p.p]}</td>
-      <td>${p.q} un.</td>
-      <td style="font-size:12px;color:var(--mu)">${fd(p.e)}</td>
-      <td><span class="bg ${SB[p.s]}">${SL[p.s]}</span></td>
-    </tr>`).join('')}</tbody></table></div>`:''}
+function rCli(){cSel=null;filtC();document.getElementById('crel').innerHTML='';}
+function selC(nome){
+  cSel=nome;filtC();
+  const pc=gP().filter(p=>p.c===nome),pd=gD().filter(p=>p.c===nome);
+  const tV=pc.reduce((a,b)=>a+b.v,0),tPg=pc.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0),tPd=pc.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+  document.getElementById('crel').innerHTML=`<div class="pnl"><div style="font-size:16px;font-weight:600;color:var(--g);margin-bottom:.8rem"><i class="ti ti-user" style="margin-right:6px"></i>${nome}</div><div class="rc-sum"><div class="rc-c">Total gasto<span style="color:var(--g)">${fmt(tV)}</span></div><div class="rc-c">Pago<span style="color:#3a5a28">${fmt(tPg)}</span></div><div class="rc-c">Pendente<span style="color:#a07010">${fmt(tPd)}</span></div><div class="rc-c">Pagamentos<span>${pc.length}</span></div><div class="rc-c">Pedidos<span>${pd.length}</span></div></div>${pc.length?`<div style="font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:.6rem">Pagamentos</div><div class="twrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th>Valor</th><th>Situação</th></tr></thead><tbody>${[...pc].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr><td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td><td style="color:var(--mu)">${p.d||'—'}</td><td><span class="bg ${FB[p.f]}">${FL[p.f]}</span></td><td style="font-weight:600;color:var(--g)">${fmt(p.v)}</td><td><span class="bg ${p.s==='pago'?'bpg':'bnpg'}">${p.s==='pago'?'✓ Pago':'Pendente'}</span></td></tr>`).join('')}</tbody></table></div>`:''}${pd.length?`<div style="font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin:.9rem 0 .6rem">Pedidos</div><div class="twrap"><table><thead><tr><th>Data</th><th>Produto</th><th>Qtd.</th><th>Venda</th><th>Desconto</th><th>Entrega</th><th>Status</th></tr></thead><tbody>${[...pd].sort((a,b)=>b.dt.localeCompare(a.dt)).map(p=>`<tr><td style="color:var(--mu);font-size:12px">${fd(p.dt)}</td><td>${PR[p.p]}</td><td>${p.q}</td><td style="font-weight:600;color:var(--g)">${fmt(totP(p))}</td><td>${p.dc>0?`<span class="bg bdsc">-${fmt(p.dc)}</span>`:'—'}</td><td style="font-size:12px;color:var(--mu)">${fd(p.e)}</td><td><span class="bg ${SB[p.s]}">${SL[p.s]}</span></td></tr>`).join('')}</tbody></table></div>`:''}
   </div>`;
 }
 
-// ─── RESUMO ──────────────────────────────────────────────────────────────────
-function getMeses() {
-  const s=new Set();
-  getPA().forEach(p=>s.add(p.dt.substring(0,7)));
-  s.add(td().substring(0,7));
-  return [...s].sort().reverse();
-}
-function rRes() {
-  const sel=document.getElementById('ms'), ms=getMeses(), cur=sel.value||ms[0];
-  sel.innerHTML=ms.map(m=>{
-    const[y,mo]=m.split('-');
-    const l=new Date(y,mo-1,1).toLocaleString('pt-BR',{month:'long',year:'numeric'});
-    return`<option value="${m}" ${m===cur?'selected':''}>${l.charAt(0).toUpperCase()+l.slice(1)}</option>`;
-  }).join('');
-  const PA=getPA(), PE=getPE(), E=getE(), EM=getEM();
-  const mp=PA.filter(p=>p.dt.startsWith(cur));
-  const tR=mp.reduce((a,b)=>a+b.v,0);
-  const tPg=mp.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0);
-  const tPd=mp.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
+function getMeses(){const s=new Set();gP().forEach(p=>s.add(p.dt.substring(0,7)));s.add(td().substring(0,7));return[...s].sort().reverse();}
+function rRes(){
+  const sel=document.getElementById('ms'),ms=getMeses(),cur=sel.value||ms[0];
+  sel.innerHTML=ms.map(m=>{const[y,mo]=m.split('-');const l=new Date(y,mo-1,1).toLocaleString('pt-BR',{month:'long',year:'numeric'});return`<option value="${m}" ${m===cur?'selected':''}>${l.charAt(0).toUpperCase()+l.slice(1)}</option>`;}).join('');
+  const mp=gP().filter(p=>p.dt.startsWith(cur));
+  const tR=mp.reduce((a,b)=>a+b.v,0),tPg=mp.filter(p=>p.s==='pago').reduce((a,b)=>a+b.v,0),tPd=mp.filter(p=>p.s==='pend').reduce((a,b)=>a+b.v,0);
   const pf={};mp.forEach(p=>{pf[p.f]=(pf[p.f]||0)+p.v;});
-  const pdm=PE.filter(p=>p.dt.startsWith(cur));
-  const atr=PE.filter(p=>p.s!=='entregue'&&p.e&&p.e<td()).length;
-  const precM=Object.values(EM).filter(e=>e.q<=e.m&&e.m>0).length;
-  document.getElementById('rc').innerHTML=`
-    <div class="cards">
-      <div class="mc a"><div class="mlb">Total do mês</div><div class="mv">${fmt(tR)}</div></div>
-      <div class="mc a"><div class="mlb">Recebido</div><div class="mv ok">${fmt(tPg)}</div></div>
-      <div class="mc w"><div class="mlb">A receber</div><div class="mv wn">${fmt(tPd)}</div></div>
-      <div class="mc ${atr>0?'r':''}"><div class="mlb">Pedidos atrasados</div><div class="mv ${atr>0?'dn':''}">${atr}</div></div>
-    </div>
-    ${precM>0?`<div class="alerta-box"><i class="ti ti-alert-triangle"></i> <strong>${precM} material${precM>1?'is':''} com estoque baixo.</strong> Verifique Estoque → Materiais.</div>`:''}
-    <div class="pnl"><div class="ptit"><i class="ti ti-credit-card"></i> Por forma de pagamento</div>
-    <table><thead><tr><th>Forma</th><th>Total</th></tr></thead><tbody>
-    ${Object.entries(pf).length?Object.entries(pf).map(([k,v])=>`<tr><td><span class="bg ${FB[k]}">${FL[k]}</span></td><td style="font-weight:500;color:var(--g)">${fmt(v)}</td></tr>`).join(''):'<tr><td colspan="2" style="color:var(--mu)">Sem registros neste mês.</td></tr>'}
-    </tbody></table></div>
-    ${pdm.length?`<div class="pnl"><div class="ptit"><i class="ti ti-clipboard-list"></i> Pedidos do mês</div>
-    <table><thead><tr><th>Cliente</th><th>Produto</th><th>Qtd.</th><th>Entrega</th><th>Status</th></tr></thead>
-    <tbody>${pdm.map(p=>{const a=p.s!=='entregue'&&p.e&&p.e<td();return`<tr><td style="font-weight:500">${p.c}</td><td>${PR[p.p]}</td><td>${p.q}</td><td style="font-size:12px;color:${a?'var(--rd)':'var(--mu)'}">${fd(p.e)}</td><td>${a?'<span class="bg batr">⚠ Atrasado</span>':`<span class="bg ${SB[p.s]}">${SL[p.s]}</span>`}</td></tr>`;}).join('')}</tbody></table></div>`:''}
-    <div class="pnl"><div class="ptit"><i class="ti ti-shopping-bag"></i> Estoque de produtos</div>
-    <table><thead><tr><th>Produto</th><th>Em estoque</th><th>Status</th></tr></thead>
-    <tbody>${Object.entries(E).map(([k,v])=>`<tr><td style="font-weight:500">${PR[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}</tbody></table></div>
-    <div class="pnl"><div class="ptit"><i class="ti ti-package"></i> Estoque de materiais</div>
-    <table><thead><tr><th>Material</th><th>Em estoque</th><th>Status</th></tr></thead>
-    <tbody>${Object.entries(EM).map(([k,v])=>`<tr><td style="font-weight:500">${MT[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}</tbody></table></div>`;
+  const pdm=gD().filter(p=>p.dt.startsWith(cur));
+  const atr=gD().filter(p=>p.s!=='entregue'&&p.e&&p.e<td()).length;
+  const cobAtr=gP().filter(p=>p.s==='pend'&&p.f==='prz'&&p.pz&&p.pz<td()).length;
+  const E=gE(),M=gM();
+  const totDesc=pdm.reduce((a,p)=>a+(p.dc||0),0);
+  const totMrg=pdm.reduce((acc,p)=>{let c=(E[p.p]?.c||0)*(p.q||1);for(const mk of(p.mats||[])){if(mk==='imp')c+=CIMP*(p.q||1);else c+=(M[mk]?.c||0)*(p.q||1);}return acc+(totP(p)-c);},0);
+  document.getElementById('rc').innerHTML=`<div class="cards"><div class="mc"><div class="mci"><i class="ti ti-trending-up"></i></div><div class="mcb g"></div><div class="mlb">Total do mês</div><div class="mv">${fmt(tR)}</div></div><div class="mc"><div class="mci"><i class="ti ti-check"></i></div><div class="mcb g"></div><div class="mlb">Recebido</div><div class="mv ok">${fmt(tPg)}</div></div><div class="mc"><div class="mci"><i class="ti ti-clock"></i></div><div class="mcb w"></div><div class="mlb">A receber</div><div class="mv wn">${fmt(tPd)}</div></div><div class="mc"><div class="mci"><i class="ti ti-coin"></i></div><div class="mcb g"></div><div class="mlb">Margem dos pedidos</div><div class="mv ok">${fmt(totMrg)}</div></div></div>${cobAtr>0?`<div class="alerta"><i class="ti ti-bell"></i> <strong>${cobAtr} pagamento${cobAtr>1?'s':''} em atraso!</strong> Verifique a aba Pagamento.</div>`:''}${totDesc>0?`<div class="alerta-yw" style="margin-bottom:1rem"><i class="ti ti-tag" style="margin-right:4px"></i> Total de descontos concedidos este mês: <strong>${fmt(totDesc)}</strong></div>`:''}
+  <div class="pnl"><div class="ptit"><i class="ti ti-credit-card"></i> Por forma de pagamento</div><table><thead><tr><th>Forma</th><th>Total</th></tr></thead><tbody>${Object.entries(pf).length?Object.entries(pf).map(([k,v])=>`<tr><td><span class="bg ${FB[k]}">${FL[k]}</span></td><td style="font-weight:600;color:var(--g)">${fmt(v)}</td></tr>`).join(''):'<tr><td colspan="2" style="color:var(--mu)">Sem registros neste mês.</td></tr>'}</tbody></table></div>
+  ${pdm.length?`<div class="pnl"><div class="ptit"><i class="ti ti-clipboard-list"></i> Pedidos do mês</div><table><thead><tr><th>Cliente</th><th>Produto</th><th>Venda</th><th>Desconto</th><th>Margem</th><th>Status</th></tr></thead><tbody>${pdm.map(p=>{const isat=p.s!=='entregue'&&p.e&&p.e<td();let c=(E[p.p]?.c||0)*(p.q||1);for(const mk of(p.mats||[])){if(mk==='imp')c+=CIMP*(p.q||1);else c+=(M[mk]?.c||0)*(p.q||1);}const v=totP(p),mrg=v-c;return`<tr><td style="font-weight:500">${p.c}</td><td>${PR[p.p]} x${p.q}</td><td style="font-weight:600;color:var(--g)">${fmt(v)}</td><td>${p.dc>0?`<span class="bg bdsc">-${fmt(p.dc)}</span>`:'—'}</td><td style="font-size:12px;font-weight:600;color:${mrg>0?'#3a5a28':mrg<0?'var(--rd)':'var(--mu)'}">${fmt(mrg)}</td><td>${isat?'<span class="bg batr">⚠</span>':`<span class="bg ${SB[p.s]}">${SL[p.s]}</span>`}</td></tr>`;}).join('')}</tbody></table></div>`:''}
+  <div class="pnl"><div class="ptit"><i class="ti ti-box"></i> Estoque</div><table><thead><tr><th>Item</th><th>Em estoque</th><th>Status</th></tr></thead><tbody>${Object.entries(E).map(([k,v])=>`<tr><td style="font-weight:500">${PR[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}${Object.entries(M).map(([k,v])=>`<tr><td style="color:var(--mu)">${MT[k]}</td><td>${v.q} un.</td><td>${sbg(v.q,v.m)}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-rE(); rP(); rD(); rRes();
+fillPr();calcT();calcC();rE();rP();rD();rRes();
 </script>
 </body>
 </html>
