@@ -2806,24 +2806,22 @@ function mgParsarBRL(str) {
 }
 
 function mgParsearExtrato(texto) {
-  // Strategy: find key labels and get the R$ value on the SAME LINE
-  // PDF.js position-based extraction puts label and value on same line separated by spaces
-  
-  // Split into lines and search each line
   const linhas = texto.split('\n');
   
-  function encontrarValorNaLinha(linhas, labelParts) {
+  // Search line by line for a label, return last R$ value on that line
+  function valorNaLinha(termos) {
     for (const linha of linhas) {
-      const upper = linha.toUpperCase();
-      const temLabel = labelParts.every(p => upper.includes(p.toUpperCase()));
-      if (temLabel) {
-        const m = linha.match(/R\$([\d\.]+,[\d]{2})/g);
-        if (m && m.length > 0) {
-          return mgParsarBRL(m[m.length-1]); // last R$ on the line
-        }
+      const up = linha.toUpperCase();
+      if (termos.every(t => up.includes(t.toUpperCase()))) {
+        const vals = [...linha.matchAll(/R\$([\d\.]+,[\d]{2})/g)];
+        if (vals.length > 0) return mgParsarBRL(vals[vals.length-1][1]);
       }
     }
-    return 0;
+    // Fallback: search across full text with tight window
+    const labelStr = termos.join('.*?');
+    const re = new RegExp(labelStr + '[\\s\\S]{0,30}?R\\$([\\d\\.]+,[\\d]{2})', 'i');
+    const m = texto.match(re);
+    return m ? mgParsarBRL(m[1]) : 0;
   }
   // === NOME ===
   let nome = '';
