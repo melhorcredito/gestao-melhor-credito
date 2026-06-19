@@ -2776,10 +2776,22 @@ async function mgAnalisar(file) {
     for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      fullText += content.items.map(item => item.str).join(' ') + '\n';
+      
+      // Group items by Y position (top to bottom) to reconstruct lines
+      const lineMap = {};
+      content.items.forEach(item => {
+        const y = Math.round(item.transform[5]);
+        if (!lineMap[y]) lineMap[y] = [];
+        if (item.str.trim()) lineMap[y].push(item.str.trim());
+      });
+      
+      // Sort Y ascending = top to bottom (smaller Y number = higher on page in PDF coords)
+      // In PDF coordinates, Y increases upward, so LARGER Y = higher on page
+      const sortedY = Object.keys(lineMap).map(Number).sort((a,b) => b-a);
+      fullText += sortedY.map(y => lineMap[y].join(' ')).join('\n') + '\n';
     }
 
-const result = mgParsearExtrato(fullText);
+    const result = mgParsearExtrato(fullText);
     mgMostrarResultado(result);
   } catch(e) {
     document.getElementById('mg-loading').style.display = 'none';
