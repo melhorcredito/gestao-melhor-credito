@@ -2789,58 +2789,74 @@ async function mgAnalisar(file) {
   }
 }
 
-function mgParsearValor(texto, label) {
-  const patterns = [
-    new RegExp(label + '[\\s\\S]{0,80}?R\\$\\s*([\\d\\.]+,[\\d]{2})', 'i'),
-    new RegExp(label + '[\\s:]*([\\d\\.]+,[\\d]{2})', 'i'),
-  ];
-  for (const p of patterns) {
-    const m = texto.match(p);
-    if (m) return parseFloat(m[1].replace(/\./g, '').replace(',', '.'));
-  }
+function mgExtrairValorApos(texto, label) {
+  // Find the label position, then get the NEXT R$ value after it
+  const idx = texto.toUpperCase().indexOf(label.toUpperCase());
+  if (idx === -1) return 0;
+  const trecho = texto.substring(idx + label.length, idx + label.length + 60);
+  const m = trecho.match(/R\$\s*([\d\.]+,[\d]{2})/);
+  if (m) return parseFloat(m[1].replace(/\./g,'').replace(',','.'));
+  // Try without R$ (just number)
+  const m2 = trecho.match(/([\d\.]+,[\d]{2})/);
+  if (m2) return parseFloat(m2[1].replace(/\./g,'').replace(',','.'));
   return 0;
 }
 
 function mgParsearExtrato(texto) {
-  // Nome do cliente
+  // Nome do cliente - appears prominently at top
   let nome = '';
-  const nomeMatch = texto.match(/EMPRÉSTIMO CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]+?)(?=Benefício|BENEFÍCIO|Nº Benefício)/i);
-  if (nomeMatch) nome = nomeMatch[1].trim();
+  const nomePatterns = [
+    /EMPRÉSTIMO CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60?)(?=\s*Benefício|\s*BENEFÍCIO|\s*Nº)/i,
+    /CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60})(?=\s*Benefício)/i,
+  ];
+  for (const p of nomePatterns) {
+    const m = texto.match(p);
+    if (m) { nome = m[1].trim(); break; }
+  }
+  if (!nome) {
+    // Try to find name between INSS header and Benefício section
+    const m = texto.match(/Instituto Nacional do Seguro Social\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60})(?=\s*Benefício)/i);
+    if (m) nome = m[1].trim();
+  }
 
   // Benefício
   let beneficio = '';
-  const benefMatch = texto.match(/(APOSENTADORIA[^\n]{0,60}|PENSÃO[^\n]{0,60}|AUXÍLIO[^\n]{0,60})\s*Nº Benefício[:\s]*([\d\.\-]+)/i);
-  if (benefMatch) beneficio = benefMatch[1].trim() + ' — Nº ' + benefMatch[2].trim();
+  const bm = texto.match(/(APOSENTADORIA[^\n\r]{0,50}|PENSÃO[^\n\r]{0,50}|AUXÍLIO[^\n\r]{0,50})/i);
+  if (bm) beneficio = bm[1].trim();
+  const nm = texto.match(/Nº Benefício[:\s]*([\d\.\-]+)/i);
+  if (nm) beneficio += (beneficio ? ' — Nº ' : 'Nº ') + nm[1].trim();
 
-  // Situação
+  // Situação e contratos
   let situacao = 'ATIVO';
-  const sitMatch = texto.match(/Situação[:\s]*(\w+)/i);
-  if (sitMatch) situacao = sitMatch[1].trim();
-
-  // Contratos ativos
+  const sm = texto.match(/Situação[:\s]*(\w+)/i);
+  if (sm) situacao = sm[1].trim();
   let contratos_ativos = 0;
-  const ativosMatch = texto.match(/ATIVOS\s+(\d+)/i);
-  if (ativosMatch) contratos_ativos = parseInt(ativosMatch[1]);
+  const am = texto.match(/ATIVOS\s+(\d+)/i);
+  if (am) contratos_ativos = parseInt(am[1]);
 
-  // Valores principais
-  const base_calculo = mgParsearValor(texto, 'BASE DE CÁLCULO');
-  const maximo_permitido = mgParsearValor(texto, 'MÁXIMO DE COMPROMETIMENTO PERMITIDO');
-  const total_comprometido = mgParsearValor(texto, 'TOTAL COMPROMETIDO');
-  const margem_extrapolada = mgParsearValor(texto, 'MARGEM EXTRAPOLADA');
+  // === VALORES PRINCIPAIS ===
+  // Extract from "VALORES DO BENEFÍCIO" section
+  const base_calculo     = mgExtrairValorApos(texto, 'BASE DE CÁLCULO');
+  const maximo_permitido = mgExtrairValorApos(texto, 'MÁXIMO DE COMPROMETIMENTO PERMITIDO');
+  const total_comprometido = mgExtrairValorApos(texto, 'TOTAL COMPROMETIDO');
+  const margem_extrapolada = mgExtrairValorApos(texto, 'MARGEM EXTRAPOLADA');
 
-  // Margem disponível por modalidade
+  // === MARGEM DISPONÍVEL por modalidade ===
+  // Find "MARGEM DISPONÍVEL" then get the 3 values (Empréstimos, RMC, RCC)
   let margem_emprestimos_disponivel = 0;
   let margem_rmc_disponivel = 0;
   let margem_rcc_disponivel = 0;
 
-  const dispMatches = texto.match(/MARGEM DISPONÍVEL[^R]*R\$\s*([\d\.]+,[\d]{2})[^R]*R\$\s*([\d\.]+,[\d]{2})[^R]*R\$\s*([\d\.]+,[\d]{2})/i);
-  if (dispMatches) {
-    margem_emprestimos_disponivel = parseFloat(dispMatches[1].replace(/\./g,'').replace(',','.'));
-    margem_rmc_disponivel = parseFloat(dispMatches[2].replace(/\./g,'').replace(',','.'));
-    margem_rcc_disponivel = parseFloat(dispMatches[3].replace(/\./g,'').replace(',','.'));
+  const idxDisp = texto.toUpperCase().indexOf('MARGEM DISPONÍVEL');
+  if (idxDisp !== -1) {
+    const trecho = texto.substring(idxDisp, idxDisp + 200);
+    const vals = [...trecho.matchAll(/R\$\s*([\d\.]+,[\d]{2})/g)];
+    if (vals[0]) margem_emprestimos_disponivel = parseFloat(vals[0][1].replace(/\./g,'').replace(',','.'));
+    if (vals[1]) margem_rmc_disponivel = parseFloat(vals[1][1].replace(/\./g,'').replace(',','.'));
+    if (vals[2]) margem_rcc_disponivel = parseFloat(vals[2][1].replace(/\./g,'').replace(',','.'));
   }
 
-  // CÁLCULO PRINCIPAL: Máximo Permitido - Total Comprometido
+  // === CÁLCULO PRINCIPAL ===
   const margem_real = Math.round((maximo_permitido - total_comprometido) * 100) / 100;
   const tem_margem = margem_real > 0.01;
 
