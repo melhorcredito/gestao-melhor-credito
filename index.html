@@ -2779,7 +2779,7 @@ async function mgAnalisar(file) {
       fullText += content.items.map(item => item.str).join(' ') + '\n';
     }
 
-    const result = mgParsearExtrato(fullText);
+const result = mgParsearExtrato(fullText);
     mgMostrarResultado(result);
   } catch(e) {
     document.getElementById('mg-loading').style.display = 'none';
@@ -2789,74 +2789,84 @@ async function mgAnalisar(file) {
   }
 }
 
-function mgExtrairValorApos(texto, label) {
-  // Find the label position, then get the NEXT R$ value after it
-  const idx = texto.toUpperCase().indexOf(label.toUpperCase());
-  if (idx === -1) return 0;
-  const trecho = texto.substring(idx + label.length, idx + label.length + 60);
-  const m = trecho.match(/R\$\s*([\d\.]+,[\d]{2})/);
-  if (m) return parseFloat(m[1].replace(/\./g,'').replace(',','.'));
-  // Try without R$ (just number)
-  const m2 = trecho.match(/([\d\.]+,[\d]{2})/);
-  if (m2) return parseFloat(m2[1].replace(/\./g,'').replace(',','.'));
-  return 0;
+function mgParsarBRL(str) {
+  return parseFloat((str||'').replace(/[R\$\s]/g,'').replace(/\./g,'').replace(',','.')) || 0;
 }
 
 function mgParsearExtrato(texto) {
-  // Nome do cliente - appears prominently at top
+  // Strategy: find key labels and get the R$ value on the SAME LINE
+  // PDF.js position-based extraction puts label and value on same line separated by spaces
+  
+  // Split into lines and search each line
+  const linhas = texto.split('\n');
+  
+  function encontrarValorNaLinha(linhas, labelParts) {
+    for (const linha of linhas) {
+      const upper = linha.toUpperCase();
+      const temLabel = labelParts.every(p => upper.includes(p.toUpperCase()));
+      if (temLabel) {
+        const m = linha.match(/R\$([\d\.]+,[\d]{2})/g);
+        if (m && m.length > 0) {
+          return mgParsarBRL(m[m.length-1]); // last R$ on the line
+        }
+      }
+    }
+    return 0;
+  }
+  // === NOME ===
   let nome = '';
-  const nomePatterns = [
-    /EMPRÉSTIMO CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60?)(?=\s*Benefício|\s*BENEFÍCIO|\s*Nº)/i,
-    /CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60})(?=\s*Benefício)/i,
-  ];
-  for (const p of nomePatterns) {
-    const m = texto.match(p);
-    if (m) { nome = m[1].trim(); break; }
-  }
-  if (!nome) {
-    // Try to find name between INSS header and Benefício section
-    const m = texto.match(/Instituto Nacional do Seguro Social\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]{5,60})(?=\s*Benefício)/i);
-    if (m) nome = m[1].trim();
-  }
+  const nm = texto.match(/EMPRÉSTIMO CONSIGNADO\n([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ ]+)\n/);
+  if (nm) nome = nm[1].trim();
 
-  // Benefício
+  // === BENEFÍCIO ===
   let beneficio = '';
-  const bm = texto.match(/(APOSENTADORIA[^\n\r]{0,50}|PENSÃO[^\n\r]{0,50}|AUXÍLIO[^\n\r]{0,50})/i);
+  const bm = texto.match(/(APOSENTADORIA[^\n]+|PENSÃO[^\n]+|AUXÍLIO[^\n]+)/);
   if (bm) beneficio = bm[1].trim();
-  const nm = texto.match(/Nº Benefício[:\s]*([\d\.\-]+)/i);
-  if (nm) beneficio += (beneficio ? ' — Nº ' : 'Nº ') + nm[1].trim();
+  const numB = texto.match(/Nº Benefício:\s*([\d\.\-]+)/);
+  if (numB) beneficio += ' — Nº ' + numB[1].trim();
 
-  // Situação e contratos
+  // === SITUAÇÃO ===
   let situacao = 'ATIVO';
-  const sm = texto.match(/Situação[:\s]*(\w+)/i);
+  const sm = texto.match(/Situação:\s*(\w+)/);
   if (sm) situacao = sm[1].trim();
-  let contratos_ativos = 0;
-  const am = texto.match(/ATIVOS\s+(\d+)/i);
-  if (am) contratos_ativos = parseInt(am[1]);
 
-  // === VALORES PRINCIPAIS ===
-  // Extract from "VALORES DO BENEFÍCIO" section
-  const base_calculo     = mgExtrairValorApos(texto, 'BASE DE CÁLCULO');
-  const maximo_permitido = mgExtrairValorApos(texto, 'MÁXIMO DE COMPROMETIMENTO PERMITIDO');
-  const total_comprometido = mgExtrairValorApos(texto, 'TOTAL COMPROMETIDO');
-  const margem_extrapolada = mgExtrairValorApos(texto, 'MARGEM EXTRAPOLADA');
+  // === CONTRATOS ATIVOS ===
+  let contratos_ativos = 0;
+  const ca = texto.match(/\nATIVOS\s+(\d+)\n/);
+  if (ca) contratos_ativos = parseInt(ca[1]);
+
+  // === VALORES DO BENEFÍCIO (Página 2) ===
+  // Exact patterns matching the PDF text format:
+  // "BASE DE CÁLCULO R$3.450,31"
+  // "MÁXIMO DE COMPROMETIMENTO PERMITIDO R$1.380,12"
+  // "TOTAL COMPROMETIDO R$1.281,87"
+  
+  let base_calculo = 0, maximo_permitido = 0, total_comprometido = 0, margem_extrapolada = 0;
+
+  const baseM = texto.match(/BASE DE CÁLCULO\s+R\$([\d\.]+,[\d]{2})/);
+  if (baseM) base_calculo = mgParsarBRL(baseM[1]);
+
+  const maxM = texto.match(/MÁXIMO DE COMPROMETIMENTO PERMITIDO\s+R\$([\d\.]+,[\d]{2})/);
+  if (maxM) maximo_permitido = mgParsarBRL(maxM[1]);
+
+  const totM = texto.match(/TOTAL COMPROMETIDO\s+R\$([\d\.]+,[\d]{2})/);
+  if (totM) total_comprometido = mgParsarBRL(totM[1]);
+
+  const extM = texto.match(/MARGEM EXTRAPOLADA\*{0,3}\s+R\$([\d\.]+,[\d]{2})(?!\s+R\$)/);
+  if (extM) margem_extrapolada = mgParsarBRL(extM[1]);
 
   // === MARGEM DISPONÍVEL por modalidade ===
-  // Find "MARGEM DISPONÍVEL" then get the 3 values (Empréstimos, RMC, RCC)
-  let margem_emprestimos_disponivel = 0;
-  let margem_rmc_disponivel = 0;
-  let margem_rcc_disponivel = 0;
-
-  const idxDisp = texto.toUpperCase().indexOf('MARGEM DISPONÍVEL');
-  if (idxDisp !== -1) {
-    const trecho = texto.substring(idxDisp, idxDisp + 200);
-    const vals = [...trecho.matchAll(/R\$\s*([\d\.]+,[\d]{2})/g)];
-    if (vals[0]) margem_emprestimos_disponivel = parseFloat(vals[0][1].replace(/\./g,'').replace(',','.'));
-    if (vals[1]) margem_rmc_disponivel = parseFloat(vals[1][1].replace(/\./g,'').replace(',','.'));
-    if (vals[2]) margem_rcc_disponivel = parseFloat(vals[2][1].replace(/\./g,'').replace(',','.'));
+  // "MARGEM DISPONÍVEL* R$270,77 R$0,00 R$172,52"
+  let margem_emprestimos_disponivel = 0, margem_rmc_disponivel = 0, margem_rcc_disponivel = 0;
+  const dispM = texto.match(/MARGEM DISPONÍVEL\*?\s+R\$([\d\.]+,[\d]{2})\s+R\$([\d\.]+,[\d]{2})\s+R\$([\d\.]+,[\d]{2})/);
+  if (dispM) {
+    margem_emprestimos_disponivel = mgParsarBRL(dispM[1]);
+    margem_rmc_disponivel = mgParsarBRL(dispM[2]);
+    margem_rcc_disponivel = mgParsarBRL(dispM[3]);
   }
 
   // === CÁLCULO PRINCIPAL ===
+  // Margem Real = Máximo Permitido - Total Comprometido
   const margem_real = Math.round((maximo_permitido - total_comprometido) * 100) / 100;
   const tem_margem = margem_real > 0.01;
 
