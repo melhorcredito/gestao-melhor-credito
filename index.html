@@ -270,6 +270,7 @@ header{display:none}
     <div class="sb-section">Acesso Rápido</div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
+    <div class="sb-item" onclick="switchTab('margem',this)"><span class="sb-icon">📊</span><span class="sb-label">Analisador de Margem</span></div>
   </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
     <div onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s">
@@ -2683,6 +2684,271 @@ function carregarHistorico() {
     </div>
   </div>
 </div>
+
+<!-- ══════════════ ABA ANALISADOR DE MARGEM ══════════════ -->
+<div class="tab-content" id="tab-margem">
+<div style="max-width:860px;margin:0 auto;padding:28px 20px 60px">
+
+  <!-- Header -->
+  <div style="margin-bottom:24px">
+    <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark)">📊 Analisador de Margem Consignada</h2>
+    <p style="font-size:13px;color:var(--lbl);margin-top:4px">Envie o extrato do INSS em PDF e o sistema analisa automaticamente a margem disponível.</p>
+  </div>
+
+  <!-- Upload area -->
+  <div style="background:#fff;border:2px dashed #c8dff0;border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px" id="mg-dropzone" onclick="document.getElementById('mg-file').click()" ondragover="event.preventDefault();this.style.borderColor='#0077cc'" ondragleave="this.style.borderColor='#c8dff0'" ondrop="mgHandleDrop(event)">
+    <div style="font-size:40px;margin-bottom:12px">📄</div>
+    <div style="font-size:16px;font-weight:700;color:#003a66;margin-bottom:6px">Arraste o extrato PDF aqui</div>
+    <div style="font-size:13px;color:var(--lbl)">ou clique para selecionar o arquivo</div>
+    <input type="file" id="mg-file" accept=".pdf" style="display:none" onchange="mgAnalisar(this.files[0])">
+  </div>
+
+  <!-- Loading -->
+  <div id="mg-loading" style="display:none;text-align:center;padding:40px">
+    <div style="font-size:32px;animation:spin 1s linear infinite;display:inline-block">⏳</div>
+    <p style="margin-top:12px;color:var(--lbl);font-size:14px">Lendo extrato e calculando margem...</p>
+  </div>
+
+  <!-- Resultado -->
+  <div id="mg-resultado" style="display:none">
+
+    <!-- Card do cliente -->
+    <div style="background:#fff;border:1.5px solid #dae8f5;border-radius:16px;padding:20px 24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,119,204,.06)">
+      <div style="font-size:12px;font-weight:700;color:#3a6080;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Cliente</div>
+      <div style="font-size:20px;font-weight:700;color:#003a66" id="mg-nome">—</div>
+      <div style="font-size:13px;color:var(--lbl);margin-top:4px" id="mg-beneficio">—</div>
+    </div>
+
+    <!-- Veredicto principal -->
+    <div id="mg-veredicto" style="border-radius:16px;padding:24px;margin-bottom:16px;text-align:center">
+      <div style="font-size:48px;margin-bottom:8px" id="mg-icone">—</div>
+      <div style="font-size:22px;font-weight:800;margin-bottom:6px" id="mg-titulo">—</div>
+      <div style="font-size:15px;opacity:.85" id="mg-subtitulo">—</div>
+    </div>
+
+    <!-- Tabela de valores -->
+    <div style="background:#fff;border:1.5px solid #dae8f5;border-radius:16px;padding:20px 24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,119,204,.06)">
+      <div style="font-size:12px;font-weight:700;color:#3a6080;text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px">Detalhamento dos Valores</div>
+      <div style="display:grid;gap:10px" id="mg-tabela"></div>
+    </div>
+
+    <!-- Cartões RMC/RCC -->
+    <div style="background:#fff;border:1.5px solid #dae8f5;border-radius:16px;padding:20px 24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,119,204,.06)" id="mg-cartoes-box">
+      <div style="font-size:12px;font-weight:700;color:#3a6080;text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px">Cartões (RMC / RCC)</div>
+      <div id="mg-cartoes"></div>
+    </div>
+
+    <!-- Botões -->
+    <div style="display:flex;gap:12px;margin-top:8px">
+      <button onclick="mgLimpar()" style="flex:1;padding:13px;border:1.5px solid #c8dff0;background:#fff;border-radius:10px;font-size:14px;font-weight:600;color:#3a6080;cursor:pointer">🔄 Analisar Novo Extrato</button>
+      <button onclick="mgCopiar()" style="flex:1;padding:13px;background:linear-gradient(135deg,#0077cc,#003a66);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">📋 Copiar Resultado</button>
+    </div>
+  </div>
+
+  <!-- Erro -->
+  <div id="mg-erro" style="display:none;background:#fef2f2;border:1.5px solid #ef4444;border-radius:12px;padding:16px 20px;color:#991b1b;font-size:14px;font-weight:600"></div>
+
+</div>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+async function mgAnalisar(file) {
+  if (!file) return;
+  document.getElementById('mg-dropzone').style.display = 'none';
+  document.getElementById('mg-loading').style.display = 'block';
+  document.getElementById('mg-resultado').style.display = 'none';
+  document.getElementById('mg-erro').style.display = 'none';
+
+  try {
+    // Read PDF as base64
+    const b64 = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+
+    // Send to Claude API for analysis
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: `Você é um analisador de extratos consignados do INSS. Analise o extrato e retorne SOMENTE um JSON válido, sem texto adicional, sem markdown, sem blocos de código.
+
+REGRA DE CÁLCULO DA MARGEM REAL:
+- Margem Real = Máximo de Comprometimento Permitido - Total Comprometido
+- Se Margem Real > 0: cliente TEM margem
+- Se Margem Real <= 0: cliente NÃO tem margem (está no limite ou extrapolado)
+- NÃO use apenas a "Margem Disponível" do extrato — use sempre o cálculo acima
+
+Retorne este JSON:
+{
+  "nome": "nome completo do cliente",
+  "beneficio": "tipo de benefício - número",
+  "base_calculo": 0.00,
+  "maximo_permitido": 0.00,
+  "total_comprometido": 0.00,
+  "margem_extrapolada": 0.00,
+  "margem_real": 0.00,
+  "tem_margem": true,
+  "margem_emprestimos_disponivel": 0.00,
+  "margem_rmc_disponivel": 0.00,
+  "margem_rcc_disponivel": 0.00,
+  "situacao": "ATIVO ou SUSPENSO etc",
+  "contratos_ativos": 0,
+  "resumo": "frase curta explicando a situação do cliente"
+}`,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
+            { type: 'text', text: 'Analise este extrato consignado do INSS e retorne o JSON conforme instruído.' }
+          ]
+        }]
+      })
+    });
+
+    const data = await resp.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || '';
+    
+    let result;
+    try {
+      result = JSON.parse(text.trim());
+    } catch(e) {
+      // Try to extract JSON from text
+      const match = text.match(/\{[\s\S]*\}/);
+      if (match) result = JSON.parse(match[0]);
+      else throw new Error('Não foi possível interpretar o extrato. Verifique se o PDF é um extrato válido do INSS.');
+    }
+
+    mgMostrarResultado(result);
+  } catch(e) {
+    document.getElementById('mg-loading').style.display = 'none';
+    document.getElementById('mg-dropzone').style.display = 'block';
+    document.getElementById('mg-erro').style.display = 'block';
+    document.getElementById('mg-erro').textContent = '❌ ' + (e.message || 'Erro ao analisar o extrato.');
+  }
+}
+
+function mgHandleDrop(e) {
+  e.preventDefault();
+  document.getElementById('mg-dropzone').style.borderColor = '#c8dff0';
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') mgAnalisar(file);
+}
+
+function mgFmt(v) {
+  return 'R$ ' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function mgMostrarResultado(r) {
+  document.getElementById('mg-loading').style.display = 'none';
+  document.getElementById('mg-resultado').style.display = 'block';
+
+  // Cliente
+  document.getElementById('mg-nome').textContent = r.nome || '—';
+  document.getElementById('mg-beneficio').textContent = (r.situacao || '') + ' • ' + (r.beneficio || '') + ' • ' + (r.contratos_ativos || 0) + ' contratos ativos';
+
+  // Veredicto
+  const verd = document.getElementById('mg-veredicto');
+  const margem = r.margem_real || 0;
+  if (r.tem_margem && margem > 0) {
+    verd.style.background = 'linear-gradient(135deg,#ecfdf5,#d1fae5)';
+    verd.style.border = '1.5px solid #22c55e';
+    verd.style.color = '#065f46';
+    document.getElementById('mg-icone').textContent = '✅';
+    document.getElementById('mg-titulo').textContent = 'Cliente possui margem disponível';
+    document.getElementById('mg-subtitulo').textContent = 'Margem real: ' + mgFmt(margem);
+  } else {
+    verd.style.background = 'linear-gradient(135deg,#fef2f2,#fee2e2)';
+    verd.style.border = '1.5px solid #ef4444';
+    verd.style.color = '#991b1b';
+    document.getElementById('mg-icone').textContent = '❌';
+    document.getElementById('mg-titulo').textContent = 'Cliente não possui margem';
+    document.getElementById('mg-subtitulo').textContent = margem < 0 
+      ? 'Margem extrapolada em ' + mgFmt(Math.abs(margem)) 
+      : 'Margem zerada — no limite máximo';
+  }
+
+  // Tabela
+  const linhas = [
+    { label: 'Base de Cálculo', valor: r.base_calculo, cor: '#1a2e3d' },
+    { label: 'Máximo de Comprometimento Permitido', valor: r.maximo_permitido, cor: '#0077cc' },
+    { label: 'Total Comprometido', valor: r.total_comprometido, cor: '#e53e3e' },
+    { label: 'Margem Extrapolada', valor: r.margem_extrapolada, cor: r.margem_extrapolada > 0 ? '#e53e3e' : '#22c55e' },
+    { label: '→ MARGEM REAL (Máximo − Total Comprometido)', valor: margem, cor: margem > 0 ? '#22c55e' : '#e53e3e', bold: true },
+  ];
+  document.getElementById('mg-tabela').innerHTML = linhas.map(l => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa">
+      <span style="font-size:13px;color:#3a6080;${l.bold?'font-weight:700;color:#003a66':''}">${l.label}</span>
+      <span style="font-size:14px;font-weight:700;color:${l.cor}">${mgFmt(l.valor)}</span>
+    </div>
+  `).join('');
+
+  // Cartões
+  const cartoes = [
+    { tipo: 'Empréstimos', disp: r.margem_emprestimos_disponivel },
+    { tipo: 'RMC (Cartão)', disp: r.margem_rmc_disponivel },
+    { tipo: 'RCC (Cartão)', disp: r.margem_rcc_disponivel },
+  ];
+  document.getElementById('mg-cartoes').innerHTML = cartoes.map(c => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px">
+      <span style="font-size:13px;color:#3a6080">${c.tipo}</span>
+      <span style="font-size:13px;font-weight:700;color:${c.disp > 0 ? '#22c55e' : '#e53e3e'}">${mgFmt(c.disp)}</span>
+    </div>
+  `).join('');
+
+  // Save for copy
+  window._mgDados = r;
+  window._mgMargem = margem;
+  
+  registrarHistorico('Margem analisada: ' + r.nome + ' — ' + (r.tem_margem ? mgFmt(margem) + ' disponível' : 'Sem margem'));
+}
+
+function mgCopiar() {
+  const r = window._mgDados;
+  const m = window._mgMargem;
+  if (!r) return;
+  const txt = `📊 ANÁLISE DE MARGEM CONSIGNADA
+👤 Cliente: ${r.nome}
+📋 Benefício: ${r.beneficio}
+📌 Situação: ${r.situacao}
+
+💰 VALORES:
+• Base de Cálculo: ${mgFmt(r.base_calculo)}
+• Máximo Permitido: ${mgFmt(r.maximo_permitido)}
+• Total Comprometido: ${mgFmt(r.total_comprometido)}
+• Margem Extrapolada: ${mgFmt(r.margem_extrapolada)}
+
+${m > 0 ? '✅ MARGEM DISPONÍVEL: ' + mgFmt(m) : '❌ SEM MARGEM — ' + (m < 0 ? 'Extrapolado em ' + mgFmt(Math.abs(m)) : 'No limite máximo')}
+
+📊 Por Modalidade:
+• Empréstimos: ${mgFmt(r.margem_emprestimos_disponivel)}
+• RMC: ${mgFmt(r.margem_rmc_disponivel)}
+• RCC: ${mgFmt(r.margem_rcc_disponivel)}`;
+  
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ Copiado!';
+    setTimeout(() => btn.textContent = '📋 Copiar Resultado', 2000);
+  });
+}
+
+function mgLimpar() {
+  document.getElementById('mg-dropzone').style.display = 'block';
+  document.getElementById('mg-resultado').style.display = 'none';
+  document.getElementById('mg-erro').style.display = 'none';
+  document.getElementById('mg-file').value = '';
+  window._mgDados = null;
+}
+</script>
+
 
 <!-- ══ MODAL GERADOR DE CONTRATO ══ -->
 <div class="gerador-overlay" id="gerador-overlay">
