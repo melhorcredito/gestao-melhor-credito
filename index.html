@@ -2693,7 +2693,16 @@ function carregarHistorico() {
   <!-- Header -->
   <div style="margin-bottom:20px">
     <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark)">📊 Analisador de Margem Consignada</h2>
-    <p style="font-size:13px;color:var(--lbl);margin-top:4px">Envie o extrato do INSS em PDF e o sistema analisa automaticamente a margem disponível.</p>
+    <p style="font-size:13px;color:var(--lbl);margin-top:4px">Tire um print da página de margem do extrato e envie aqui. O sistema calcula automaticamente.</p>
+  </div>
+
+  <!-- API Key -->
+  <div style="background:#f8fbff;border:1.5px solid #c8dff0;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:18px">🔑</span>
+    <div style="flex:1">
+      <div style="font-size:11px;font-weight:700;color:#3a6080;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em">Chave de API (salva automaticamente)</div>
+      <input id="mg-apikey" type="password" placeholder="sk-ant-..." style="width:100%;padding:8px 12px;border:1.5px solid #c8dff0;border-radius:8px;font-size:13px;background:#fff;outline:none" oninput="mgSalvarKey(this.value)">
+    </div>
   </div>
 
 
@@ -2701,8 +2710,8 @@ function carregarHistorico() {
   <!-- Upload area -->
   <div style="background:#fff;border:2px dashed #c8dff0;border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px" id="mg-dropzone" onclick="document.getElementById('mg-file').click()" ondragover="event.preventDefault();this.style.borderColor='#0077cc'" ondragleave="this.style.borderColor='#c8dff0'" ondrop="mgHandleDrop(event)">
     <div style="font-size:40px;margin-bottom:12px">📄</div>
-    <div style="font-size:16px;font-weight:700;color:#003a66;margin-bottom:6px">Arraste o extrato PDF aqui</div>
-    <div style="font-size:13px;color:var(--lbl)">ou clique para selecionar o arquivo</div>
+    <div style="font-size:16px;font-weight:700;color:#003a66;margin-bottom:6px">Envie o extrato PDF do INSS</div>
+    <div style="font-size:13px;color:var(--lbl)">O sistema lê automaticamente a página de margem</div>
     <input type="file" id="mg-file" accept=".pdf" style="display:none" onchange="mgAnalisar(this.files[0])">
   </div>
 
@@ -2772,24 +2781,21 @@ async function mgAnalisar(file) {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     
-    let fullText = '';
-    for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      
-      // Group items by Y position (top to bottom) to reconstruct lines
-      const lineMap = {};
-      content.items.forEach(item => {
-        const y = Math.round(item.transform[5]);
-        if (!lineMap[y]) lineMap[y] = [];
-        if (item.str.trim()) lineMap[y].push(item.str.trim());
-      });
-      
-      // Sort Y ascending = top to bottom (smaller Y number = higher on page in PDF coords)
-      // In PDF coordinates, Y increases upward, so LARGER Y = higher on page
-      const sortedY = Object.keys(lineMap).map(Number).sort((a,b) => b-a);
-      fullText += sortedY.map(y => lineMap[y].join(' ')).join('\n') + '\n';
-    }
+    // Ler SOMENTE a página 2 (margem e valores do benefício)
+    const pagina = await pdf.getPage(2);
+    const content = await pagina.getTextContent();
+    
+    // Agrupar por posição Y (de cima para baixo)
+    const lineMap = {};
+    content.items.forEach(item => {
+      const y = Math.round(item.transform[5]);
+      if (!lineMap[y]) lineMap[y] = [];
+      if (item.str.trim()) lineMap[y].push(item.str.trim());
+    });
+    
+    // Y maior = mais alto na página (coordenadas PDF)
+    const sortedY = Object.keys(lineMap).map(Number).sort((a,b) => b-a);
+    const fullText = sortedY.map(y => lineMap[y].join(' ')).join('\n');
 
     const result = mgParsearExtrato(fullText);
     mgMostrarResultado(result);
@@ -2993,6 +2999,12 @@ ${m > 0 ? '✅ MARGEM DISPONÍVEL: ' + mgFmt(m) : '❌ SEM MARGEM — ' + (m < 0
     setTimeout(() => btn.textContent = '📋 Copiar Resultado', 2000);
   });
 }
+
+// Load key on init
+(function() {
+  const saved = localStorage.getItem('mg_apikey');
+  if (saved) { const el = document.getElementById('mg-apikey'); if(el) el.value = saved; }
+})();
 
 function mgLimpar() {
   document.getElementById('mg-dropzone').style.display = 'block';
