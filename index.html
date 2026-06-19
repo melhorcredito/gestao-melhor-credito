@@ -2789,6 +2789,71 @@ async function mgAnalisar(file) {
   }
 }
 
+function mgParsearValor(texto, label) {
+  const patterns = [
+    new RegExp(label + '[\\s\\S]{0,80}?R\\$\\s*([\\d\\.]+,[\\d]{2})', 'i'),
+    new RegExp(label + '[\\s:]*([\\d\\.]+,[\\d]{2})', 'i'),
+  ];
+  for (const p of patterns) {
+    const m = texto.match(p);
+    if (m) return parseFloat(m[1].replace(/\./g, '').replace(',', '.'));
+  }
+  return 0;
+}
+
+function mgParsearExtrato(texto) {
+  // Nome do cliente
+  let nome = '';
+  const nomeMatch = texto.match(/EMPRÉSTIMO CONSIGNADO\s+([A-ZÁÉÍÓÚÀÂÊÔÃÕÇ\s]+?)(?=Benefício|BENEFÍCIO|Nº Benefício)/i);
+  if (nomeMatch) nome = nomeMatch[1].trim();
+
+  // Benefício
+  let beneficio = '';
+  const benefMatch = texto.match(/(APOSENTADORIA[^\n]{0,60}|PENSÃO[^\n]{0,60}|AUXÍLIO[^\n]{0,60})\s*Nº Benefício[:\s]*([\d\.\-]+)/i);
+  if (benefMatch) beneficio = benefMatch[1].trim() + ' — Nº ' + benefMatch[2].trim();
+
+  // Situação
+  let situacao = 'ATIVO';
+  const sitMatch = texto.match(/Situação[:\s]*(\w+)/i);
+  if (sitMatch) situacao = sitMatch[1].trim();
+
+  // Contratos ativos
+  let contratos_ativos = 0;
+  const ativosMatch = texto.match(/ATIVOS\s+(\d+)/i);
+  if (ativosMatch) contratos_ativos = parseInt(ativosMatch[1]);
+
+  // Valores principais
+  const base_calculo = mgParsearValor(texto, 'BASE DE CÁLCULO');
+  const maximo_permitido = mgParsearValor(texto, 'MÁXIMO DE COMPROMETIMENTO PERMITIDO');
+  const total_comprometido = mgParsearValor(texto, 'TOTAL COMPROMETIDO');
+  const margem_extrapolada = mgParsearValor(texto, 'MARGEM EXTRAPOLADA');
+
+  // Margem disponível por modalidade
+  let margem_emprestimos_disponivel = 0;
+  let margem_rmc_disponivel = 0;
+  let margem_rcc_disponivel = 0;
+
+  const dispMatches = texto.match(/MARGEM DISPONÍVEL[^R]*R\$\s*([\d\.]+,[\d]{2})[^R]*R\$\s*([\d\.]+,[\d]{2})[^R]*R\$\s*([\d\.]+,[\d]{2})/i);
+  if (dispMatches) {
+    margem_emprestimos_disponivel = parseFloat(dispMatches[1].replace(/\./g,'').replace(',','.'));
+    margem_rmc_disponivel = parseFloat(dispMatches[2].replace(/\./g,'').replace(',','.'));
+    margem_rcc_disponivel = parseFloat(dispMatches[3].replace(/\./g,'').replace(',','.'));
+  }
+
+  // CÁLCULO PRINCIPAL: Máximo Permitido - Total Comprometido
+  const margem_real = Math.round((maximo_permitido - total_comprometido) * 100) / 100;
+  const tem_margem = margem_real > 0.01;
+
+  return {
+    nome: nome || 'Não identificado',
+    beneficio: beneficio || 'Não identificado',
+    situacao, contratos_ativos,
+    base_calculo, maximo_permitido, total_comprometido,
+    margem_extrapolada, margem_real, tem_margem,
+    margem_emprestimos_disponivel, margem_rmc_disponivel, margem_rcc_disponivel,
+  };
+}
+
 function mgHandleDrop(e) {
   e.preventDefault();
   document.getElementById('mg-dropzone').style.borderColor = '#c8dff0';
