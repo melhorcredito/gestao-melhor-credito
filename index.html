@@ -2767,6 +2767,19 @@ async function mgAnalisar(file) {
   document.getElementById('mg-erro').style.display = 'none';
 
   try {
+    // Read PDF with PDF.js
+    const arrayBuffer = await file.arrayBuffer();
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    
+    let fullText = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      fullText += content.items.map(item => item.str).join(' ') + '\n';
+    }
+
+    const result = mgParsearExtrato(fullText);
     mgMostrarResultado(result);
   } catch(e) {
     document.getElementById('mg-loading').style.display = 'none';
