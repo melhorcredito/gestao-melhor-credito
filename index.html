@@ -222,6 +222,7 @@ header{display:none}
 .gpf .sec-pj{display:none}.gpf .sec-pf{display:block}
 </style>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -2690,10 +2691,12 @@ function carregarHistorico() {
 <div style="max-width:860px;margin:0 auto;padding:28px 20px 60px">
 
   <!-- Header -->
-  <div style="margin-bottom:24px">
+  <div style="margin-bottom:20px">
     <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark)">📊 Analisador de Margem Consignada</h2>
     <p style="font-size:13px;color:var(--lbl);margin-top:4px">Envie o extrato do INSS em PDF e o sistema analisa automaticamente a margem disponível.</p>
   </div>
+
+
 
   <!-- Upload area -->
   <div style="background:#fff;border:2px dashed #c8dff0;border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px" id="mg-dropzone" onclick="document.getElementById('mg-file').click()" ondragover="event.preventDefault();this.style.borderColor='#0077cc'" ondragleave="this.style.borderColor='#c8dff0'" ondrop="mgHandleDrop(event)">
@@ -2775,7 +2778,7 @@ async function mgAnalisar(file) {
     // Send to Claude API for analysis
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
