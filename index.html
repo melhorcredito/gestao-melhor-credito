@@ -2767,69 +2767,6 @@ async function mgAnalisar(file) {
   document.getElementById('mg-erro').style.display = 'none';
 
   try {
-    // Read PDF as base64
-    const b64 = await new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result.split(',')[1]);
-      r.onerror = rej;
-      r.readAsDataURL(file);
-    });
-
-    // Send to Claude API for analysis
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: `Você é um analisador de extratos consignados do INSS. Analise o extrato e retorne SOMENTE um JSON válido, sem texto adicional, sem markdown, sem blocos de código.
-
-REGRA DE CÁLCULO DA MARGEM REAL:
-- Margem Real = Máximo de Comprometimento Permitido - Total Comprometido
-- Se Margem Real > 0: cliente TEM margem
-- Se Margem Real <= 0: cliente NÃO tem margem (está no limite ou extrapolado)
-- NÃO use apenas a "Margem Disponível" do extrato — use sempre o cálculo acima
-
-Retorne este JSON:
-{
-  "nome": "nome completo do cliente",
-  "beneficio": "tipo de benefício - número",
-  "base_calculo": 0.00,
-  "maximo_permitido": 0.00,
-  "total_comprometido": 0.00,
-  "margem_extrapolada": 0.00,
-  "margem_real": 0.00,
-  "tem_margem": true,
-  "margem_emprestimos_disponivel": 0.00,
-  "margem_rmc_disponivel": 0.00,
-  "margem_rcc_disponivel": 0.00,
-  "situacao": "ATIVO ou SUSPENSO etc",
-  "contratos_ativos": 0,
-  "resumo": "frase curta explicando a situação do cliente"
-}`,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
-            { type: 'text', text: 'Analise este extrato consignado do INSS e retorne o JSON conforme instruído.' }
-          ]
-        }]
-      })
-    });
-
-    const data = await resp.json();
-    const text = data.content?.find(b => b.type === 'text')?.text || '';
-    
-    let result;
-    try {
-      result = JSON.parse(text.trim());
-    } catch(e) {
-      // Try to extract JSON from text
-      const match = text.match(/\{[\s\S]*\}/);
-      if (match) result = JSON.parse(match[0]);
-      else throw new Error('Não foi possível interpretar o extrato. Verifique se o PDF é um extrato válido do INSS.');
-    }
-
     mgMostrarResultado(result);
   } catch(e) {
     document.getElementById('mg-loading').style.display = 'none';
