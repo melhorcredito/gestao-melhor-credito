@@ -223,6 +223,7 @@ header{display:none}
 </style>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
 <script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <!-- ══ TELA DE ACESSO ══ -->
@@ -2760,11 +2761,7 @@ function carregarHistorico() {
     </div>
 
     <div class="g-status" id="g-status"></div>
-    <div class="g-instrucao" id="g-instrucao">
-      📋 <strong>Para salvar como PDF:</strong><br>
-      Abra o arquivo baixado → <strong>Arquivo → Salvar como PDF</strong><br>
-      No celular: Google Docs → Menu (⋮) → Compartilhar e exportar → PDF
-    </div>
+
   </div>
   <div class="gerador-foot">
     <button class="g-btn-cancel" onclick="closeGeradorModal()">Cancelar</button>
@@ -2873,31 +2870,21 @@ function gGerarContrato(){
   };
 
   const btn=document.getElementById('g-btn-gerar');
-  btn.disabled=true;btn.textContent='⏳ Gerando...';
+  btn.disabled=true;btn.textContent='⏳ Gerando PDF...';
 
   try{
-    const bin=atob(gTipo==='pj' ? G_TEMPLATE_PJ : G_TEMPLATE_PF);
-    const bytes=new Uint8Array(bin.length);
-    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-    const zip=new PizZip(bytes.buffer);
-    const doc=new docxtemplater(zip,{paragraphLoop:true,linebreaks:true,delimiters:{start:'${',end:'}'}});
-    doc.render(dados);
-    const out=doc.getZip().generate({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-    const nome=(nome_agente||'Contrato').replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
-    const url=URL.createObjectURL(out);
-    const a=document.createElement('a');a.href=url;a.download='Contrato_'+nome+'.docx';a.click();
-    URL.revokeObjectURL(url);
+    gerarPDF(dados, nome_agente);
     const s=document.getElementById('g-status');
-    s.textContent='✅ Contrato gerado e baixado com sucesso!';
+    s.textContent='✅ Contrato PDF gerado e baixado com sucesso!';
     s.className='g-status ok';
-    document.getElementById('g-instrucao').style.display='block';
     registrarHistorico('Contrato gerado para: '+nome_agente);
   }catch(e){
     const s=document.getElementById('g-status');
     s.textContent='❌ Erro ao gerar: '+e.message;
     s.className='g-status err';
+    console.error(e);
   }finally{
-    btn.disabled=false;btn.textContent='📄 Gerar Contrato';
+    btn.disabled=false;btn.textContent='📄 Gerar Contrato PDF';
   }
 }
 </script>
