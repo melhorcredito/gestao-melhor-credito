@@ -2967,35 +2967,42 @@ function gerarPDFContrato(d) {
   txt('E, por estarem assim justos e contratados, PROPONENTE e AGENTE, firmam o presente instrumento em 2 (duas) vias de igual teor e forma, perante as testemunhas abaixo.');
   gap(3);
 
-  // Assinatura PROPONENTE
+  // Centro da página para assinaturas
+  const cX = pgW/2;
+  const sigW = 80; // largura da linha de assinatura
+  const sigL = cX - sigW/2;
+  const sigR = cX + sigW/2;
+
+  // Assinatura PROPONENTE - centralizada
   doc.setDrawColor(100);
-  doc.line(mL, y, mL+cW, y); y+=5;
-  txt('MELHOR CRÉDITO LTDA',{bold:true});
-  txt('CNPJ: 44.431.442/0001-68');
+  doc.line(sigL, y, sigR, y); y+=5;
+  doc.setFont('helvetica','bold'); doc.setFontSize(fSize);
+  doc.text('MELHOR CRÉDITO LTDA', cX, y, {align:'center'}); y+=lh;
+  doc.setFont('helvetica','normal');
+  doc.text('CNPJ: 44.431.442/0001-68', cX, y, {align:'center'}); y+=lh;
   gap(3);
 
-  // Assinatura AGENTE
-  doc.line(mL, y, mL+cW, y); y+=5;
-  txt(d.nome_agente,{bold:true});
-  txt(d.doc_label_assinatura+': '+d.doc_agente);
+  // Assinatura AGENTE - centralizada
+  chk(25);
+  doc.line(sigL, y, sigR, y); y+=5;
+  doc.setFont('helvetica','bold');
+  doc.text(d.nome_agente, cX, y, {align:'center'}); y+=lh;
+  doc.setFont('helvetica','normal');
+  doc.text(d.doc_label_assinatura+': '+d.doc_agente, cX, y, {align:'center'}); y+=lh;
   gap(3);
 
-  // Testemunhas lado a lado
-  chk(30);
-  gap(1);
-  const tW = (cW-15)/2;
-  const xT1 = mL;
-  const xT2 = mL + tW + 15;
-  doc.setDrawColor(100);
-  doc.line(xT1, y, xT1+tW, y);
-  doc.line(xT2, y, xT2+tW, y);
-  y+=5;
-  doc.setFont('helvetica','normal'); doc.setFontSize(fSize);
-  doc.text('Nome:', xT1, y);
-  doc.text('Nome:', xT2, y);
-  y+=lh;
-  doc.text('CPF:', xT1, y);
-  doc.text('CPF:', xT2, y);
+  // Testemunhas - centralizadas uma abaixo da outra
+  chk(40);
+  doc.line(sigL, y, sigR, y); y+=5;
+  doc.setFont('helvetica','normal');
+  doc.text('Nome:', cX, y, {align:'center'}); y+=lh;
+  doc.text('CPF:', cX, y, {align:'center'}); y+=lh;
+  gap(3);
+
+  chk(20);
+  doc.line(sigL, y, sigR, y); y+=5;
+  doc.text('Nome:', cX, y, {align:'center'}); y+=lh;
+  doc.text('CPF:', cX, y, {align:'center'}); y+=lh;
 
   doc.addPage(); y=20;
   txt('ANEXO I – TERMO DE DECLARAÇÃO',{bold:true,center:true,size:10}); gap();
