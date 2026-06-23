@@ -2967,49 +2967,39 @@ function gerarPDFContrato(d) {
   txt('E, por estarem assim justos e contratados, PROPONENTE e AGENTE, firmam o presente instrumento em 2 (duas) vias de igual teor e forma, perante as testemunhas abaixo.');
   gap(3);
 
-  // Centro da página para assinaturas
   const cX = pgW/2;
-  const sigW = 80; // largura da linha de assinatura
+  const sigW = 100;
   const sigL = cX - sigW/2;
   const sigR = cX + sigW/2;
 
-  // Assinatura PROPONENTE - centralizada
-  doc.setDrawColor(100);
-  doc.line(sigL, y, sigR, y); y+=5;
-  doc.setFont('helvetica','bold'); doc.setFontSize(fSize);
-  doc.text('MELHOR CRÉDITO LTDA', cX, y, {align:'center'}); y+=lh;
-  doc.setFont('helvetica','normal');
-  doc.text('CNPJ: 44.431.442/0001-68', cX, y, {align:'center'}); y+=lh;
-  gap(3);
+  function assinatura(nome, label) {
+    chk(25);
+    doc.setDrawColor(100);
+    doc.line(sigL, y, sigR, y); y+=6;
+    doc.setFont('helvetica','bold'); doc.setFontSize(fSize);
+    doc.text(nome, cX, y, {align:'center'}); y+=lh;
+    doc.setFont('helvetica','normal');
+    doc.text(label, cX, y, {align:'center'}); y+=lh;
+    gap(2.5);
+  }
 
-  // Assinatura AGENTE - centralizada
-  chk(25);
-  doc.line(sigL, y, sigR, y); y+=5;
-  doc.setFont('helvetica','bold');
-  doc.text(d.nome_agente, cX, y, {align:'center'}); y+=lh;
-  doc.setFont('helvetica','normal');
-  doc.text(d.doc_label_assinatura+': '+d.doc_agente, cX, y, {align:'center'}); y+=lh;
-  gap(3);
-
-  // Testemunhas - centralizadas uma abaixo da outra
-  chk(40);
-  doc.line(sigL, y, sigR, y); y+=5;
-  doc.setFont('helvetica','normal');
-  doc.text('Nome:', cX, y, {align:'center'}); y+=lh;
-  doc.text('CPF:', cX, y, {align:'center'}); y+=lh;
-  gap(3);
-
-  chk(20);
-  doc.line(sigL, y, sigR, y); y+=5;
-  doc.text('Nome:', cX, y, {align:'center'}); y+=lh;
-  doc.text('CPF:', cX, y, {align:'center'}); y+=lh;
+  assinatura('MELHOR CRÉDITO LTDA', 'CNPJ: 44.431.442/0001-68');
+  assinatura(d.nome_agente, d.doc_label_assinatura+': '+d.doc_agente);
+  assinatura('Testemunha 1', 'Nome:                    CPF:');
+  assinatura('Testemunha 2', 'Nome:                    CPF:');
 
   doc.addPage(); y=20;
   txt('ANEXO I – TERMO DE DECLARAÇÃO',{bold:true,center:true,size:10}); gap();
   txt('As partes acordam que o AGENTE tem total ciência de sua responsabilidade sobre solicitações de usuários, senhas e aprovadores, conforme descrição do item 6.4 do presente contrato, afirmando que leu atentamente sobre as responsabilidades perante os códigos/logins e senhas solicitados, e que arcará com qualquer despesa, seja ela de qual esfera for.'); gap();
   txt('Ainda, O AGENTE ressarcirá as PROPONENTES, integralmente, de todo e qualquer prejuízo, material e moral, que venha causar em virtude do uso do login e senha de acesso ao SISTEMA DOS BANCOS ou do SISTEMA DA PROPONENTE, respondendo por danos materiais, morais, estornos, respondendo civil e criminalmente, podendo inclusive ter seu nome incluído nos órgãos de proteção ao crédito.'); gap(2);
-  doc.line(mL, y, mL+cW, y); y+=5;
-  txt(d.nome_agente,{bold:true}); txt(d.doc_label_assinatura+': '+d.doc_agente);
+  const aX = pgW/2;
+  const aL = aX - 50; const aR = aX + 50;
+  doc.setDrawColor(100);
+  doc.line(aL, y, aR, y); y+=6;
+  doc.setFont('helvetica','bold'); doc.setFontSize(fSize);
+  doc.text(d.nome_agente, aX, y, {align:'center'}); y+=lh;
+  doc.setFont('helvetica','normal');
+  doc.text(d.doc_label_assinatura+': '+d.doc_agente, aX, y, {align:'center'}); y+=lh;
 
   const nome=d.nome_agente.replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
   doc.save('Contrato_'+nome+'.pdf');
