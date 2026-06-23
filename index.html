@@ -190,6 +190,7 @@ header{display:none}
 .dash-hist-acao{font-weight:600;color:var(--dark)}
 .dash-hist-det{font-size:10px;color:var(--lbl);margin-top:2px}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
 <script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
 
@@ -2765,6 +2766,7 @@ function carregarHistorico() {
 </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
@@ -2792,9 +2794,9 @@ function gTipo(t) {
 function gv(id) { return (document.getElementById(id)?.value || '').trim(); }
 
 function gGerar() {
-  if (typeof PizZip === 'undefined' || typeof docxtemplater === 'undefined') {
+  if (typeof window.jspdf === 'undefined') {
     const s = document.getElementById('g-status');
-    s.textContent = '⏳ Aguarde, carregando bibliotecas... Tente novamente em alguns segundos.';
+    s.textContent = '⏳ Aguarde, carregando... Tente novamente em alguns segundos.';
     s.className = 'g-status g-err';
     return;
   }
