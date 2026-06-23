@@ -2963,22 +2963,45 @@ function gerarPDFContrato(d) {
     gap(0.3);
   });
 
-  chk(60);
+  chk(80);
   txt('E, por estarem assim justos e contratados, PROPONENTE e AGENTE, firmam o presente instrumento em 2 (duas) vias de igual teor e forma, perante as testemunhas abaixo.');
-  gap(2); hr();
-  txt('MELHOR CRÉDITO LTDA',{bold:true}); txt('CNPJ: 44.431.442/0001-68');
-  gap(2); hr();
-  txt(d.nome_agente,{bold:true}); txt(d.doc_label_assinatura+': '+d.doc_agente);
-  gap(2); txt('Testemunhas:',{bold:true}); gap(0.5);
-  doc.line(mL,y,mL+70,y); doc.line(mL+80,y,mL+cW,y); y+=4;
-  txt('Nome:                                                    Nome:');
-  txt('CPF:                                                      CPF:');
+  gap(3);
+
+  // Assinatura PROPONENTE
+  doc.setDrawColor(100);
+  doc.line(mL, y, mL+cW, y); y+=5;
+  txt('MELHOR CRÉDITO LTDA',{bold:true});
+  txt('CNPJ: 44.431.442/0001-68');
+  gap(3);
+
+  // Assinatura AGENTE
+  doc.line(mL, y, mL+cW, y); y+=5;
+  txt(d.nome_agente,{bold:true});
+  txt(d.doc_label_assinatura+': '+d.doc_agente);
+  gap(3);
+
+  // Testemunhas lado a lado
+  chk(30);
+  gap(1);
+  const tW = (cW-15)/2;
+  const xT1 = mL;
+  const xT2 = mL + tW + 15;
+  doc.setDrawColor(100);
+  doc.line(xT1, y, xT1+tW, y);
+  doc.line(xT2, y, xT2+tW, y);
+  y+=5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(fSize);
+  doc.text('Nome:', xT1, y);
+  doc.text('Nome:', xT2, y);
+  y+=lh;
+  doc.text('CPF:', xT1, y);
+  doc.text('CPF:', xT2, y);
 
   doc.addPage(); y=20;
   txt('ANEXO I – TERMO DE DECLARAÇÃO',{bold:true,center:true,size:10}); gap();
   txt('As partes acordam que o AGENTE tem total ciência de sua responsabilidade sobre solicitações de usuários, senhas e aprovadores, conforme descrição do item 6.4 do presente contrato, afirmando que leu atentamente sobre as responsabilidades perante os códigos/logins e senhas solicitados, e que arcará com qualquer despesa, seja ela de qual esfera for.'); gap();
   txt('Ainda, O AGENTE ressarcirá as PROPONENTES, integralmente, de todo e qualquer prejuízo, material e moral, que venha causar em virtude do uso do login e senha de acesso ao SISTEMA DOS BANCOS ou do SISTEMA DA PROPONENTE, respondendo por danos materiais, morais, estornos, respondendo civil e criminalmente, podendo inclusive ter seu nome incluído nos órgãos de proteção ao crédito.'); gap(2);
-  hr();
+  doc.line(mL, y, mL+cW, y); y+=5;
   txt(d.nome_agente,{bold:true}); txt(d.doc_label_assinatura+': '+d.doc_agente);
 
   const nome=d.nome_agente.replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
