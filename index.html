@@ -2834,34 +2834,155 @@ function gGerar() {
   btn.disabled = true; btn.textContent = '⏳ Gerando...';
 
   try {
-    const template = gTipoAtual === 'pj' ? G_PJ : G_PF;
-    const bin = atob(template);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    const zip = new PizZip(bytes.buffer);
-    const doc = new docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: '${', end: '}' } });
-    doc.render({
+    const d = {
       nome_agente, doc_agente, doc_label, doc_label_assinatura, qualificacao_representante,
       nome_responsavel, Rg_socio_agente, cpf_responsavel, enderco_socio_agente,
-      endereco_agente: gv('g-end'), 'endereço_numero': gv('g-num'), 'endereço_bairro': gv('g-bairro'),
-      'endereço_cidade': gv('g-cidade'), 'endereço_UF': gv('g-uf').toUpperCase(), 'endereço_CEP': gv('g-cep'),
-      banco_agente: gv('g-banco') + ' (Cód. ' + gv('g-cod-banco') + ')', codigo_banco: gv('g-cod-banco'),
-      agencia_agente: gv('g-agencia'), conta_agente: gv('g-conta'), digito_conta_agente: gv('g-digito'),
-      titular_conta_agente: gv('g-titular'), cpf_cnpj_titular_conta_agente: gv('g-titular-doc'),
-    });
-    const out = doc.getZip().generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-    const nome = nome_agente.replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
-    const url = URL.createObjectURL(out);
-    const a = document.createElement('a'); a.href = url; a.download = 'Contrato_' + nome + '.docx'; a.click();
-    URL.revokeObjectURL(url);
+      endereco_agente: gv('g-end'), numero: gv('g-num'), bairro: gv('g-bairro'),
+      cidade: gv('g-cidade'), uf: gv('g-uf').toUpperCase(), cep: gv('g-cep'),
+      banco: gv('g-banco'), cod_banco: gv('g-cod-banco'),
+      agencia: gv('g-agencia'), conta: gv('g-conta'), digito: gv('g-digito'),
+      titular: gv('g-titular'), titular_doc: gv('g-titular-doc'),
+      isPF: gTipoAtual === 'pf'
+    };
+    gerarPDFContrato(d);
     const s = document.getElementById('g-status');
-    s.textContent = '✅ Contrato gerado com sucesso!'; s.className = 'g-status g-ok';
+    s.textContent = '✅ Contrato PDF gerado!'; s.className = 'g-status g-ok';
   } catch(e) {
     const s = document.getElementById('g-status');
     s.textContent = '❌ Erro: ' + e.message; s.className = 'g-status g-err';
+    console.error(e);
   } finally {
-    btn.disabled = false; btn.textContent = '📄 Gerar Contrato';
+    btn.disabled = false; btn.textContent = '📄 Gerar Contrato PDF';
   }
+}
+
+
+function gerarPDFContrato(d) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const mL=20, pgW=210, fSize=9, lh=4.8, cW=pgW-40;
+  let y=20;
+  doc.setFont('helvetica','normal'); doc.setFontSize(fSize);
+
+  function chk(n){ if(y+n>282){ doc.addPage(); y=20; } }
+  function txt(t, opts={}){
+    const {bold=false,center=false,size=fSize,indent=0}=opts;
+    doc.setFont('helvetica',bold?'bold':'normal'); doc.setFontSize(size);
+    const lines=doc.splitTextToSize(t,cW-indent);
+    lines.forEach(l=>{ chk(lh); doc.text(l,center?pgW/2:mL+indent,y,center?{align:'center'}:{}); y+=lh; });
+    doc.setFont('helvetica','normal'); doc.setFontSize(fSize);
+  }
+  function gap(n=1){ y+=lh*n; }
+  function hr(){ chk(5); doc.setDrawColor(150); doc.line(mL+20,y,pgW-mL-20,y); y+=5; }
+
+  const end=d.endereco_agente+', '+d.numero+' - '+d.bairro+' - '+d.cidade+'/'+d.uf+' '+d.cep;
+  const banco='Banco: '+d.banco+' (Cód. '+d.cod_banco+'), Agência: '+d.agencia+', Conta: '+d.conta+' Dígito: '+d.digito+', Titular: '+d.titular+', CPF/CNPJ: '+d.titular_doc;
+
+  const introAgente = d.isPF
+    ? d.nome_agente+', residente na Rua '+end+', inscrito no C.P.F. sob o nº '+d.doc_agente+', brasileiro, inscrito no RG sob o n. '+d.Rg_socio_agente+' e no CPF sob o n. '+d.cpf_responsavel
+    : 'empresa '+d.nome_agente+' com sede na Rua '+end+' inscrita no C.N.P.J. sob o nº '+d.doc_agente+', devidamente representada neste ato por seu sócio administrador, '+d.nome_responsavel+', brasileiro, empresário, inscrito no RG sob o n. '+d.Rg_socio_agente+' e no CPF sob o n. '+d.cpf_responsavel+', residente e domiciliado na Rua '+d.enderco_socio_agente;
+
+  txt('TERMO DE AGENCIAMENTO',{bold:true,center:true,size:12}); gap(0.5);
+  txt('Pelo presente instrumento particular de contrato de agência que fazem entre si de um lado a empresa MELHOR CREDITO LTDA com sede na Av. Paulista, 1471 – cj 811 – Bela Vista – São Paulo – SP Cep: 01311-927, inscrita no C.N.P.J. sob o nº 44.431.442/0001-68, devidamente representada neste ato por ERALDO APARECIDO DO BOMFIM, brasileiro, viúvo, empresário, portador (a) da carteira de identidade nº 14.985.929-6 e inscrito (a) no C.P.F. sob o nº 962.967.980.91, aqui denominada como PROPONENTE; e, '+introAgente+', neste ato denominado AGENTE, resolvem regular suas relações de agenciamento segundo as cláusulas e condições seguintes:');
+  gap();
+
+  const cls=[
+    {t:'1. DO OBJETO',i:[
+      'O AGENTE efetuará à PROPONENTE a prestação de serviços de elaboração de cadastros e encaminhamento de pedidos de financiamentos e empréstimos as instituições financeiras, formalização e encaminhamento de propostas de produtos financeiros à INSTITUIÇÕES CONVENIADAS, de acordo com a Resolução nº 4.935 do BACEN.',
+      'CONSIDERANDO QUE, as novas regulações acerca do mercado de crédito Consignado, em especial o advento da Lei Geral de Proteção de Dados Pessoais (Nº 13.709/18, LGPD), bem como a resolução de AUTORREGULAÇÃO (Nº 3.954, BACEN) do mercado de crédito consignado, resolvem celebrar o presente instrumento que será regido pelas disposições que seguem abaixo:',
+    ]},
+    {t:'2. DA VIGÊNCIA, RESCISÃO E RESILIÇÃO',i:[
+      'O presente contrato terá vigência por prazo indeterminado, com início a partir da data de assinatura pelas partes.',
+      'O presente contrato poderá ser encerrado pelas cláusulas seguintes, além daquelas previstas em leis.',
+      'Resilido imotivadamente por qualquer das partes, desde que a parte interessada notifique sua intenção à outra parte com 30 (trinta) dias de antecedência, sem a incidência de qualquer ônus ou multa para tanto.',
+      'Rescindido motivadamente por descumprimento de qualquer das disposições do presente contrato, sendo operada a rescisão de imediato e a critério da parte lesada.',
+      'No caso de alguma das partes contratantes entrar em falência, pedir concordata ou tiver caracterizado o seu estado de insolvência.',
+      'Por fim, as partes obrigam-se a cumprir com as obrigações pendentes até o final do contrato.',
+    ]},
+    {t:'3. EXECUÇÃO DOS SERVIÇOS, INEXISTÊNCIA DE EXCLUSIVIDADE E ÁREA DE ATUAÇÃO',i:[
+      'O AGENTE desempenhará as atividades de AGENCIAMENTO sem qualquer exclusividade, dentro de todo o território nacional.',
+      'Não existe entre as partes qualquer espécie de subordinação e controle de horários, podendo o AGENTE dispor de seus serviços da forma que lhe convier.',
+      'O AGENTE poderá exercer suas atividades para outra empresa ou instituição financeira.',
+      'As Partes acordam e declaram que os empregados de cada uma das Partes não têm qualquer vínculo empregatício com a outra Parte.',
+      'As partes assumem ampla e irrestrita responsabilidade pelas reclamações trabalhistas relacionadas com o objeto do presente instrumento.',
+      'As partes concordam e comprometem-se a indenizar uma a outra por todos e quaisquer custos incorridos em função de reclamações trabalhistas.',
+      'Este contrato não gera qualquer tipo de responsabilidade solidária entre as partes nas obrigações trabalhistas e previdenciárias.',
+    ]},
+    {t:'4. DA REMUNERAÇÃO',i:[
+      'O AGENTE a título de remuneração receberá o percentual de comissão sobre as vendas de contratos efetivamente aceitos pela instituição financeira, conforme tabela vigente no dia da digitação.',
+      'Fica estabelecido que o agente não terá direito à remuneração dos negócios efetivados sem a sua interferência.',
+      'O pagamento é primeiramente lançado em uma "CONTA CORRENTE" fictícia disponibilizada no sistema das PROPONENTES.',
+      'O pagamento não será devido ao AGENTE havendo cancelamento da proposta pelo consumidor ou exercício do direito de arrependimento previsto no artigo 49 do CDC.',
+      'O AGENTE autoriza que o crédito da remuneração seja realizado mediante depósito bancário nos seguintes dados: '+banco+', valendo o recibo de depósito como quitação.',
+      'Declara o AGENTE que tem ciência e se compromete a seguir as diretrizes da AUTORREGULAÇÃO das INSTITUIÇÕES e das CONTRATANTES.',
+      'Havendo adiantamento da comissão, fica obrigado o AGENTE a restituir o valor recebido em excesso, autorizando as PROPONENTES a realizar a retenção dos valores vincendos.',
+    ]},
+    {t:'5. DA EXECUÇÃO E DESEMPENHO',i:[
+      'A execução e desempenho das atividades observará o disposto na autorregulação do setor de empréstimos consignados, incluindo observação diária das listas de cadastros de telefones visando o bloqueio de ligações de oferta de operações de crédito consignado.',
+    ]},
+    {t:'6. OBRIGAÇÕES E RESPONSABILIDADES DO AGENTE',i:[
+      'O AGENTE fica obrigado a fornecer à PROPONENTE informações sobre o andamento dos negócios a seu cargo.',
+      'O AGENTE fica constituído como FIEL DEPOSITÁRIO da documentação e contratos referente às operações processadas através de seu código e senha.',
+      'Durante a vigência do contrato é concedida ao AGENTE uma senha de acesso ao SISTEMA cuja titularidade pertence à PROPONENTE.',
+      'A senha fornecida pela PROPONENTE é pessoal e intransferível, sendo de inteira responsabilidade do AGENTE o uso e proteção da mesma.',
+      'O AGENTE responsabiliza-se pela fidedignidade da documentação e das informações prestadas.',
+      'O AGENTE assume a responsabilidade pelo adimplemento das operações por ele intermediadas nos casos de constatação de fraude.',
+      'Compete ao AGENTE emitir mensalmente Nota Fiscal com os valores cumulados e entregar à PROPONENTE até o 7º dia útil do mês subsequente.',
+      'O AGENTE ressarcirá as PROPONENTES de todo e qualquer prejuízo causado em virtude do uso do login e senha de acesso ao SISTEMA DOS BANCOS ou do SISTEMA DA PROPONENTE.',
+    ]},
+    {t:'7. OBRIGAÇÕES E RESPONSABILIDADES DA PROPONENTE',i:[
+      'A PROPONENTE se obriga a efetuar o pagamento do comissionamento quando da aprovação dos financiamentos encaminhados pelo AGENTE.',
+      'Fornecer todos os dados e informações ao AGENTE para a correta execução dos serviços.',
+      'TERMO DE RESPONSABILIDADE: Nos casos em que não houver a averbação de contratos de portabilidade intermediados pelo AGENTE ficará o mesmo obrigado a quitar o débito referente a essas operações.',
+      'O AGENTE assumirá todo e qualquer prejuízo decorrente de possíveis fraudes e/ou hackeamento de logins.',
+    ]},
+    {t:'8. DOS TRIBUTOS E DEMAIS ENCARGOS',i:[
+      'A remuneração estabelecida neste Contrato é bruta, cabendo ao AGENTE a responsabilidade pelo pagamento de todos os tributos sobre ela incidentes.',
+    ]},
+    {t:'9. SIGILO E CONFIDENCIALIDADE',i:[
+      'Nenhuma das Partes poderá divulgar para terceiros quaisquer Informações Confidenciais sem a prévia autorização por escrito da outra Parte.',
+      'O AGENTE poderá ser responsabilizado civil e criminalmente pelo fornecimento do acesso aos SISTEMAS a terceiros não autorizados.',
+    ]},
+    {t:'10. DA UTILIZAÇÃO DAS MARCAS',i:[
+      'Os nomes comerciais, marcas registradas, logotipos e outras expressões de identificação não poderão ser utilizados pelas Partes sem o prévio consentimento por escrito.',
+    ]},
+    {t:'11. DISPOSIÇÕES GERAIS',i:[
+      'Pelo presente instrumento, não se estabelece qualquer responsabilidade solidária entre as Partes.',
+      'O presente instrumento não implica a constituição de nenhum tipo de sociedade entre as partes.',
+      'No caso de alguma disposição ser considerada nula, ilegal ou inexequível, as partes deverão negociar de boa-fé uma nova redação.',
+      'Qualquer modificação ou aditamento deverá ser feito por escrito e firmado pelos representantes legais de cada Parte.',
+      'O AGENTE não poderá ceder ou transferir quaisquer direitos resultantes do presente contrato sem o consentimento prévio por escrito da PROPONENTE.',
+      'Endereços para notificações - PROPONENTE: MELHOR CREDITO LTDA – Av. Paulista, 1471 – cj 811 – São Paulo/SP – CEP 01311-927. AGENTE: '+d.nome_agente+', endereço: '+end+'.',
+      'Fica eleito o foro da Comarca de São José/SC para dirimir questões oriundas do presente instrumento.',
+    ]},
+  ];
+
+  cls.forEach(cl=>{
+    chk(10); txt(cl.t,{bold:true}); gap(0.3);
+    cl.i.forEach((item,i)=>{ txt((i+1)+'.1. '+item,{indent:5}); gap(0.3); });
+    gap(0.3);
+  });
+
+  chk(60);
+  txt('E, por estarem assim justos e contratados, PROPONENTE e AGENTE, firmam o presente instrumento em 2 (duas) vias de igual teor e forma, perante as testemunhas abaixo.');
+  gap(2); hr();
+  txt('MELHOR CRÉDITO LTDA',{bold:true}); txt('CNPJ: 44.431.442/0001-68');
+  gap(2); hr();
+  txt(d.nome_agente,{bold:true}); txt(d.doc_label_assinatura+': '+d.doc_agente);
+  gap(2); txt('Testemunhas:',{bold:true}); gap(0.5);
+  doc.line(mL,y,mL+70,y); doc.line(mL+80,y,mL+cW,y); y+=4;
+  txt('Nome:                                                    Nome:');
+  txt('CPF:                                                      CPF:');
+
+  doc.addPage(); y=20;
+  txt('ANEXO I – TERMO DE DECLARAÇÃO',{bold:true,center:true,size:10}); gap();
+  txt('As partes acordam que o AGENTE tem total ciência de sua responsabilidade sobre solicitações de usuários, senhas e aprovadores, conforme descrição do item 6.4 do presente contrato, afirmando que leu atentamente sobre as responsabilidades perante os códigos/logins e senhas solicitados, e que arcará com qualquer despesa, seja ela de qual esfera for.'); gap();
+  txt('Ainda, O AGENTE ressarcirá as PROPONENTES, integralmente, de todo e qualquer prejuízo, material e moral, que venha causar em virtude do uso do login e senha de acesso ao SISTEMA DOS BANCOS ou do SISTEMA DA PROPONENTE, respondendo por danos materiais, morais, estornos, respondendo civil e criminalmente, podendo inclusive ter seu nome incluído nos órgãos de proteção ao crédito.'); gap(2);
+  hr();
+  txt(d.nome_agente,{bold:true}); txt(d.doc_label_assinatura+': '+d.doc_agente);
+
+  const nome=d.nome_agente.replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
+  doc.save('Contrato_'+nome+'.pdf');
 }
 
 // ═══ ANALISADOR DE MARGEM ═══
