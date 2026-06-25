@@ -189,6 +189,16 @@ header{display:none}
 .dash-hist-txt{flex:1}
 .dash-hist-acao{font-weight:600;color:var(--dark)}
 .dash-hist-det{font-size:10px;color:var(--lbl);margin-top:2px}
+
+.sla-card{background:#fff;border:1.5px solid #dae8f5;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,119,204,.06);transition:all .2s}
+.sla-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,119,204,.12)}
+.sla-status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.sla-s-andamento{background:#fef3c7;color:#92400e}
+.sla-s-adt{background:#dbeafe;color:#1d4ed8}
+.sla-s-finalizado{background:#dcfce7;color:#166534}
+.sla-proposta-item{display:flex;align-items:center;gap:8px}
+.sla-proposta-item input{flex:1;padding:8px 11px;border:1.5px solid #c8dff0;border-radius:8px;font-size:13px;background:#fff;outline:none}
+.sla-proposta-item button{background:none;border:none;color:#ef4444;cursor:pointer;font-size:16px;padding:4px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
@@ -262,9 +272,12 @@ header{display:none}
     <div id="sb-material-sub" style="display:none">
       <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power Hub</span></div>
       <div class="sb-subitem" onclick="switchTab('material-storm',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
+      <div class="sb-subitem" onclick="switchTab('sla-nova',this)"><span class="sb-icon">📋</span><span class="sb-label">SLA Comissões / Nova</span></div>
     </div>
-    <div class="sb-section">Gestão</div>
+    <div class="sb-section">Parceiros</div>
     <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Ajuste de Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
+    <div class="sb-item" onclick="switchTab('sla-parceiro',this)"><span class="sb-icon">📋</span><span class="sb-label">Comissões em Atraso</span></div>
+    <div class="sb-section">Gestão</div>
     <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Comunicados</span></div>
     <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Documentos Parceiros</span></div>
     <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos Parceiros</span></div>
@@ -880,6 +893,114 @@ header{display:none}
     </div>
     <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="con-grid">
       <div class="empty" style="grid-column:1/-1">Nenhum contrato cadastrado</div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-sla-nova">
+  <div style="background:var(--bg);min-height:calc(100vh - 58px)">
+    <div style="max-width:1200px;margin:0 auto;padding:28px 20px">
+      <h2 style="font-family:var(--fd);font-size:20px;color:var(--dark);margin-bottom:6px">📋 SLA Comissões / Nova</h2>
+      <p style="font-size:13px;color:var(--lbl);margin-bottom:24px">Deslize para o lado para ver todas as tabelas</p>
+
+      <!-- Carrossel -->
+      <div style="position:relative">
+        <!-- Botão esquerda -->
+        <button onclick="slaScroll(-1)" style="position:absolute;left:-18px;top:50%;transform:translateY(-50%);z-index:10;background:#0077cc;border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,119,204,.4);display:flex;align-items:center;justify-content:center">‹</button>
+
+        <!-- Container rolável -->
+        <div id="sla-carousel" style="display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;padding:10px 4px 20px;-ms-overflow-style:none">
+          <img src="042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(0)"onclick="slaZoom(0)">
+          <img src="7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(1)"onclick="slaZoom(1)">
+          <img src="901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(2)"onclick="slaZoom(2)">
+        </div>
+
+        <!-- Botão direita -->
+        <button onclick="slaScroll(1)" style="position:absolute;right:-18px;top:50%;transform:translateY(-50%);z-index:10;background:#0077cc;border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,119,204,.4);display:flex;align-items:center;justify-content:center">›</button>
+      </div>
+
+      <!-- Indicadores -->
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:8px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#0077cc"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#c8dff0"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#c8dff0"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Zoom overlay -->
+<div id="sla-zoom-overlay" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;cursor:zoom-out;display:none;align-items:center;justify-content:center;padding:20px">
+  <img id="sla-zoom-img" style="max-height:95vh;max-width:95vw;border-radius:12px;object-fit:contain">
+</div>
+
+<script>
+const slaImgs = ["042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg", "7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg", "901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg"];
+
+function slaScroll(dir) {
+  const c = document.getElementById('sla-carousel');
+  if (!c) return;
+  c.scrollBy({ left: dir * (c.offsetWidth * 0.85), behavior: 'smooth' });
+}
+
+function slaZoom(idx) {
+  const overlay = document.getElementById('sla-zoom-overlay');
+  document.getElementById('sla-zoom-img').src = slaImgs[idx];
+  overlay.style.display = 'flex';
+}
+
+document.getElementById('sla-zoom-overlay').addEventListener('click', function() {
+  this.style.display = 'none';
+});
+</script>
+
+<div class="tab-content" id="tab-sla-parceiro">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l">
+        <input class="search" id="sla-parc-srch" placeholder="🔍 Buscar por parceiro, banco ou CPF..." oninput="renderSLACards()">
+      </div>
+      <button class="btn-add" onclick="openSLAModal()">＋ Nova Comissões em Atraso</button>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px 40px">
+      <div id="sla-parc-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;margin-top:8px">
+        <div class="empty" style="grid-column:1/-1">Nenhuma SLA cadastrada</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL SLA COMISSÕES ══ -->
+<div class="overlay" id="sla-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="sla-modal-title">Comissões em Atraso</h2>
+      <button class="close-btn" onclick="closeSLAModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="slaw-parceiro"><label>Nome do Parceiro *</label><input id="sla-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="slaw-banco"><label>Banco *</label><input id="sla-banco" placeholder="Ex: Itaú, Caixa, Bradesco..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>CPF do Cliente</label><input id="sla-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPFsla(this)"></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          Propostas
+          <button type="button" onclick="addProposta()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar</button>
+        </label>
+        <div id="sla-propostas-list" style="display:flex;flex-direction:column;gap:6px;margin-top:6px"></div>
+      </div>
+      <div class="mf"><label>Data de Pagamento</label><input type="date" id="sla-data"></div>
+      <div class="mf"><label>Status *</label>
+        <select id="sla-status">
+          <option value="andamento">Em andamento</option>
+          <option value="adt">Enviado para ADT</option>
+          <option value="finalizado">Finalizado</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação</label><textarea id="sla-obs" placeholder="Observações..." rows="3"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeSLAModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveSLA()">Salvar</button>
     </div>
   </div>
 </div>
@@ -2727,7 +2848,7 @@ function carregarHistorico() {
 </div>
 
 <!-- ABA ANALISADOR DE MARGEM -->
-<div class="tab-content" id="tab-margem" style="display:none">
+<div class="tab-content" id="tab-margem">
 <div style="max-width:860px;margin:0 auto;padding:28px 20px 60px">
   <div style="margin-bottom:20px">
     <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--dark)">📊 Analisador de Margem Consignada</h2>
@@ -2967,26 +3088,39 @@ function gerarPDFContrato(d) {
   txt('E, por estarem assim justos e contratados, PROPONENTE e AGENTE, firmam o presente instrumento em 2 (duas) vias de igual teor e forma, perante as testemunhas abaixo.');
   gap(3);
 
-  const cX = pgW/2;
-  const sigW = 100;
-  const sigL = cX - sigW/2;
-  const sigR = cX + sigW/2;
+  doc.setDrawColor(100);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(fSize);
 
-  function assinatura(nome, label) {
-    chk(25);
-    doc.setDrawColor(100);
-    doc.line(sigL, y, sigR, y); y+=6;
-    doc.setFont('helvetica','bold'); doc.setFontSize(fSize);
-    doc.text(nome, cX, y, {align:'center'}); y+=lh;
-    doc.setFont('helvetica','normal');
-    doc.text(label, cX, y, {align:'center'}); y+=lh;
-    gap(2.5);
-  }
+  // PROPONENTE
+  chk(20);
+  doc.line(mL, y, pgW-mR, y); y+=5;
+  doc.setFont('helvetica','bold');
+  doc.text('MELHOR CRÉDITO LTDA', mL, y); y+=lh;
+  doc.setFont('helvetica','normal');
+  doc.text('CNPJ: 44.431.442/0001-68', mL, y); y+=lh;
+  gap(3);
 
-  assinatura('MELHOR CRÉDITO LTDA', 'CNPJ: 44.431.442/0001-68');
-  assinatura(d.nome_agente, d.doc_label_assinatura+': '+d.doc_agente);
-  assinatura('Testemunha 1', 'Nome:                    CPF:');
-  assinatura('Testemunha 2', 'Nome:                    CPF:');
+  // AGENTE
+  chk(20);
+  doc.line(mL, y, pgW-mR, y); y+=5;
+  doc.setFont('helvetica','normal');
+  doc.text(d.nome_agente, mL, y); y+=lh;
+  doc.text(d.doc_label_assinatura+': '+d.doc_agente, mL, y); y+=lh;
+  gap(3);
+
+  // TESTEMUNHA 1
+  chk(20);
+  doc.line(mL, y, pgW-mR, y); y+=5;
+  doc.text('Nome:', mL, y); y+=lh;
+  doc.text('CPF:', mL, y); y+=lh;
+  gap(3);
+
+  // TESTEMUNHA 2
+  chk(20);
+  doc.line(mL, y, pgW-mR, y); y+=5;
+  doc.text('Nome:', mL, y); y+=lh;
+  doc.text('CPF:', mL, y); y+=lh;
 
   doc.addPage(); y=20;
   txt('ANEXO I – TERMO DE DECLARAÇÃO',{bold:true,center:true,size:10}); gap();
@@ -3004,6 +3138,137 @@ function gerarPDFContrato(d) {
   const nome=d.nome_agente.replace(/[^a-zA-Z0-9\s]/g,'').trim().replace(/\s+/g,'_');
   doc.save('Contrato_'+nome+'.pdf');
 }
+
+
+// ═══ SLA COMISSÕES ═══
+let slaData = JSON.parse(localStorage.getItem('sla_comissoes') || '[]');
+let slaEditId = null;
+
+function saveSLAStorage() {
+  localStorage.setItem('sla_comissoes', JSON.stringify(slaData));
+}
+
+function openSLAModal(id = null) {
+  slaEditId = id;
+  document.getElementById('sla-modal-title').textContent = id ? 'Editar SLA' : 'Comissões em Atraso';
+  document.getElementById('sla-parceiro').value = '';
+  document.getElementById('sla-banco').value = '';
+  document.getElementById('sla-cpf').value = '';
+  document.getElementById('sla-data').value = '';
+  document.getElementById('sla-status').value = 'andamento';
+  document.getElementById('sla-obs').value = '';
+  document.getElementById('sla-propostas-list').innerHTML = '';
+
+  if (id !== null) {
+    const item = slaData.find(s => s.id === id);
+    if (item) {
+      document.getElementById('sla-parceiro').value = item.parceiro || '';
+      document.getElementById('sla-banco').value = item.banco || '';
+      document.getElementById('sla-cpf').value = item.cpf || '';
+      document.getElementById('sla-data').value = item.data || '';
+      document.getElementById('sla-status').value = item.status || 'andamento';
+      document.getElementById('sla-obs').value = item.obs || '';
+      (item.propostas || []).forEach(p => addProposta(p));
+    }
+  } else {
+    addProposta();
+  }
+  document.getElementById('sla-overlay').classList.add('open');
+}
+
+function closeSLAModal() {
+  document.getElementById('sla-overlay').classList.remove('open');
+}
+
+function maskCPFsla(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>9) v=v.replace(/(\d{3})(\d{3})(\d{3})(\d)/,'$1.$2.$3-$4');
+  else if(v.length>6) v=v.replace(/(\d{3})(\d{3})(\d)/,'$1.$2.$3');
+  else if(v.length>3) v=v.replace(/(\d{3})(\d)/,'$1.$2');
+  el.value=v;
+}
+
+function addProposta(val = '') {
+  const list = document.getElementById('sla-propostas-list');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:6px;align-items:center';
+  div.innerHTML = `<input placeholder="Nº da proposta" value="${val}" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:var(--bg);outline:none"><button onclick="this.parentElement.remove()" style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:7px;padding:6px 10px;cursor:pointer;font-size:13px">✕</button>`;
+  list.appendChild(div);
+}
+
+function saveSLA() {
+  const parceiro = document.getElementById('sla-parceiro').value.trim();
+  const banco = document.getElementById('sla-banco').value.trim();
+  const cpf = document.getElementById('sla-cpf').value.trim();
+  if (!parceiro || !banco) {
+    alert('Preencha Nome do Parceiro e Banco.');
+    return;
+  }
+  const propostas = [...document.querySelectorAll('#sla-propostas-list input')].map(i => i.value.trim()).filter(Boolean);
+  const item = {
+    id: slaEditId !== null ? slaEditId : Date.now(),
+    parceiro, banco, cpf,
+    propostas,
+    data: document.getElementById('sla-data').value,
+    status: document.getElementById('sla-status').value,
+    obs: document.getElementById('sla-obs').value.trim(),
+    criadoEm: slaEditId !== null ? (slaData.find(s=>s.id===slaEditId)?.criadoEm || Date.now()) : Date.now()
+  };
+  if (slaEditId !== null) {
+    const idx = slaData.findIndex(s => s.id === slaEditId);
+    if (idx >= 0) slaData[idx] = item;
+  } else {
+    slaData.unshift(item);
+  }
+  saveSLAStorage();
+  renderSLACards();
+  closeSLAModal();
+}
+
+function deleteSLA(id) {
+  if (!confirm('Remover esta SLA?')) return;
+  slaData = slaData.filter(s => s.id !== id);
+  saveSLAStorage();
+  renderSLACards();
+}
+
+function renderSLACards() {
+  const grid = document.getElementById('sla-parc-grid');
+  if (!grid) return;
+  const q = (document.getElementById('sla-parc-srch')?.value || '').toLowerCase();
+  const filtered = slaData.filter(s =>
+    s.parceiro?.toLowerCase().includes(q) ||
+    s.banco?.toLowerCase().includes(q) ||
+    s.cpf?.toLowerCase().includes(q)
+  );
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Nenhuma SLA encontrada</div>';
+    return;
+  }
+  const statusLabel = {andamento:'Em andamento', adt:'Enviado para ADT', finalizado:'Finalizado'};
+  const statusClass = {andamento:'sla-s-andamento', adt:'sla-s-adt', finalizado:'sla-s-finalizado'};
+  grid.innerHTML = filtered.map(s => `
+    <div class="sla-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#003a66">${s.parceiro}</div>
+          <div style="font-size:12px;color:var(--lbl);margin-top:2px">${s.banco}</div>
+        </div>
+        <span class="sla-status-badge ${statusClass[s.status] || 'sla-s-andamento'}">${statusLabel[s.status] || s.status}</span>
+      </div>
+      ${s.cpf ? `<div style="font-size:12px;color:var(--lbl);margin-bottom:6px">👤 CPF: <strong>${s.cpf}</strong></div>` : ''}
+      ${s.propostas?.length ? `<div style="font-size:12px;color:var(--lbl);margin-bottom:6px">📄 Propostas: <strong>${s.propostas.join(', ')}</strong></div>` : ''}
+      ${s.data ? `<div style="font-size:12px;color:var(--lbl);margin-bottom:6px">📅 Pagamento: <strong>${new Date(s.data+'T00:00:00').toLocaleDateString('pt-BR')}</strong></div>` : ''}
+      ${s.obs ? `<div style="font-size:12px;color:var(--lbl);background:#f8fbff;border-radius:7px;padding:7px 10px;margin-top:8px;border:1px solid #e8f0fa">💬 ${s.obs}</div>` : ''}
+      <div style="display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #f0f6fc">
+        <button onclick="openSLAModal(${s.id})" style="flex:1;padding:7px;background:#f0f6fc;border:1px solid #c8dff0;border-radius:7px;font-size:12px;font-weight:600;color:#0077cc;cursor:pointer">✏️ Editar</button>
+        <button onclick="deleteSLA(${s.id})" style="padding:7px 12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;font-size:12px;color:#dc2626;cursor:pointer">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+renderSLACards();
 
 // ═══ ANALISADOR DE MARGEM ═══
 async function mgAnalisar(file) {
