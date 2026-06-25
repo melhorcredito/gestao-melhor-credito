@@ -322,46 +322,40 @@ header{display:none}
 </div>
 <!-- ══════════════ ABA CAPA ══════════════ -->
 <div class="tab-content active" id="tab-capa">
-  <div style="max-width:1200px;margin:0 auto;padding:24px 20px">
-    <div style="margin-bottom:24px">
-      <h2 style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--dark)" id="dash-greeting">Olá! 👋</h2>
-      <p style="font-size:13px;color:var(--lbl);margin-top:4px" id="dash-date"></p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">
-      <div class="dash-card" onclick="switchTab('logins',null)" style="cursor:pointer">
-        <div class="dash-icon" style="background:#FEF3C7">⏳</div>
-        <div class="dash-n" id="dash-logins-pend">—</div>
-        <div class="dash-l">Logins Pendentes</div>
+  <div style="min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center;padding:40px 24px">
+    <div style="text-align:center;max-width:520px;width:100%">
+
+      <!-- Linha decorativa topo -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px">
+        <div style="height:1px;width:48px;background:linear-gradient(to right,transparent,#b3d9f5)"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#0077cc;opacity:.4"></div>
+        <div style="height:1px;width:48px;background:linear-gradient(to left,transparent,#b3d9f5)"></div>
       </div>
-      <div class="dash-card" onclick="switchTab('comissoes',null)" style="cursor:pointer">
-        <div class="dash-icon" style="background:#FEE2E2">🔔</div>
-        <div class="dash-n" id="dash-com-atraso">—</div>
-        <div class="dash-l">Comissões em Atraso</div>
+
+      <!-- Label -->
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#3a6080;opacity:.6;margin-bottom:18px">Sistema de Gestão Interna</div>
+
+      <!-- Título principal -->
+      <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,40px);color:#003a66;font-weight:400;margin:0 0 10px;line-height:1.2;letter-spacing:.01em">
+        Seja bem-vindo(a) à<br>
+        <span style="color:#0077cc">Melhor Crédito</span>
+      </h1>
+
+      <!-- Linha separadora -->
+      <div style="width:40px;height:2px;background:linear-gradient(to right,#0077cc,#1a90e0);border-radius:2px;margin:22px auto"></div>
+
+      <!-- Data -->
+      <p id="dash-date" style="font-size:14px;color:#3a6080;letter-spacing:.03em;margin:0;font-weight:500"></p>
+
+      <!-- Linha decorativa base -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:36px">
+        <div style="height:1px;width:48px;background:linear-gradient(to right,transparent,#b3d9f5)"></div>
+        <div style="width:5px;height:5px;border-radius:50%;background:#1a90e0;opacity:.3"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#0077cc;opacity:.25"></div>
+        <div style="width:5px;height:5px;border-radius:50%;background:#1a90e0;opacity:.3"></div>
+        <div style="height:1px;width:48px;background:linear-gradient(to left,transparent,#b3d9f5)"></div>
       </div>
-      <div class="dash-card" onclick="switchTab('contratos',null)" style="cursor:pointer">
-        <div class="dash-icon" style="background:#DCFCE7">📄</div>
-        <div class="dash-n" id="dash-contratos">—</div>
-        <div class="dash-l">Contratos Ativos</div>
-      </div>
-      <div class="dash-card" onclick="switchTab('sub',null)" style="cursor:pointer">
-        <div class="dash-icon" style="background:#EDE9FE">🗂️</div>
-        <div class="dash-n" id="dash-subs-pend">—</div>
-        <div class="dash-l">Cadastros Sub Pend.</div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div class="dash-box">
-        <div class="dash-box-title">🔐 Últimos Logins Pendentes</div>
-        <div id="dash-list-logins"><p style="color:var(--lbl);font-size:12px;padding:12px">Aguardando dados...</p></div>
-      </div>
-      <div class="dash-box">
-        <div class="dash-box-title">📢 Comunicados Recentes</div>
-        <div id="dash-list-comunicados"><p style="color:var(--lbl);font-size:12px;padding:12px">Aguardando dados...</p></div>
-      </div>
-      <div class="dash-box" style="grid-column:span 2">
-        <div class="dash-box-title">🕒 Histórico de Alterações</div>
-        <div id="dash-historico"><p style="color:var(--lbl);font-size:12px;padding:12px">Nenhuma alteração registrada ainda.</p></div>
-      </div>
+
     </div>
   </div>
 </div>
@@ -2640,17 +2634,15 @@ function renderMaterial(tipo) {
 var HISTORICO = [];
 
 function initDashboard() {
-  // Saudação
-  var h = new Date().getHours();
-  var greet = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
-  var el = document.getElementById('dash-greeting');
-  if(el) el.textContent = greet + '! 👋';
+  // Data
+
 
   // Data
   var dt = document.getElementById('dash-date');
   if(dt) {
     var d = new Date();
-    dt.textContent = d.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    var str = d.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    dt.textContent = str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   // Carrega dados do dashboard
