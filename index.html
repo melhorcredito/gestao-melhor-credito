@@ -289,7 +289,7 @@ header{display:none}
     <div class="sb-section">Acesso Rápido</div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
     <div class="sb-item" onclick="switchTab('ajuste-bancario',this)"><span class="sb-icon">🏦</span><span class="sb-label">Ajuste Bancário</span></div>
-    <div class="sb-item" onclick="switchTab('vinculo-login',this)"><span class="sb-icon">🔗</span><span class="sb-label">Vínculo de Login</span></div>
+    <div class="sb-item" onclick="switchTab('vinculo-login',this);if(!document.getElementById('vl-logins-container').children.length)vlInit();"><span class="sb-icon">🔗</span><span class="sb-label">Vínculo de Login</span></div>
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
@@ -1438,10 +1438,19 @@ function vlAdicionarLogin() {
   var div = document.createElement('div');
   div.id = 'vl-item-' + id;
   div.style.cssText = 'background:#f8fbff;border:1.5px solid #e8f0fa;border-radius:10px;padding:14px;margin-bottom:12px;position:relative';
+
+  var bancos = ['BMG','C6','FACTA','FINANTO','AMIGOZ'];
+  var btnsBanco = '';
+  for(var i=0; i<bancos.length; i++){
+    btnsBanco += '<button type="button" onclick="vlSelecionarBanco(this,' + id + ',\"' + bancos[i] + '\")" class="vl-banco-btn" data-grupo="' + id + '">' + bancos[i] + '</button>';
+  }
+
+  var removeBtn = id > 1 ? '<button type="button" onclick="vlRemoverLogin(' + id + ')" style="background:none;border:none;color:#e53e3e;font-size:20px;cursor:pointer;line-height:1">×</button>' : '';
+
   div.innerHTML =
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
       '<span style="font-size:11px;font-weight:700;color:#0077cc;text-transform:uppercase;letter-spacing:.06em">Login ' + id + '</span>' +
-      (id > 1 ? '<button onclick="vlRemoverLogin(' + id + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;line-height:1">×</button>' : '') +
+      removeBtn +
     '</div>' +
     '<div style="margin-bottom:10px">' +
       '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Login do Usuário *</label>' +
@@ -1449,13 +1458,10 @@ function vlAdicionarLogin() {
     '</div>' +
     '<div>' +
       '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:6px">Banco *</label>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
-        ['BMG','C6','FACTA','FINANTO','AMIGOZ'].map(function(b) {
-          return '<button onclick="vlSelecionarBanco(this,' + id + ','' + b + '')" class="vl-banco-btn" data-grupo="' + id + '">' + b + '</button>';
-        }).join('') +
-      '</div>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + btnsBanco + '</div>' +
       '<input type="hidden" id="vl-banco-' + id + '" value="">' +
     '</div>';
+
   container.appendChild(div);
 }
 
@@ -3140,7 +3146,6 @@ function renderMaterial(tipo) {
 var HISTORICO = [];
 
 function initDashboard() {
-  vlInit();
   // Data
 
 
