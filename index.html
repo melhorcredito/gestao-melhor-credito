@@ -158,6 +158,9 @@ body{display:flex}
 .sb-item.active{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.25)}
 .sb-item .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
 .sb-item .sb-label{flex:1;overflow:hidden}
+.vl-banco-btn{padding:7px 18px;border:2px solid #dde3ea;border-radius:20px;background:white;color:#334155;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.vl-banco-btn:hover{border-color:#0077cc;color:#0077cc}
+.vl-banco-btn.ativo{background:#0077cc;color:white;border-color:#0077cc}
 .sb-badge{background:#e53e3e;color:#fff;border-radius:20px;font-size:9px;font-weight:700;padding:2px 5px;flex-shrink:0}
 .main{margin-left:240px;flex:1;min-height:100vh;transition:margin .3s;overflow-x:hidden}
 .sidebar.collapsed ~ .main{margin-left:56px}
@@ -286,6 +289,7 @@ header{display:none}
     <div class="sb-section">Acesso Rápido</div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
     <div class="sb-item" onclick="switchTab('ajuste-bancario',this)"><span class="sb-icon">🏦</span><span class="sb-label">Ajuste Bancário</span></div>
+    <div class="sb-item" onclick="switchTab('vinculo-login',this)"><span class="sb-icon">🔗</span><span class="sb-label">Vínculo de Login</span></div>
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
@@ -762,6 +766,59 @@ header{display:none}
 </div>
 
 <!-- ══════════════ ABA 9: LINKS ÚTEIS ══════════════ -->
+<div class="tab-content" id="tab-vinculo-login">
+  <div style="max-width:700px;margin:0 auto;padding:28px 20px">
+
+    <!-- Header -->
+    <div style="margin-bottom:24px">
+      <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">🔗 Vínculo de Login</h2>
+      <p style="font-size:13px;color:#6b7f99;margin-top:4px">Preencha os dados abaixo — o sistema monta e abre o e-mail automaticamente.</p>
+    </div>
+
+    <!-- Formulário -->
+    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:16px">📋 Dados da Solicitação</div>
+
+      <!-- Código Storm (único para todos) -->
+      <div style="margin-bottom:18px">
+        <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Código do Parceiro (Storm) *</label>
+        <input type="text" id="vl-storm" placeholder="Ex: 67440" oninput="vlAtualizarPreview()" style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;color:#1a2a3a;background:#fafbfc">
+      </div>
+
+      <!-- Lista de logins -->
+      <div id="vl-logins-container"></div>
+
+      <!-- Botão adicionar -->
+      <button onclick="vlAdicionarLogin()" style="width:100%;padding:9px;background:#f0f6ff;color:#0077cc;border:2px dashed #90caf9;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:18px">
+        + Adicionar outro Login / Banco
+      </button>
+
+      <!-- Preview -->
+      <div id="vl-preview" style="display:none;margin-bottom:16px;padding:14px;background:#f0f6ff;border:1.5px solid #c5d8f5;border-radius:10px">
+        <div style="font-size:10px;font-weight:700;color:#0077cc;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">📧 Prévia do E-mail</div>
+        <div style="font-size:12px;color:#003a66;margin-bottom:4px"><strong>Assunto:</strong> <span id="vl-preview-assunto"></span></div>
+        <div style="height:1px;background:#dde8f8;margin:8px 0"></div>
+        <div style="font-size:12px;color:#334155;line-height:1.7" id="vl-preview-corpo"></div>
+      </div>
+
+      <button onclick="vlEnviarEmail()" style="width:100%;padding:13px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">
+        📧 Abrir E-mail Pronto no Gmail
+      </button>
+
+      <div id="vl-status" style="display:none;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600"></div>
+    </div>
+
+    <!-- Histórico -->
+    <div style="background:white;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px rgba(0,0,0,.07)">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:12px">📋 Histórico de Vínculos Enviados</div>
+      <div id="vl-historico-lista">
+        <p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda nesta sessão.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="tab-content" id="tab-ajuste-bancario">
   <div style="max-width:800px;margin:0 auto;padding:28px 20px">
 
@@ -1361,6 +1418,170 @@ function toggleSidebar(){
 // ══════════════════════════════════════════════════════════════
 // AJUSTE BANCÁRIO
 // ══════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════
+// VÍNCULO DE LOGIN
+// ══════════════════════════════════════════════════════════════
+
+var VL_HISTORICO = [];
+var VL_CONTADOR = 0;
+
+// Inicializa com um login ao carregar
+function vlInit() {
+  vlAdicionarLogin();
+}
+
+function vlAdicionarLogin() {
+  VL_CONTADOR++;
+  var id = VL_CONTADOR;
+  var container = document.getElementById('vl-logins-container');
+  var div = document.createElement('div');
+  div.id = 'vl-item-' + id;
+  div.style.cssText = 'background:#f8fbff;border:1.5px solid #e8f0fa;border-radius:10px;padding:14px;margin-bottom:12px;position:relative';
+  div.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
+      '<span style="font-size:11px;font-weight:700;color:#0077cc;text-transform:uppercase;letter-spacing:.06em">Login ' + id + '</span>' +
+      (id > 1 ? '<button onclick="vlRemoverLogin(' + id + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;line-height:1">×</button>' : '') +
+    '</div>' +
+    '<div style="margin-bottom:10px">' +
+      '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Login do Usuário *</label>' +
+      '<input type="text" id="vl-login-' + id + '" placeholder="Ex: joao.silva@email.com" oninput="vlAtualizarPreview()" style="width:100%;padding:9px 12px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:white">' +
+    '</div>' +
+    '<div>' +
+      '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:6px">Banco *</label>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+        ['BMG','C6','FACTA','FINANTO','AMIGOZ'].map(function(b) {
+          return '<button onclick="vlSelecionarBanco(this,' + id + ','' + b + '')" class="vl-banco-btn" data-grupo="' + id + '">' + b + '</button>';
+        }).join('') +
+      '</div>' +
+      '<input type="hidden" id="vl-banco-' + id + '" value="">' +
+    '</div>';
+  container.appendChild(div);
+}
+
+function vlRemoverLogin(id) {
+  var el = document.getElementById('vl-item-' + id);
+  if (el) el.remove();
+  vlAtualizarPreview();
+}
+
+function vlSelecionarBanco(btn, id, banco) {
+  document.querySelectorAll('[data-grupo="' + id + '"]').forEach(function(b) { b.classList.remove('ativo'); });
+  btn.classList.add('ativo');
+  document.getElementById('vl-banco-' + id).value = banco;
+  vlAtualizarPreview();
+}
+
+function vlColetarLogins() {
+  var logins = [];
+  var items = document.querySelectorAll('[id^="vl-item-"]');
+  items.forEach(function(item) {
+    var id = item.id.replace('vl-item-','');
+    var login = document.getElementById('vl-login-' + id);
+    var banco = document.getElementById('vl-banco-' + id);
+    if (login && banco) {
+      logins.push({ login: login.value.trim(), banco: banco.value.trim() });
+    }
+  });
+  return logins;
+}
+
+function vlAtualizarPreview() {
+  var storm = document.getElementById('vl-storm').value.trim();
+  var logins = vlColetarLogins();
+  var validos = logins.filter(function(l){ return l.login && l.banco; });
+  if (!storm || validos.length === 0) { document.getElementById('vl-preview').style.display = 'none'; return; }
+
+  var assunto = 'Vincular ao código - ' + storm;
+  var linhasLogins = validos.map(function(l) {
+    return 'Usuário: ' + l.login + ' (' + l.banco + ')';
+  }).join('\n');
+
+  var corpo = 'Olá, tudo bem?\n\nGentileza, segue' + (validos.length > 1 ? 'm os usuários abaixo' : ' o usuário abaixo') + ' para vincular sobre o código acima:\n\n' + linhasLogins + '\n\nGrata!';
+
+  document.getElementById('vl-preview-assunto').textContent = assunto;
+  document.getElementById('vl-preview-corpo').innerHTML = corpo.replace(/\n/g,'<br>');
+  document.getElementById('vl-preview').style.display = 'block';
+}
+
+function vlEnviarEmail() {
+  var storm = document.getElementById('vl-storm').value.trim();
+  var logins = vlColetarLogins();
+  var validos = logins.filter(function(l){ return l.login && l.banco; });
+
+  if (!storm)           { vlStatus('⚠️ Informe o Código Storm!', 'err'); return; }
+  if (validos.length === 0) { vlStatus('⚠️ Preencha pelo menos um Login e Banco!', 'err'); return; }
+
+  var erros = logins.filter(function(l){ return (l.login && !l.banco) || (!l.login && l.banco); });
+  if (erros.length > 0) { vlStatus('⚠️ Preencha login E banco em todos os itens!', 'err'); return; }
+
+  var assunto = 'Vincular ao código - ' + storm;
+  var linhasLogins = validos.map(function(l) {
+    return 'Usuário: ' + l.login + ' (' + l.banco + ')';
+  }).join('\n');
+  var corpo = 'Olá, tudo bem?\n\nGentileza, segue' + (validos.length > 1 ? 'm os usuários abaixo' : ' o usuário abaixo') + ' para vincular sobre o código acima:\n\n' + linhasLogins + '\n\nGrata!';
+
+  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&to=' + encodeURIComponent('ascom@novapromotora.com') +
+    '&su=' + encodeURIComponent(assunto) +
+    '&body=' + encodeURIComponent(corpo);
+
+  window.open(gmailUrl, '_blank');
+
+  var agora = new Date();
+  VL_HISTORICO.unshift({
+    storm: storm,
+    logins: validos,
+    hora: agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
+    data: agora.toLocaleDateString('pt-BR'),
+    status: 'aguardando'
+  });
+  vlAtualizarHistorico();
+  vlStatus('✅ Gmail aberto! Envie o e-mail e acompanhe abaixo.', 'ok');
+
+  // Limpa
+  document.getElementById('vl-storm').value = '';
+  document.getElementById('vl-logins-container').innerHTML = '';
+  VL_CONTADOR = 0;
+  vlAdicionarLogin();
+  document.getElementById('vl-preview').style.display = 'none';
+}
+
+function vlAtualizarHistorico() {
+  var lista = document.getElementById('vl-historico-lista');
+  if (!lista) return;
+  if (VL_HISTORICO.length === 0) {
+    lista.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda nesta sessão.</p>';
+    return;
+  }
+  lista.innerHTML = VL_HISTORICO.map(function(item, idx) {
+    var ajustado = item.status === 'vinculado';
+    var loginsStr = item.logins ? item.logins.map(function(l){ return l.login + ' (' + l.banco + ')'; }).join(', ') : (item.login + ' (' + item.banco + ')');
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;gap:10px">' +
+      '<div style="flex:1">' +
+        '<div style="font-size:13px;font-weight:600;color:#003a66">Storm: ' + item.storm + '</div>' +
+        '<div style="font-size:11px;color:#6b7f99;margin-top:2px">' + loginsStr + ' • ' + item.data + ' às ' + item.hora + '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;flex-shrink:0">' +
+        '<button onclick="vlSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
+        '<button onclick="vlSetStatus(' + idx + ',\'vinculado\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Vinculado</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function vlSetStatus(idx, status) {
+  VL_HISTORICO[idx].status = status;
+  vlAtualizarHistorico();
+}
+
+function vlStatus(msg, tipo) {
+  var el = document.getElementById('vl-status');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.background = tipo === 'ok' ? '#e8f5e9' : '#fce4e4';
+  el.style.color = tipo === 'ok' ? '#2e7d32' : '#c62828';
+}
 
 // ── HISTÓRICO DE AJUSTES ─────────────────────────────────────
 var AJUSTE_HISTORICO = [];
@@ -2919,6 +3140,7 @@ function renderMaterial(tipo) {
 var HISTORICO = [];
 
 function initDashboard() {
+  vlInit();
   // Data
 
 
