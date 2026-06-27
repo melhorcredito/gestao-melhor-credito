@@ -158,6 +158,7 @@ body{display:flex}
 .sb-item.active{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.25)}
 .sb-item .sb-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
 .sb-item .sb-label{flex:1;overflow:hidden}
+.sb-section-title{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:14px 10px 5px;margin-top:4px}
 .vl-banco-btn{padding:7px 18px;border:2px solid #dde3ea;border-radius:20px;background:white;color:#334155;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
 .vl-banco-btn:hover{border-color:#0077cc;color:#0077cc}
 .vl-banco-btn.ativo{background:#0077cc;color:white;border-color:#0077cc}
@@ -262,40 +263,50 @@ header{display:none}
   </div>
   <button class="sb-toggle" onclick="toggleSidebar()">◀</button>
   <nav class="sb-nav">
-    <div class="sb-section">Operacional</div>
-    <div class="sb-item" onclick="switchTab('logins',this)"><span class="sb-icon">🔐</span><span class="sb-label">Criações de Logins</span></div>
-    <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / Propostas</span></div>
-    <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas E-mail</span></div>
-    <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros Sub</span></div>
+    <!-- OPERACIONAL -->
+    <div class="sb-section-title">🏢 Operacional</div>
+    <div class="sb-item" onclick="switchTab('logins',this)"><span class="sb-icon">🔐</span><span class="sb-label">Criações de logins</span></div>
+    <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros SUB</span></div>
+    <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / propostas</span></div>
+    <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas e-mail</span></div>
+
+    <!-- AUTOMAÇÕES -->
+    <div class="sb-section-title">⚡ Automações</div>
+    <div class="sb-item" onclick="switchTab('ajuste-bancario',this)"><span class="sb-icon">🏦</span><span class="sb-label">Ajuste bancário</span></div>
+    <div class="sb-item" onclick="switchTab('vinculo-login',this);if(!document.getElementById('vl-logins-container').children.length)vlInit();"><span class="sb-icon">🔗</span><span class="sb-label">Vínculo de login</span></div>
+
+    <!-- PARCEIROS -->
+    <div class="sb-section-title">🤝 Parceiros</div>
+    <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Ajuste de comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
+    <div class="sb-item" onclick="switchTab('sla-parceiro',this)"><span class="sb-icon">📋</span><span class="sb-label">Comissões em atraso</span></div>
+    <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Documentos parceiros</span></div>
+    <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos parceiros</span></div>
+
+    <!-- GESTÃO -->
+    <div class="sb-section-title">📊 Gestão</div>
+    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Avisos</span></div>
+    <div class="sb-item" onclick="switchTab('contatos',this)"><span class="sb-icon">📒</span><span class="sb-label">Contatos</span></div>
+    <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte interno</span></div>
+
+    <!-- MATERIAL & ACESSO -->
+    <div class="sb-section-title">📚 Material & Acesso</div>
     <div class="sb-item sb-expandable" id="sb-material" onclick="toggleMaterial()">
       <span class="sb-icon">📚</span>
-      <span class="sb-label">Material de Apoio</span>
+      <span class="sb-label">Material de apoio</span>
       <span class="sb-arr" id="sb-material-arr">›</span>
     </div>
     <div id="sb-material-sub" style="display:none">
-      <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power Hub</span></div>
+      <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power hub</span></div>
       <div class="sb-subitem" onclick="switchTab('material-storm',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
       <div class="sb-subitem" onclick="switchTab('sla-nova',this)"><span class="sb-icon">📋</span><span class="sb-label">SLA Comissões / Nova</span></div>
     </div>
-    <div class="sb-section">Parceiros</div>
-    <div class="sb-item" onclick="switchTab('comissoes',this)"><span class="sb-icon">💰</span><span class="sb-label">Ajuste de Comissões</span><span id="cm-badge" style="display:none" class="sb-badge">🔔</span></div>
-    <div class="sb-item" onclick="switchTab('sla-parceiro',this)"><span class="sb-icon">📋</span><span class="sb-label">Comissões em Atraso</span></div>
-    <div class="sb-section">Gestão</div>
-    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Comunicados</span></div>
-    <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Documentos Parceiros</span></div>
-    <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos Parceiros</span></div>
-    <div class="sb-section">Contatos</div>
-    <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte Interno</span></div>
-    <div class="sb-section">Acesso Rápido</div>
-    <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
-    <div class="sb-item" onclick="switchTab('ajuste-bancario',this)"><span class="sb-icon">🏦</span><span class="sb-label">Ajuste Bancário</span></div>
-    <div class="sb-item" onclick="switchTab('vinculo-login',this);if(!document.getElementById('vl-logins-container').children.length)vlInit();"><span class="sb-icon">🔗</span><span class="sb-label">Vínculo de Login</span></div>
-    <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
+    <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins bancos</span></div>
+    <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
     <div onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s">
       <span style="font-size:15px;width:22px;text-align:center">🌙</span>
-      <span class="sb-label">Modo Escuro</span>
+      <span class="sb-label">Modo escuro</span>
       <div id="dark-switch" style="width:32px;height:18px;background:rgba(255,255,255,.2);border-radius:20px;position:relative;margin-left:auto;transition:background .3s;flex-shrink:0">
         <div id="dark-knob" style="position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .3s"></div>
       </div>
@@ -315,7 +326,7 @@ header{display:none}
     <div class="tab" onclick="switchTab('demandas',this)">📋 Demandas / Propostas</div>
     <div class="tab" onclick="switchTab('emails',this)">✉️ Demandas E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
-    <div class="tab" onclick="switchTab('comunicados',this)">📢 Comunicados</div>
+    <div class="tab" onclick="switchTab('comunicados',this)">📢 Avisos</div>
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
@@ -569,7 +580,7 @@ header{display:none}
 
   <div class="toolbar">
     <div class="toolbar-l">
-      <input class="search" id="c-srch" placeholder="🔍 Buscar comunicado..." oninput="renderComunicados()">
+      <input class="search" id="c-srch" placeholder="🔍 Buscar comunicado..." oninput="renderAvisos()">
     </div>
     <button class="btn-add" onclick="openComModal()">＋ Novo Comunicado</button>
   </div>
@@ -2788,10 +2799,10 @@ var cEditId = null;
 
 onSnapshot(collection(db,'comunicados'), function(snap){
   COMUNICADOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderComunicados();
+  renderAvisos();
 });
 
-function renderComunicados(){
+function renderAvisos(){
   var srch = document.getElementById('c-srch').value.trim().toLowerCase();
   var cols = {and:[],fin:[]};
   COMUNICADOS.forEach(function(it){
