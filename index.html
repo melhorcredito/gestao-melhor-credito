@@ -1423,36 +1423,37 @@ function ajusteEnviarEmail() {
   var destinatario = 'dalcastegnegiovana@gmail.com';
   var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
 
-  var corpo = 
-    'Olá,' +
-    '%0A%0A' +
-    'Segue solicitação de alteração de dados bancários:%0A%0A' +
-    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A' +
-    'AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO%0A' +
-    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A' +
-    '📌 CÓDIGO STORM: ' + storm + '%0A' +
-    '🏦 BANCO: ' + banco + ' (Código: ' + codBanco + ')%0A' +
-    '📋 AGÊNCIA: ' + agencia + '%0A' +
-    '💳 TIPO DE CONTA: ' + tipo + '%0A' +
-    '🔢 N. CONTA: ' + conta + '%0A' +
-    '👤 TITULAR: ' + titular + '%0A' +
-    '📄 CNPJ: ' + cnpj + '%0A' +
-    '📝 OBSERVAÇÃO: ' + obs + '%0A%0A' +
-    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A' +
-    'Att,%0A' +
+  var corpo =
+    'Olá,\n\n' +
+    'Segue solicitação de alteração de dados bancários:\n\n' +
+    '──────────────────────────────\n' +
+    'AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO\n' +
+    '──────────────────────────────\n\n' +
+    'CÓDIGO STORM: ' + storm + '\n' +
+    'BANCO: ' + banco + ' (Código: ' + codBanco + ')\n' +
+    'AGÊNCIA: ' + agencia + '\n' +
+    'TIPO DE CONTA: ' + tipo + '\n' +
+    'N. CONTA: ' + conta + '\n' +
+    'TITULAR: ' + titular + '\n' +
+    'CNPJ: ' + cnpj + '\n' +
+    'OBSERVAÇÃO: ' + obs + '\n\n' +
+    '──────────────────────────────\n\n' +
+    'Att,\n' +
     'Equipe Melhor Crédito';
 
-  var mailto = 'mailto:' + destinatario +
-    '?subject=' + encodeURIComponent(assunto) +
-    '&body=' + corpo;
+  // Abre direto no Gmail web
+  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&to=' + encodeURIComponent(destinatario) +
+    '&su=' + encodeURIComponent(assunto) +
+    '&body=' + encodeURIComponent(corpo);
 
-  window.open(mailto, '_blank');
+  window.open(gmailUrl, '_blank');
 
   var st = document.getElementById('ajuste-status');
   st.style.display = 'block';
   st.style.background = '#e8f5e9';
   st.style.color = '#2e7d32';
-  st.textContent = '✅ E-mail aberto no seu cliente de e-mail! Verifique e clique em Enviar.';
+  st.textContent = '✅ Gmail aberto com o e-mail pronto! Verifique e clique em Enviar.';
 }
 
 function switchTab(name,el){
