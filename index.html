@@ -1442,7 +1442,7 @@ function vlAdicionarLogin() {
   var bancos = ['BMG','C6','FACTA','FINANTO','AMIGOZ'];
   var btnsBanco = '';
   for(var i=0; i<bancos.length; i++){
-    btnsBanco += '<button type="button" onclick="vlSelecionarBanco(this,' + id + ',\"' + bancos[i] + '\")" class="vl-banco-btn" data-grupo="' + id + '">' + bancos[i] + '</button>';
+    btnsBanco += '<button type="button" class="vl-banco-btn" data-grupo="' + id + '" data-banco="' + bancos[i] + '" data-id="' + id + '">' + bancos[i] + '</button>';
   }
 
   var removeBtn = id > 1 ? '<button type="button" onclick="vlRemoverLogin(' + id + ')" style="background:none;border:none;color:#e53e3e;font-size:20px;cursor:pointer;line-height:1">×</button>' : '';
@@ -1477,6 +1477,20 @@ function vlSelecionarBanco(btn, id, banco) {
   document.getElementById('vl-banco-' + id).value = banco;
   vlAtualizarPreview();
 }
+
+// Delegação de clique para botões de banco gerados dinamicamente
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.vl-banco-btn');
+  if (!btn) return;
+  var id = btn.getAttribute('data-id');
+  var banco = btn.getAttribute('data-banco');
+  if (!id || !banco) return;
+  document.querySelectorAll('[data-grupo="' + id + '"]').forEach(function(b){ b.classList.remove('ativo'); });
+  btn.classList.add('ativo');
+  var input = document.getElementById('vl-banco-' + id);
+  if (input) input.value = banco;
+  vlAtualizarPreview();
+});
 
 function vlColetarLogins() {
   var logins = [];
