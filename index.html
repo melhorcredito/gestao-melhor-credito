@@ -771,6 +771,33 @@ header{display:none}
       <p style="font-size:13px;color:#6b7f99;margin-top:4px">Cole a mensagem do WhatsApp — o sistema extrai tudo e monta o e-mail automaticamente.</p>
     </div>
 
+    <!-- PAINEL DE RESPOSTAS -->
+    <div style="background:white;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px;border-left:4px solid #0077cc">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:4px">📬 Respostas do Setor</div>
+          <p style="font-size:12px;color:#6b7f99;margin:0">Clique no botão para verificar se chegou alguma resposta no Gmail</p>
+        </div>
+        <button onclick="ajusteVerRespostas()" style="padding:9px 18px;background:#0077cc;color:white;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
+          📥 Verificar Respostas
+        </button>
+      </div>
+
+      <!-- Lista de respostas pendentes -->
+      <div id="ajuste-respostas" style="margin-top:14px;display:none">
+        <div style="height:1px;background:#eef2f7;margin-bottom:12px"></div>
+        <div id="ajuste-respostas-lista"></div>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO DE ENVIOS -->
+    <div style="background:white;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:12px">📋 Histórico de Ajustes Enviados</div>
+      <div id="ajuste-historico-lista">
+        <p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>
+      </div>
+    </div>
+
     <!-- PASSO 1: Cola a mensagem -->
     <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
       <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:12px">
@@ -1354,6 +1381,74 @@ function toggleSidebar(){
 // AJUSTE BANCÁRIO
 // ══════════════════════════════════════════════════════════════
 
+// ── HISTÓRICO DE AJUSTES ─────────────────────────────────────
+var AJUSTE_HISTORICO = [];
+
+function ajusteRegistrarEnvio(storm, titular, banco) {
+  var agora = new Date();
+  var hora = agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  var data = agora.toLocaleDateString('pt-BR');
+  AJUSTE_HISTORICO.unshift({ storm, titular, banco, hora, data, status: 'aguardando' });
+  ajusteAtualizarHistorico();
+}
+
+function ajusteAtualizarHistorico() {
+  var lista = document.getElementById('ajuste-historico-lista');
+  if (!lista) return;
+  if (AJUSTE_HISTORICO.length === 0) {
+    lista.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>';
+    return;
+  }
+  lista.innerHTML = AJUSTE_HISTORICO.map(function(item) {
+    var cor = item.status === 'respondido' ? '#22c55e' : '#f59e0b';
+    var icone = item.status === 'respondido' ? '✅' : '⏳';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;flex-wrap:wrap;gap:8px">' +
+      '<div>' +
+        '<div style="font-size:13px;font-weight:600;color:#003a66">' + icone + ' ' + item.titular + '</div>' +
+        '<div style="font-size:11px;color:#6b7f99;margin-top:2px">Storm: ' + item.storm + ' • ' + item.banco + ' • ' + item.data + ' às ' + item.hora + '</div>' +
+      '</div>' +
+      '<span style="font-size:11px;font-weight:700;color:' + cor + ';background:' + (item.status === 'respondido' ? '#f0fdf4' : '#fffbeb') + ';padding:3px 10px;border-radius:20px;border:1px solid ' + cor + '">' +
+        (item.status === 'respondido' ? 'Respondido' : 'Aguardando') +
+      '</span>' +
+    '</div>';
+  }).join('');
+}
+
+function ajusteVerRespostas() {
+  // Abre Gmail filtrado por respostas de alteração bancária
+  var gmailSearch = 'https://mail.google.com/mail/#search/subject%3A(ALTERAR+DADOS+BANCÁRIOS)+from%3Adalcastegnegiovana%40gmail.com';
+  window.open(gmailSearch, '_blank');
+
+  // Mostra painel com instrução
+  var painel = document.getElementById('ajuste-respostas');
+  var lista  = document.getElementById('ajuste-respostas-lista');
+  painel.style.display = 'block';
+
+  if (AJUSTE_HISTORICO.length === 0) {
+    lista.innerHTML = '<div style="text-align:center;padding:12px;font-size:12px;color:#6b7f99">📭 Nenhum ajuste enviado nesta sessão ainda.<br>Envie um ajuste primeiro e verifique as respostas depois.</div>';
+    return;
+  }
+
+  lista.innerHTML = '<div style="padding:10px 12px;background:#f0f6ff;border-radius:9px;border:1px solid #c5d8f5;font-size:12px;color:#0d47a1;margin-bottom:10px">' +
+    '📌 O Gmail foi aberto com os e-mails de resposta. Verifique lá e marque abaixo quais foram confirmados:' +
+  '</div>' +
+  AJUSTE_HISTORICO.map(function(item, idx) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px">' +
+      '<div style="font-size:12px;color:#003a66;font-weight:600">⏳ ' + item.titular + ' — Storm ' + item.storm + '</div>' +
+      '<button onclick="ajusteMarcarRespondido(' + idx + ')" style="padding:5px 12px;background:#22c55e;color:white;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">✅ Marcar como Respondido</button>' +
+    '</div>';
+  }).join('');
+}
+
+function ajusteMarcarRespondido(idx) {
+  AJUSTE_HISTORICO[idx].status = 'respondido';
+  ajusteAtualizarHistorico();
+  ajusteVerRespostas();
+  // Notificação visual no sino da sidebar se existir
+  var badge = document.getElementById('ajuste-badge');
+  if (badge) badge.style.display = 'none';
+}
+
 function ajusteExtrair() {
   var msg = document.getElementById('ajuste-msg').value.trim();
   if (!msg) { alert('Cole a mensagem do WhatsApp primeiro!'); return; }
@@ -1426,8 +1521,6 @@ function ajusteEnviarEmail() {
   var corpo =
     'Olá,\n\n' +
     'Segue solicitação de alteração de dados bancários:\n\n' +
-    '──────────────────────────────\n' +
-    'AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO\n' +
     '──────────────────────────────\n\n' +
     'CÓDIGO STORM: ' + storm + '\n' +
     'BANCO: ' + banco + ' (Código: ' + codBanco + ')\n' +
@@ -1449,11 +1542,14 @@ function ajusteEnviarEmail() {
 
   window.open(gmailUrl, '_blank');
 
+  // Registra no histórico
+  ajusteRegistrarEnvio(storm, titular, banco);
+
   var st = document.getElementById('ajuste-status');
   st.style.display = 'block';
   st.style.background = '#e8f5e9';
   st.style.color = '#2e7d32';
-  st.textContent = '✅ Gmail aberto com o e-mail pronto! Verifique e clique em Enviar.';
+  st.textContent = '✅ Gmail aberto! Envie o e-mail e acompanhe a resposta no painel acima.';
 }
 
 function switchTab(name,el){
