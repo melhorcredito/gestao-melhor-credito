@@ -1542,7 +1542,7 @@ function vlEnviarEmail() {
   var corpo = 'Olá, tudo bem?\n\nGentileza, segue' + (validos.length > 1 ? 'm os usuários abaixo' : ' o usuário abaixo') + ' para vincular sobre o código acima:\n\n' + linhasLogins + '\n\nGrata!';
 
   var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
-    '&to=' + encodeURIComponent('ascom@novapromotora.com') +
+    '&to=' + encodeURIComponent('cadastrosub01@novapromotora.com') +
     '&su=' + encodeURIComponent(assunto) +
     '&body=' + encodeURIComponent(corpo);
 
@@ -1582,9 +1582,10 @@ function vlAtualizarHistorico() {
         '<div style="font-size:13px;font-weight:600;color:#003a66">Storm: ' + item.storm + '</div>' +
         '<div style="font-size:11px;color:#6b7f99;margin-top:2px">' + loginsStr + ' • ' + item.data + ' às ' + item.hora + '</div>' +
       '</div>' +
-      '<div style="display:flex;gap:6px;flex-shrink:0">' +
+      '<div style="display:flex;gap:6px;flex-shrink:0;align-items:center">' +
         '<button onclick="vlSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
         '<button onclick="vlSetStatus(' + idx + ',\'vinculado\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Vinculado</button>' +
+        '<button onclick="vlExcluir(' + idx + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:2px 6px;line-height:1" title="Excluir">×</button>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -1592,6 +1593,10 @@ function vlAtualizarHistorico() {
 
 function vlSetStatus(idx, status) {
   VL_HISTORICO[idx].status = status;
+  vlAtualizarHistorico();
+}
+function vlExcluir(idx) {
+  VL_HISTORICO.splice(idx, 1);
   vlAtualizarHistorico();
 }
 
@@ -1628,9 +1633,10 @@ function ajusteAtualizarHistorico() {
         '<div style="font-size:13px;font-weight:600;color:#003a66">' + item.titular + '</div>' +
         '<div style="font-size:11px;color:#6b7f99;margin-top:2px">Storm: ' + item.storm + ' • ' + item.banco + ' • ' + item.data + ' às ' + item.hora + '</div>' +
       '</div>' +
-      '<div style="display:flex;gap:6px;flex-shrink:0">' +
+      '<div style="display:flex;gap:6px;flex-shrink:0;align-items:center">' +
         '<button onclick="ajusteSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
         '<button onclick="ajusteSetStatus(' + idx + ',\'respondido\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Ajustado</button>' +
+        '<button onclick="ajusteExcluir(' + idx + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:2px 6px;line-height:1" title="Excluir">×</button>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -1664,6 +1670,10 @@ function ajusteVerRespostas() {
 
 function ajusteSetStatus(idx, status) {
   AJUSTE_HISTORICO[idx].status = status;
+  ajusteAtualizarHistorico();
+}
+function ajusteExcluir(idx) {
+  AJUSTE_HISTORICO.splice(idx, 1);
   ajusteAtualizarHistorico();
 }
 
