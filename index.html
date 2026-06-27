@@ -1358,28 +1358,38 @@ function ajusteExtrair() {
   var msg = document.getElementById('ajuste-msg').value.trim();
   if (!msg) { alert('Cole a mensagem do WhatsApp primeiro!'); return; }
 
-  function extrair(label, fallback) {
-    var patterns = [
-      new RegExp(label + '[:\s]+([^\n]+)', 'i'),
-    ];
-    for (var i = 0; i < patterns.length; i++) {
-      var m = msg.match(patterns[i]);
-      if (m) return m[1].trim();
-    }
-    return fallback || '-';
+  // Normaliza: remove acentos e deixa maiúsculo para busca
+  function normalizar(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
   }
 
-  // Extrai agência e DV separados
-  var agenciaRaw = extrair('AGÊNCIA');
-  var contaRaw   = extrair('N\.\s*CONTA|N CONTA|CONTA');
+  function extrair(labels) {
+    var msgNorm = normalizar(msg);
+    var labelsArr = Array.isArray(labels) ? labels : [labels];
+    for (var j = 0; j < labelsArr.length; j++) {
+      var labelNorm = normalizar(labelsArr[j]);
+      var regex = new RegExp(labelNorm + '[:\s]+([^\n]+)', 'i');
+      var m = msgNorm.match(regex);
+      if (m) {
+        // Pega o valor na posição equivalente do texto original
+        var idx = msgNorm.indexOf(m[0]);
+        var original = msg.substring(idx, idx + m[0].length);
+        var valMatch = original.match(new RegExp(labelsArr[j].replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '[:\s]+([^\n]+)', 'i'));
+        return valMatch ? valMatch[1].trim() : m[1].trim();
+      }
+    }
+    return '-';
+  }
 
-  var storm    = extrair('CÓDIGO STORM|CODIGO STORM');
-  var codBanco = extrair('CÓDIGO BANCO|CODIGO BANCO');
-  var banco    = extrair('BANCO');
-  var tipo     = extrair('TIPO DE CONTA');
-  var titular  = extrair('TITULAR');
-  var cnpj     = extrair('CNPJ|CPF');
-  var obs      = extrair('OBSERVAÇÃO|OBSERVACAO');
+  var storm    = extrair(['CODIGO STORM', 'CÓDIGO STORM']);
+  var codBanco = extrair(['CODIGO BANCO', 'CÓDIGO BANCO']);
+  var banco    = extrair(['BANCO']);
+  var agenciaRaw = extrair(['AGENCIA', 'AGÊNCIA']);
+  var tipo     = extrair(['TIPO DE CONTA']);
+  var contaRaw = extrair(['N. CONTA', 'N CONTA', 'CONTA']);
+  var titular  = extrair(['TITULAR']);
+  var cnpj     = extrair(['CNPJ', 'CPF']);
+  var obs      = extrair(['OBSERVACAO', 'OBSERVAÇÃO']);
 
   document.getElementById('aj-storm').value    = storm;
   document.getElementById('aj-codbanco').value = codBanco;
