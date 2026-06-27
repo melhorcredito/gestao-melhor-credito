@@ -1387,10 +1387,10 @@ function ajusteAtualizarHistorico() {
         '<div style="font-size:13px;font-weight:600;color:#003a66">' + item.titular + '</div>' +
         '<div style="font-size:11px;color:#6b7f99;margin-top:2px">Storm: ' + item.storm + ' • ' + item.banco + ' • ' + item.data + ' às ' + item.hora + '</div>' +
       '</div>' +
-      (ajustado
-        ? '<span style="font-size:11px;font-weight:700;color:#22c55e;background:#f0fdf4;padding:5px 14px;border-radius:20px;border:1px solid #22c55e;white-space:nowrap">✅ Ajustado</span>'
-        : '<button onclick="ajusteMarcarRespondido(' + idx + ')" style="font-size:11px;font-weight:700;color:white;background:#f59e0b;padding:5px 14px;border-radius:20px;border:none;cursor:pointer;white-space:nowrap">⏳ Aguardando</button>'
-      ) +
+      '<div style="display:flex;gap:6px;flex-shrink:0">' +
+        '<button onclick="ajusteSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
+        '<button onclick="ajusteSetStatus(' + idx + ',\'respondido\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Ajustado</button>' +
+      '</div>' +
     '</div>';
   }).join('');
 }
@@ -1419,6 +1419,11 @@ function ajusteVerRespostas() {
       '<button onclick="ajusteMarcarRespondido(' + idx + ')" style="padding:5px 12px;background:#22c55e;color:white;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">✅ Marcar como Respondido</button>' +
     '</div>';
   }).join('');
+}
+
+function ajusteSetStatus(idx, status) {
+  AJUSTE_HISTORICO[idx].status = status;
+  ajusteAtualizarHistorico();
 }
 
 function ajusteMarcarRespondido(idx) {
