@@ -285,6 +285,7 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte Interno</span></div>
     <div class="sb-section">Acesso Rápido</div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins Bancos</span></div>
+    <div class="sb-item" onclick="switchTab('ajuste-bancario',this)"><span class="sb-icon">🏦</span><span class="sb-label">Ajuste Bancário</span></div>
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links Úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
@@ -761,6 +762,102 @@ header{display:none}
 </div>
 
 <!-- ══════════════ ABA 9: LINKS ÚTEIS ══════════════ -->
+<div class="tab-content" id="tab-ajuste-bancario">
+  <div style="max-width:800px;margin:0 auto;padding:28px 20px">
+
+    <!-- Header -->
+    <div style="margin-bottom:24px">
+      <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">🏦 Ajuste de Dados Bancários</h2>
+      <p style="font-size:13px;color:#6b7f99;margin-top:4px">Cole a mensagem do WhatsApp — o sistema extrai tudo e monta o e-mail automaticamente.</p>
+    </div>
+
+    <!-- PASSO 1: Cola a mensagem -->
+    <div style="background:white;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:12px">
+        📋 Passo 1 — Cole a mensagem do WhatsApp
+      </div>
+      <textarea id="ajuste-msg" rows="12" placeholder="Cole aqui a mensagem recebida no WhatsApp...
+
+Exemplo:
+AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO
+
+CÓDIGO STORM: 67440
+CÓDIGO BANCO: 336
+BANCO: C6
+AGÊNCIA: 0001 | DV: -
+TIPO DE CONTA: Corrente
+N. CONTA: 41028055 | DV: 0
+TITULAR: GABRIEL DOTTI MADURO DA SILVA
+CNPJ: 64.475.533/0001-02
+
+OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;border-radius:10px;font-size:13px;font-family:inherit;color:#1a2a3a;resize:vertical;outline:none;line-height:1.6;background:#fafbfc"></textarea>
+      <button onclick="ajusteExtrair()" style="margin-top:12px;padding:10px 24px;background:#0077cc;color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;width:100%">
+        🔍 Extrair Dados Automaticamente
+      </button>
+    </div>
+
+    <!-- PASSO 2: Dados extraídos -->
+    <div id="ajuste-resultado" style="display:none;background:white;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:14px">
+        ✅ Passo 2 — Confirme os dados extraídos
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Código Storm</label>
+          <input id="aj-storm" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Código do Banco</label>
+          <input id="aj-codbanco" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Banco</label>
+          <input id="aj-banco" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Agência | DV</label>
+          <input id="aj-agencia" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Tipo de Conta</label>
+          <input id="aj-tipo" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">N. Conta | DV</label>
+          <input id="aj-conta" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div style="grid-column:span 2">
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Titular</label>
+          <input id="aj-titular" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">CNPJ</label>
+          <input id="aj-cnpj" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Observação</label>
+          <input id="aj-obs" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+      </div>
+
+      <!-- Preview do assunto -->
+      <div style="margin-top:16px;padding:12px 14px;background:#f0f6ff;border:1.5px solid #c5d8f5;border-radius:10px">
+        <div style="font-size:10px;font-weight:700;color:#0077cc;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📧 Assunto do e-mail (gerado automaticamente)</div>
+        <div id="aj-assunto-preview" style="font-size:13px;font-weight:600;color:#003a66"></div>
+      </div>
+
+      <!-- Botão enviar -->
+      <button onclick="ajusteEnviarEmail()" style="margin-top:16px;width:100%;padding:13px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em">
+        📧 Abrir E-mail Pronto no Gmail
+      </button>
+
+      <div id="ajuste-status" style="display:none;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600"></div>
+    </div>
+
+  </div>
+</div>
+
 <div class="tab-content" id="tab-links">
   
   <div style="background:var(--bg)">
@@ -1250,6 +1347,102 @@ if(localStorage.getItem('darkMode')==='true'){
 
 function toggleSidebar(){
   document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// AJUSTE BANCÁRIO
+// ══════════════════════════════════════════════════════════════
+
+function ajusteExtrair() {
+  var msg = document.getElementById('ajuste-msg').value.trim();
+  if (!msg) { alert('Cole a mensagem do WhatsApp primeiro!'); return; }
+
+  function extrair(label, fallback) {
+    var patterns = [
+      new RegExp(label + '[:\s]+([^\n]+)', 'i'),
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+      var m = msg.match(patterns[i]);
+      if (m) return m[1].trim();
+    }
+    return fallback || '-';
+  }
+
+  // Extrai agência e DV separados
+  var agenciaRaw = extrair('AGÊNCIA');
+  var contaRaw   = extrair('N\.\s*CONTA|N CONTA|CONTA');
+
+  var storm    = extrair('CÓDIGO STORM|CODIGO STORM');
+  var codBanco = extrair('CÓDIGO BANCO|CODIGO BANCO');
+  var banco    = extrair('BANCO');
+  var tipo     = extrair('TIPO DE CONTA');
+  var titular  = extrair('TITULAR');
+  var cnpj     = extrair('CNPJ|CPF');
+  var obs      = extrair('OBSERVAÇÃO|OBSERVACAO');
+
+  document.getElementById('aj-storm').value    = storm;
+  document.getElementById('aj-codbanco').value = codBanco;
+  document.getElementById('aj-banco').value    = banco;
+  document.getElementById('aj-agencia').value  = agenciaRaw;
+  document.getElementById('aj-tipo').value     = tipo;
+  document.getElementById('aj-conta').value    = contaRaw;
+  document.getElementById('aj-titular').value  = titular;
+  document.getElementById('aj-cnpj').value     = cnpj;
+  document.getElementById('aj-obs').value      = obs === '-' ? '' : obs;
+
+  // Monta assunto
+  var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
+  document.getElementById('aj-assunto-preview').textContent = assunto;
+
+  document.getElementById('ajuste-resultado').style.display = 'block';
+  document.getElementById('ajuste-resultado').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function ajusteEnviarEmail() {
+  var storm    = document.getElementById('aj-storm').value;
+  var codBanco = document.getElementById('aj-codbanco').value;
+  var banco    = document.getElementById('aj-banco').value;
+  var agencia  = document.getElementById('aj-agencia').value;
+  var tipo     = document.getElementById('aj-tipo').value;
+  var conta    = document.getElementById('aj-conta').value;
+  var titular  = document.getElementById('aj-titular').value;
+  var cnpj     = document.getElementById('aj-cnpj').value;
+  var obs      = document.getElementById('aj-obs').value || '-';
+
+  var destinatario = 'dalcastegnegiovana@gmail.com';
+  var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
+
+  var corpo = 
+    'Olá,' +
+    '%0A%0A' +
+    'Segue solicitação de alteração de dados bancários:%0A%0A' +
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A' +
+    'AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO%0A' +
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A' +
+    '📌 CÓDIGO STORM: ' + storm + '%0A' +
+    '🏦 BANCO: ' + banco + ' (Código: ' + codBanco + ')%0A' +
+    '📋 AGÊNCIA: ' + agencia + '%0A' +
+    '💳 TIPO DE CONTA: ' + tipo + '%0A' +
+    '🔢 N. CONTA: ' + conta + '%0A' +
+    '👤 TITULAR: ' + titular + '%0A' +
+    '📄 CNPJ: ' + cnpj + '%0A' +
+    '📝 OBSERVAÇÃO: ' + obs + '%0A%0A' +
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A' +
+    'Att,%0A' +
+    'Equipe Melhor Crédito';
+
+  var mailto = 'mailto:' + destinatario +
+    '?subject=' + encodeURIComponent(assunto) +
+    '&body=' + corpo;
+
+  window.open(mailto, '_blank');
+
+  var st = document.getElementById('ajuste-status');
+  st.style.display = 'block';
+  st.style.background = '#e8f5e9';
+  st.style.color = '#2e7d32';
+  st.textContent = '✅ E-mail aberto no seu cliente de e-mail! Verifique e clique em Enviar.';
 }
 
 function switchTab(name,el){
