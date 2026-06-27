@@ -771,25 +771,6 @@ header{display:none}
       <p style="font-size:13px;color:#6b7f99;margin-top:4px">Cole a mensagem do WhatsApp — o sistema extrai tudo e monta o e-mail automaticamente.</p>
     </div>
 
-    <!-- PAINEL DE RESPOSTAS -->
-    <div style="background:white;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px;border-left:4px solid #0077cc">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:4px">📬 Respostas do Setor</div>
-          <p style="font-size:12px;color:#6b7f99;margin:0">Clique no botão para verificar se chegou alguma resposta no Gmail</p>
-        </div>
-        <button onclick="ajusteVerRespostas()" style="padding:9px 18px;background:#0077cc;color:white;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
-          📥 Verificar Respostas
-        </button>
-      </div>
-
-      <!-- Lista de respostas pendentes -->
-      <div id="ajuste-respostas" style="margin-top:14px;display:none">
-        <div style="height:1px;background:#eef2f7;margin-bottom:12px"></div>
-        <div id="ajuste-respostas-lista"></div>
-      </div>
-    </div>
-
     <!-- HISTÓRICO DE ENVIOS -->
     <div style="background:white;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px">
       <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0077cc;margin-bottom:12px">📋 Histórico de Ajustes Enviados</div>
@@ -1399,17 +1380,17 @@ function ajusteAtualizarHistorico() {
     lista.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>';
     return;
   }
-  lista.innerHTML = AJUSTE_HISTORICO.map(function(item) {
-    var cor = item.status === 'respondido' ? '#22c55e' : '#f59e0b';
-    var icone = item.status === 'respondido' ? '✅' : '⏳';
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;flex-wrap:wrap;gap:8px">' +
-      '<div>' +
-        '<div style="font-size:13px;font-weight:600;color:#003a66">' + icone + ' ' + item.titular + '</div>' +
+  lista.innerHTML = AJUSTE_HISTORICO.map(function(item, idx) {
+    var ajustado = item.status === 'respondido';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;gap:10px">' +
+      '<div style="flex:1">' +
+        '<div style="font-size:13px;font-weight:600;color:#003a66">' + item.titular + '</div>' +
         '<div style="font-size:11px;color:#6b7f99;margin-top:2px">Storm: ' + item.storm + ' • ' + item.banco + ' • ' + item.data + ' às ' + item.hora + '</div>' +
       '</div>' +
-      '<span style="font-size:11px;font-weight:700;color:' + cor + ';background:' + (item.status === 'respondido' ? '#f0fdf4' : '#fffbeb') + ';padding:3px 10px;border-radius:20px;border:1px solid ' + cor + '">' +
-        (item.status === 'respondido' ? 'Respondido' : 'Aguardando') +
-      '</span>' +
+      (ajustado
+        ? '<span style="font-size:11px;font-weight:700;color:#22c55e;background:#f0fdf4;padding:5px 14px;border-radius:20px;border:1px solid #22c55e;white-space:nowrap">✅ Ajustado</span>'
+        : '<button onclick="ajusteMarcarRespondido(' + idx + ')" style="font-size:11px;font-weight:700;color:white;background:#f59e0b;padding:5px 14px;border-radius:20px;border:none;cursor:pointer;white-space:nowrap">⏳ Aguardando</button>'
+      ) +
     '</div>';
   }).join('');
 }
@@ -1515,7 +1496,7 @@ function ajusteEnviarEmail() {
   var cnpj     = document.getElementById('aj-cnpj').value;
   var obs      = document.getElementById('aj-obs').value || '-';
 
-  var destinatario = 'dalcastegnegiovana@gmail.com';
+  var destinatario = 'ascom@novapromotora.com';
   var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
 
   var corpo =
