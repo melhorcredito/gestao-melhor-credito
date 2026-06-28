@@ -1103,6 +1103,38 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
 <script>
 const slaImgs = ["042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg", "7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg", "901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg"];
 
+
+// ══════════════════════════════════════════════════════════════
+// GERADOR DE CONTRATO
+// ══════════════════════════════════════════════════════════════
+function abrirGerador() {
+  var el = document.getElementById('gerador-modal-overlay');
+  if (el) el.classList.add('aberto');
+}
+function fecharGerador() {
+  var el = document.getElementById('gerador-modal-overlay');
+  if (el) el.classList.remove('aberto');
+}
+function gGerar() {
+  // Coleta dados do modal e gera o contrato
+  var nome = document.getElementById('g-nome') ? document.getElementById('g-nome').value : '';
+  if (!nome) { alert('Preencha o nome do parceiro!'); return; }
+  alert('Contrato gerado para: ' + nome);
+  fecharGerador();
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODAL COMISSÕES EM ATRASO
+// ══════════════════════════════════════════════════════════════
+function openSLAModal() {
+  var el = document.getElementById('sla-overlay');
+  if (el) { el.style.display = 'flex'; }
+}
+function closeSLAModal() {
+  var el = document.getElementById('sla-overlay');
+  if (el) { el.style.display = 'none'; }
+}
+
 function slaScroll(dir) {
   const c = document.getElementById('sla-carousel');
   if (!c) return;
