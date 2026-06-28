@@ -1110,16 +1110,25 @@ const slaImgs = ["042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg", "7ae5f921-c1da-47f7
 function gTipo(tipo) {
   document.getElementById('btn-pj').classList.toggle('ativo', tipo === 'pj');
   document.getElementById('btn-pf').classList.toggle('ativo', tipo === 'pf');
-  // Mostra/oculta campos de CNPJ ou CPF conforme seleção
-  var campoCNPJ = document.getElementById('g-cnpj-field');
-  var campoCPF  = document.getElementById('g-cpf-field');
-  if (campoCNPJ) campoCNPJ.style.display = tipo === 'pj' ? 'block' : 'none';
-  if (campoCPF)  campoCPF.style.display  = tipo === 'pf' ? 'block' : 'none';
+
+  // Mostra/oculta seções PJ e PF
+  document.querySelectorAll('.sec-pj').forEach(function(el) {
+    el.style.display = tipo === 'pj' ? '' : 'none';
+  });
+  document.querySelectorAll('.sec-pf').forEach(function(el) {
+    el.style.display = tipo === 'pf' ? '' : 'none';
+  });
+
+  // Atualiza título
+  var titulo = document.getElementById('g-titulo');
+  if (titulo) titulo.textContent = tipo === 'pj' ? '🏢 Dados da Empresa Parceira' : '👤 Dados do Parceiro';
 }
 
 function abrirGerador() {
   var el = document.getElementById('gerador-modal-overlay');
   if (el) el.classList.add('aberto');
+  // Inicializa mostrando PJ e ocultando PF
+  gTipo('pj');
 }
 function fecharGerador() {
   var el = document.getElementById('gerador-modal-overlay');
