@@ -1111,12 +1111,13 @@ function gTipo(tipo) {
   document.getElementById('btn-pj').classList.toggle('ativo', tipo === 'pj');
   document.getElementById('btn-pf').classList.toggle('ativo', tipo === 'pf');
 
-  // Usa a classe modo-pf no body do modal para controlar via CSS
-  var gBody = document.getElementById('g-body');
-  if (gBody) {
-    if (tipo === 'pf') gBody.classList.add('modo-pf');
-    else gBody.classList.remove('modo-pf');
-  }
+  // Mostra/oculta campos manualmente com display inline
+  document.querySelectorAll('.sec-pj').forEach(function(el) {
+    el.style.cssText = tipo === 'pj' ? 'display:block' : 'display:none !important';
+  });
+  document.querySelectorAll('.sec-pf').forEach(function(el) {
+    el.style.cssText = tipo === 'pf' ? 'display:block' : 'display:none !important';
+  });
 
   // Atualiza título
   var titulo = document.getElementById('g-titulo');
@@ -1134,10 +1135,46 @@ function fecharGerador() {
   if (el) el.classList.remove('aberto');
 }
 function gGerar() {
-  // Coleta dados do modal e gera o contrato
-  var nome = document.getElementById('g-nome') ? document.getElementById('g-nome').value : '';
+  // Detecta o tipo (PJ ou PF) pelo botão ativo
+  var isPF = document.getElementById('btn-pf').classList.contains('ativo');
+  var nomeEl = isPF ? document.getElementById('g-nome-pf') : document.getElementById('g-nome-pj');
+  var nome = nomeEl ? nomeEl.value.trim() : '';
   if (!nome) { alert('Preencha o nome do parceiro!'); return; }
-  alert('Contrato gerado para: ' + nome);
+
+  // Coleta todos os dados
+  var doc   = isPF ? (document.getElementById('g-doc-pf') ? document.getElementById('g-doc-pf').value : '') : (document.getElementById('g-doc-pj') ? document.getElementById('g-doc-pj').value : '');
+  var end   = document.getElementById('g-end')   ? document.getElementById('g-end').value   : '';
+  var num   = document.getElementById('g-num')   ? document.getElementById('g-num').value   : '';
+  var bairro= document.getElementById('g-bairro')? document.getElementById('g-bairro').value: '';
+  var cidade= document.getElementById('g-cidade')? document.getElementById('g-cidade').value: '';
+  var uf    = document.getElementById('g-uf')    ? document.getElementById('g-uf').value    : '';
+  var cep   = document.getElementById('g-cep')   ? document.getElementById('g-cep').value   : '';
+  var banco = document.getElementById('g-banco') ? document.getElementById('g-banco').value : '';
+  var conta = document.getElementById('g-conta') ? document.getElementById('g-conta').value : '';
+  var titular = document.getElementById('g-titular') ? document.getElementById('g-titular').value : '';
+
+  // Gera texto do contrato
+  var tipo  = isPF ? 'Pessoa Física' : 'Pessoa Jurídica';
+  var docLabel = isPF ? 'CPF' : 'CNPJ';
+
+  var texto = '📄 CONTRATO DE AGENCIAMENTO\n\n' +
+    'Tipo: ' + tipo + '\n' +
+    'Nome: ' + nome + '\n' +
+    docLabel + ': ' + doc + '\n' +
+    'Endereço: ' + end + ', ' + num + ' — ' + bairro + '\n' +
+    'Cidade: ' + cidade + ' — ' + uf + ' — CEP: ' + cep + '\n\n' +
+    '🏦 Dados Bancários\n' +
+    'Banco: ' + banco + '\n' +
+    'Conta: ' + conta + '\n' +
+    'Titular: ' + titular;
+
+  // Copia para clipboard
+  navigator.clipboard.writeText(texto).then(function() {
+    alert('✅ Contrato gerado e copiado para a área de transferência!');
+  }).catch(function() {
+    alert('Contrato gerado para: ' + nome + '\n\n' + texto);
+  });
+
   fecharGerador();
 }
 
