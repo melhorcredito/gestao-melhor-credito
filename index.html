@@ -582,30 +582,18 @@ header{display:none}
 
     <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">📝 Resumo de Dados</h2>
-      <button id="rd-btn-novo" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;z-index:10;position:relative" type="button">+ Novo Resumo</button>
+      <button style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" type="button" onclick="rdAbrirModal()">+ Novo Resumo</button>
     </div>
 
     <!-- Lista de resumos -->
     <div id="rd-lista"></div>
-    <script>
-    (function(){
-      var btn = document.getElementById('rd-btn-novo');
-      if(btn) btn.addEventListener('click', function(){ rdAbrirModal(); });
-      var sal = document.getElementById('rd-btn-salvar');
-      if(sal) sal.addEventListener('click', function(){ rdSalvar(); });
-      var fec = document.getElementById('rd-btn-fechar');
-      if(fec) fec.addEventListener('click', function(){ rdFecharModal(); });
-      var can = document.getElementById('rd-btn-cancelar');
-      if(can) can.addEventListener('click', function(){ rdFecharModal(); });
-    })();
-    </script>
 
     <!-- Modal novo resumo -->
     <div id="rd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
       <div style="background:white;border-radius:16px;padding:28px;width:100%;max-width:560px;margin:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
           <h3 style="font-family:'DM Serif Display',serif;font-size:18px;color:#003a66;margin:0" id="rd-modal-titulo">Novo Resumo</h3>
-          <button id="rd-btn-fechar" style="background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af">×</button>
+          <button style="background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af" onclick="rdFecharModal()">×</button>
         </div>
 
         <div style="margin-bottom:14px">
@@ -624,8 +612,8 @@ header{display:none}
         </div>
 
         <div style="display:flex;gap:10px">
-          <button id="rd-btn-salvar" style="flex:1;padding:12px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer">💾 Salvar</button>
-          <button id="rd-btn-cancelar" style="padding:12px 20px;background:#f0f4f8;color:#6b7f99;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
+          <button style="flex:1;padding:12px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" onclick="rdSalvar()">💾 Salvar</button>
+          <button style="padding:12px 20px;background:#f0f4f8;color:#6b7f99;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer" onclick="rdFecharModal()">Cancelar</button>
         </div>
       </div>
     </div>
@@ -1398,15 +1386,6 @@ function rdExcluir(idx) {
   rdSalvarStorage();
   rdRenderizar();
 }
-
-// Eventos via addEventListener — usando delegação robusta
-document.addEventListener('click', function(e) {
-  var id = e.target && (e.target.id || (e.target.closest && e.target.closest('button') && e.target.closest('button').id));
-  if (id === 'rd-btn-novo')     { e.stopPropagation(); rdAbrirModal(); return; }
-  if (id === 'rd-btn-salvar')   { e.stopPropagation(); rdSalvar(); return; }
-  if (id === 'rd-btn-fechar')   { e.stopPropagation(); rdFecharModal(); return; }
-  if (id === 'rd-btn-cancelar') { e.stopPropagation(); rdFecharModal(); return; }
-}, true); // true = captura antes de outros listeners
 
 // Inicializa
 setTimeout(rdRenderizar, 500);
