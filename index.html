@@ -582,11 +582,23 @@ header{display:none}
 
     <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">📝 Resumo de Dados</h2>
-      <button id="rd-btn-novo" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer">+ Novo Resumo</button>
+      <button id="rd-btn-novo" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;z-index:10;position:relative" type="button">+ Novo Resumo</button>
     </div>
 
     <!-- Lista de resumos -->
     <div id="rd-lista"></div>
+    <script>
+    (function(){
+      var btn = document.getElementById('rd-btn-novo');
+      if(btn) btn.addEventListener('click', function(){ rdAbrirModal(); });
+      var sal = document.getElementById('rd-btn-salvar');
+      if(sal) sal.addEventListener('click', function(){ rdSalvar(); });
+      var fec = document.getElementById('rd-btn-fechar');
+      if(fec) fec.addEventListener('click', function(){ rdFecharModal(); });
+      var can = document.getElementById('rd-btn-cancelar');
+      if(can) can.addEventListener('click', function(){ rdFecharModal(); });
+    })();
+    </script>
 
     <!-- Modal novo resumo -->
     <div id="rd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
@@ -2183,12 +2195,36 @@ function ajusteEnviarEmail() {
   st.textContent = '✅ Gmail aberto! Envie o e-mail e acompanhe a resposta no painel acima.';
 }
 
+function rdInicializar() {
+  var btn = document.getElementById('rd-btn-novo');
+  if(btn && !btn._rdInit) {
+    btn._rdInit = true;
+    btn.addEventListener('click', function(){ rdAbrirModal(); });
+  }
+  var sal = document.getElementById('rd-btn-salvar');
+  if(sal && !sal._rdInit) {
+    sal._rdInit = true;
+    sal.addEventListener('click', function(){ rdSalvar(); });
+  }
+  var fec = document.getElementById('rd-btn-fechar');
+  if(fec && !fec._rdInit) {
+    fec._rdInit = true;
+    fec.addEventListener('click', function(){ rdFecharModal(); });
+  }
+  var can = document.getElementById('rd-btn-cancelar');
+  if(can && !can._rdInit) {
+    can._rdInit = true;
+    can.addEventListener('click', function(){ rdFecharModal(); });
+  }
+  rdRenderizar();
+}
+
 function switchTab(name,el){
   document.querySelectorAll('.tab,.sb-item').forEach(function(t){ t.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(t){ t.classList.remove('active'); });
   if(el) el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-
+  if(name === 'resumo-dados') setTimeout(rdInicializar, 150);
 }
 
 // ══════════════════════════════════════════════════════════════
