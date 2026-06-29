@@ -582,7 +582,7 @@ header{display:none}
 
     <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">📝 Resumo de Dados</h2>
-      <button id="rd-btn-novo" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer">＋ Novo Resumo</button>
+      <button id="rd-btn-novo" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer">+ Novo Resumo</button>
     </div>
 
     <!-- Lista de resumos -->
@@ -1387,20 +1387,14 @@ function rdExcluir(idx) {
   rdRenderizar();
 }
 
-// Eventos via addEventListener
+// Eventos via addEventListener — usando delegação robusta
 document.addEventListener('click', function(e) {
-  if (e.target && e.target.id === 'rd-btn-novo')     rdAbrirModal();
-  if (e.target && e.target.id === 'rd-btn-salvar')   rdSalvar();
-  if (e.target && e.target.id === 'rd-btn-fechar')   rdFecharModal();
-  if (e.target && e.target.id === 'rd-btn-cancelar') rdFecharModal();
-});
-
-// Renderiza ao trocar para a aba
-document.addEventListener('click', function(e) {
-  if (e.target.closest && e.target.closest('[onclick*="resumo-dados"]')) {
-    setTimeout(rdRenderizar, 100);
-  }
-});
+  var id = e.target && (e.target.id || (e.target.closest && e.target.closest('button') && e.target.closest('button').id));
+  if (id === 'rd-btn-novo')     { e.stopPropagation(); rdAbrirModal(); return; }
+  if (id === 'rd-btn-salvar')   { e.stopPropagation(); rdSalvar(); return; }
+  if (id === 'rd-btn-fechar')   { e.stopPropagation(); rdFecharModal(); return; }
+  if (id === 'rd-btn-cancelar') { e.stopPropagation(); rdFecharModal(); return; }
+}, true); // true = captura antes de outros listeners
 
 // Inicializa
 setTimeout(rdRenderizar, 500);
