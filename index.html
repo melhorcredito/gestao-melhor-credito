@@ -860,7 +860,7 @@ header{display:none}
         </div>
       </div>
 
-      <button onclick="asEnviar()" style="width:100%;padding:13px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">
+      <button id="as-btn-enviar" style="width:100%;padding:13px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">
         📧 Abrir E-mail Pronto no Gmail
       </button>
 
@@ -1158,6 +1158,11 @@ const slaImgs = ["042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg", "7ae5f921-c1da-47f7
 // ══════════════════════════════════════════════════════════════
 
 var AS_HISTORICO = [];
+
+// Botão enviar via addEventListener
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'as-btn-enviar') asEnviar();
+});
 
 // Atualiza preview em tempo real
 document.addEventListener('input', function(e) {
