@@ -578,46 +578,70 @@ header{display:none}
 
 <!-- ══════════════ ABA 5: COMUNICADOS ══════════════ -->
 <div class="tab-content" id="tab-resumo-dados">
-  <div style="max-width:900px;margin:0 auto;padding:28px 20px">
-
+  <div style="max-width:1100px;margin:0 auto;padding:28px 20px">
     <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">📝 Resumo de Dados</h2>
-      <button style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" type="button" onclick="rdAbrirModal()">+ Novo Resumo</button>
+      <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#003a66;font-weight:400">&#x1F4DD; Resumo de Dados</h2>
+      <button onclick="rdAbrirModal()" style="padding:9px 20px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" type="button">+ Novo Parceiro</button>
     </div>
+    <div id="rd-lista" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px"></div>
 
-    <!-- Lista de resumos -->
-    <div id="rd-lista"></div>
-
-    <!-- Modal novo resumo -->
-    <div id="rd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
-      <div style="background:white;border-radius:16px;padding:28px;width:100%;max-width:560px;margin:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div id="rd-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:20px">
+      <div style="background:white;border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-          <h3 style="font-family:'DM Serif Display',serif;font-size:18px;color:#003a66;margin:0" id="rd-modal-titulo">Novo Resumo</h3>
-          <button style="background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af" onclick="rdFecharModal()">×</button>
+          <h3 style="font-size:17px;color:#003a66;margin:0;font-weight:600" id="rd-modal-titulo">Novo Parceiro</h3>
+          <button onclick="rdFecharModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af" type="button">&#215;</button>
         </div>
-
         <div style="margin-bottom:14px">
           <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Nome do Parceiro *</label>
-          <input type="text" id="rd-nome" placeholder="Ex: João Silva" style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
+          <input type="text" id="rd-nome" placeholder="Ex: Joao Silva" style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
         </div>
-
-        <div style="margin-bottom:14px">
-          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Código do Parceiro</label>
+        <div style="margin-bottom:20px">
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Codigo</label>
           <input type="text" id="rd-codigo" placeholder="Ex: 67440" style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
         </div>
-
-        <div style="margin-bottom:20px">
-          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Observações / Dados</label>
-          <textarea id="rd-obs" rows="8" placeholder="Escreva livremente os dados e observações do parceiro..." style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;resize:vertical;line-height:1.7;box-sizing:border-box"></textarea>
-        </div>
-
         <div style="display:flex;gap:10px">
-          <button style="flex:1;padding:12px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" onclick="rdSalvar()">💾 Salvar</button>
-          <button style="padding:12px 20px;background:#f0f4f8;color:#6b7f99;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer" onclick="rdFecharModal()">Cancelar</button>
+          <button onclick="rdSalvar()" style="flex:1;padding:11px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" type="button">Salvar</button>
+          <button onclick="rdFecharModal()" style="padding:11px 18px;background:#f0f4f8;color:#6b7f99;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;cursor:pointer" type="button">Cancelar</button>
         </div>
       </div>
     </div>
 
+    <div id="rd-pessoa-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:20px">
+      <div style="background:white;border-radius:16px;padding:28px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h3 style="font-size:17px;color:#003a66;margin:0;font-weight:600" id="rd-pessoa-titulo">Nova Pessoa</h3>
+          <button onclick="rdFecharPessoa()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#9ca3af" type="button">&#215;</button>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Nome</label>
+          <input type="text" id="rd-p-nome" placeholder="Ex: Maria Silva" style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Dados / Observacoes</label>
+          <textarea id="rd-p-obs" rows="7" placeholder="Escreva livremente..." style="width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;font-family:inherit;outline:none;resize:vertical;line-height:1.7;box-sizing:border-box"></textarea>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onclick="rdSalvarPessoa()" style="flex:1;padding:11px;background:linear-gradient(135deg,#003a66,#0077cc);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer" type="button">Salvar</button>
+          <button onclick="rdFecharPessoa()" style="padding:11px 18px;background:#f0f4f8;color:#6b7f99;border:1.5px solid #dde3ea;border-radius:9px;font-size:13px;cursor:pointer" type="button">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="rd-painel" style="display:none;position:fixed;top:0;right:0;width:420px;max-width:95vw;height:100vh;background:white;box-shadow:-4px 0 30px rgba(0,0,0,.15);z-index:8888;overflow-y:auto;padding:24px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div>
+          <div id="rd-painel-nome" style="font-size:20px;color:#003a66;font-weight:700"></div>
+          <div id="rd-painel-cod" style="font-size:12px;color:#0077cc;margin-top:4px;font-weight:600"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button onclick="rdEditarParceiro()" style="padding:6px 12px;background:#f0f6ff;color:#0077cc;border:1.5px solid #90caf9;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer" type="button">Editar</button>
+          <button onclick="rdFecharPainel()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#9ca3af;line-height:1" type="button">&#215;</button>
+        </div>
+      </div>
+      <div id="rd-painel-pessoas"></div>
+      <button onclick="rdAdicionarPessoa()" style="width:100%;padding:10px;background:#f0f6ff;color:#0077cc;border:2px dashed #90caf9;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px" type="button">+ Adicionar pessoa</button>
+    </div>
+    <div id="rd-overlay" onclick="rdFecharPainel()" style="display:none;position:fixed;inset:0;z-index:8887"></div>
   </div>
 </div>
 
@@ -1303,887 +1327,153 @@ function asExcluir(idx) {
 
 var RD_DADOS = JSON.parse(localStorage.getItem('rd_dados') || '[]');
 var RD_EDITANDO = null;
+var RD_PAINEL_IDX = null;
+var RD_PESSOA_EDITANDO = null;
 
-function rdSalvarStorage() {
-  localStorage.setItem('rd_dados', JSON.stringify(RD_DADOS));
-}
+function rdSalvarStorage() { localStorage.setItem('rd_dados', JSON.stringify(RD_DADOS)); }
 
 function rdRenderizar() {
   var lista = document.getElementById('rd-lista');
   if (!lista) return;
+  lista.innerHTML = '';
   if (RD_DADOS.length === 0) {
-    lista.innerHTML = '<div style="text-align:center;padding:60px 20px;color:#9ca3af;font-size:13px">Nenhum resumo cadastrado ainda.<br>Clique em "+ Novo Resumo" para começar.</div>';
+    lista.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#9ca3af;font-size:13px">Nenhum parceiro cadastrado ainda.</div>';
     return;
   }
-  lista.innerHTML = '';
   RD_DADOS.forEach(function(item, idx) {
-    var d = document.createElement('div');
-    d.style.cssText = 'background:white;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:14px;border-left:4px solid #0077cc';
-    var codHtml = item.codigo ? '<span style="font-size:11px;color:#0077cc;font-weight:700;background:#e8f0fe;padding:2px 10px;border-radius:20px;display:inline-block;margin-top:4px">Cód: ' + item.codigo + '</span>' : '';
-    d.innerHTML =
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px">' +
-        '<div><div style="font-size:18px;color:#003a66;font-weight:600;margin-bottom:4px">' + item.nome + '</div>' + codHtml + '</div>' +
-        '<div style="display:flex;gap:6px;flex-shrink:0">' +
-          '<button data-edit="' + idx + '" style="padding:5px 12px;background:#f0f6ff;color:#0077cc;border:1.5px solid #90caf9;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">✏️ Editar</button>' +
-          '<button data-del="' + idx + '" style="padding:5px 12px;background:none;color:#e53e3e;border:1.5px solid #fca5a5;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">×</button>' +
+    var pessoas = item.pessoas ? item.pessoas.length : 0;
+    var card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:12px;padding:18px 20px;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid #e8f0fa;cursor:pointer;transition:box-shadow .2s;position:relative';
+    card.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+        '<div style="flex:1" onclick="rdAbrirPainel(' + idx + ')">' +
+          '<div style="font-size:15px;color:#003a66;font-weight:700;margin-bottom:6px">' + item.nome + '</div>' +
+          (item.codigo ? '<span style="font-size:11px;color:#0077cc;font-weight:700;background:#e8f0fe;padding:2px 10px;border-radius:20px">Cod: ' + item.codigo + '</span>' : '') +
+          '<div style="font-size:11px;color:#9ca3af;margin-top:8px">' + (pessoas > 0 ? pessoas + ' pessoa(s)' : 'Clique para adicionar dados') + '</div>' +
         '</div>' +
-      '</div>' +
-      '<div style="font-size:13px;color:#334155;line-height:1.8;white-space:pre-wrap;background:#f8fbff;border-radius:9px;padding:14px;border:1px solid #e8f0fa;margin-bottom:8px">' + item.obs + '</div>' +
-      '<div style="font-size:11px;color:#9ca3af">' + (item.data||'') + '</div>';
-    d.querySelector('[data-edit]').addEventListener('click', function(){ rdEditar(idx); });
-    d.querySelector('[data-del]').addEventListener('click', function(){ rdExcluir(idx); });
-    lista.appendChild(d);
+        '<button data-rdel="' + idx + '" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:0 0 0 8px;line-height:1" type="button">x</button>' +
+      '</div>';
+    card.querySelector('[data-rdel]').addEventListener('click', function(e){
+      e.stopPropagation();
+      rdExcluirParceiro(parseInt(this.getAttribute('data-rdel')));
+    });
+    lista.appendChild(card);
   });
 }
 
 function rdAbrirModal(editIdx) {
   RD_EDITANDO = editIdx !== undefined ? editIdx : null;
-  var titulo = document.getElementById('rd-modal-titulo');
-  var nome = document.getElementById('rd-nome');
-  var codigo = document.getElementById('rd-codigo');
-  var obs = document.getElementById('rd-obs');
-  if (RD_EDITANDO !== null) {
-    var item = RD_DADOS[RD_EDITANDO];
-    titulo.textContent = 'Editar Resumo';
-    nome.value = item.nome;
-    codigo.value = item.codigo || '';
-    obs.value = item.obs;
-  } else {
-    titulo.textContent = 'Novo Resumo';
-    nome.value = ''; codigo.value = ''; obs.value = '';
-  }
+  document.getElementById('rd-modal-titulo').textContent = RD_EDITANDO !== null ? 'Editar Parceiro' : 'Novo Parceiro';
+  document.getElementById('rd-nome').value = RD_EDITANDO !== null ? RD_DADOS[RD_EDITANDO].nome : '';
+  document.getElementById('rd-codigo').value = RD_EDITANDO !== null ? (RD_DADOS[RD_EDITANDO].codigo || '') : '';
   document.getElementById('rd-modal').style.display = 'flex';
-  nome.focus();
+  setTimeout(function(){ document.getElementById('rd-nome').focus(); }, 100);
 }
-
-function rdFecharModal() {
-  document.getElementById('rd-modal').style.display = 'none';
-  RD_EDITANDO = null;
-}
-
+function rdFecharModal() { document.getElementById('rd-modal').style.display = 'none'; }
 function rdSalvar() {
   var nome = document.getElementById('rd-nome').value.trim();
   var codigo = document.getElementById('rd-codigo').value.trim();
-  var obs = document.getElementById('rd-obs').value.trim();
-  if (!nome) { alert('Informe o nome do parceiro!'); return; }
-
-  var agora = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  var item = { nome, codigo, obs, data: agora };
-
+  if (!nome) { alert('Informe o nome!'); return; }
   if (RD_EDITANDO !== null) {
-    RD_DADOS[RD_EDITANDO] = item;
+    RD_DADOS[RD_EDITANDO].nome = nome;
+    RD_DADOS[RD_EDITANDO].codigo = codigo;
+    if (RD_PAINEL_IDX === RD_EDITANDO) {
+      document.getElementById('rd-painel-nome').textContent = nome;
+      document.getElementById('rd-painel-cod').textContent = codigo ? 'Codigo: ' + codigo : '';
+    }
   } else {
-    RD_DADOS.unshift(item);
+    RD_DADOS.unshift({ nome: nome, codigo: codigo, pessoas: [] });
   }
-
-  rdSalvarStorage();
-  rdRenderizar();
-  rdFecharModal();
+  rdSalvarStorage(); rdRenderizar(); rdFecharModal();
 }
-
-function rdEditar(idx) { rdAbrirModal(idx); }
-
-function rdExcluir(idx) {
-  if (!confirm('Excluir este resumo?')) return;
+function rdExcluirParceiro(idx) {
+  if (!confirm('Excluir "' + RD_DADOS[idx].nome + '"?')) return;
+  if (RD_PAINEL_IDX === idx) rdFecharPainel();
   RD_DADOS.splice(idx, 1);
-  rdSalvarStorage();
-  rdRenderizar();
+  rdSalvarStorage(); rdRenderizar();
+}
+function rdEditarParceiro() { if (RD_PAINEL_IDX !== null) rdAbrirModal(RD_PAINEL_IDX); }
+
+function rdAbrirPainel(idx) {
+  RD_PAINEL_IDX = idx;
+  var item = RD_DADOS[idx];
+  document.getElementById('rd-painel-nome').textContent = item.nome;
+  document.getElementById('rd-painel-cod').textContent = item.codigo ? 'Codigo: ' + item.codigo : '';
+  rdRenderizarPessoas();
+  document.getElementById('rd-painel').style.display = 'block';
+  document.getElementById('rd-overlay').style.display = 'block';
+}
+function rdFecharPainel() {
+  document.getElementById('rd-painel').style.display = 'none';
+  document.getElementById('rd-overlay').style.display = 'none';
+  RD_PAINEL_IDX = null;
 }
 
-// Listener global para botões do resumo de dados
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest ? e.target.closest('[data-rd-editar]') : null;
-  if (btn) { rdEditar(parseInt(btn.getAttribute('data-rd-editar'))); return; }
-  var btn2 = e.target.closest ? e.target.closest('[data-rd-excluir]') : null;
-  if (btn2) { rdExcluir(parseInt(btn2.getAttribute('data-rd-excluir'))); return; }
-});
-
-// Inicializa
-setTimeout(rdRenderizar, 500);
-
-// ══════════════════════════════════════════════════════════════
-// GERADOR DE CONTRATO
-// ══════════════════════════════════════════════════════════════
-function gTipo(tipo) {
-  document.getElementById('btn-pj').classList.toggle('ativo', tipo === 'pj');
-  document.getElementById('btn-pf').classList.toggle('ativo', tipo === 'pf');
-
-  // Mostra/oculta campos manualmente com display inline
-  document.querySelectorAll('.sec-pj').forEach(function(el) {
-    el.style.cssText = tipo === 'pj' ? 'display:block' : 'display:none !important';
+function rdRenderizarPessoas() {
+  var c = document.getElementById('rd-painel-pessoas');
+  if (!c || RD_PAINEL_IDX === null) return;
+  var item = RD_DADOS[RD_PAINEL_IDX];
+  if (!item.pessoas || item.pessoas.length === 0) {
+    c.innerHTML = '<div style="text-align:center;padding:30px;color:#9ca3af;font-size:13px">Nenhuma pessoa adicionada.</div>';
+    return;
+  }
+  c.innerHTML = '';
+  item.pessoas.forEach(function(p, pidx) {
+    var d = document.createElement('div');
+    d.style.cssText = 'background:#f8fbff;border:1px solid #e8f0fa;border-radius:10px;padding:14px;margin-bottom:10px';
+    d.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">' +
+        '<div style="flex:1">' +
+          (p.nome ? '<div style="font-size:13px;color:#003a66;font-weight:700;margin-bottom:8px">' + p.nome + '</div>' : '') +
+          '<div style="font-size:13px;color:#334155;line-height:1.8;white-space:pre-wrap">' + (p.obs || '') + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:4px;flex-shrink:0">' +
+          '<button data-pedit="' + pidx + '" style="padding:3px 8px;background:#f0f6ff;color:#0077cc;border:1px solid #90caf9;border-radius:5px;font-size:10px;cursor:pointer">Ed</button>' +
+          '<button data-pdel="' + pidx + '" style="padding:3px 8px;background:none;color:#e53e3e;border:1px solid #fca5a5;border-radius:5px;font-size:10px;cursor:pointer">x</button>' +
+        '</div>' +
+      '</div>';
+    d.querySelector('[data-pedit]').addEventListener('click', function(){ rdEditarPessoa(parseInt(this.getAttribute('data-pedit'))); });
+    d.querySelector('[data-pdel]').addEventListener('click', function(){ rdExcluirPessoa(parseInt(this.getAttribute('data-pdel'))); });
+    c.appendChild(d);
   });
-  document.querySelectorAll('.sec-pf').forEach(function(el) {
-    el.style.cssText = tipo === 'pf' ? 'display:block' : 'display:none !important';
-  });
-
-  // Atualiza título
-  var titulo = document.getElementById('g-titulo');
-  if (titulo) titulo.textContent = tipo === 'pj' ? '🏢 Dados da Empresa Parceira' : '👤 Dados do Parceiro';
 }
 
-function abrirGerador() {
-  var el = document.getElementById('gerador-modal-overlay');
-  if (el) el.classList.add('aberto');
-  // Inicializa mostrando PJ e ocultando PF
-  gTipo('pj');
+function rdAdicionarPessoa() {
+  RD_PESSOA_EDITANDO = null;
+  document.getElementById('rd-pessoa-titulo').textContent = 'Nova Pessoa';
+  document.getElementById('rd-p-nome').value = '';
+  document.getElementById('rd-p-obs').value = '';
+  document.getElementById('rd-pessoa-modal').style.display = 'flex';
+  setTimeout(function(){ document.getElementById('rd-p-nome').focus(); }, 100);
 }
-function fecharGerador() {
-  var el = document.getElementById('gerador-modal-overlay');
-  if (el) el.classList.remove('aberto');
+function rdEditarPessoa(pidx) {
+  RD_PESSOA_EDITANDO = pidx;
+  var p = RD_DADOS[RD_PAINEL_IDX].pessoas[pidx];
+  document.getElementById('rd-pessoa-titulo').textContent = 'Editar Pessoa';
+  document.getElementById('rd-p-nome').value = p.nome || '';
+  document.getElementById('rd-p-obs').value = p.obs || '';
+  document.getElementById('rd-pessoa-modal').style.display = 'flex';
 }
-function gGerar() {
-  // Detecta o tipo (PJ ou PF) pelo botão ativo
-  var isPF = document.getElementById('btn-pf').classList.contains('ativo');
-  var nomeEl = isPF ? document.getElementById('g-nome-pf') : document.getElementById('g-nome-pj');
-  var nome = nomeEl ? nomeEl.value.trim() : '';
-  if (!nome) { alert('Preencha o nome do parceiro!'); return; }
-
-  // Coleta todos os dados
-  var doc   = isPF ? (document.getElementById('g-doc-pf') ? document.getElementById('g-doc-pf').value : '') : (document.getElementById('g-doc-pj') ? document.getElementById('g-doc-pj').value : '');
-  var end   = document.getElementById('g-end')   ? document.getElementById('g-end').value   : '';
-  var num   = document.getElementById('g-num')   ? document.getElementById('g-num').value   : '';
-  var bairro= document.getElementById('g-bairro')? document.getElementById('g-bairro').value: '';
-  var cidade= document.getElementById('g-cidade')? document.getElementById('g-cidade').value: '';
-  var uf    = document.getElementById('g-uf')    ? document.getElementById('g-uf').value    : '';
-  var cep   = document.getElementById('g-cep')   ? document.getElementById('g-cep').value   : '';
-  var banco = document.getElementById('g-banco') ? document.getElementById('g-banco').value : '';
-  var conta = document.getElementById('g-conta') ? document.getElementById('g-conta').value : '';
-  var titular = document.getElementById('g-titular') ? document.getElementById('g-titular').value : '';
-
-  // Gera texto do contrato
-  var tipo  = isPF ? 'Pessoa Física' : 'Pessoa Jurídica';
-  var docLabel = isPF ? 'CPF' : 'CNPJ';
-
-  var texto = '📄 CONTRATO DE AGENCIAMENTO\n\n' +
-    'Tipo: ' + tipo + '\n' +
-    'Nome: ' + nome + '\n' +
-    docLabel + ': ' + doc + '\n' +
-    'Endereço: ' + end + ', ' + num + ' — ' + bairro + '\n' +
-    'Cidade: ' + cidade + ' — ' + uf + ' — CEP: ' + cep + '\n\n' +
-    '🏦 Dados Bancários\n' +
-    'Banco: ' + banco + '\n' +
-    'Conta: ' + conta + '\n' +
-    'Titular: ' + titular;
-
-  // Copia para clipboard
-  navigator.clipboard.writeText(texto).then(function() {
-    alert('✅ Contrato gerado e copiado para a área de transferência!');
-  }).catch(function() {
-    alert('Contrato gerado para: ' + nome + '\n\n' + texto);
-  });
-
-  fecharGerador();
-}
-
-// ══════════════════════════════════════════════════════════════
-// MODAL COMISSÕES EM ATRASO
-// ══════════════════════════════════════════════════════════════
-function openSLAModal() {
-  var el = document.getElementById('sla-overlay');
-  if (el) { el.style.display = 'flex'; }
-}
-function closeSLAModal() {
-  var el = document.getElementById('sla-overlay');
-  if (el) { el.style.display = 'none'; }
-}
-
-function slaScroll(dir) {
-  const c = document.getElementById('sla-carousel');
-  if (!c) return;
-  c.scrollBy({ left: dir * (c.offsetWidth * 0.85), behavior: 'smooth' });
-}
-
-function slaZoom(idx) {
-  const overlay = document.getElementById('sla-zoom-overlay');
-  document.getElementById('sla-zoom-img').src = slaImgs[idx];
-  overlay.style.display = 'flex';
-}
-
-document.getElementById('sla-zoom-overlay').addEventListener('click', function() {
-  this.style.display = 'none';
-});
-</script>
-
-<div class="tab-content" id="tab-sla-parceiro">
-  <div style="background:var(--bg)">
-    <div class="toolbar" style="padding-top:16px">
-      <div class="toolbar-l">
-        <input class="search" id="sla-parc-srch" placeholder="🔍 Buscar por parceiro, banco ou CPF..." oninput="renderSLACards()">
-      </div>
-      <button class="btn-add" onclick="openSLAModal()">＋ Nova Comissões em Atraso</button>
-    </div>
-    <div style="max-width:1200px;margin:0 auto;padding:0 20px 40px">
-      <div id="sla-parc-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;margin-top:8px">
-        <div class="empty" style="grid-column:1/-1">Nenhuma SLA cadastrada</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL SLA COMISSÕES ══ -->
-<div class="overlay" id="sla-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="sla-modal-title">Comissões em Atraso</h2>
-      <button class="close-btn" onclick="closeSLAModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="slaw-parceiro"><label>Nome do Parceiro *</label><input id="sla-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="slaw-banco"><label>Banco *</label><input id="sla-banco" placeholder="Ex: Itaú, Caixa, Bradesco..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>CPF do Cliente</label><input id="sla-cpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPFsla(this)"></div>
-      <div class="mf">
-        <label style="display:flex;align-items:center;justify-content:space-between">
-          Propostas
-          <button type="button" onclick="addProposta()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar</button>
-        </label>
-        <div id="sla-propostas-list" style="display:flex;flex-direction:column;gap:6px;margin-top:6px"></div>
-      </div>
-      <div class="mf"><label>Data de Pagamento</label><input type="date" id="sla-data"></div>
-      <div class="mf"><label>Status *</label>
-        <select id="sla-status">
-          <option value="andamento">Em andamento</option>
-          <option value="adt">Enviado para ADT</option>
-          <option value="finalizado">Finalizado</option>
-        </select>
-      </div>
-      <div class="mf"><label>Observação</label><textarea id="sla-obs" placeholder="Observações..." rows="3"></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeSLAModal()">Cancelar</button>
-      <button class="btn-save" onclick="saveSLA()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL PARCEIROS ══ -->
-<div class="overlay" id="par-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="par-modal-title">Novo Parceiro</h2>
-      <button class="close-btn" onclick="closeParModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="parw-grupo"><label>Nome do Grupo *</label><input id="par-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>E-mail <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-email" placeholder="joao@email.com" type="email"></div>
-      <div class="mf"><label>Telefone <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-tel" placeholder="(00) 00000-0000" maxlength="16"></div>
-      <div class="mf"><label>Link da Pasta de Documentos <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="par-doclink" placeholder="https://drive.google.com/drive/folders/..."></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeParModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarPar()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL CONTRATOS ══ -->
-<div class="overlay" id="con-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="con-modal-title">Novo Contrato</h2>
-      <button class="close-btn" onclick="closeConModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="conw-parceiro"><label>Nome do Parceiro *</label><input id="con-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-
-      <div class="mf" id="conw-link"><label>Link do Contrato (Google Drive) *</label><input id="con-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="con-obs" placeholder="Alguma observação sobre o contrato..."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeConModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarCon()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL CADASTROS SUB ══ -->
-<div class="overlay" id="s-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="s-modal-title">Novo Cadastro Sub</h2>
-      <button class="close-btn" onclick="closeSubModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="sw-nome"><label>Nome / Grupo *</label><input id="s-nome" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="sw-razao"><label>Razão Social Completa *</label><input id="s-razao" placeholder="Ex: Silva Ltda."><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>CNPJ <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="s-cnpj" placeholder="00.000.000/0000-00" maxlength="18"></div>
-      <div class="mf"><label>CPF <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="s-cpf" placeholder="000.000.000-00" maxlength="14"></div>
-      <div class="mf" id="sw-banco"><label>Banco *</label><input id="s-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label>
-        <textarea id="s-obs" placeholder="Alguma observação sobre esse cadastro..."></textarea>
-      </div>
-      <div class="mf"><label>Status inicial *</label>
-        <select id="s-status">
-          <option value="and">Em Andamento</option>
-          <option value="pend">Pendente</option>
-          <option value="fin">Finalizado</option>
-        </select>
-      </div>
-      <div class="mf" id="sw-oper"><label>Operacional *</label><input id="s-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeSubModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarSub()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL LOGINS ══ -->
-<div class="overlay" id="l-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="l-modal-title">Nova Solicitação</h2>
-      <button class="close-btn" onclick="closeLoginModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="lw-nome"><label>Nome do Parceiro *</label><input id="l-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="lw-banco"><label>Banco *</label><input id="l-banco" placeholder="Ex: Total Crédito, Bradesco..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="lw-prom"><label>Promotora *</label>
-        <select id="l-prom">
-          <option value="">Selecione a promotora</option>
-          <option value="GLM">GLM</option>
-          <option value="Llamas">Llamas</option>
-          <option value="Nova Interno">Nova Interno</option>
-        </select>
-        <span class="em">Campo obrigatório</span>
-      </div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label>
-        <textarea id="l-obs" placeholder="Alguma observação sobre essa solicitação..."></textarea>
-      </div>
-      <div class="mf"><label>Status inicial *</label>
-        <select id="l-status">
-          <option value="and">Em Andamento</option>
-          <option value="pend">Pendente</option>
-          <option value="fin">Finalizado</option>
-          <option value="rep">Reprovado</option>
-        </select>
-      </div>
-      <div class="mf" id="lw-oper"><label>Operacional *</label><input id="l-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeLoginModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarLogin()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL DEMANDAS ══ -->
-<div class="overlay" id="d-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="d-modal-title">Nova Demanda</h2>
-      <button class="close-btn" onclick="closeDemandaModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="dw-grupo"><label>Parceiro *</label><input id="d-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="dw-banco"><label>Banco *</label><input id="d-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Proposta <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="d-proposta" placeholder="Ex: Proposta 12345"></div>
-      <div class="mf"><label>CPF Cliente <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="d-cpfcliente" placeholder="000.000.000-00" maxlength="14"></div>
-      <div class="mf" id="dw-datainicio"><label>Data de Início *</label><input type="date" id="d-datainicio"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Chamado <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label>
-        <input id="d-chamado" placeholder="Ex: CHM-00123">
-      </div>
-      <div class="mf"><label>Status inicial *</label>
-        <select id="d-status">
-          <option value="and">Em Andamento</option>
-          <option value="pend">Pendente</option>
-          <option value="res">Resolvido</option>
-        </select>
-      </div>
-      <div class="mf" id="dw-oper"><label>Operacional *</label><input id="d-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="d-obs" placeholder="Alguma observação sobre essa demanda..."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeDemandaModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarDemanda()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL DEMANDA E-MAIL ══ -->
-<div class="overlay" id="e-overlay">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 id="e-modal-title">Nova Demanda E-mail</h2>
-      <button class="close-btn" onclick="closeEmailModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf" id="ew-nome"><label>Nome *</label><input id="e-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="ew-demanda"><label>Assunto *</label><input id="e-demanda" placeholder="Descreva o assunto"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Banco <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-banco" placeholder="Ex: Bradesco, Itaú..."></div>
-      <div class="mf"><label>Proposta <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-proposta" placeholder="Ex: Proposta 12345"></div>
-      <div class="mf" id="ew-dataenvio"><label>Data de Envio *</label><input type="date" id="e-dataenvio"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Chamado <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="e-chamado" placeholder="Ex: CHM-00123"></div>
-      <div class="mf"><label>Status inicial *</label>
-        <select id="e-status">
-          <option value="and">Em Andamento</option>
-          <option value="pend">Pendente</option>
-          <option value="res">Resolvido</option>
-        </select>
-      </div>
-      <div class="mf" id="ew-oper"><label>Operacional *</label><input id="e-oper" placeholder="Nome do operacional responsável"><span class="em">Campo obrigatório</span></div>
-      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="e-obs" placeholder="Alguma observação sobre essa demanda..."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeEmailModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarEmail()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRM DELETE -->
-<div class="del-overlay" id="del-overlay">
-  <div class="del-modal">
-    <h3>Remover registro?</h3>
-    <p>Esta ação não pode ser desfeita. Deseja remover <strong id="del-name"></strong>?</p>
-    <div class="del-actions">
-      <button class="del-no" onclick="closeDel()">Cancelar</button>
-      <button class="del-yes" onclick="confirmDel()">Remover</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCNCb0DW_BicboPvggu8_6VXxVsdIngB24",
-  authDomain: "melhor-credito.firebaseapp.com",
-  projectId: "melhor-credito",
-  storageBucket: "melhor-credito.firebasestorage.app",
-  messagingSenderId: "664835784824",
-  appId: "1:664835784824:web:79d66cc6fb52d76030ad8d"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-function collection(d,n){ return d.collection(n); }
-function onSnapshot(ref,cb){ ref.onSnapshot(function(snap){ cb(snap); }); }
-function addDoc(ref,data){ return ref.add(data); }
-function updateDoc(ref,data){ return ref.update(data); }
-function deleteDoc(ref){ return ref.delete(); }
-function doc(d,col,id){ return d.collection(col).doc(id); }
-
-// ── UTILS ──────────────────────────────────────────────────────
-function formatDate(s){ if(!s) return ''; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
-function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function hoje(){ return new Date().toLocaleDateString('pt-BR'); }
-function promTag(p){ var cls=p==='GLM'?'glm':p==='Llamas'?'lla':'nov'; return '<span class="tag '+cls+'">'+p+'</span>'; }
-function escHtml(s){ return (s||'').replace(/'/g,"\\'"); }
-
-// ── TABS ───────────────────────────────────────────────────────
-function checkSysPass(){
-  var inp = document.getElementById('sys-pass');
-  if(inp.value === 'Melhor2026sistema@#'){
-    document.getElementById('login-screen').style.display = 'none';
-    inp.value = '';
-    carregarHistorico();
-    setTimeout(initDashboard, 500);
+function rdFecharPessoa() { document.getElementById('rd-pessoa-modal').style.display = 'none'; RD_PESSOA_EDITANDO = null; }
+function rdSalvarPessoa() {
+  if (RD_PAINEL_IDX === null) return;
+  var nome = document.getElementById('rd-p-nome').value.trim();
+  var obs = document.getElementById('rd-p-obs').value.trim();
+  if (!obs && !nome) { alert('Preencha os dados!'); return; }
+  if (!RD_DADOS[RD_PAINEL_IDX].pessoas) RD_DADOS[RD_PAINEL_IDX].pessoas = [];
+  if (RD_PESSOA_EDITANDO !== null) {
+    RD_DADOS[RD_PAINEL_IDX].pessoas[RD_PESSOA_EDITANDO] = { nome: nome, obs: obs };
   } else {
-    document.getElementById('sys-pass-err').style.display = 'block';
-    inp.value = '';
-    inp.focus();
+    RD_DADOS[RD_PAINEL_IDX].pessoas.push({ nome: nome, obs: obs });
   }
+  rdSalvarStorage(); rdRenderizarPessoas(); rdRenderizar(); rdFecharPessoa();
 }
-
-function toggleDark(){
-  document.body.classList.toggle('dark');
-  var on = document.body.classList.contains('dark');
-  document.getElementById('dark-switch').style.background = on ? '#1a90e0' : 'rgba(255,255,255,.2)';
-  document.getElementById('dark-knob').style.transform = on ? 'translateX(14px)' : 'translateX(0)';
-  document.getElementById('dark-btn').querySelector('span').textContent = on ? '☀️' : '🌙';
-  localStorage.setItem('darkMode', on);
+function rdExcluirPessoa(pidx) {
+  if (!confirm('Excluir esta pessoa?')) return;
+  RD_DADOS[RD_PAINEL_IDX].pessoas.splice(pidx, 1);
+  rdSalvarStorage(); rdRenderizarPessoas(); rdRenderizar();
 }
-// Restore dark mode
-if(localStorage.getItem('darkMode')==='true'){
-  document.body.classList.add('dark');
-  setTimeout(function(){
-    var sw = document.getElementById('dark-switch');
-    var kn = document.getElementById('dark-knob');
-    var btn = document.getElementById('dark-btn');
-    if(sw) sw.style.background='#1a90e0';
-    if(kn) kn.style.transform='translateX(14px)';
-    if(btn) btn.querySelector('span').textContent='☀️';
-  },100);
-}
-
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('collapsed');
-}
-
-
-// ══════════════════════════════════════════════════════════════
-// AJUSTE BANCÁRIO
-// ══════════════════════════════════════════════════════════════
-
-
-// ══════════════════════════════════════════════════════════════
-// VÍNCULO DE LOGIN
-// ══════════════════════════════════════════════════════════════
-
-var VL_HISTORICO = [];
-var VL_CONTADOR = 0;
-
-// Inicializa com um login ao carregar
-function vlInit() {
-  vlAdicionarLogin();
-}
-
-function vlAdicionarLogin() {
-  VL_CONTADOR++;
-  var id = VL_CONTADOR;
-  var container = document.getElementById('vl-logins-container');
-  var div = document.createElement('div');
-  div.id = 'vl-item-' + id;
-  div.style.cssText = 'background:#f8fbff;border:1.5px solid #e8f0fa;border-radius:10px;padding:14px;margin-bottom:12px;position:relative';
-
-  var bancos = ['BMG','C6','FACTA','FINANTO','AMIGOZ'];
-  var btnsBanco = '';
-  for(var i=0; i<bancos.length; i++){
-    btnsBanco += '<button type="button" class="vl-banco-btn" data-grupo="' + id + '" data-banco="' + bancos[i] + '" data-id="' + id + '">' + bancos[i] + '</button>';
-  }
-
-  var removeBtn = id > 1 ? '<button type="button" onclick="vlRemoverLogin(' + id + ')" style="background:none;border:none;color:#e53e3e;font-size:20px;cursor:pointer;line-height:1">×</button>' : '';
-
-  div.innerHTML =
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-      '<span style="font-size:11px;font-weight:700;color:#0077cc;text-transform:uppercase;letter-spacing:.06em">Login ' + id + '</span>' +
-      removeBtn +
-    '</div>' +
-    '<div style="margin-bottom:10px">' +
-      '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Login do Usuário *</label>' +
-      '<input type="text" id="vl-login-' + id + '" placeholder="Ex: joao.silva@email.com" oninput="vlAtualizarPreview()" style="width:100%;padding:9px 12px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:white">' +
-    '</div>' +
-    '<div>' +
-      '<label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:6px">Banco *</label>' +
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">' + btnsBanco + '</div>' +
-      '<input type="hidden" id="vl-banco-' + id + '" value="">' +
-    '</div>';
-
-  container.appendChild(div);
-}
-
-function vlRemoverLogin(id) {
-  var el = document.getElementById('vl-item-' + id);
-  if (el) el.remove();
-  vlAtualizarPreview();
-}
-
-function vlSelecionarBanco(btn, id, banco) {
-  document.querySelectorAll('[data-grupo="' + id + '"]').forEach(function(b) { b.classList.remove('ativo'); });
-  btn.classList.add('ativo');
-  document.getElementById('vl-banco-' + id).value = banco;
-  vlAtualizarPreview();
-}
-
-// Delegação de clique para botões de banco gerados dinamicamente
-document.addEventListener('click', function(e) {
-  var btn = e.target.closest('.vl-banco-btn');
-  if (!btn) return;
-  var id = btn.getAttribute('data-id');
-  var banco = btn.getAttribute('data-banco');
-  if (!id || !banco) return;
-  document.querySelectorAll('[data-grupo="' + id + '"]').forEach(function(b){ b.classList.remove('ativo'); });
-  btn.classList.add('ativo');
-  var input = document.getElementById('vl-banco-' + id);
-  if (input) input.value = banco;
-  vlAtualizarPreview();
-});
-
-function vlColetarLogins() {
-  var logins = [];
-  var items = document.querySelectorAll('[id^="vl-item-"]');
-  items.forEach(function(item) {
-    var id = item.id.replace('vl-item-','');
-    var login = document.getElementById('vl-login-' + id);
-    var banco = document.getElementById('vl-banco-' + id);
-    if (login && banco) {
-      logins.push({ login: login.value.trim(), banco: banco.value.trim() });
-    }
-  });
-  return logins;
-}
-
-function vlAtualizarPreview() {
-  var storm = document.getElementById('vl-storm').value.trim();
-  var logins = vlColetarLogins();
-  var validos = logins.filter(function(l){ return l.login && l.banco; });
-  if (!storm || validos.length === 0) { document.getElementById('vl-preview').style.display = 'none'; return; }
-
-  var assunto = 'Vincular ao código - ' + storm;
-  var linhasLogins = validos.map(function(l) {
-    return 'Usuário: ' + l.login + ' (' + l.banco + ')';
-  }).join('\n');
-
-  var corpo = 'Olá, tudo bem?\n\nGentileza, segue' + (validos.length > 1 ? 'm os usuários abaixo' : ' o usuário abaixo') + ' para vincular sobre o código acima:\n\n' + linhasLogins + '\n\nGrata!';
-
-  document.getElementById('vl-preview-assunto').textContent = assunto;
-  document.getElementById('vl-preview-corpo').innerHTML = corpo.replace(/\n/g,'<br>');
-  document.getElementById('vl-preview').style.display = 'block';
-}
-
-function vlEnviarEmail() {
-  var storm = document.getElementById('vl-storm').value.trim();
-  var logins = vlColetarLogins();
-  var validos = logins.filter(function(l){ return l.login && l.banco; });
-
-  if (!storm)           { vlStatus('⚠️ Informe o Código Storm!', 'err'); return; }
-  if (validos.length === 0) { vlStatus('⚠️ Preencha pelo menos um Login e Banco!', 'err'); return; }
-
-  var erros = logins.filter(function(l){ return (l.login && !l.banco) || (!l.login && l.banco); });
-  if (erros.length > 0) { vlStatus('⚠️ Preencha login E banco em todos os itens!', 'err'); return; }
-
-  var assunto = 'Vincular ao código - ' + storm;
-  var linhasLogins = validos.map(function(l) {
-    return 'Usuário: ' + l.login + ' (' + l.banco + ')';
-  }).join('\n');
-  var corpo = 'Olá, tudo bem?\n\nGentileza, segue' + (validos.length > 1 ? 'm os usuários abaixo' : ' o usuário abaixo') + ' para vincular sobre o código acima:\n\n' + linhasLogins + '\n\nGrata!';
-
-  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
-    '&to=' + encodeURIComponent('cadastrosub01@novapromotora.com') +
-    '&su=' + encodeURIComponent(assunto) +
-    '&body=' + encodeURIComponent(corpo);
-
-  window.open(gmailUrl, '_blank');
-
-  var agora = new Date();
-  VL_HISTORICO.unshift({
-    storm: storm,
-    logins: validos,
-    hora: agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}),
-    data: agora.toLocaleDateString('pt-BR'),
-    status: 'aguardando'
-  });
-  vlAtualizarHistorico();
-  vlStatus('✅ Gmail aberto! Envie o e-mail e acompanhe abaixo.', 'ok');
-
-  // Limpa
-  document.getElementById('vl-storm').value = '';
-  document.getElementById('vl-logins-container').innerHTML = '';
-  VL_CONTADOR = 0;
-  vlAdicionarLogin();
-  document.getElementById('vl-preview').style.display = 'none';
-}
-
-function vlAtualizarHistorico() {
-  var lista = document.getElementById('vl-historico-lista');
-  if (!lista) return;
-  if (VL_HISTORICO.length === 0) {
-    lista.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda nesta sessão.</p>';
-    return;
-  }
-  lista.innerHTML = VL_HISTORICO.map(function(item, idx) {
-    var ajustado = item.status === 'vinculado';
-    var loginsStr = item.logins ? item.logins.map(function(l){ return l.login + ' (' + l.banco + ')'; }).join(', ') : (item.login + ' (' + item.banco + ')');
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;gap:10px">' +
-      '<div style="flex:1">' +
-        '<div style="font-size:13px;font-weight:600;color:#003a66">Storm: ' + item.storm + '</div>' +
-        '<div style="font-size:11px;color:#6b7f99;margin-top:2px">' + loginsStr + ' • ' + item.data + ' às ' + item.hora + '</div>' +
-      '</div>' +
-      '<div style="display:flex;gap:6px;flex-shrink:0;align-items:center">' +
-        '<button onclick="vlSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
-        '<button onclick="vlSetStatus(' + idx + ',\'vinculado\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Vinculado</button>' +
-        '<button onclick="vlExcluir(' + idx + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:2px 6px;line-height:1" title="Excluir">×</button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-}
-
-function vlSetStatus(idx, status) {
-  VL_HISTORICO[idx].status = status;
-  vlAtualizarHistorico();
-}
-function vlExcluir(idx) {
-  VL_HISTORICO.splice(idx, 1);
-  vlAtualizarHistorico();
-}
-
-function vlStatus(msg, tipo) {
-  var el = document.getElementById('vl-status');
-  el.textContent = msg;
-  el.style.display = 'block';
-  el.style.background = tipo === 'ok' ? '#e8f5e9' : '#fce4e4';
-  el.style.color = tipo === 'ok' ? '#2e7d32' : '#c62828';
-}
-
-// ── HISTÓRICO DE AJUSTES ─────────────────────────────────────
-var AJUSTE_HISTORICO = [];
-
-function ajusteRegistrarEnvio(storm, titular, banco) {
-  var agora = new Date();
-  var hora = agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-  var data = agora.toLocaleDateString('pt-BR');
-  AJUSTE_HISTORICO.unshift({ storm, titular, banco, hora, data, status: 'aguardando' });
-  ajusteAtualizarHistorico();
-}
-
-function ajusteAtualizarHistorico() {
-  var lista = document.getElementById('ajuste-historico-lista');
-  if (!lista) return;
-  if (AJUSTE_HISTORICO.length === 0) {
-    lista.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>';
-    return;
-  }
-  lista.innerHTML = AJUSTE_HISTORICO.map(function(item, idx) {
-    var ajustado = item.status === 'respondido';
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px;gap:10px">' +
-      '<div style="flex:1">' +
-        '<div style="font-size:13px;font-weight:600;color:#003a66">' + item.titular + '</div>' +
-        '<div style="font-size:11px;color:#6b7f99;margin-top:2px">Storm: ' + item.storm + ' • ' + item.banco + ' • ' + item.data + ' às ' + item.hora + '</div>' +
-      '</div>' +
-      '<div style="display:flex;gap:6px;flex-shrink:0;align-items:center">' +
-        '<button onclick="ajusteSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ajustado ? '#f59e0b' : 'transparent') + ';color:' + (!ajustado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
-        '<button onclick="ajusteSetStatus(' + idx + ',\'respondido\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ajustado ? '#22c55e' : 'transparent') + ';color:' + (ajustado ? 'white' : '#22c55e') + '">✅ Ajustado</button>' +
-        '<button onclick="ajusteExcluir(' + idx + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:2px 6px;line-height:1" title="Excluir">×</button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-}
-
-function ajusteVerRespostas() {
-  // Abre Gmail filtrado por respostas de alteração bancária
-  var gmailSearch = 'https://mail.google.com/mail/#search/subject%3A(ALTERAR+DADOS+BANCÁRIOS)+from%3Adalcastegnegiovana%40gmail.com';
-  window.open(gmailSearch, '_blank');
-
-  // Mostra painel com instrução
-  var painel = document.getElementById('ajuste-respostas');
-  var lista  = document.getElementById('ajuste-respostas-lista');
-  painel.style.display = 'block';
-
-  if (AJUSTE_HISTORICO.length === 0) {
-    lista.innerHTML = '<div style="text-align:center;padding:12px;font-size:12px;color:#6b7f99">📭 Nenhum ajuste enviado nesta sessão ainda.<br>Envie um ajuste primeiro e verifique as respostas depois.</div>';
-    return;
-  }
-
-  lista.innerHTML = '<div style="padding:10px 12px;background:#f0f6ff;border-radius:9px;border:1px solid #c5d8f5;font-size:12px;color:#0d47a1;margin-bottom:10px">' +
-    '📌 O Gmail foi aberto com os e-mails de resposta. Verifique lá e marque abaixo quais foram confirmados:' +
-  '</div>' +
-  AJUSTE_HISTORICO.map(function(item, idx) {
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f8fbff;border-radius:9px;border:1px solid #e8f0fa;margin-bottom:8px">' +
-      '<div style="font-size:12px;color:#003a66;font-weight:600">⏳ ' + item.titular + ' — Storm ' + item.storm + '</div>' +
-      '<button onclick="ajusteMarcarRespondido(' + idx + ')" style="padding:5px 12px;background:#22c55e;color:white;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">✅ Marcar como Respondido</button>' +
-    '</div>';
-  }).join('');
-}
-
-function ajusteSetStatus(idx, status) {
-  AJUSTE_HISTORICO[idx].status = status;
-  ajusteAtualizarHistorico();
-}
-function ajusteExcluir(idx) {
-  AJUSTE_HISTORICO.splice(idx, 1);
-  ajusteAtualizarHistorico();
-}
-
-function ajusteMarcarRespondido(idx) {
-  AJUSTE_HISTORICO[idx].status = 'respondido';
-  ajusteAtualizarHistorico();
-  ajusteVerRespostas();
-  // Notificação visual no sino da sidebar se existir
-  var badge = document.getElementById('ajuste-badge');
-  if (badge) badge.style.display = 'none';
-}
-
-function ajusteExtrair() {
-  var msg = document.getElementById('ajuste-msg').value.trim();
-  if (!msg) { alert('Cole a mensagem do WhatsApp primeiro!'); return; }
-
-  // Normaliza: remove acentos e deixa maiúsculo para busca
-  function normalizar(str) {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
-  }
-
-  function extrair(labels) {
-    var msgNorm = normalizar(msg);
-    var labelsArr = Array.isArray(labels) ? labels : [labels];
-    for (var j = 0; j < labelsArr.length; j++) {
-      var labelNorm = normalizar(labelsArr[j]);
-      var regex = new RegExp(labelNorm + '[:\s]+([^\n]+)', 'i');
-      var m = msgNorm.match(regex);
-      if (m) {
-        // Pega o valor na posição equivalente do texto original
-        var idx = msgNorm.indexOf(m[0]);
-        var original = msg.substring(idx, idx + m[0].length);
-        var valMatch = original.match(new RegExp(labelsArr[j].replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '[:\s]+([^\n]+)', 'i'));
-        return valMatch ? valMatch[1].trim() : m[1].trim();
-      }
-    }
-    return '-';
-  }
-
-  var storm    = extrair(['CODIGO STORM', 'CÓDIGO STORM']);
-  var codBanco = extrair(['CODIGO BANCO', 'CÓDIGO BANCO']);
-  var banco    = extrair(['BANCO']);
-  var agenciaRaw = extrair(['AGENCIA', 'AGÊNCIA']);
-  var tipo     = extrair(['TIPO DE CONTA']);
-  var contaRaw = extrair(['N. CONTA', 'N CONTA', 'CONTA']);
-  var titular  = extrair(['TITULAR']);
-  var cnpj     = extrair(['CNPJ', 'CPF']);
-  var obs      = extrair(['OBSERVACAO', 'OBSERVAÇÃO']);
-
-  document.getElementById('aj-storm').value    = storm;
-  document.getElementById('aj-codbanco').value = codBanco;
-  document.getElementById('aj-banco').value    = banco;
-  document.getElementById('aj-agencia').value  = agenciaRaw;
-  document.getElementById('aj-tipo').value     = tipo;
-  document.getElementById('aj-conta').value    = contaRaw;
-  document.getElementById('aj-titular').value  = titular;
-  document.getElementById('aj-cnpj').value     = cnpj;
-  document.getElementById('aj-obs').value      = obs === '-' ? '' : obs;
-
-  // Monta assunto
-  var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
-  document.getElementById('aj-assunto-preview').textContent = assunto;
-
-  document.getElementById('ajuste-resultado').style.display = 'block';
-  document.getElementById('ajuste-resultado').scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-function ajusteEnviarEmail() {
-  var storm    = document.getElementById('aj-storm').value;
-  var codBanco = document.getElementById('aj-codbanco').value;
-  var banco    = document.getElementById('aj-banco').value;
-  var agencia  = document.getElementById('aj-agencia').value;
-  var tipo     = document.getElementById('aj-tipo').value;
-  var conta    = document.getElementById('aj-conta').value;
-  var titular  = document.getElementById('aj-titular').value;
-  var cnpj     = document.getElementById('aj-cnpj').value;
-  var obs      = document.getElementById('aj-obs').value || '-';
-
-  var destinatario = 'ascom@novapromotora.com';
-  var assunto = 'ALTERAR DADOS BANCÁRIOS - CÓDIGO ' + storm + ' - ' + titular;
-
-  var corpo =
-    'Olá,\n\n' +
-    'Segue solicitação de alteração de dados bancários:\n\n' +
-    '──────────────────────────────\n\n' +
-    'CÓDIGO STORM: ' + storm + '\n' +
-    'BANCO: ' + banco + ' (Código: ' + codBanco + ')\n' +
-    'AGÊNCIA: ' + agencia + '\n' +
-    'TIPO DE CONTA: ' + tipo + '\n' +
-    'N. CONTA: ' + conta + '\n' +
-    'TITULAR: ' + titular + '\n' +
-    'CNPJ: ' + cnpj + '\n' +
-    'OBSERVAÇÃO: ' + obs + '\n\n' +
-    '──────────────────────────────\n\n' +
-    'Att,\n' +
-    'Equipe Melhor Crédito';
-
-  // Abre direto no Gmail web
-  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
-    '&to=' + encodeURIComponent(destinatario) +
-    '&su=' + encodeURIComponent(assunto) +
-    '&body=' + encodeURIComponent(corpo);
-
-  window.open(gmailUrl, '_blank');
-
-  // Registra no histórico
-  ajusteRegistrarEnvio(storm, titular, banco);
-
-  var st = document.getElementById('ajuste-status');
-  st.style.display = 'block';
-  st.style.background = '#e8f5e9';
-  st.style.color = '#2e7d32';
-  st.textContent = '✅ Gmail aberto! Envie o e-mail e acompanhe a resposta no painel acima.';
-}
+setTimeout(rdRenderizar, 500);
 
 function rdInicializar() {
   var btn = document.getElementById('rd-btn-novo');
@@ -2207,6 +1497,26 @@ function rdInicializar() {
     can.addEventListener('click', function(){ rdFecharModal(); });
   }
   rdRenderizar();
+}
+
+function checkSysPass(){
+  var inp = document.getElementById('sys-pass');
+  if(inp.value === 'Melhor2026sistema@#'){
+    document.getElementById('login-screen').style.display = 'none';
+    inp.value = '';
+    if(typeof carregarHistorico === 'function') carregarHistorico();
+    setTimeout(initDashboard, 500);
+  } else {
+    document.getElementById('sys-pass-err').style.display = 'block';
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  var on = document.body.classList.contains('dark');
+  document.getElementById('dark-switch').style.background = on ? '#1a90e0' : 'rgba(255,255,255,.2)';
 }
 
 function switchTab(name,el){
