@@ -1232,8 +1232,8 @@ function asAtualizarHistorico() {
         '<div style="font-size:11px;color:#6b7f99;margin-top:2px">' + item.data + ' às ' + item.hora + '</div>' +
       '</div>' +
       '<div style="display:flex;gap:6px;flex-shrink:0;align-items:center">' +
-        '<button onclick="asSetStatus(' + idx + ','aguardando')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ativado ? '#f59e0b' : 'transparent') + ';color:' + (!ativado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
-        '<button onclick="asSetStatus(' + idx + ','ativado')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ativado ? '#22c55e' : 'transparent') + ';color:' + (ativado ? 'white' : '#22c55e') + '">✅ Ativado</button>' +
+        '<button onclick="asSetStatus(' + idx + ',\'aguardando\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #f59e0b;cursor:pointer;background:' + (!ativado ? '#f59e0b' : 'transparent') + ';color:' + (!ativado ? 'white' : '#f59e0b') + '">⏳ Aguardando</button>' +
+        '<button onclick="asSetStatus(' + idx + ',\'ativado\')" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:2px solid #22c55e;cursor:pointer;background:' + (ativado ? '#22c55e' : 'transparent') + ';color:' + (ativado ? 'white' : '#22c55e') + '">✅ Ativado</button>' +
         '<button onclick="asExcluir(' + idx + ')" style="background:none;border:none;color:#e53e3e;font-size:18px;cursor:pointer;padding:2px 6px;line-height:1" title="Excluir">×</button>' +
       '</div>' +
     '</div>';
