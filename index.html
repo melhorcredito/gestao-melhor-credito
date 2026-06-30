@@ -317,10 +317,6 @@ header{display:none}
       <span class="sb-label">Importar backup</span>
     </div>
     <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
-    <div onclick="migrarDadosAntigos()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
-      <span style="font-size:15px;width:22px;text-align:center">📦</span>
-      <span class="sb-label">Importar dados antigos da nuvem</span>
-    </div>
     <div id="sync-status" style="display:flex;align-items:center;gap:8px;padding:8px;font-size:11px;color:rgba(255,255,255,.6);font-weight:600">
       <span id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
       <span id="sync-text">Conectando à nuvem...</span>
