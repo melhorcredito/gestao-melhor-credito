@@ -429,6 +429,7 @@ header{display:none}
         <option value="GLM">GLM</option>
         <option value="Llamas">Llamas</option>
         <option value="Nova Interno">Nova Interno</option>
+        <option value="A Sua Promotora">A Sua Promotora</option>
       </select>
     </div>
     <button class="btn-add" onclick="openLoginModal()">＋ Nova Solicitação</button>
@@ -439,6 +440,7 @@ header{display:none}
     <div class="pill glm" onclick="setLoginPill(this,'GLM')">GLM</div>
     <div class="pill lla" onclick="setLoginPill(this,'Llamas')">Llamas</div>
     <div class="pill nov" onclick="setLoginPill(this,'Nova Interno')">Nova Interno</div>
+    <div class="pill" onclick="setLoginPill(this,'A Sua Promotora')" style="background:#e0f0ff;color:#0055a5;border-color:#99ccee">A Sua Promotora</div>
   </div>
 
   <div class="board" style="grid-template-columns:repeat(4,1fr)">
@@ -1203,8 +1205,10 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
       <div class="mf" id="lw-prom"><label>Promotora *</label>
         <select id="l-prom">
           <option value="">Selecione...</option>
-          <option value="A Sua Promotora">A Sua Promotora</option>
+          <option value="GLM">GLM</option>
+          <option value="Llamas">Llamas</option>
           <option value="Nova Interno">Nova Interno</option>
+          <option value="A Sua Promotora">A Sua Promotora</option>
           <option value="Outra">Outra</option>
         </select>
         <span class="em">Campo obrigatório</span>
