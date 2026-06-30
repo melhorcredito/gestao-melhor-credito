@@ -317,6 +317,10 @@ header{display:none}
       <span class="sb-label">Importar backup</span>
     </div>
     <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
+    <div onclick="forcarSincronizacao()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
+      <span style="font-size:15px;width:22px;text-align:center">🔄</span>
+      <span class="sb-label">Forçar sincronização agora</span>
+    </div>
     <div id="sync-status" style="display:flex;align-items:center;gap:8px;padding:8px;font-size:11px;color:rgba(255,255,255,.6);font-weight:600">
       <span id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
       <span id="sync-text">Conectando à nuvem...</span>
@@ -3885,18 +3889,35 @@ function setSyncStatus(state, msg) {
 
 function cloudPush(key, value) {
   if (!_cloudDb) return;
-  clearTimeout(_cloudPushTimers[key]);
-  _cloudPushTimers[key] = setTimeout(function () {
-    _cloudDb.collection('app_sync').doc(key).set({
-      json: value,
-      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function () {
-      setSyncStatus('ok', 'Sincronizado com a nuvem');
-    }).catch(function (err) {
-      console.error('Erro ao sincronizar ' + key + ':', err);
-      setSyncStatus('err', 'Erro ao sincronizar (veja o console)');
-    });
-  }, 400);
+  _cloudDb.collection('app_sync').doc(key).set({
+    json: value,
+    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function () {
+    setSyncStatus('ok', 'Sincronizado com a nuvem');
+  }).catch(function (err) {
+    console.error('Erro ao sincronizar ' + key + ':', err);
+    setSyncStatus('err', 'Erro ao sincronizar (veja o console)');
+  });
+}
+
+async function forcarSincronizacao(){
+  if(!_cloudDb){ alert('Conexão com a nuvem ainda não está pronta. Aguarde o indicador ficar verde e tente de novo.'); return; }
+  if(!confirm('Isso vai ENVIAR todos os dados deste navegador para a nuvem agora, sobrescrevendo o que estiver lá. Use isso no computador que tem os dados certos. Continuar?')) return;
+  try {
+    var chaves = Object.keys(SYNC_KEY_MAP);
+    for (var i=0;i<chaves.length;i++){
+      var key = chaves[i];
+      var valor = localStorage.getItem(key) || '[]';
+      await _cloudDb.collection('app_sync').doc(key).set({
+        json: valor,
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    alert('✅ Sincronização forçada concluída! Todos os dados deste navegador foram enviados pra nuvem.');
+  } catch(e){
+    console.error('Erro na sincronização forçada:', e);
+    alert('❌ Erro ao sincronizar: ' + e.message);
+  }
 }
 
 function initCloudSync() {
