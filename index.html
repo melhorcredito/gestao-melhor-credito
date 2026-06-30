@@ -1393,9 +1393,9 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
 
         <!-- Container rolável -->
         <div id="sla-carousel" style="display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;padding:10px 4px 20px;-ms-overflow-style:none">
-          <img src="042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(0)"onclick="slaZoom(0)">
-          <img src="7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(1)"onclick="slaZoom(1)">
-          <img src="901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(2)"onclick="slaZoom(2)">
+          <img src="042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(0)">
+          <img src="7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(1)">
+          <img src="901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg" style="height:80vh;width:auto;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);flex-shrink:0;cursor:pointer" onclick="slaZoom(2)">
         </div>
 
         <!-- Botão direita -->
@@ -3321,12 +3321,7 @@ function carregarHistorico() {
 .sec-pj{display:block}.sec-pf{display:none}
 .modo-pf .sec-pj{display:none}.modo-pf .sec-pf{display:block}
 </style>
-</head>
-<body>
-<!-- ══ TELA DE ACESSO ══ -->
-
-
-
+<script>
 // ═══════════════════════════════════════════
 // VÍNCULO DE LOGIN
 // ═══════════════════════════════════════════
@@ -3579,10 +3574,13 @@ function slaScroll(dir) {
   if (c) c.scrollBy({ left: dir * 400, behavior: 'smooth' });
 }
 function slaZoom(idx) {
-  // placeholder - imagens precisam ser reconfiguradas
+  var overlay = document.getElementById('sla-zoom-overlay');
+  var img = document.getElementById('sla-zoom-img');
+  if (!overlay || !img || !slaImgs[idx]) return;
+  img.src = slaImgs[idx];
+  overlay.style.display = 'flex';
 }
 
-<script>
 // SISTEMA DE BACKUP — Exportar/Importar dados
 var BACKUP_KEYS = [
   'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
