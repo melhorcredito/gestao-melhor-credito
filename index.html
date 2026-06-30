@@ -308,27 +308,37 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
-    <div onclick="exportarBackup()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
-      <span style="font-size:15px;width:22px;text-align:center">💾</span>
-      <span class="sb-label">Exportar backup</span>
+
+    <!-- Menu recolhível de Sistema -->
+    <div onclick="toggleSistemaMenu()" style="display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.7);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;margin-bottom:2px;user-select:none">
+      <span>⚙️ <span class="sb-label">Sistema</span></span>
+      <span id="sistema-arrow" style="font-size:10px;transition:transform .2s">▲</span>
     </div>
-    <div onclick="document.getElementById('backup-import-input').click()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
-      <span style="font-size:15px;width:22px;text-align:center">📥</span>
-      <span class="sb-label">Importar backup</span>
+    <div id="sistema-menu" style="display:none;overflow:hidden">
+      <div onclick="exportarBackup()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.85);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:2px">
+        <span style="font-size:15px;width:22px;text-align:center">💾</span>
+        <span class="sb-label">Exportar backup</span>
+      </div>
+      <div onclick="document.getElementById('backup-import-input').click()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.85);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:2px">
+        <span style="font-size:15px;width:22px;text-align:center">📥</span>
+        <span class="sb-label">Importar backup</span>
+      </div>
+      <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
+      <div onclick="migrarDadosAntigos()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:2px">
+        <span style="font-size:15px;width:22px;text-align:center">📦</span>
+        <span class="sb-label">Importar dados antigos da nuvem</span>
+      </div>
+      <div onclick="forcarSincronizacao()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:2px">
+        <span style="font-size:15px;width:22px;text-align:center">🔄</span>
+        <span class="sb-label">Forçar sincronização agora</span>
+      </div>
     </div>
-    <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
-    <div onclick="migrarDadosAntigos()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
-      <span style="font-size:15px;width:22px;text-align:center">📦</span>
-      <span class="sb-label">Importar dados antigos da nuvem</span>
-    </div>
-    <div onclick="forcarSincronizacao()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
-      <span style="font-size:15px;width:22px;text-align:center">🔄</span>
-      <span class="sb-label">Forçar sincronização agora</span>
-    </div>
+
     <div id="sync-status" style="display:flex;align-items:center;gap:8px;padding:8px;font-size:11px;color:rgba(255,255,255,.6);font-weight:600">
       <span id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
       <span id="sync-text">Conectando à nuvem...</span>
     </div>
+
     <div onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s">
       <span style="font-size:15px;width:22px;text-align:center">🌙</span>
       <span class="sb-label">Modo escuro</span>
@@ -1797,6 +1807,7 @@ function checkSysPass(){
     inp.value = '';
     if(typeof carregarHistorico === 'function') carregarHistorico();
     setTimeout(initDashboard, 500);
+    setTimeout(aplicarDadosPosLogin, 800);
   } else {
     document.getElementById('sys-pass-err').style.display = 'block';
     inp.value = '';
@@ -3882,6 +3893,15 @@ var _cloudDb = null;
 var _cloudSyncing = {};
 var _cloudPushTimers = {};
 
+function toggleSistemaMenu(){
+  var menu = document.getElementById('sistema-menu');
+  var arrow = document.getElementById('sistema-arrow');
+  if(!menu || !arrow) return;
+  var aberto = menu.style.display !== 'none';
+  menu.style.display = aberto ? 'none' : 'block';
+  arrow.style.transform = aberto ? '' : 'rotate(180deg)';
+}
+
 function setSyncStatus(state, msg) {
   var dot = document.getElementById('sync-dot');
   var txt = document.getElementById('sync-text');
@@ -3924,6 +3944,8 @@ async function forcarSincronizacao(){
   }
 }
 
+var _cloudPendingRender = [];
+
 function initCloudSync() {
   try {
     var app = firebase.initializeApp(firebaseConfig);
@@ -3934,13 +3956,10 @@ function initCloudSync() {
     return;
   }
 
-  // Intercepta localStorage.setItem para empurrar mudanças locais pra nuvem
   var _origSetItem = localStorage.setItem.bind(localStorage);
   localStorage.setItem = function (key, value) {
     _origSetItem(key, value);
-    if (!_cloudSyncing[key] && SYNC_KEY_MAP[key]) {
-      cloudPush(key, value);
-    }
+    if (!_cloudSyncing[key] && SYNC_KEY_MAP[key]) cloudPush(key, value);
   };
 
   var pendentes = Object.keys(SYNC_KEY_MAP).length;
@@ -3951,17 +3970,23 @@ function initCloudSync() {
     _cloudDb.collection('app_sync').doc(key).onSnapshot(function (doc) {
       if (primeirosRecebidos < pendentes) primeirosRecebidos++;
       if (primeirosRecebidos >= pendentes) setSyncStatus('ok', 'Sincronizado com a nuvem');
-
-      if (!doc.exists) return; // nada na nuvem ainda pra essa categoria
+      if (!doc.exists) return;
       var remoto = doc.data().json;
-      var local = localStorage.getItem(key);
-      if (remoto === local) return; // já está igual, não faz nada
-
+      if (!remoto || remoto === '[]') return;
       try {
         _cloudSyncing[key] = true;
-        localStorage.setItem(key, remoto);
+        (localStorage.setItem.toString().indexOf('cloudPush') > -1
+          ? Object.getPrototypeOf(localStorage).setItem
+          : localStorage.setItem
+        );
+        // salva diretamente sem disparar cloudPush de novo
+        var orig = Object.getPrototypeOf(localStorage).setItem;
+        orig.call(localStorage, key, remoto);
         cfg.setVar(JSON.parse(remoto));
-        cfg.render();
+        var loginScreen = document.getElementById('login-screen');
+        var logado = loginScreen && loginScreen.style.display === 'none';
+        if (logado) { cfg.render(); }
+        else { _cloudPendingRender.push(cfg.render); }
       } catch (e) {
         console.error('Erro ao aplicar dado remoto de ' + key + ':', e);
       } finally {
@@ -3972,6 +3997,13 @@ function initCloudSync() {
       setSyncStatus('err', 'Sem permissão / sem conexão com a nuvem');
     });
   });
+}
+
+function aplicarDadosPosLogin() {
+  if (_cloudPendingRender.length > 0) {
+    _cloudPendingRender.forEach(function(fn){ try{ fn(); }catch(e){} });
+    _cloudPendingRender = [];
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initCloudSync);
