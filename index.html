@@ -692,6 +692,24 @@ header{display:none}
   </div>
 </div>
 
+
+<!-- ══ MODAL EXCLUIR (COMPARTILHADO) ══ -->
+<div class="del-overlay" id="del-overlay">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-head">
+      <h2>Confirmar Exclusão</h2>
+      <button class="close-btn" onclick="closeDel()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text);line-height:1.6">Tem certeza que deseja excluir <strong id="del-name"></strong>? Esta ação não pode ser desfeita.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeDel()">Cancelar</button>
+      <button class="btn-save" style="background:#ef4444" onclick="confirmDel()">🗑️ Excluir</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ ABA 6: CONTATOS ══════════════ -->
 <div class="tab-content" id="tab-contatos">
   
@@ -1530,13 +1548,10 @@ function switchTab(name,el){
 // ══════════════════════════════════════════════════════════════
 // ABA LOGINS
 // ══════════════════════════════════════════════════════════════
-var LOGINS = [];
+var LOGINS = JSON.parse(localStorage.getItem('sl_dados')||'[]');
 var lEditId = null, lFilterProm = '';
 
-onSnapshot(collection(db,'logins'), function(snap){
-  LOGINS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderLogins();
-});
+function loginsSave(){ localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); }
 
 function renderLogins(){
   var srch = document.getElementById('l-srch').value.trim().toLowerCase();
@@ -1623,29 +1638,26 @@ async function salvarLogin(){
   });
   if(!ok) return;
   if(lEditId){
-    await updateDoc(doc(db,'logins',lEditId),{nome,banco,prom,obs,oper,status});
+    (function(){ var it = LOGINS.find(function(x){return x.id===lEditId;}); if(it){ it.nome=nome;it.banco=banco;it.prom=prom;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
   } else {
-    await addDoc(collection(db,'logins'),{nome,banco,prom,obs,oper,status,data:hoje()});
+    (function(){ LOGINS.unshift({id:String(Date.now()),nome,banco,prom,obs,oper,status,data:hoje()}); localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
   }
   closeLoginModal();
 }
 async function moveLogin(id,status){
   var it = LOGINS.find(function(l){ return l.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
-  await updateDoc(doc(db,'logins',id),{status});
+  (function(){ var it = LOGINS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
   registrarHistorico('login','Login de '+(it?it.nome:'')+'  → '+label, '');
 }
 
 // ══════════════════════════════════════════════════════════════
 // ABA DEMANDAS
 // ══════════════════════════════════════════════════════════════
-var DEMANDAS = [];
+var DEMANDAS = JSON.parse(localStorage.getItem('dm_dados')||'[]');
 var dEditId = null;
 
-onSnapshot(collection(db,'demandas'), function(snap){
-  DEMANDAS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderDemandas();
-});
+function demandasSave(){ localStorage.setItem('dm_dados', JSON.stringify(DEMANDAS)); }
 
 function renderDemandas(){
   var srch=document.getElementById('d-srch').value.trim().toLowerCase();
@@ -1730,26 +1742,23 @@ async function salvarDemanda(){
   });
   if(!ok) return;
   if(dEditId){
-    await updateDoc(doc(db,'demandas',dEditId),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status});
+    (function(){ var it = DEMANDAS.find(function(x){return x.id===dEditId;}); if(it){ it.grupo=grupo;it.banco=banco;it.proposta=proposta;it.cpfcliente=cpfcliente;it.chamado=chamado;it.datainicio=datainicio;it.oper=oper;it.obs=obs;it.status=status; } localStorage.setItem('dm_dados', JSON.stringify(DEMANDAS)); })()
   } else {
-    await addDoc(collection(db,'demandas'),{grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status,data:hoje()});
+    (function(){ DEMANDAS.unshift({id:String(Date.now()),grupo,banco,proposta,cpfcliente,chamado,datainicio,oper,obs,status,data:hoje()}); localStorage.setItem('dm_dados', JSON.stringify(DEMANDAS)); })()
   }
   closeDemandaModal();
 }
 async function moveDemanda(id,status){
-  await updateDoc(doc(db,'demandas',id),{status});
+  (function(){ var it = DEMANDAS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('dm_dados', JSON.stringify(DEMANDAS)); })()
 }
 
 // ══════════════════════════════════════════════════════════════
 // ABA DEMANDA E-MAIL
 // ══════════════════════════════════════════════════════════════
-var EMAILS = [];
+var EMAILS = JSON.parse(localStorage.getItem('em_dados')||'[]');
 var eEditId = null;
 
-onSnapshot(collection(db,'emails'), function(snap){
-  EMAILS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderEmails();
-});
+function emailsSave(){ localStorage.setItem('em_dados', JSON.stringify(EMAILS)); }
 
 function renderEmails(){
   var srch=document.getElementById('e-srch').value.trim().toLowerCase();
@@ -1834,26 +1843,23 @@ async function salvarEmail(){
   });
   if(!ok) return;
   if(eEditId){
-    await updateDoc(doc(db,'emails',eEditId),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status});
+    (function(){ var it = EMAILS.find(function(x){return x.id===eEditId;}); if(it){ it.nome=nome;it.demanda=demanda;it.banco=banco;it.proposta=proposta;it.dataenvio=dataenvio;it.chamado=chamado;it.oper=oper;it.obs=obs;it.status=status; } localStorage.setItem('em_dados', JSON.stringify(EMAILS)); })()
   } else {
-    await addDoc(collection(db,'emails'),{nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status,data:hoje()});
+    (function(){ EMAILS.unshift({id:String(Date.now()),nome,demanda,banco,proposta,dataenvio,chamado,oper,obs,status,data:hoje()}); localStorage.setItem('em_dados', JSON.stringify(EMAILS)); })()
   }
   closeEmailModal();
 }
 async function moveEmail(id,status){
-  await updateDoc(doc(db,'emails',id),{status});
+  (function(){ var it = EMAILS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('em_dados', JSON.stringify(EMAILS)); })()
 }
 
 // ══════════════════════════════════════════════════════════════
 // ABA CADASTROS SUB
 // ══════════════════════════════════════════════════════════════
-var SUBS = [];
+var SUBS = JSON.parse(localStorage.getItem('sb_dados')||'[]');
 var sEditId = null;
 
-onSnapshot(collection(db,'subs'), function(snap){
-  SUBS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderSub();
-});
+function subsSave(){ localStorage.setItem('sb_dados', JSON.stringify(SUBS)); }
 
 function renderSub(){
   var srch=document.getElementById('s-srch').value.trim().toLowerCase();
@@ -1962,16 +1968,16 @@ async function salvarSub(){
   });
   if(!ok) return;
   if(sEditId){
-    await updateDoc(doc(db,'subs',sEditId),{nome,razao,cnpj,cpf,banco,obs,oper,status});
+    (function(){ var it = SUBS.find(function(x){return x.id===sEditId;}); if(it){ it.nome=nome;it.razao=razao;it.cnpj=cnpj;it.cpf=cpf;it.banco=banco;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('sb_dados', JSON.stringify(SUBS)); })()
   } else {
-    await addDoc(collection(db,'subs'),{nome,razao,cnpj,cpf,banco,obs,oper,status,data:hoje()});
+    (function(){ SUBS.unshift({id:String(Date.now()),nome,razao,cnpj,cpf,banco,obs,oper,status,data:hoje()}); localStorage.setItem('sb_dados', JSON.stringify(SUBS)); })()
   }
   closeSubModal();
 }
 async function moveSub(id,status){
   var it = SUBS.find(function(s){ return s.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
-  await updateDoc(doc(db,'subs',id),{status});
+  (function(){ var it = SUBS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('sb_dados', JSON.stringify(SUBS)); })()
   registrarHistorico('sub','Sub '+(it?it.nome:'')+'  → '+label, '');
 }
 
@@ -1983,22 +1989,38 @@ function openDel(id,type,name){
   document.getElementById('del-overlay').classList.add('open');
 }
 function closeDel(){ document.getElementById('del-overlay').classList.remove('open'); delId=null; delType=null; }
-async function confirmDel(){
-  var col = delType==='mat_powerhub'?'material_powerhub':delType==='mat_storm'?'material_storm':delType==='login'?'logins':delType==='email'?'emails':delType==='sub'?'subs':delType==='com'?'comunicados':delType==='contato'?'contatos':delType==='interno'?'interno':delType==='lb'?'loginsbancos':delType==='link'?'linksuteis':delType==='cm'?'comissoes':delType==='par'?'parceiros':delType==='con'?'contratos':'demandas';
-  await deleteDoc(doc(db,col,delId));
+function confirmDel(){
+  var map = {
+    mat_powerhub: {arr: MATERIAL_PH, key: 'mph_dados', render: function(){ renderMaterial('powerhub'); }},
+    mat_storm:    {arr: MATERIAL_ST, key: 'mst_dados', render: function(){ renderMaterial('storm'); }},
+    login:        {arr: LOGINS,      key: 'sl_dados',  render: renderLogins},
+    email:        {arr: EMAILS,      key: 'em_dados',  render: renderEmails},
+    sub:          {arr: SUBS,        key: 'sb_dados',  render: renderSub},
+    com:          {arr: COMUNICADOS, key: 'cu_dados',  render: renderAvisos},
+    contato:      {arr: CONTATOS,    key: 'co_dados',  render: renderContatos},
+    interno:      {arr: INTERNO,     key: 'in_dados',  render: renderInterno},
+    lb:           {arr: LB,          key: 'lb_dados',  render: renderLB},
+    link:         {arr: LINKS,       key: 'lk_dados',  render: renderLinks},
+    cm:           {arr: COMISSOES,   key: 'cm_dados',  render: renderCom},
+    par:          {arr: PARCEIROS,   key: 'pc_dados',  render: renderParceiros},
+    con:          {arr: CONTRATOS,   key: 'ct_dados',  render: renderContratos},
+    demanda:      {arr: DEMANDAS,    key: 'dm_dados',  render: renderDemandas},
+  };
+  var m = map[delType] || map['demanda'];
+  var idx = m.arr.findIndex(function(x){ return x.id === delId; });
+  if (idx > -1) m.arr.splice(idx, 1);
+  localStorage.setItem(m.key, JSON.stringify(m.arr));
+  if (m.render) m.render();
   closeDel();
 }
 
 // ══════════════════════════════════════════════════════════════
 // ABA LOGINS BANCOS
 // ══════════════════════════════════════════════════════════════
-var LB = [];
+var LB = JSON.parse(localStorage.getItem('lb_dados')||'[]');
 var lbEditId = null;
 
-onSnapshot(collection(db,'loginsbancos'), function(snap){
-  LB = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderLB();
-});
+function lbSave(){ localStorage.setItem('lb_dados', JSON.stringify(LB)); }
 
 var LB_PASS = 'Melhor2026@#';
 var lbUnlocked = true;
@@ -2106,9 +2128,9 @@ async function salvarLB(){
   });
   if(!ok) return;
   if(lbEditId){
-    await updateDoc(doc(db,'loginsbancos',lbEditId),{banco,login,senha,link});
+    (function(){ var it = LB.find(function(x){return x.id===lbEditId;}); if(it){ it.banco=banco;it.login=login;it.senha=senha;it.link=link; } localStorage.setItem('lb_dados', JSON.stringify(LB)); })()
   } else {
-    await addDoc(collection(db,'loginsbancos'),{banco,login,senha,link,data:hoje()});
+    (function(){ LB.unshift({id:String(Date.now()),banco,login,senha,link,data:hoje()}); localStorage.setItem('lb_dados', JSON.stringify(LB)); })()
   }
   closeLBModal();
 }
@@ -2116,13 +2138,10 @@ async function salvarLB(){
 // ══════════════════════════════════════════════════════════════
 // ABA LINKS ÚTEIS
 // ══════════════════════════════════════════════════════════════
-var LINKS = [];
+var LINKS = JSON.parse(localStorage.getItem('lk_dados')||'[]');
 var lkEditId = null;
 
-onSnapshot(collection(db,'linksuteis'), function(snap){
-  LINKS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderLinks();
-});
+function linksSave(){ localStorage.setItem('lk_dados', JSON.stringify(LINKS)); }
 
 function renderLinks(){
   var srch = document.getElementById('lk-srch').value.trim().toLowerCase();
@@ -2177,9 +2196,9 @@ async function salvarLk(){
   });
   if(!ok) return;
   if(lkEditId){
-    await updateDoc(doc(db,'linksuteis',lkEditId),{desc,link});
+    (function(){ var it = LINKS.find(function(x){return x.id===lkEditId;}); if(it){ it.desc=desc;it.link=link; } localStorage.setItem('lk_dados', JSON.stringify(LINKS)); })()
   } else {
-    await addDoc(collection(db,'linksuteis'),{desc,link,data:hoje()});
+    (function(){ LINKS.unshift({id:String(Date.now()),desc,link,data:hoje()}); localStorage.setItem('lk_dados', JSON.stringify(LINKS)); })()
   }
   closeLkModal();
 }
@@ -2187,13 +2206,10 @@ async function salvarLk(){
 // ══════════════════════════════════════════════════════════════
 // ABA COMISSÕES
 // ══════════════════════════════════════════════════════════════
-var COMISSOES = [];
+var COMISSOES = JSON.parse(localStorage.getItem('cm_dados')||'[]');
 var cmEditId = null;
 
-onSnapshot(collection(db,'comissoes'), function(snap){
-  COMISSOES = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderCom();
-});
+function comissoesSave(){ localStorage.setItem('cm_dados', JSON.stringify(COMISSOES)); }
 
 function addTabela(){
   var div = document.createElement('div');
@@ -2326,10 +2342,10 @@ async function salvarCm(){
   if(!ok) return;
   if(cmEditId){
     var status=document.getElementById('cm-status').value;
-    await updateDoc(doc(db,'comissoes',cmEditId),{parceiro,banco,perc,data,prazo,obs,tabelas,status});
+    (function(){ var it = COMISSOES.find(function(x){return x.id===cmEditId;}); if(it){ it.parceiro=parceiro;it.banco=banco;it.perc=perc;it.data=data;it.prazo=prazo;it.obs=obs;it.tabelas=tabelas;it.status=status; } localStorage.setItem('cm_dados', JSON.stringify(COMISSOES)); })()
   } else {
     var status=document.getElementById('cm-status').value;
-    await addDoc(collection(db,'comissoes'),{parceiro,banco,perc,data,prazo,obs,tabelas,status,criado:hoje()});
+    (function(){ COMISSOES.unshift({id:String(Date.now()),parceiro,banco,perc,data,prazo,obs,tabelas,status,criado:hoje()}); localStorage.setItem('cm_dados', JSON.stringify(COMISSOES)); })()
   }
   closeCmModal();
 }
@@ -2337,13 +2353,10 @@ async function salvarCm(){
 // ══════════════════════════════════════════════════════════════
 // ABA PARCEIROS
 // ══════════════════════════════════════════════════════════════
-var PARCEIROS = [];
+var PARCEIROS = JSON.parse(localStorage.getItem('pc_dados')||'[]');
 var parEditId = null;
 
-onSnapshot(collection(db,'parceiros'), function(snap){
-  PARCEIROS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderParceiros();
-});
+function parceirosSave(){ localStorage.setItem('pc_dados', JSON.stringify(PARCEIROS)); }
 
 function renderParceiros(){
   var srch = document.getElementById('par-srch').value.trim().toLowerCase();
@@ -2404,9 +2417,9 @@ async function salvarPar(){
   });
   if(!ok) return;
   if(parEditId){
-    await updateDoc(doc(db,'parceiros',parEditId),{grupo,email,tel,doclink});
+    (function(){ var it = PARCEIROS.find(function(x){return x.id===parEditId;}); if(it){ it.grupo=grupo;it.email=email;it.tel=tel;it.doclink=doclink; } localStorage.setItem('pc_dados', JSON.stringify(PARCEIROS)); })()
   } else {
-    await addDoc(collection(db,'parceiros'),{grupo,email,tel,doclink,data:hoje()});
+    (function(){ PARCEIROS.unshift({id:String(Date.now()),grupo,email,tel,doclink,data:hoje()}); localStorage.setItem('pc_dados', JSON.stringify(PARCEIROS)); })()
   }
   closeParModal();
 }
@@ -2414,13 +2427,10 @@ async function salvarPar(){
 // ══════════════════════════════════════════════════════════════
 // ABA CONTRATOS
 // ══════════════════════════════════════════════════════════════
-var CONTRATOS = [];
+var CONTRATOS = JSON.parse(localStorage.getItem('ct_dados')||'[]');
 var conEditId = null;
 
-onSnapshot(collection(db,'contratos'), function(snap){
-  CONTRATOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderContratos();
-});
+function contratosSave(){ localStorage.setItem('ct_dados', JSON.stringify(CONTRATOS)); }
 
 function renderContratos(){
   var srch = document.getElementById('con-srch').value.trim().toLowerCase();
@@ -2477,9 +2487,9 @@ async function salvarCon(){
   if(!ok) return;
   try {
     if(conEditId){
-      await updateDoc(doc(db,'contratos',conEditId),{parceiro,link,obs});
+      (function(){ var it = CONTRATOS.find(function(x){return x.id===conEditId;}); if(it){ it.parceiro=parceiro;it.link=link;it.obs=obs; } localStorage.setItem('ct_dados', JSON.stringify(CONTRATOS)); })()
     } else {
-      await addDoc(collection(db,'contratos'),{parceiro,link,obs,data:hoje()});
+      (function(){ CONTRATOS.unshift({id:String(Date.now()),parceiro,link,obs,data:hoje()}); localStorage.setItem('ct_dados', JSON.stringify(CONTRATOS)); })()
     }
     closeConModal();
   } catch(e) {
@@ -2513,13 +2523,10 @@ async function salvarCon(){
 // ══════════════════════════════════════════════════════════════
 // ABA COMUNICADOS
 // ══════════════════════════════════════════════════════════════
-var COMUNICADOS = [];
+var COMUNICADOS = JSON.parse(localStorage.getItem('cu_dados')||'[]');
 var cEditId = null;
 
-onSnapshot(collection(db,'comunicados'), function(snap){
-  COMUNICADOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderAvisos();
-});
+function comunicadosSave(){ localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); }
 
 function renderAvisos(){
   var srch = document.getElementById('c-srch').value.trim().toLowerCase();
@@ -2587,27 +2594,24 @@ async function salvarCom(){
   });
   if(!ok) return;
   if(cEditId){
-    await updateDoc(doc(db,'comunicados',cEditId),{titulo,banco,texto});
+    (function(){ var it = COMUNICADOS.find(function(x){return x.id===cEditId;}); if(it){ it.titulo=titulo;it.banco=banco;it.texto=texto; } localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
   } else {
-    await addDoc(collection(db,'comunicados'),{titulo,banco,texto,status:'and',data:hoje()});
+    (function(){ COMUNICADOS.unshift({id:String(Date.now()),titulo,banco,texto,status:'and',data:hoje()}); localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
   }
   closeComModal();
   registrarHistorico('comissao', cmEditId?'Comissão editada':'Nova comissão cadastrada', '');
 }
 async function moveCom(id,status){
-  await updateDoc(doc(db,'comunicados',id),{status});
+  (function(){ var it = COMUNICADOS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
 }
 
 // ══════════════════════════════════════════════════════════════
 // ABA CONTATOS
 // ══════════════════════════════════════════════════════════════
-var CONTATOS = [];
+var CONTATOS = JSON.parse(localStorage.getItem('co_dados')||'[]');
 var ctEditId = null;
 
-onSnapshot(collection(db,'contatos'), function(snap){
-  CONTATOS = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderContatos();
-});
+function contatosSave(){ localStorage.setItem('co_dados', JSON.stringify(CONTATOS)); }
 
 function renderContatos(){
   var srch = document.getElementById('ct-srch').value.trim().toLowerCase();
@@ -2687,9 +2691,9 @@ async function salvarCt(){
   if(!banco){ document.getElementById('ctw-banco').classList.add('err'); return; }
   document.getElementById('ctw-banco').classList.remove('err');
   if(ctEditId){
-    await updateDoc(doc(db,'contatos',ctEditId),{banco,tel,whats,email,localidades,sacs});
+    (function(){ var it = CONTATOS.find(function(x){return x.id===ctEditId;}); if(it){ it.banco=banco;it.tel=tel;it.whats=whats;it.email=email;it.localidades=localidades;it.sacs=sacs; } localStorage.setItem('co_dados', JSON.stringify(CONTATOS)); })()
   } else {
-    await addDoc(collection(db,'contatos'),{banco,tel,whats,email,localidades,sacs,data:hoje()});
+    (function(){ CONTATOS.unshift({id:String(Date.now()),banco,tel,whats,email,localidades,sacs,data:hoje()}); localStorage.setItem('co_dados', JSON.stringify(CONTATOS)); })()
   }
   closeCtModal();
 }
@@ -2697,14 +2701,11 @@ async function salvarCt(){
 // ══════════════════════════════════════════════════════════════
 // ABA CONTATOS INTERNO
 // ══════════════════════════════════════════════════════════════
-var INTERNO = [];
+var INTERNO = JSON.parse(localStorage.getItem('in_dados')||'[]');
 var inEditId = null;
 var inFilterTipo = '';
 
-onSnapshot(collection(db,'interno'), function(snap){
-  INTERNO = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderInterno();
-});
+function internoSave(){ localStorage.setItem('in_dados', JSON.stringify(INTERNO)); }
 
 function setInPill(el, tipo){
   document.querySelectorAll('#in-pills .pill').forEach(function(x){ x.classList.remove('active'); });
@@ -2774,9 +2775,9 @@ async function salvarIn(){
   });
   if(!ok) return;
   if(inEditId){
-    await updateDoc(doc(db,'interno',inEditId),{nome,banco,tel,tipo});
+    (function(){ var it = INTERNO.find(function(x){return x.id===inEditId;}); if(it){ it.nome=nome;it.banco=banco;it.tel=tel;it.tipo=tipo; } localStorage.setItem('in_dados', JSON.stringify(INTERNO)); })()
   } else {
-    await addDoc(collection(db,'interno'),{nome,banco,tel,tipo,data:hoje()});
+    (function(){ INTERNO.unshift({id:String(Date.now()),nome,banco,tel,tipo,data:hoje()}); localStorage.setItem('in_dados', JSON.stringify(INTERNO)); })()
   }
   closeInModal();
 }
@@ -2786,8 +2787,9 @@ async function salvarIn(){
 // ══════════════════════════════════════
 // MATERIAL DE APOIO
 // ══════════════════════════════════════
-var MATERIAL_PH = [];
-var MATERIAL_ST = [];
+var MATERIAL_PH = JSON.parse(localStorage.getItem('mph_dados')||'[]');
+var MATERIAL_ST = JSON.parse(localStorage.getItem('mst_dados')||'[]');
+function materialSave(){ localStorage.setItem('mph_dados', JSON.stringify(MATERIAL_PH)); localStorage.setItem('mst_dados', JSON.stringify(MATERIAL_ST)); }
 var matEditId = null;
 var matTipo = 'powerhub';
 
@@ -2838,26 +2840,19 @@ async function salvarMat() {
   var tipo   = document.getElementById('mat-tipo').value;
   var linkSistema = document.getElementById('mat-link-sistema').value.trim();
   if(!titulo || !link){ alert('Preencha título e link!'); return; }
-  var col = matTipo==='powerhub' ? 'material_powerhub' : 'material_storm';
+  var arr = matTipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
   try {
     if(matEditId) {
-      await updateDoc(doc(db,col,matEditId),{titulo,desc,link,linkSistema,tipo});
+      var it = arr.find(function(m){ return m.id===matEditId; });
+      if(it){ it.titulo=titulo; it.desc=desc; it.link=link; it.linkSistema=linkSistema; it.tipo=tipo; }
     } else {
-      await addDoc(collection(db,col),{titulo,desc,link,linkSistema,tipo,data:hoje()});
+      arr.push({id:String(Date.now()),titulo,desc,link,linkSistema,tipo,data:hoje()});
     }
+    materialSave();
+    renderMaterial(matTipo);
     closeMatModal();
   } catch(e) { alert('Erro ao salvar: '+e.message); }
 }
-
-onSnapshot(collection(db,'material_powerhub'), function(snap){
-  MATERIAL_PH = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderMaterial('powerhub');
-});
-
-onSnapshot(collection(db,'material_storm'), function(snap){
-  MATERIAL_ST = snap.docs.map(function(d){ return Object.assign({id:d.id},d.data()); });
-  renderMaterial('storm');
-});
 
 function renderMaterial(tipo) {
   var arr  = tipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
