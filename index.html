@@ -1143,6 +1143,179 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
   </div>
 </div>
 
+
+<!-- ══ MODAL LOGINS ══ -->
+<div class="overlay" id="l-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="l-modal-title">Nova Solicitação</h2>
+      <button class="close-btn" onclick="closeLoginModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="lw-nome"><label>Nome do Parceiro *</label><input id="l-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="lw-banco"><label>Banco *</label><input id="l-banco" placeholder="Ex: Itaú, Bradesco..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="lw-prom"><label>Promotora *</label>
+        <select id="l-prom">
+          <option value="">Selecione...</option>
+          <option value="A Sua Promotora">A Sua Promotora</option>
+          <option value="Nova Interno">Nova Interno</option>
+          <option value="Outra">Outra</option>
+        </select>
+        <span class="em">Campo obrigatório</span>
+      </div>
+      <div class="mf" id="lw-oper"><label>Operacional *</label><input id="l-oper" placeholder="Nome de quem está solicitando"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label>
+        <select id="l-status">
+          <option value="and">Em Andamento</option>
+          <option value="pend">Pendente</option>
+          <option value="fin">Finalizado</option>
+          <option value="rep">Reprovado</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação</label><textarea id="l-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeLoginModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarLogin()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ MODAL DEMANDAS ══ -->
+<div class="overlay" id="d-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="d-modal-title">Nova Demanda</h2>
+      <button class="close-btn" onclick="closeDemandaModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="dw-grupo"><label>Grupo/Parceiro *</label><input id="d-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="dw-banco"><label>Banco *</label><input id="d-banco" placeholder="Ex: Itaú, Bradesco..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Proposta</label><input id="d-proposta" placeholder="Número da proposta"></div>
+      <div class="mf"><label>CPF do Cliente</label><input id="d-cpfcliente" placeholder="000.000.000-00"></div>
+      <div class="mf"><label>Chamado</label><input id="d-chamado" placeholder="Número do chamado"></div>
+      <div class="mf" id="dw-datainicio"><label>Data de Início *</label><input type="date" id="d-datainicio"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="dw-oper"><label>Operacional *</label><input id="d-oper" placeholder="Nome de quem está solicitando"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label>
+        <select id="d-status">
+          <option value="and">Em Andamento</option>
+          <option value="pend">Pendente</option>
+          <option value="fin">Finalizado</option>
+          <option value="rep">Reprovado</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação</label><textarea id="d-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeDemandaModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarDemanda()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL DEMANDAS E-MAIL ══ -->
+<div class="overlay" id="e-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="e-modal-title">Nova Demanda E-mail</h2>
+      <button class="close-btn" onclick="closeEmailModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="ew-nome"><label>Nome *</label><input id="e-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="ew-demanda"><label>Demanda *</label><input id="e-demanda" placeholder="Descrição da demanda"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Banco</label><input id="e-banco" placeholder="Ex: Itaú, Bradesco..."></div>
+      <div class="mf"><label>Proposta</label><input id="e-proposta" placeholder="Número da proposta"></div>
+      <div class="mf" id="ew-dataenvio"><label>Data de Envio *</label><input type="date" id="e-dataenvio"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Chamado</label><input id="e-chamado" placeholder="Número do chamado"></div>
+      <div class="mf" id="ew-oper"><label>Operacional *</label><input id="e-oper" placeholder="Nome de quem está solicitando"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label>
+        <select id="e-status">
+          <option value="and">Em Andamento</option>
+          <option value="pend">Pendente</option>
+          <option value="fin">Finalizado</option>
+          <option value="rep">Reprovado</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação</label><textarea id="e-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeEmailModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarEmail()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CADASTROS SUB ══ -->
+<div class="overlay" id="s-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="s-modal-title">Novo Cadastro Sub</h2>
+      <button class="close-btn" onclick="closeSubModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="sw-nome"><label>Nome Fantasia *</label><input id="s-nome" placeholder="Ex: Distribuidora Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="sw-razao"><label>Razão Social *</label><input id="s-razao" placeholder="Ex: Silva Distribuição LTDA"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>CNPJ</label><input id="s-cnpj" placeholder="00.000.000/0000-00"></div>
+      <div class="mf"><label>CPF</label><input id="s-cpf" placeholder="000.000.000-00"></div>
+      <div class="mf" id="sw-banco"><label>Banco *</label><input id="s-banco" placeholder="Ex: Itaú, Bradesco..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="sw-oper"><label>Operacional *</label><input id="s-oper" placeholder="Nome de quem está solicitando"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label>
+        <select id="s-status">
+          <option value="and">Em Andamento</option>
+          <option value="pend">Pendente</option>
+          <option value="fin">Finalizado</option>
+          <option value="rep">Reprovado</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação</label><textarea id="s-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeSubModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarSub()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL PARCEIROS (DOCUMENTOS) ══ -->
+<div class="overlay" id="par-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="par-modal-title">Novo Parceiro</h2>
+      <button class="close-btn" onclick="closeParModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="parw-grupo"><label>Grupo/Nome *</label><input id="par-grupo" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>E-mail</label><input id="par-email" placeholder="contato@email.com"></div>
+      <div class="mf"><label>Telefone</label><input id="par-tel" placeholder="(00) 00000-0000"></div>
+      <div class="mf"><label>Link Documento (Drive)</label><input id="par-doclink" placeholder="https://drive.google.com/..."></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeParModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarPar()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONTRATOS PARCEIROS ══ -->
+<div class="overlay" id="con-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="con-modal-title">Novo Contrato</h2>
+      <button class="close-btn" onclick="closeConModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="conw-parceiro"><label>Parceiro *</label><input id="con-parceiro" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="conw-link"><label>Link do Contrato (Drive) *</label><input id="con-link" placeholder="https://drive.google.com/..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Observação</label><textarea id="con-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeConModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarCon()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL COMISSÕES ══ -->
 <div class="overlay" id="cm-overlay">
   <div class="modal">
@@ -1557,10 +1730,11 @@ function switchTab(name,el){
 // ══════════════════════════════════════════════════════════════
 // ABA LOGINS
 // ══════════════════════════════════════════════════════════════
-var LOGINS = JSON.parse(localStorage.getItem('sl_dados')||'[]');
+var LOGINS = JSON.parse(localStorage.getItem('mc_logins')||'[]');
+if (!Array.isArray(LOGINS)) LOGINS = [];
 var lEditId = null, lFilterProm = '';
 
-function loginsSave(){ localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); }
+function loginsSave(){ localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); }
 
 function renderLogins(){
   var srch = document.getElementById('l-srch').value.trim().toLowerCase();
@@ -1647,16 +1821,16 @@ async function salvarLogin(){
   });
   if(!ok) return;
   if(lEditId){
-    (function(){ var it = LOGINS.find(function(x){return x.id===lEditId;}); if(it){ it.nome=nome;it.banco=banco;it.prom=prom;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
+    (function(){ var it = LOGINS.find(function(x){return x.id===lEditId;}); if(it){ it.nome=nome;it.banco=banco;it.prom=prom;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   } else {
-    (function(){ LOGINS.unshift({id:String(Date.now()),nome,banco,prom,obs,oper,status,data:hoje()}); localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
+    (function(){ LOGINS.unshift({id:String(Date.now()),nome,banco,prom,obs,oper,status,data:hoje()}); localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   }
   closeLoginModal();
 }
 async function moveLogin(id,status){
   var it = LOGINS.find(function(l){ return l.id===id; });
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
-  (function(){ var it = LOGINS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('sl_dados', JSON.stringify(LOGINS)); })()
+  (function(){ var it = LOGINS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   registrarHistorico('login','Login de '+(it?it.nome:'')+'  → '+label, '');
 }
 
@@ -2002,7 +2176,7 @@ function confirmDel(){
   var map = {
     mat_powerhub: {arr: MATERIAL_PH, key: 'mph_dados', render: function(){ renderMaterial('powerhub'); }},
     mat_storm:    {arr: MATERIAL_ST, key: 'mst_dados', render: function(){ renderMaterial('storm'); }},
-    login:        {arr: LOGINS,      key: 'sl_dados',  render: renderLogins},
+    login:        {arr: LOGINS,      key: 'mc_logins',  render: renderLogins},
     email:        {arr: EMAILS,      key: 'em_dados',  render: renderEmails},
     sub:          {arr: SUBS,        key: 'sb_dados',  render: renderSub},
     com:          {arr: COMUNICADOS, key: 'cu_dados',  render: renderAvisos},
@@ -3152,10 +3326,266 @@ function carregarHistorico() {
 <!-- ══ TELA DE ACESSO ══ -->
 
 
+
+// ═══════════════════════════════════════════
+// VÍNCULO DE LOGIN
+// ═══════════════════════════════════════════
+var vlLoginCount = 0;
+var vlHistorico = JSON.parse(localStorage.getItem('vl_historico')||'[]');
+
+function vlInit() {
+  document.getElementById('vl-logins-container').innerHTML = '';
+  vlLoginCount = 0;
+  vlAdicionarLogin();
+  vlRenderHistorico();
+}
+
+function vlAdicionarLogin() {
+  vlLoginCount++;
+  var idx = vlLoginCount;
+  var container = document.getElementById('vl-logins-container');
+  var div = document.createElement('div');
+  div.id = 'vl-login-' + idx;
+  div.style.cssText = 'background:#fafbfc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:12px;position:relative';
+  div.innerHTML =
+    '<button onclick="vlRemoverLogin(' + idx + ')" style="position:absolute;top:8px;right:8px;background:none;border:none;color:#ef4444;font-size:16px;cursor:pointer">✕</button>' +
+    '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Banco *</label>' +
+    '<input type="text" class="vl-banco" placeholder="Ex: Itaú, Bradesco..." oninput="vlAtualizarPreview()" style="width:100%;padding:9px 11px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff"></div>' +
+    '<div><label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Login / Usuário *</label>' +
+    '<input type="text" class="vl-login" placeholder="Ex: usuario123" oninput="vlAtualizarPreview()" style="width:100%;padding:9px 11px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff"></div>';
+  container.appendChild(div);
+  vlAtualizarPreview();
+}
+
+function vlRemoverLogin(idx) {
+  var el = document.getElementById('vl-login-' + idx);
+  if (el) el.remove();
+  vlAtualizarPreview();
+}
+
+function vlAtualizarPreview() {
+  var storm = document.getElementById('vl-storm').value.trim();
+  var bancos = [...document.querySelectorAll('.vl-banco')].map(function(el){ return el.value.trim(); }).filter(Boolean);
+  var logins = [...document.querySelectorAll('.vl-login')].map(function(el){ return el.value.trim(); }).filter(Boolean);
+
+  if (!storm && bancos.length === 0) {
+    document.getElementById('vl-preview').style.display = 'none';
+    return;
+  }
+
+  var assunto = 'Vínculo de Login — Código ' + (storm || '___');
+  var corpo = 'Olá, tudo bem?<br><br>Solicito o vínculo dos seguintes logins ao código <strong>' + (storm || '___') + '</strong>:<br><br>';
+  var items = [];
+  var max = Math.max(bancos.length, logins.length);
+  for (var i = 0; i < max; i++) {
+    items.push('• <strong>' + (bancos[i] || '—') + '</strong>: ' + (logins[i] || '—'));
+  }
+  corpo += items.join('<br>') + '<br><br>Agradeço desde já!';
+
+  document.getElementById('vl-preview-assunto').textContent = assunto;
+  document.getElementById('vl-preview-corpo').innerHTML = corpo;
+  document.getElementById('vl-preview').style.display = 'block';
+}
+
+function vlEnviarEmail() {
+  var storm = document.getElementById('vl-storm').value.trim();
+  var bancos = [...document.querySelectorAll('.vl-banco')].map(function(el){ return el.value.trim(); }).filter(Boolean);
+  var logins = [...document.querySelectorAll('.vl-login')].map(function(el){ return el.value.trim(); }).filter(Boolean);
+
+  if (!storm) {
+    var st = document.getElementById('vl-status');
+    st.textContent = '⚠️ Preencha o código do parceiro (Storm).';
+    st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#fef2f2;color:#991b1b';
+    return;
+  }
+  if (bancos.length === 0) {
+    var st = document.getElementById('vl-status');
+    st.textContent = '⚠️ Adicione ao menos um banco e login.';
+    st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#fef2f2;color:#991b1b';
+    return;
+  }
+
+  var assunto = 'Vínculo de Login — Código ' + storm;
+  var items = [];
+  var max = Math.max(bancos.length, logins.length);
+  for (var i = 0; i < max; i++) {
+    items.push((bancos[i] || '—') + ': ' + (logins[i] || '—'));
+  }
+  var corpo = 'Olá, tudo bem?\n\nSolicito o vínculo dos seguintes logins ao código ' + storm + ':\n\n' + items.join('\n') + '\n\nAgradeço desde já!';
+
+  var mailto = 'mailto:?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
+  window.open(mailto, '_blank');
+
+  vlHistorico.unshift({ storm: storm, bancos: bancos, logins: logins, data: hoje() });
+  localStorage.setItem('vl_historico', JSON.stringify(vlHistorico));
+  vlRenderHistorico();
+
+  var st = document.getElementById('vl-status');
+  st.textContent = '✅ E-mail aberto com sucesso!';
+  st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#ecfdf5;color:#065f46';
+}
+
+function vlRenderHistorico() {
+  var el = document.getElementById('vl-historico-lista');
+  if (!el) return;
+  if (vlHistorico.length === 0) {
+    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda nesta sessão.</p>';
+    return;
+  }
+  el.innerHTML = vlHistorico.slice(0,10).map(function(h) {
+    return '<div style="padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:12px">' +
+      '<strong style="color:#003a66">Código ' + h.storm + '</strong> — ' + h.bancos.length + ' login(s) — <span style="color:#9ca3af">' + h.data + '</span></div>';
+  }).join('');
+}
+
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+// ═══════════════════════════════════════════
+// AJUSTE BANCÁRIO — Extração automática
+// ═══════════════════════════════════════════
+var ajusteHistorico = JSON.parse(localStorage.getItem('ajuste_historico')||'[]');
+
+function ajusteExtrair() {
+  var msg = document.getElementById('ajuste-msg').value;
+  if (!msg.trim()) {
+    alert('Cole a mensagem do WhatsApp primeiro.');
+    return;
+  }
+
+  function extrair(regex) {
+    var m = msg.match(regex);
+    return m ? m[1].trim() : '';
+  }
+
+  var storm = extrair(/CÓDIGO STORM:\s*([^\n]+)/i);
+  var codbanco = extrair(/CÓDIGO BANCO:\s*([^\n]+)/i);
+  var banco = extrair(/BANCO:\s*([^\n]+)/i);
+  var agencia = extrair(/AGÊNCIA:\s*([^\n]+)/i);
+  var tipo = extrair(/TIPO DE CONTA:\s*([^\n]+)/i);
+  var conta = extrair(/N\.?\s*CONTA:\s*([^\n]+)/i);
+  var titular = extrair(/TITULAR:\s*([^\n]+)/i);
+  var cnpj = extrair(/CNPJ:\s*([^\n]+)/i) || extrair(/CPF:\s*([^\n]+)/i);
+  var obs = extrair(/OBSERVAÇÃO:\s*([^\n]+)/i);
+
+  document.getElementById('aj-storm').value = storm;
+  document.getElementById('aj-codbanco').value = codbanco;
+  document.getElementById('aj-banco').value = banco;
+  document.getElementById('aj-agencia').value = agencia;
+  document.getElementById('aj-tipo').value = tipo;
+  document.getElementById('aj-conta').value = conta;
+  document.getElementById('aj-titular').value = titular;
+  document.getElementById('aj-cnpj').value = cnpj;
+  document.getElementById('aj-obs').value = obs;
+
+  document.getElementById('ajuste-resultado').style.display = 'block';
+  ajusteAtualizarPreview();
+}
+
+function ajusteAtualizarPreview() {
+  var storm = document.getElementById('aj-storm').value.trim();
+  var assunto = 'Ajuste de Dados Bancários — Código ' + (storm || '___');
+  document.getElementById('aj-assunto-preview').textContent = assunto;
+}
+
+function ajusteEnviarEmail() {
+  var storm = document.getElementById('aj-storm').value.trim();
+  var codbanco = document.getElementById('aj-codbanco').value.trim();
+  var banco = document.getElementById('aj-banco').value.trim();
+  var agencia = document.getElementById('aj-agencia').value.trim();
+  var tipo = document.getElementById('aj-tipo').value.trim();
+  var conta = document.getElementById('aj-conta').value.trim();
+  var titular = document.getElementById('aj-titular').value.trim();
+  var cnpj = document.getElementById('aj-cnpj').value.trim();
+  var obs = document.getElementById('aj-obs').value.trim();
+
+  if (!storm || !banco) {
+    var st = document.getElementById('ajuste-status');
+    st.textContent = '⚠️ Preencha ao menos o Código Storm e o Banco.';
+    st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#fef2f2;color:#991b1b';
+    return;
+  }
+
+  var assunto = 'Ajuste de Dados Bancários — Código ' + storm;
+  var corpo = 'AJUSTE DE DADOS BANCÁRIOS - MELHOR CRÉDITO\n\n' +
+    'CÓDIGO STORM: ' + storm + '\n' +
+    'CÓDIGO BANCO: ' + codbanco + '\n' +
+    'BANCO: ' + banco + '\n' +
+    'AGÊNCIA: ' + agencia + '\n' +
+    'TIPO DE CONTA: ' + tipo + '\n' +
+    'N. CONTA: ' + conta + '\n' +
+    'TITULAR: ' + titular + '\n' +
+    'CNPJ: ' + cnpj + '\n' +
+    'OBSERVAÇÃO: ' + (obs || '-');
+
+  var mailto = 'mailto:?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
+  window.open(mailto, '_blank');
+
+  ajusteHistorico.unshift({ storm: storm, banco: banco, data: hoje() });
+  localStorage.setItem('ajuste_historico', JSON.stringify(ajusteHistorico));
+  ajusteRenderHistorico();
+
+  var st = document.getElementById('ajuste-status');
+  st.textContent = '✅ E-mail aberto com sucesso!';
+  st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#ecfdf5;color:#065f46';
+}
+
+function ajusteRenderHistorico() {
+  var el = document.getElementById('ajuste-historico-lista');
+  if (!el) return;
+  if (ajusteHistorico.length === 0) {
+    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>';
+    return;
+  }
+  el.innerHTML = ajusteHistorico.slice(0,10).map(function(h) {
+    return '<div style="padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:12px">' +
+      '<strong style="color:#003a66">Código ' + h.storm + '</strong> — ' + h.banco + ' — <span style="color:#9ca3af">' + h.data + '</span></div>';
+  }).join('');
+}
+
+// Render histories on load
+document.addEventListener('DOMContentLoaded', function() {
+  ajusteRenderHistorico();
+});
+
+
+// ═══════════════════════════════════════════
+// GERADOR DE CONTRATO (stub temporário)
+// ═══════════════════════════════════════════
+function abrirGerador() {
+  document.getElementById('gerador-modal-overlay').classList.add('aberto');
+}
+function fecharGerador() {
+  document.getElementById('gerador-modal-overlay').classList.remove('aberto');
+}
+function gTipo(tipo) {
+  document.getElementById('btn-pj').classList.toggle('ativo', tipo === 'pj');
+  document.getElementById('btn-pf').classList.toggle('ativo', tipo === 'pf');
+  document.querySelectorAll('.sec-pj').forEach(function(el){ el.style.display = tipo === 'pj' ? '' : 'none'; });
+  document.querySelectorAll('.sec-pf').forEach(function(el){ el.style.display = tipo === 'pf' ? '' : 'none'; });
+  document.getElementById('g-titulo').textContent = tipo === 'pj' ? '🏢 Dados da Empresa Parceira' : '👤 Dados do Parceiro';
+}
+function gGerar() {
+  alert('⚠️ O gerador de contrato em PDF precisa ser reconfigurado. Avise para recriarmos essa função.');
+}
+
+// ═══════════════════════════════════════════
+// CARROSSEL SLA (stub temporário)
+// ═══════════════════════════════════════════
+function slaScroll(dir) {
+  var c = document.getElementById('sla-carousel');
+  if (c) c.scrollBy({ left: dir * 400, behavior: 'smooth' });
+}
+function slaZoom(idx) {
+  // placeholder - imagens precisam ser reconfiguradas
+}
+
 <script>
 // SISTEMA DE BACKUP — Exportar/Importar dados
 var BACKUP_KEYS = [
-  'sl_dados','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
+  'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
   'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
   'mph_dados','mst_dados','rd_dados','mc_historico'
 ];
