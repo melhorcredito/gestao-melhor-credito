@@ -306,6 +306,15 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links úteis</span></div>
       </nav>
   <div style="padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)">
+    <div onclick="exportarBackup()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
+      <span style="font-size:15px;width:22px;text-align:center">💾</span>
+      <span class="sb-label">Exportar backup</span>
+    </div>
+    <div onclick="document.getElementById('backup-import-input').click()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
+      <span style="font-size:15px;width:22px;text-align:center">📥</span>
+      <span class="sb-label">Importar backup</span>
+    </div>
+    <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
     <div onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s">
       <span style="font-size:15px;width:22px;text-align:center">🌙</span>
       <span class="sb-label">Modo escuro</span>
@@ -3142,5 +3151,61 @@ function carregarHistorico() {
 <body>
 <!-- ══ TELA DE ACESSO ══ -->
 
+
+<script>
+// SISTEMA DE BACKUP — Exportar/Importar dados
+var BACKUP_KEYS = [
+  'sl_dados','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
+  'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
+  'mph_dados','mst_dados','rd_dados','mc_historico'
+];
+
+function exportarBackup() {
+  try {
+    var backup = { _gerado: new Date().toISOString(), _sistema: 'Melhor Crédito - Gestão' };
+    BACKUP_KEYS.forEach(function(k) {
+      var v = localStorage.getItem(k);
+      if (v) backup[k] = JSON.parse(v);
+    });
+    var json = JSON.stringify(backup, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var dataStr = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = 'backup_melhor_credito_' + dataStr + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('Erro ao exportar backup: ' + e.message);
+  }
+}
+
+function importarBackup(file) {
+  if (!file) return;
+  if (!confirm('⚠️ Isso vai SUBSTITUIR todos os dados atuais pelos dados do arquivo de backup. Deseja continuar?')) {
+    document.getElementById('backup-import-input').value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var backup = JSON.parse(e.target.result);
+      var importados = 0;
+      BACKUP_KEYS.forEach(function(k) {
+        if (backup[k] !== undefined) {
+          localStorage.setItem(k, JSON.stringify(backup[k]));
+          importados++;
+        }
+      });
+      alert('✅ Backup importado com sucesso! ' + importados + ' categorias restauradas. A página vai recarregar agora.');
+      location.reload();
+    } catch(err) {
+      alert('❌ Erro ao importar backup: arquivo inválido. ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+</script>
 </body>
 </html>
