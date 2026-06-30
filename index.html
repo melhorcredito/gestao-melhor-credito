@@ -207,6 +207,8 @@ header{display:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
 <script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <style>
 /* Gerador de Contrato Modal */
@@ -315,6 +317,14 @@ header{display:none}
       <span class="sb-label">Importar backup</span>
     </div>
     <input type="file" id="backup-import-input" accept=".json" style="display:none" onchange="importarBackup(this.files[0])">
+    <div onclick="migrarDadosAntigos()" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:#fde68a;font-size:13px;font-weight:600;transition:all .2s;margin-bottom:4px">
+      <span style="font-size:15px;width:22px;text-align:center">📦</span>
+      <span class="sb-label">Importar dados antigos da nuvem</span>
+    </div>
+    <div id="sync-status" style="display:flex;align-items:center;gap:8px;padding:8px;font-size:11px;color:rgba(255,255,255,.6);font-weight:600">
+      <span id="sync-dot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>
+      <span id="sync-text">Conectando à nuvem...</span>
+    </div>
     <div onclick="toggleDark()" id="dark-btn" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.9);font-size:13px;font-weight:600;transition:all .2s">
       <span style="font-size:15px;width:22px;text-align:center">🌙</span>
       <span class="sb-label">Modo escuro</span>
@@ -1143,6 +1153,28 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
   </div>
 </div>
 
+<div class="tab-content" id="tab-sla-parceiro">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l">
+        <input class="search" id="sp-srch" placeholder="🔍 Buscar por parceiro ou banco..." oninput="renderSlaParceiro()">
+      </div>
+      <button class="btn-add" onclick="openSpModal()">＋ Nova Comissão em Atraso</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 8px">
+      <p style="font-size:13px;color:var(--lbl);margin-bottom:12px">Acompanhamento de comissões de parceiros em atraso.</p>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="width:10px;height:10px;background:#dc2626;border-radius:50%;display:inline-block"></span>
+        <span style="font-size:13px;font-weight:700;color:#991b1b">🔔 Pendentes</span>
+        <span id="sp-cnt" style="background:#dc2626;color:#fff;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px">0</span>
+      </div>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px" id="sp-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhuma comissão em atraso cadastrada</div>
+    </div>
+  </div>
+</div>
+
 
 <!-- ══ MODAL LOGINS ══ -->
 <div class="overlay" id="l-overlay">
@@ -1347,6 +1379,34 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
   </div>
 </div>
 
+<div class="overlay" id="sp-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="sp-modal-title">Nova Comissão em Atraso</h2>
+      <button class="close-btn" onclick="closeSpModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="spw-parceiro"><label>Parceiro *</label><input id="sp-parceiro" placeholder="Ex: Grupo Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="spw-banco"><label>Banco *</label><input id="sp-banco" placeholder="Ex: Bradesco, Itaú..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          Propostas <button type="button" onclick="addProposta()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">＋ Adicionar Proposta</button>
+        </label>
+        <div id="proposta-fields" style="display:flex;flex-direction:column;gap:6px;margin-top:6px">
+          <input class="proposta-input" placeholder="Ex: Proposta 123456" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">
+        </div>
+      </div>
+      <div class="mf" id="spw-data"><label>Data de Início *</label><input type="date" id="sp-data"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label><select id="sp-status"><option value="pendente">⏳ Pendente</option><option value="finalizada">✅ Finalizada</option><option value="adiantamento">💸 Solicitada Adiantamento</option></select></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="sp-obs" placeholder="Alguma observação sobre essa comissão..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeSpModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarSp()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ ABA 11: PARCEIROS ══════════════ -->
 <div class="tab-content" id="tab-parceiros">
   
@@ -1420,7 +1480,34 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
 <script>
 const slaImgs = ["042e3ea8-6e3a-4b0e-b961-87fcefdc8fc0.jpg", "7ae5f921-c1da-47f7-b8d6-be828b44ee3f.jpg", "901d768a-0b0a-4ffc-a602-a8c448aeef7b.jpg"];
 
+// ══════════════════════════════════════════════════════════════
+// FUNÇÕES UTILITÁRIAS GLOBAIS
+// ══════════════════════════════════════════════════════════════
+function hoje(){
+  var d = new Date();
+  var dd = String(d.getDate()).padStart(2,'0');
+  var mm = String(d.getMonth()+1).padStart(2,'0');
+  var yyyy = d.getFullYear();
+  return dd+'/'+mm+'/'+yyyy;
+}
 
+function formatDate(str){
+  if(!str) return '';
+  var p = String(str).split('-');
+  if(p.length!==3) return str; // já não está no formato yyyy-mm-dd, devolve como veio
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
+
+function escHtml(str){
+  return String(str==null?'':str).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function promTag(prom){
+  if(!prom) return '';
+  return '<span class="tag" style="background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m)">🏷️ '+escHtml(prom)+'</span>';
+}
 
 
 // ══════════════════════════════════════════════════════════════
@@ -1725,6 +1812,8 @@ function switchTab(name,el){
   if(el) el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
   if(name === 'resumo-dados') setTimeout(rdInicializar, 150);
+  if(name === 'comissoes') renderCom();
+  if(name === 'sla-parceiro') renderSlaParceiro();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2185,6 +2274,7 @@ function confirmDel(){
     lb:           {arr: LB,          key: 'lb_dados',  render: renderLB},
     link:         {arr: LINKS,       key: 'lk_dados',  render: renderLinks},
     cm:           {arr: COMISSOES,   key: 'cm_dados',  render: renderCom},
+    sp:           {arr: SLAP,        key: 'sp_dados',  render: renderSlaParceiro},
     par:          {arr: PARCEIROS,   key: 'pc_dados',  render: renderParceiros},
     con:          {arr: CONTRATOS,   key: 'ct_dados',  render: renderContratos},
     demanda:      {arr: DEMANDAS,    key: 'dm_dados',  render: renderDemandas},
@@ -2477,6 +2567,126 @@ function renderCom(){
   renderCards(fin,  gf, 'Nenhuma comissão finalizada');
 }
 
+var SLAP = JSON.parse(localStorage.getItem('sp_dados')||'[]');
+var spEditId = null;
+
+function spSave(){ localStorage.setItem('sp_dados', JSON.stringify(SLAP)); }
+
+function addProposta(){
+  var div = document.createElement('div');
+  div.style.cssText='display:flex;gap:6px;align-items:center';
+  div.innerHTML='<input class="proposta-input" placeholder="Ex: Proposta 123456" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
+    +'<button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button>';
+  document.getElementById('proposta-fields').appendChild(div);
+}
+
+function getPropostas(){
+  return Array.from(document.querySelectorAll('.proposta-input')).map(function(i){ return i.value.trim(); }).filter(Boolean);
+}
+
+function openSpModal(){
+  spEditId=null;
+  document.getElementById('sp-modal-title').textContent='Nova Comissão em Atraso';
+  ['sp-parceiro','sp-banco','sp-data','sp-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('sp-status').value='pendente';
+  ['spw-parceiro','spw-banco','spw-data'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('proposta-fields').innerHTML='<input class="proposta-input" placeholder="Ex: Proposta 123456" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">';
+  document.getElementById('sp-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('sp-parceiro').focus(); },100);
+}
+
+function openSpEdit(id){
+  var it=SLAP.find(function(x){ return x.id===id; }); if(!it) return;
+  spEditId=id;
+  document.getElementById('sp-modal-title').textContent='Editar Comissão em Atraso';
+  document.getElementById('sp-parceiro').value=it.parceiro;
+  document.getElementById('sp-banco').value=it.banco;
+  document.getElementById('sp-data').value=it.data||'';
+  document.getElementById('sp-status').value=it.status||'pendente';
+  document.getElementById('sp-obs').value=it.obs||'';
+  ['spw-parceiro','spw-banco','spw-data'].forEach(function(id2){ document.getElementById(id2).classList.remove('err'); });
+  var props = it.propostas||[];
+  document.getElementById('proposta-fields').innerHTML = (props.length?props:['']).map(function(p){
+    return '<div style="display:flex;gap:6px;align-items:center"><input class="proposta-input" value="'+escHtml(p)+'" placeholder="Ex: Proposta 123456" style="flex:1;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);outline:none">'
+      +'<button type="button" onclick="this.parentElement.remove()" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:6px 10px;font-size:16px;cursor:pointer;font-weight:700">×</button></div>';
+  }).join('');
+  document.getElementById('sp-overlay').classList.add('open');
+}
+
+function closeSpModal(){ document.getElementById('sp-overlay').classList.remove('open'); }
+
+function salvarSp(){
+  var parceiro=document.getElementById('sp-parceiro').value.trim();
+  var banco=document.getElementById('sp-banco').value.trim();
+  var data=document.getElementById('sp-data').value;
+  var status=document.getElementById('sp-status').value;
+  var obs=document.getElementById('sp-obs').value.trim();
+  var propostas=getPropostas();
+  var ok=true;
+  [['spw-parceiro',parceiro],['spw-banco',banco],['spw-data',data]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(spEditId){
+    (function(){ var it = SLAP.find(function(x){return x.id===spEditId;}); if(it){ it.parceiro=parceiro;it.banco=banco;it.data=data;it.status=status;it.obs=obs;it.propostas=propostas; } spSave(); })()
+  } else {
+    SLAP.unshift({id:String(Date.now()),parceiro:parceiro,banco:banco,data:data,status:status,obs:obs,propostas:propostas,criado:hoje()});
+    spSave();
+  }
+  closeSpModal();
+  renderSlaParceiro();
+}
+
+function renderSlaParceiro(){
+  var srch = (document.getElementById('sp-srch')||{}).value;
+  srch = (srch||'').trim().toLowerCase();
+  var agora = Date.now();
+
+  var list = SLAP.filter(function(it){
+    if(srch && !it.parceiro.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+
+  var cnt = document.getElementById('sp-cnt');
+  if(cnt) cnt.textContent = list.filter(function(it){ return (it.status||'pendente')==='pendente'; }).length;
+
+  var grid = document.getElementById('sp-grid');
+  if(!grid) return;
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhuma comissão em atraso cadastrada</div>'; return; }
+
+  grid.innerHTML = list.map(function(it){
+    var propostas = it.propostas||[];
+    var status = it.status||'pendente';
+    var alerta = '';
+    if(status==='pendente' && it.data){
+      var inicio = new Date(it.data+'T00:00:00').getTime();
+      var horas = (agora - inicio) / (1000*60*60);
+      if(horas >= 48) alerta = '<div style="background:#fee2e2;color:#dc2626;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:600;margin-bottom:8px">🔔 Atenção! +48h em atraso</div>';
+      else if(horas >= 24) alerta = '<div style="background:#fef9c3;color:#854d0e;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:600;margin-bottom:8px">⚠️ +24h em atraso</div>';
+    }
+    var statusBadge = status==='finalizada'
+      ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-bottom:6px">✅ Finalizada</span><br>'
+      : status==='adiantamento'
+      ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-bottom:6px">💸 Adiantamento Solicitado</span><br>'
+      : '<span style="display:inline-flex;align-items:center;gap:4px;background:#fef9c3;color:#92400e;border:1px solid #fde68a;border-radius:20px;font-size:10px;font-weight:700;padding:2px 8px;margin-bottom:6px">⏳ Pendente</span><br>';
+    return '<div class="card" style="background:#fff;'+(alerta.includes('48h')?'border-color:#fca5a5':alerta.includes('24h')?'border-color:#fde68a':status==='finalizada'?'border-color:#bbf7d0':status==='adiantamento'?'border-color:#ddd6fe':'')+'">'
+      +statusBadge+alerta
+      +'<div class="card-top"><div class="card-name">💰 '+it.parceiro+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openSpEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'sp\',\''+escHtml(it.parceiro)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'
+      +(it.data?'<span class="tag data">📅 '+formatDate(it.data)+'</span>':'')
+      +'</div>'
+      +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+it.obs+'</div>':'')
+      +(propostas.length?'<div style="margin-top:10px"><div style="font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Propostas</div>'
+        +propostas.map(function(p){ return '<div style="font-size:12px;color:var(--text);background:var(--blue-p);border-radius:6px;padding:6px 10px;margin-bottom:4px;line-height:1.4">📋 '+p+'</div>'; }).join('')+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
 function openCmModal(){
   cmEditId=null;
   document.getElementById('cm-modal-title').textContent='Nova Comissão';
@@ -2531,6 +2741,7 @@ async function salvarCm(){
     (function(){ COMISSOES.unshift({id:String(Date.now()),parceiro,banco,perc,data,prazo,obs,tabelas,status,criado:hoje()}); localStorage.setItem('cm_dados', JSON.stringify(COMISSOES)); })()
   }
   closeCmModal();
+  renderCom();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2696,6 +2907,7 @@ async function salvarCon(){
       else if(id==='lb-overlay') closeLBModal();
       else if(id==='lk-overlay') closeLkModal();
       else if(id==='cm-overlay') closeCmModal();
+      else if(id==='sp-overlay') closeSpModal();
       else if(id==='par-overlay') closeParModal();
       else if(id==='con-overlay') closeConModal();
       else closeDel();
@@ -3284,9 +3496,6 @@ function carregarHistorico() {
 </div>
 
 <!-- ABA ANALISADOR DE MARGEM -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://unpkg.com/pizzip@3.1.4/dist/pizzip.js"></script>
-<script src="https://unpkg.com/docxtemplater@3.44.0/build/docxtemplater.js"></script>
 
 <style>
 /* Gerador de Contrato Modal */
@@ -3585,7 +3794,7 @@ function slaZoom(idx) {
 var BACKUP_KEYS = [
   'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
   'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
-  'mph_dados','mst_dados','rd_dados','mc_historico'
+  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados'
 ];
 
 function exportarBackup() {
@@ -3634,6 +3843,179 @@ function importarBackup(file) {
   };
   reader.readAsText(file);
 }
+
+// ═══════════════════════════════════════════
+// SINCRONIZAÇÃO EM NUVEM (Firebase Firestore)
+// ═══════════════════════════════════════════
+var firebaseConfig = {
+  apiKey: "AIzaSyCNCb0DW_BicboPvggu8_6VXxVsdIngB24",
+  authDomain: "melhor-credito.firebaseapp.com",
+  projectId: "melhor-credito",
+  storageBucket: "melhor-credito.firebasestorage.app",
+  messagingSenderId: "664835784824",
+  appId: "1:664835784824:web:79d66cc6fb52d76030ad8d"
+};
+
+var SYNC_KEY_MAP = {
+  mc_logins:   { setVar: function(v){ LOGINS = v; },      render: function(){ if(typeof renderLogins==='function') renderLogins(); } },
+  dm_dados:    { setVar: function(v){ DEMANDAS = v; },    render: function(){ if(typeof renderDemandas==='function') renderDemandas(); } },
+  em_dados:    { setVar: function(v){ EMAILS = v; },      render: function(){ if(typeof renderEmails==='function') renderEmails(); } },
+  sb_dados:    { setVar: function(v){ SUBS = v; },        render: function(){ if(typeof renderSub==='function') renderSub(); } },
+  lb_dados:    { setVar: function(v){ LB = v; },          render: function(){ if(typeof renderLB==='function') renderLB(); } },
+  lk_dados:    { setVar: function(v){ LINKS = v; },       render: function(){ if(typeof renderLinks==='function') renderLinks(); } },
+  cm_dados:    { setVar: function(v){ COMISSOES = v; },   render: function(){ if(typeof renderCom==='function') renderCom(); } },
+  sp_dados:    { setVar: function(v){ SLAP = v; },        render: function(){ if(typeof renderSlaParceiro==='function') renderSlaParceiro(); } },
+  pc_dados:    { setVar: function(v){ PARCEIROS = v; },   render: function(){ if(typeof renderParceiros==='function') renderParceiros(); } },
+  ct_dados:    { setVar: function(v){ CONTRATOS = v; },   render: function(){ if(typeof renderContratos==='function') renderContratos(); } },
+  cu_dados:    { setVar: function(v){ COMUNICADOS = v; }, render: function(){ if(typeof renderAvisos==='function') renderAvisos(); } },
+  co_dados:    { setVar: function(v){ CONTATOS = v; },    render: function(){ if(typeof renderContatos==='function') renderContatos(); } },
+  in_dados:    { setVar: function(v){ INTERNO = v; },     render: function(){ if(typeof renderInterno==='function') renderInterno(); } },
+  mph_dados:   { setVar: function(v){ MATERIAL_PH = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('powerhub'); } },
+  mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } }
+};
+
+var _cloudDb = null;
+var _cloudSyncing = {};
+var _cloudPushTimers = {};
+
+function setSyncStatus(state, msg) {
+  var dot = document.getElementById('sync-dot');
+  var txt = document.getElementById('sync-text');
+  if (!dot || !txt) return;
+  var colors = { ok: '#22c55e', warn: '#f59e0b', err: '#ef4444' };
+  dot.style.background = colors[state] || colors.warn;
+  txt.textContent = msg;
+}
+
+function cloudPush(key, value) {
+  if (!_cloudDb) return;
+  clearTimeout(_cloudPushTimers[key]);
+  _cloudPushTimers[key] = setTimeout(function () {
+    _cloudDb.collection('app_sync').doc(key).set({
+      json: value,
+      atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function () {
+      setSyncStatus('ok', 'Sincronizado com a nuvem');
+    }).catch(function (err) {
+      console.error('Erro ao sincronizar ' + key + ':', err);
+      setSyncStatus('err', 'Erro ao sincronizar (veja o console)');
+    });
+  }, 400);
+}
+
+function initCloudSync() {
+  try {
+    var app = firebase.initializeApp(firebaseConfig);
+    _cloudDb = firebase.firestore();
+  } catch (e) {
+    console.error('Falha ao iniciar Firebase:', e);
+    setSyncStatus('err', 'Não foi possível conectar à nuvem');
+    return;
+  }
+
+  // Intercepta localStorage.setItem para empurrar mudanças locais pra nuvem
+  var _origSetItem = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function (key, value) {
+    _origSetItem(key, value);
+    if (!_cloudSyncing[key] && SYNC_KEY_MAP[key]) {
+      cloudPush(key, value);
+    }
+  };
+
+  var pendentes = Object.keys(SYNC_KEY_MAP).length;
+  var primeirosRecebidos = 0;
+
+  Object.keys(SYNC_KEY_MAP).forEach(function (key) {
+    var cfg = SYNC_KEY_MAP[key];
+    _cloudDb.collection('app_sync').doc(key).onSnapshot(function (doc) {
+      if (primeirosRecebidos < pendentes) primeirosRecebidos++;
+      if (primeirosRecebidos >= pendentes) setSyncStatus('ok', 'Sincronizado com a nuvem');
+
+      if (!doc.exists) return; // nada na nuvem ainda pra essa categoria
+      var remoto = doc.data().json;
+      var local = localStorage.getItem(key);
+      if (remoto === local) return; // já está igual, não faz nada
+
+      try {
+        _cloudSyncing[key] = true;
+        localStorage.setItem(key, remoto);
+        cfg.setVar(JSON.parse(remoto));
+        cfg.render();
+      } catch (e) {
+        console.error('Erro ao aplicar dado remoto de ' + key + ':', e);
+      } finally {
+        _cloudSyncing[key] = false;
+      }
+    }, function (err) {
+      console.error('Erro de conexão com a nuvem (' + key + '):', err);
+      setSyncStatus('err', 'Sem permissão / sem conexão com a nuvem');
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initCloudSync);
+
+// ═══════════════════════════════════════════
+// MIGRAÇÃO DE DADOS ANTIGOS (coleções soltas no Firestore)
+// ═══════════════════════════════════════════
+var MIGRATE_MAP = {
+  mc_logins: { collections: ['logins'], defaults: {nome:'',banco:'',prom:'',obs:'',oper:'',status:'pend',data:''} },
+  dm_dados:  { collections: ['demandas'], defaults: {grupo:'',banco:'',proposta:'',status:'pend'} },
+  em_dados:  { collections: ['emails'], defaults: {nome:'',demanda:'',status:'pend'} },
+  sb_dados:  { collections: ['subs','sub'], defaults: {nome:'',banco:'',cnpj:'',status:'and'} },
+  lb_dados:  { collections: ['loginsbancos','logins_bancos'], defaults: {banco:''} },
+  lk_dados:  { collections: ['linksuteis','links_uteis','links'], defaults: {desc:''} },
+  cm_dados:  { collections: ['comissoes'], defaults: {parceiro:'',banco:'',tabelas:[],status:'pendente',prazo:''} },
+  pc_dados:  { collections: ['parceiros'], defaults: {nome:'',grupo:''} },
+  ct_dados:  { collections: ['contratos'], defaults: {parceiro:'',grupo:''} },
+  cu_dados:  { collections: ['comunicados','avisos'], defaults: {titulo:'',banco:'',texto:'',status:'and'} },
+  co_dados:  { collections: ['contatos'], defaults: {banco:''} },
+  in_dados:  { collections: ['interno'], defaults: {nome:'',banco:''} },
+  mph_dados: { collections: ['materialpowerhub','materiaispowerhub'], defaults: {titulo:''} },
+  mst_dados: { collections: ['materialstorm','materiaisstorm'], defaults: {titulo:''} }
+};
+
+async function migrarDadosAntigos(){
+  if(!_cloudDb){ alert('Conexão com a nuvem ainda não está pronta. Aguarde o indicador ficar verde e tente de novo.'); return; }
+  if(!confirm('Isso vai IMPORTAR os dados antigos da nuvem e MESCLAR com os dados atuais (nada é apagado). Pode levar alguns segundos. Continuar?')) return;
+
+  var relatorio = [];
+  try {
+    for (var key in MIGRATE_MAP) {
+      var cfg = MIGRATE_MAP[key];
+      var encontrados = null;
+      var nomeUsado = null;
+      for (var i=0;i<cfg.collections.length;i++){
+        var nome = cfg.collections[i];
+        try {
+          console.log('Migração: lendo coleção "'+nome+'"...');
+          var snap = await _cloudDb.collection(nome).get();
+          if (!snap.empty) { encontrados = snap; nomeUsado = nome; break; }
+        } catch(e){ console.error('Erro lendo coleção '+nome+':', e); }
+      }
+      if (!encontrados) { relatorio.push('• ' + key + ': nenhuma coleção antiga encontrada'); continue; }
+
+      var atual = JSON.parse(localStorage.getItem(key) || '[]');
+      var idsAtuais = {}; atual.forEach(function(it){ idsAtuais[it.id]=true; });
+      var novos = 0;
+      encontrados.forEach(function(doc){
+        if (idsAtuais[doc.id]) return;
+        var d = doc.data();
+        var item = Object.assign({}, cfg.defaults, d, { id: doc.id });
+        atual.push(item);
+        novos++;
+      });
+      localStorage.setItem(key, JSON.stringify(atual));
+      if (SYNC_KEY_MAP[key]) { SYNC_KEY_MAP[key].setVar(atual); SYNC_KEY_MAP[key].render(); }
+      relatorio.push('• ' + key + ' (coleção "' + nomeUsado + '"): ' + novos + ' itens importados');
+    }
+    alert('Importação concluída:\n\n' + relatorio.join('\n'));
+  } catch(erroGeral) {
+    console.error('Erro geral na migração:', erroGeral);
+    alert('❌ A importação parou por causa de um erro:\n\n' + erroGeral.message + '\n\nResultado parcial até aqui:\n' + relatorio.join('\n') + '\n\nAbra o Console (F12) e me mande o print do erro completo.');
+  }
+}
+
 </script>
 </body>
 </html>
