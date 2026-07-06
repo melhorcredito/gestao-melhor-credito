@@ -3563,7 +3563,7 @@ function vlInit() {
   vlRenderHistorico();
 }
 
-var VL_BANCOS = ['Facta','BMG','Finanto','C6','Pan','BRB','Daycoval','Safra','Itaú','Bradesco','Caixa','Banrisul','Olé','Master','Mercantil','Presença'];
+var VL_BANCOS = ['Facta','BMG','Finanto','C6','Amigoz'];
 
 function vlAdicionarLogin() {
   vlLoginCount++;
@@ -3912,7 +3912,7 @@ var SYNC_KEY_MAP = {
   in_dados:    { setVar: function(v){ INTERNO = v; },     render: function(){ if(typeof renderInterno==='function') renderInterno(); } },
   mph_dados:   { setVar: function(v){ MATERIAL_PH = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('powerhub'); } },
   mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } },
-  rd_dados:    { setVar: function(v){ RD_DADOS = v; },    render: function(){ if(typeof rdInicializar==='function') rdInicializar(); } }
+  rd_dados:    { setVar: function(v){ RD_DADOS.length = 0; v.forEach(function(item){ RD_DADOS.push(item); }); }, render: function(){ if(typeof rdRenderizar==='function') rdRenderizar(); } }
 };
 
 var _cloudDb = null;
