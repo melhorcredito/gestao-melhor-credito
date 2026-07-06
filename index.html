@@ -3673,13 +3673,40 @@ function vlRenderHistorico() {
   var el = document.getElementById('vl-historico-lista');
   if (!el) return;
   if (vlHistorico.length === 0) {
-    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda nesta sessão.</p>';
+    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhuma solicitação enviada ainda.</p>';
     return;
   }
-  el.innerHTML = vlHistorico.slice(0,10).map(function(h) {
-    return '<div style="padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:12px">' +
-      '<strong style="color:#003a66">Código ' + h.storm + '</strong> — ' + h.bancos.length + ' login(s) — <span style="color:#9ca3af">' + h.data + '</span></div>';
+  el.innerHTML = vlHistorico.map(function(h, i) {
+    var status = h.status || 'aguardando';
+    var ativo_ag  = status === 'aguardando' ? 'background:#fef9c3;color:#854d0e;border-color:#fde68a' : 'background:white;color:#9ca3af;border-color:#e2e8f0';
+    var ativo_fin = status === 'finalizado'  ? 'background:#dcfce7;color:#166534;border-color:#bbf7d0' : 'background:white;color:#9ca3af;border-color:#e2e8f0';
+    var logins = (h.bancos||[]).map(function(b,j){ return '<span style="display:inline-block;background:#f0f6ff;color:#0077cc;border-radius:6px;padding:2px 8px;font-size:11px;margin:2px">'+b+(h.logins&&h.logins[j]?' — '+h.logins[j]:'')+'</span>'; }).join(' ');
+    return '<div style="padding:12px 0;border-bottom:1px solid #f0f4f8">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+        '<span style="font-size:13px;font-weight:700;color:#003a66">Código ' + h.storm + '</span>' +
+        '<span style="font-size:11px;color:#9ca3af">' + h.data + '</span>' +
+      '</div>' +
+      '<div style="margin-bottom:8px">' + logins + '</div>' +
+      '<div style="display:flex;gap:6px;align-items:center">' +
+        '<button onclick="vlSetStatus('+i+',\'aguardando\')" style="padding:4px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-weight:700;cursor:pointer;'+ativo_ag+'">⏳ Aguardando</button>' +
+        '<button onclick="vlSetStatus('+i+',\'finalizado\')" style="padding:4px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-weight:700;cursor:pointer;'+ativo_fin+'">✅ Finalizado</button>' +
+        '<button onclick="vlExcluir('+i+')" style="margin-left:auto;background:none;border:none;color:#ef4444;font-size:16px;cursor:pointer;font-weight:700" title="Excluir">✕</button>' +
+      '</div>' +
+    '</div>';
   }).join('');
+}
+
+function vlSetStatus(i, status) {
+  if (!vlHistorico[i]) return;
+  vlHistorico[i].status = status;
+  localStorage.setItem('vl_historico', JSON.stringify(vlHistorico));
+  vlRenderHistorico();
+}
+
+function vlExcluir(i) {
+  vlHistorico.splice(i, 1);
+  localStorage.setItem('vl_historico', JSON.stringify(vlHistorico));
+  vlRenderHistorico();
 }
 
 
@@ -3780,13 +3807,39 @@ function ajusteRenderHistorico() {
   var el = document.getElementById('ajuste-historico-lista');
   if (!el) return;
   if (ajusteHistorico.length === 0) {
-    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda nesta sessão.</p>';
+    el.innerHTML = '<p style="font-size:12px;color:#9ca3af;text-align:center;padding:10px">Nenhum ajuste enviado ainda.</p>';
     return;
   }
-  el.innerHTML = ajusteHistorico.slice(0,10).map(function(h) {
-    return '<div style="padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:12px">' +
-      '<strong style="color:#003a66">Código ' + h.storm + '</strong> — ' + h.banco + ' — <span style="color:#9ca3af">' + h.data + '</span></div>';
+  el.innerHTML = ajusteHistorico.map(function(h, i) {
+    var status = h.status || 'aguardando';
+    var ativo_ag  = status === 'aguardando' ? 'background:#fef9c3;color:#854d0e;border-color:#fde68a' : 'background:white;color:#9ca3af;border-color:#e2e8f0';
+    var ativo_fin = status === 'finalizado'  ? 'background:#dcfce7;color:#166534;border-color:#bbf7d0' : 'background:white;color:#9ca3af;border-color:#e2e8f0';
+    return '<div style="padding:12px 0;border-bottom:1px solid #f0f4f8">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+        '<span style="font-size:13px;font-weight:700;color:#003a66">Código ' + h.storm + '</span>' +
+        '<span style="font-size:11px;color:#9ca3af">' + h.data + '</span>' +
+      '</div>' +
+      '<div style="margin-bottom:8px"><span style="background:#f0f6ff;color:#0077cc;border-radius:6px;padding:2px 8px;font-size:11px">🏦 ' + h.banco + '</span></div>' +
+      '<div style="display:flex;gap:6px;align-items:center">' +
+        '<button onclick="ajusteSetStatus('+i+',\'aguardando\')" style="padding:4px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-weight:700;cursor:pointer;'+ativo_ag+'">⏳ Aguardando</button>' +
+        '<button onclick="ajusteSetStatus('+i+',\'finalizado\')" style="padding:4px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-weight:700;cursor:pointer;'+ativo_fin+'">✅ Finalizado</button>' +
+        '<button onclick="ajusteExcluirHistorico('+i+')" style="margin-left:auto;background:none;border:none;color:#ef4444;font-size:16px;cursor:pointer;font-weight:700" title="Excluir">✕</button>' +
+      '</div>' +
+    '</div>';
   }).join('');
+}
+
+function ajusteSetStatus(i, status) {
+  if (!ajusteHistorico[i]) return;
+  ajusteHistorico[i].status = status;
+  localStorage.setItem('ajuste_historico', JSON.stringify(ajusteHistorico));
+  ajusteRenderHistorico();
+}
+
+function ajusteExcluirHistorico(i) {
+  ajusteHistorico.splice(i, 1);
+  localStorage.setItem('ajuste_historico', JSON.stringify(ajusteHistorico));
+  ajusteRenderHistorico();
 }
 
 // Render histories on load
