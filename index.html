@@ -3890,7 +3890,8 @@ var SYNC_KEY_MAP = {
   co_dados:    { setVar: function(v){ CONTATOS = v; },    render: function(){ if(typeof renderContatos==='function') renderContatos(); } },
   in_dados:    { setVar: function(v){ INTERNO = v; },     render: function(){ if(typeof renderInterno==='function') renderInterno(); } },
   mph_dados:   { setVar: function(v){ MATERIAL_PH = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('powerhub'); } },
-  mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } }
+  mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } },
+  rd_dados:    { setVar: function(v){ RD_DADOS = v; },    render: function(){ if(typeof rdInicializar==='function') rdInicializar(); } }
 };
 
 var _cloudDb = null;
