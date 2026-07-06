@@ -3563,6 +3563,8 @@ function vlInit() {
   vlRenderHistorico();
 }
 
+var VL_BANCOS = ['Facta','BMG','Finanto','C6','Pan','BRB','Daycoval','Safra','Itaú','Bradesco','Caixa','Banrisul','Olé','Master','Mercantil','Presença'];
+
 function vlAdicionarLogin() {
   vlLoginCount++;
   var idx = vlLoginCount;
@@ -3570,13 +3572,30 @@ function vlAdicionarLogin() {
   var div = document.createElement('div');
   div.id = 'vl-login-' + idx;
   div.style.cssText = 'background:#fafbfc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:12px;position:relative';
+
+  var btnsBanco = VL_BANCOS.map(function(b){
+    return '<button type="button" class="vl-banco-btn" onclick="vlSelecionarBanco(this,\''+idx+'\')" data-banco="'+b+'">'+b+'</button>';
+  }).join('');
+
   div.innerHTML =
     '<button onclick="vlRemoverLogin(' + idx + ')" style="position:absolute;top:8px;right:8px;background:none;border:none;color:#ef4444;font-size:16px;cursor:pointer">✕</button>' +
-    '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Banco *</label>' +
-    '<input type="text" class="vl-banco" placeholder="Ex: Itaú, Bradesco..." oninput="vlAtualizarPreview()" style="width:100%;padding:9px 11px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff"></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:8px">Banco *</label>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">' + btnsBanco + '</div>' +
+    '<input type="text" class="vl-banco" id="vl-banco-txt-'+idx+'" placeholder="Ou digite outro banco..." oninput="vlAtualizarPreview()" style="width:100%;padding:8px 11px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff"></div>' +
     '<div><label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:5px">Login / Usuário *</label>' +
     '<input type="text" class="vl-login" placeholder="Ex: usuario123" oninput="vlAtualizarPreview()" style="width:100%;padding:9px 11px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff"></div>';
   container.appendChild(div);
+  vlAtualizarPreview();
+}
+
+function vlSelecionarBanco(btn, idx) {
+  // Desmarca todos os botões deste bloco
+  var bloco = document.getElementById('vl-login-' + idx);
+  bloco.querySelectorAll('.vl-banco-btn').forEach(function(b){ b.classList.remove('ativo'); });
+  btn.classList.add('ativo');
+  // Preenche o input de texto
+  var input = document.getElementById('vl-banco-txt-' + idx);
+  if(input){ input.value = btn.getAttribute('data-banco'); }
   vlAtualizarPreview();
 }
 
@@ -3636,8 +3655,10 @@ function vlEnviarEmail() {
   }
   var corpo = 'Olá, tudo bem?\n\nSolicito o vínculo dos seguintes logins ao código ' + storm + ':\n\n' + items.join('\n') + '\n\nAgradeço desde já!';
 
-  var mailto = 'mailto:?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
-  window.open(mailto, '_blank');
+  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&su=' + encodeURIComponent(assunto) +
+    '&body=' + encodeURIComponent(corpo);
+  window.open(gmailUrl, '_blank');
 
   vlHistorico.unshift({ storm: storm, bancos: bancos, logins: logins, data: hoje() });
   localStorage.setItem('vl_historico', JSON.stringify(vlHistorico));
