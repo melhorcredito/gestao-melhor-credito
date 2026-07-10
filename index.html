@@ -288,7 +288,7 @@ header{display:none}
 
     <!-- GESTÃO -->
     <div class="sb-section-title">📊 Gestão</div>
-    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📢</span><span class="sb-label">Avisos</span></div>
+    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📝</span><span class="sb-label">Anotações</span></div>
     <div class="sb-item" onclick="switchTab('contatos',this)"><span class="sb-icon">📒</span><span class="sb-label">Contatos</span></div>
     <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte interno</span></div>
 
@@ -361,7 +361,7 @@ header{display:none}
     <div class="tab" onclick="switchTab('demandas',this)">📋 Demandas / Propostas</div>
     <div class="tab" onclick="switchTab('emails',this)">✉️ Demandas E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
-    <div class="tab" onclick="switchTab('comunicados',this)">📢 Avisos</div>
+    <div class="tab" onclick="switchTab('comunicados',this)">📝 Anotações</div>
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
@@ -681,30 +681,18 @@ header{display:none}
 </div>
 
 <div class="tab-content" id="tab-comunicados">
-  
-
   <div class="toolbar">
     <div class="toolbar-l">
-      <input class="search" id="c-srch" placeholder="🔍 Buscar comunicado..." oninput="renderAvisos()">
+      <input class="search" id="c-srch" placeholder="🔍 Buscar anotação..." oninput="renderAvisos()">
+      <select id="c-filtro" onchange="renderAvisos()" style="padding:8px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);outline:none;background:var(--bg)">
+        <option value="">Todas</option>
+        <option value="pendente">⏳ Pendentes</option>
+        <option value="finalizado">✅ Finalizadas</option>
+      </select>
     </div>
-    <button class="btn-add" onclick="openComModal()">＋ Novo Comunicado</button>
+    <button class="btn-add" onclick="openComModal()">＋ Nova Anotação</button>
   </div>
-
-  <div class="board" style="grid-template-columns:1fr 1fr">
-    <div class="col">
-      <div class="col-head and">
-        <div class="col-title and"><span class="col-dot and"></span>Em Vigor</div>
-        <span class="col-count and" id="c-cnt-and">0</span>
-      </div>
-      <div class="col-body" id="c-col-and"></div>
-    </div>
-    <div class="col">
-      <div class="col-head fin">
-        <div class="col-title fin"><span class="col-dot fin"></span>Arquivado</div>
-        <span class="col-count fin" id="c-cnt-fin">0</span>
-      </div>
-      <div class="col-body" id="c-col-fin"></div>
-    </div>
+  <div style="max-width:900px;margin:0 auto;padding:0 20px 40px" id="c-agenda-lista">
   </div>
 </div>
 
@@ -712,17 +700,18 @@ header{display:none}
 <div class="overlay" id="c-overlay">
   <div class="modal">
     <div class="modal-head">
-      <h2 id="c-modal-title">Novo Comunicado</h2>
+      <h2 id="c-modal-title">Nova Anotação</h2>
       <button class="close-btn" onclick="closeComModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="mf" id="cw-titulo"><label>Título *</label><input id="c-titulo" placeholder="Ex: Novo procedimento de cadastro"><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="cw-banco"><label>Banco *</label><input id="c-banco" placeholder="Ex: Bradesco, Itaú, Total Crédito..."><span class="em">Campo obrigatório</span></div>
-      <div class="mf" id="cw-texto"><label>Comunicado *</label><textarea id="c-texto" placeholder="Descreva o comunicado..."></textarea><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="cw-titulo"><label>Título *</label><input id="c-titulo" placeholder="Ex: Reunião com parceiro, Lembrete..."><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Data *</label><input type="date" id="c-data-agenda"></div>
+      <div class="mf"><label>Categoria <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="c-banco" placeholder="Ex: Banco, Reunião, Tarefa..."></div>
+      <div class="mf" id="cw-texto"><label>Descrição *</label><textarea id="c-texto" placeholder="Descreva a anotação..."></textarea><span class="em">Campo obrigatório</span></div>
     </div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeComModal()">Cancelar</button>
-      <button class="btn-save" onclick="salvarCom()">Publicar</button>
+      <button class="btn-save" onclick="salvarCom()">Salvar</button>
     </div>
   </div>
 </div>
@@ -2935,7 +2924,7 @@ async function salvarCon(){
 });
 
 // ══════════════════════════════════════════════════════════════
-// ABA COMUNICADOS
+// ABA ANOTAÇÕES (agenda)
 // ══════════════════════════════════════════════════════════════
 var COMUNICADOS = JSON.parse(localStorage.getItem('cu_dados')||'[]');
 var cEditId = null;
@@ -2943,80 +2932,151 @@ var cEditId = null;
 function comunicadosSave(){ localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); }
 
 function renderAvisos(){
-  var srch = document.getElementById('c-srch').value.trim().toLowerCase();
-  var cols = {and:[],fin:[]};
+  var srch    = (document.getElementById('c-srch')||{}).value;
+  srch = (srch||'').trim().toLowerCase();
+  var filtro  = (document.getElementById('c-filtro')||{}).value || '';
+  var lista   = document.getElementById('c-agenda-lista');
+  if(!lista) return;
+
+  // Migra itens antigos (status 'and'/'fin' → 'pendente'/'finalizado')
   COMUNICADOS.forEach(function(it){
-    if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !it.texto.toLowerCase().includes(srch)) return;
-    cols[it.status] && cols[it.status].push(it);
+    if(it.status==='and') it.status='pendente';
+    if(it.status==='fin') it.status='finalizado';
+    if(!it.dataAgenda) it.dataAgenda = it.data || hoje();
   });
-  ['and','fin'].forEach(function(s){
-    var el = document.getElementById('c-col-'+s);
-    document.getElementById('c-cnt-'+s).textContent = cols[s].length;
-    if(!cols[s].length){ el.innerHTML='<div class="empty">Nenhum comunicado</div>'; return; }
-    el.innerHTML = cols[s].map(function(it){
-      var btns='';
-      if(s==='and')  btns+='<button class="mv-btn to-fin" onclick="moveCom(\''+it.id+'\',\'fin\')">📦 Arquivar</button>';
-      if(s==='fin')  btns+='<button class="mv-btn to-and" onclick="moveCom(\''+it.id+'\',\'and\')">➡ Em Vigor</button>';
-      return '<div class="card">'
-        +'<div class="card-top"><div class="card-name">📢 '+it.titulo+'</div>'
-        +'<div class="card-actions">'
-        +'<button class="act-btn" onclick="openComEdit(\''+it.id+'\')">✏️</button>'
-        +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'com\',\''+escHtml(it.titulo)+'\')">🗑️</button>'
-        +'</div></div>'
-        +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'
-        +'<span class="tag data">📅 '+it.data+'</span></div>'
-        +'<div style="margin-top:8px;font-size:13px;color:var(--text);line-height:1.6;background:var(--blue-p);border-radius:8px;padding:10px 12px">'+it.texto+'</div>'
-        +'<div class="card-move">'+btns+'</div>'
-        +'</div>';
-    }).join('');
-  });
-  var tot = COMUNICADOS.filter(function(it){
-    if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !it.texto.toLowerCase().includes(srch)) return false;
+
+  var list = COMUNICADOS.filter(function(it){
+    if(filtro && it.status !== filtro) return false;
+    if(srch && !it.titulo.toLowerCase().includes(srch) && !(it.banco||'').toLowerCase().includes(srch) && !(it.texto||'').toLowerCase().includes(srch)) return false;
     return true;
   });
-  
+
+  if(!list.length){
+    lista.innerHTML='<div class="empty" style="margin-top:40px">Nenhuma anotação encontrada</div>';
+    return;
+  }
+
+  // Agrupa por data
+  var grupos = {};
+  list.forEach(function(it){
+    var d = it.dataAgenda || it.data || 'Sem data';
+    if(!grupos[d]) grupos[d] = [];
+    grupos[d].push(it);
+  });
+
+  // Ordena datas (mais recente primeiro)
+  var datas = Object.keys(grupos).sort(function(a,b){
+    var da = a.split('/').length===3 ? new Date(a.split('/')[2]+'-'+a.split('/')[1]+'-'+a.split('/')[0]) : new Date(a);
+    var db = b.split('/').length===3 ? new Date(b.split('/')[2]+'-'+b.split('/')[1]+'-'+b.split('/')[0]) : new Date(b);
+    return db - da;
+  });
+
+  lista.innerHTML = datas.map(function(data){
+    var cards = grupos[data].map(function(it){
+      var id = it.id;
+      var status = it.status || 'pendente';
+      var isPend = status === 'pendente';
+      var corBorda = isPend ? '#fde68a' : '#bbf7d0';
+      var tagStatus = isPend
+        ? '<span style="background:#fef9c3;color:#92400e;border:1px solid #fde68a;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700">⏳ Pendente</span>'
+        : '<span style="background:#dcfce7;color:#166534;border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700">✅ Finalizada</span>';
+
+      var html = '<div style="background:#fff;border:1.5px solid '+corBorda+';border-radius:12px;padding:14px 16px;margin-bottom:10px">';
+      html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">';
+      html += '<div style="font-size:14px;font-weight:700;color:#003a66">📝 '+escHtml(it.titulo)+'</div>';
+      html += '<div style="display:flex;gap:6px;flex-shrink:0">';
+      html += '<button class="act-btn" onclick="openComEdit(this.dataset.id)" data-id="'+id+'">✏️</button>';
+      html += '<button class="act-btn" onclick="openDel(this.dataset.id,\'com\',this.dataset.nome)" data-id="'+id+'" data-nome="'+escHtml(it.titulo)+'">🗑️</button>';
+      html += '</div></div>';
+      if(it.banco) html += '<div style="margin-bottom:8px"><span class="tag banco">🏷️ '+escHtml(it.banco)+'</span></div>';
+      if(it.texto) html += '<div style="font-size:13px;color:var(--text);line-height:1.6;background:var(--blue-p);border-radius:8px;padding:10px 12px;margin-bottom:10px">'+escHtml(it.texto)+'</div>';
+      html += '<div style="display:flex;gap:8px;align-items:center">'+tagStatus;
+      html += '<button onclick="comSetStatus(this.dataset.id,\'pendente\')" data-id="'+id+'" style="padding:4px 10px;border-radius:20px;border:1.5px solid '+(isPend?'#fde68a':'#e2e8f0')+';background:'+(isPend?'#fef9c3':'white')+';color:'+(isPend?'#92400e':'#9ca3af')+';font-size:11px;font-weight:700;cursor:pointer">⏳ Pendente</button>';
+      html += '<button onclick="comSetStatus(this.dataset.id,\'finalizado\')" data-id="'+id+'" style="padding:4px 10px;border-radius:20px;border:1.5px solid '+(!isPend?'#bbf7d0':'#e2e8f0')+';background:'+(!isPend?'#dcfce7':'white')+';color:'+(!isPend?'#166534':'#9ca3af')+';font-size:11px;font-weight:700;cursor:pointer">✅ Finalizada</button>';
+      html += '</div></div>';
+      return html;
+    }).join('');
+
+    // Formata o cabeçalho de data
+    var tituloData = data;
+    var hoje2 = hoje();
+    if(data === hoje2) tituloData = '📅 Hoje — '+data;
+    else if(data) tituloData = '📅 '+data;
+
+    return '<div style="margin-bottom:24px">'
+      +'<div style="font-size:13px;font-weight:800;color:#0077cc;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #e0eeff">'+tituloData+'</div>'
+      + cards
+    +'</div>';
+  }).join('');
+}
+
+function comSetStatus(id, status){
+  var it = COMUNICADOS.find(function(x){ return x.id===id; });
+  if(!it) return;
+  it.status = status;
+  localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS));
+  renderAvisos();
 }
 
 function openComModal(){
   cEditId=null;
-  document.getElementById('c-modal-title').textContent='Novo Comunicado';
+  document.getElementById('c-modal-title').textContent='Nova Anotação';
   ['c-titulo','c-banco','c-texto'].forEach(function(id){ document.getElementById(id).value=''; });
-  ['cw-titulo','cw-banco','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  ['cw-titulo','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  // Define data padrão como hoje
+  var inp = document.getElementById('c-data-agenda');
+  if(inp){ var d=new Date(); inp.value=d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0'); }
   document.getElementById('c-overlay').classList.add('open');
   setTimeout(function(){ document.getElementById('c-titulo').focus(); },100);
 }
+
 function openComEdit(id){
   var it=COMUNICADOS.find(function(x){ return x.id===id; }); if(!it) return;
   cEditId=id;
-  document.getElementById('c-modal-title').textContent='Editar Comunicado';
+  document.getElementById('c-modal-title').textContent='Editar Anotação';
   document.getElementById('c-titulo').value=it.titulo;
   document.getElementById('c-banco').value=it.banco||'';
-  document.getElementById('c-texto').value=it.texto;
-  ['cw-titulo','cw-banco','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('c-texto').value=it.texto||'';
+  var inp = document.getElementById('c-data-agenda');
+  if(inp && it.dataAgenda){
+    // Converte DD/MM/YYYY → YYYY-MM-DD para o input date
+    var p = it.dataAgenda.split('/');
+    if(p.length===3) inp.value = p[2]+'-'+p[1]+'-'+p[0];
+    else inp.value = it.dataAgenda;
+  }
+  ['cw-titulo','cw-texto'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('c-overlay').classList.add('open');
 }
+
 function closeComModal(){ document.getElementById('c-overlay').classList.remove('open'); }
 
 async function salvarCom(){
-  var titulo=document.getElementById('c-titulo').value.trim();
-  var banco=document.getElementById('c-banco').value.trim();
-  var texto=document.getElementById('c-texto').value.trim();
-  var ok=true;
-  [['cw-titulo',titulo],['cw-banco',banco],['cw-texto',texto]].forEach(function(p){
+  var titulo = document.getElementById('c-titulo').value.trim();
+  var banco  = document.getElementById('c-banco').value.trim();
+  var texto  = document.getElementById('c-texto').value.trim();
+  var dataInp = document.getElementById('c-data-agenda').value;
+  // Converte YYYY-MM-DD → DD/MM/YYYY
+  var dataAgenda = dataInp ? dataInp.split('-').reverse().join('/') : hoje();
+  var ok = true;
+  [['cw-titulo',titulo],['cw-texto',texto]].forEach(function(p){
     var w=document.getElementById(p[0]);
     if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
   });
   if(!ok) return;
   if(cEditId){
-    (function(){ var it = COMUNICADOS.find(function(x){return x.id===cEditId;}); if(it){ it.titulo=titulo;it.banco=banco;it.texto=texto; } localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
+    var it = COMUNICADOS.find(function(x){return x.id===cEditId;});
+    if(it){ it.titulo=titulo; it.banco=banco; it.texto=texto; it.dataAgenda=dataAgenda; }
+    localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS));
   } else {
-    (function(){ COMUNICADOS.unshift({id:String(Date.now()),titulo,banco,texto,status:'and',data:hoje()}); localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
+    COMUNICADOS.unshift({id:String(Date.now()),titulo:titulo,banco:banco,texto:texto,status:'pendente',data:hoje(),dataAgenda:dataAgenda});
+    localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS));
   }
   closeComModal();
-  registrarHistorico('comissao', cmEditId?'Comissão editada':'Nova comissão cadastrada', '');
+  renderAvisos();
 }
+
 async function moveCom(id,status){
-  (function(){ var it = COMUNICADOS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); })()
+  var it = COMUNICADOS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('cu_dados', JSON.stringify(COMUNICADOS)); renderAvisos();
 }
 
 // ══════════════════════════════════════════════════════════════
