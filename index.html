@@ -2990,7 +2990,7 @@ function renderAvisos(){
       html += '</div></div>';
       if(it.banco) html += '<div style="margin-bottom:8px"><span class="tag banco">🏷️ '+escHtml(it.banco)+'</span></div>';
       if(it.texto) html += '<div style="font-size:13px;color:var(--text);line-height:1.6;background:var(--blue-p);border-radius:8px;padding:10px 12px;margin-bottom:10px">'+escHtml(it.texto)+'</div>';
-      html += '<div style="display:flex;gap:8px;align-items:center">'+tagStatus;
+      html += '<div style="display:flex;gap:8px;align-items:center">';
       html += '<button onclick="comSetStatus(this.dataset.id,\'pendente\')" data-id="'+id+'" style="padding:4px 10px;border-radius:20px;border:1.5px solid '+(isPend?'#fde68a':'#e2e8f0')+';background:'+(isPend?'#fef9c3':'white')+';color:'+(isPend?'#92400e':'#9ca3af')+';font-size:11px;font-weight:700;cursor:pointer">⏳ Pendente</button>';
       html += '<button onclick="comSetStatus(this.dataset.id,\'finalizado\')" data-id="'+id+'" style="padding:4px 10px;border-radius:20px;border:1.5px solid '+(!isPend?'#bbf7d0':'#e2e8f0')+';background:'+(!isPend?'#dcfce7':'white')+';color:'+(!isPend?'#166534':'#9ca3af')+';font-size:11px;font-weight:700;cursor:pointer">✅ Finalizada</button>';
       html += '</div></div>';
