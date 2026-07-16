@@ -285,6 +285,7 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('parceiros',this)"><span class="sb-icon">👥</span><span class="sb-label">Documentos parceiros</span></div>
     <div class="sb-item" onclick="switchTab('contratos',this)"><span class="sb-icon">📄</span><span class="sb-label">Contratos parceiros</span></div>
     <div class="sb-item" onclick="switchTab('resumo-dados',this)"><span class="sb-icon">📝</span><span class="sb-label">Resumo de dados</span></div>
+    <div class="sb-item" onclick="switchTab('workliamas',this)"><span class="sb-icon">🔑</span><span class="sb-label">Work Lhamas</span></div>
 
     <!-- GESTÃO -->
     <div class="sb-section-title">📊 Gestão</div>
@@ -888,7 +889,43 @@ header{display:none}
   </div>
 </div>
 
-<!-- ══════════════ ABA 9: LINKS ÚTEIS ══════════════ -->
+<!-- ══════════════ ABA WORKLIAMAS ══════════════ -->
+<div class="tab-content" id="tab-workliamas">
+    <div class="toolbar">
+      <div class="toolbar-l">
+        <input class="search" id="wl-srch" placeholder="🔍 Buscar por parceiro..." oninput="renderWL()">
+      </div>
+      <button class="btn-add" onclick="openWLModal()">＋ Novo Cadastro</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="wl-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum cadastro no Work Lhamas ainda</div>
+    </div>
+</div>
+
+<!-- ══ MODAL WORKLIAMAS ══ -->
+<div class="overlay" id="wl-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="wl-modal-title">Novo Cadastro Work Lhamas</h2>
+      <button class="close-btn" onclick="closeWLModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="wlw-nome"><label>Nome do Parceiro *</label><input id="wl-nome" placeholder="Ex: João da Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf" id="wlw-login"><label>Login *</label><input id="wl-login" placeholder="Ex: usuario@workliamas.com"><span class="em">Campo obrigatório</span></div>
+      <div class="mf">
+        <label style="display:flex;align-items:center;justify-content:space-between">
+          Senha <button type="button" onclick="toggleSenhaWL()" id="wl-toggle-btn" style="background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m);border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer">👁 Mostrar</button>
+        </label>
+        <input id="wl-senha" type="password" placeholder="••••••••">
+      </div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="wl-obs" rows="3" placeholder="Alguma observação..." style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;font-family:inherit;resize:vertical"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeWLModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarWL()">Salvar</button>
+    </div>
+  </div>
+</div>
 <div class="tab-content" id="tab-vinculo-login">
   <div style="max-width:700px;margin:0 auto;padding:28px 20px">
 
@@ -1048,7 +1085,7 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
         </div>
         <div>
           <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Banco</label>
-          <input id="aj-banco" type="text" oninput="ajusteBuscarEmail()" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+          <input id="aj-banco" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
         </div>
         <div style="grid-column:span 2">
           <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">E-mail do Banco (destinatário) <span id="aj-email-status" style="font-weight:400;color:#9ca3af"></span></label>
@@ -1826,6 +1863,7 @@ function switchTab(name,el){
   if(name === 'resumo-dados') setTimeout(rdInicializar, 150);
   if(name === 'comissoes') renderCom();
   if(name === 'sla-parceiro') renderSlaParceiro();
+  if(name === 'workliamas') renderWL();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2290,6 +2328,7 @@ function confirmDel(){
     par:          {arr: PARCEIROS,   key: 'pc_dados',  render: renderParceiros},
     con:          {arr: CONTRATOS,   key: 'ct_dados',  render: renderContratos},
     demanda:      {arr: DEMANDAS,    key: 'dm_dados',  render: renderDemandas},
+    wl:           {arr: WORKLIAMAS,  key: 'wl_dados',  render: renderWL},
   };
   var m = map[delType] || map['demanda'];
   var idx = m.arr.findIndex(function(x){ return x.id === delId; });
@@ -2418,6 +2457,98 @@ async function salvarLB(){
     (function(){ LB.unshift({id:String(Date.now()),banco,login,senha,link,data:hoje()}); localStorage.setItem('lb_dados', JSON.stringify(LB)); })()
   }
   closeLBModal();
+}
+
+// ══════════════════════════════════════════════════════════════
+// ABA WORKLIAMAS
+// ══════════════════════════════════════════════════════════════
+var WORKLIAMAS = JSON.parse(localStorage.getItem('wl_dados')||'[]');
+var wlEditId = null;
+
+function wlSave(){ localStorage.setItem('wl_dados', JSON.stringify(WORKLIAMAS)); }
+
+function toggleSenhaWL(){
+  var inp = document.getElementById('wl-senha');
+  var btn = document.getElementById('wl-toggle-btn');
+  if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈 Ocultar'; }
+  else { inp.type='password'; btn.textContent='👁 Mostrar'; }
+}
+
+function renderWL(){
+  var srch = document.getElementById('wl-srch').value.trim().toLowerCase();
+  var grid = document.getElementById('wl-grid');
+  var list = WORKLIAMAS.filter(function(it){
+    if(srch && !it.nome.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhum cadastro no Work Lhamas ainda</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff">'
+      +'<div class="card-top"><div class="card-name">🔑 '+it.nome+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openWLEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'wl\',\''+escHtml(it.nome)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div style="margin-top:8px;font-size:13px;color:var(--lbl)">👤 <strong>Login:</strong> '+it.login+'</div>'
+      +'<div style="margin-top:5px;font-size:13px;color:var(--lbl);display:flex;align-items:center;gap:8px">'
+      +'🔒 <strong>Senha:</strong> <span id="wls-'+it.id+'" style="letter-spacing:3px">••••••••</span>'
+      +'<button onclick="revealSenhaWL(\''+it.id+'\',\''+escHtml(it.senha||'')+'\',this)" style="background:var(--blue-p);color:var(--blue);border:1px solid var(--blue-m);border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;font-weight:600">Mostrar</button>'
+      +'</div>'
+      +(it.obs?'<div style="margin-top:6px;font-size:13px;color:var(--text)">📝 '+escHtml(it.obs)+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function revealSenhaWL(id, senha, btn){
+  var el = document.getElementById('wls-'+id);
+  if(el.textContent === '••••••••'){ el.textContent=senha; el.style.letterSpacing='normal'; btn.textContent='Ocultar'; }
+  else { el.textContent='••••••••'; el.style.letterSpacing='3px'; btn.textContent='Mostrar'; }
+}
+
+function openWLModal(){
+  wlEditId=null;
+  document.getElementById('wl-modal-title').textContent='Novo Cadastro Work Lhamas';
+  ['wl-nome','wl-login','wl-senha','wl-obs'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('wl-senha').type='password';
+  document.getElementById('wl-toggle-btn').textContent='👁 Mostrar';
+  ['wlw-nome','wlw-login'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('wl-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('wl-nome').focus(); },100);
+}
+function openWLEdit(id){
+  var it=WORKLIAMAS.find(function(x){ return x.id===id; }); if(!it) return;
+  wlEditId=id;
+  document.getElementById('wl-modal-title').textContent='Editar Cadastro Work Lhamas';
+  document.getElementById('wl-nome').value=it.nome;
+  document.getElementById('wl-login').value=it.login;
+  document.getElementById('wl-senha').value=it.senha||'';
+  document.getElementById('wl-obs').value=it.obs||'';
+  document.getElementById('wl-senha').type='password';
+  document.getElementById('wl-toggle-btn').textContent='👁 Mostrar';
+  ['wlw-nome','wlw-login'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('wl-overlay').classList.add('open');
+}
+function closeWLModal(){ document.getElementById('wl-overlay').classList.remove('open'); }
+
+async function salvarWL(){
+  var nome=document.getElementById('wl-nome').value.trim();
+  var login=document.getElementById('wl-login').value.trim();
+  var senha=document.getElementById('wl-senha').value.trim();
+  var obs=document.getElementById('wl-obs').value.trim();
+  var ok=true;
+  [['wlw-nome',nome],['wlw-login',login]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(wlEditId){
+    (function(){ var it = WORKLIAMAS.find(function(x){return x.id===wlEditId;}); if(it){ it.nome=nome;it.login=login;it.senha=senha;it.obs=obs; } localStorage.setItem('wl_dados', JSON.stringify(WORKLIAMAS)); })()
+  } else {
+    (function(){ WORKLIAMAS.unshift({id:String(Date.now()),nome,login,senha,obs,data:hoje()}); localStorage.setItem('wl_dados', JSON.stringify(WORKLIAMAS)); })()
+  }
+  closeWLModal();
+  renderWL();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2904,7 +3035,7 @@ async function salvarCon(){
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay','mat-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay','mat-overlay','wl-overlay'].forEach(function(id){
   var el = document.getElementById(id);
   if(!el) return;
   el.addEventListener('click',function(e){
@@ -2922,6 +3053,7 @@ async function salvarCon(){
       else if(id==='sp-overlay') closeSpModal();
       else if(id==='par-overlay') closeParModal();
       else if(id==='con-overlay') closeConModal();
+      else if(id==='wl-overlay') closeWLModal();
       else closeDel();
     }
   });
@@ -3627,7 +3759,7 @@ function vlInit() {
   vlRenderHistorico();
 }
 
-var VL_BANCOS = ['Facta','BMG','Finanto','C6','Amigoz'];
+var VL_BANCOS = ['Facta','BMG','Finanto','C6','Amigoz','2S'];
 
 function vlAdicionarLogin() {
   vlLoginCount++;
@@ -3719,7 +3851,9 @@ function vlEnviarEmail() {
   }
   var corpo = 'Olá, tudo bem?\n\nSolicito o vínculo dos seguintes logins ao código ' + storm + ':\n\n' + items.join('\n') + '\n\nAgradeço desde já!';
 
+  var destinatario = 'cadastrosub01@novapromotora.com';
   var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&to=' + encodeURIComponent(destinatario) +
     '&su=' + encodeURIComponent(assunto) +
     '&body=' + encodeURIComponent(corpo);
   window.open(gmailUrl, '_blank');
@@ -3820,30 +3954,16 @@ function ajusteExtrair() {
   ajusteAtualizarPreview();
 }
 
-// Busca o e-mail do banco na lista de Contatos (co_dados) pelo nome do banco.
-// Faz correspondência flexível (ignora acentos/maiúsculas e aceita nome parcial).
+// E-mail fixo de destino para os Ajustes de Dados Bancários (sempre o mesmo, independente do banco).
+var AJUSTE_EMAIL_PADRAO = 'ascom@novafinanceira.com';
+
+// Preenche automaticamente o e-mail de destino com o padrão desse fluxo,
+// sem depender de busca por banco (cada automação tem seu próprio destinatário fixo).
 function ajusteBuscarEmail() {
-  var bancoDigitado = document.getElementById('aj-banco').value.trim();
   var statusEl = document.getElementById('aj-email-status');
   var emailEl = document.getElementById('aj-email');
-  if (!bancoDigitado) { if (statusEl) statusEl.textContent = ''; return; }
-
-  function norm(s) {
-    return (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-  }
-
-  var alvo = norm(bancoDigitado);
-  var encontrado = CONTATOS.find(function (c) {
-    var nomeC = norm(c.banco);
-    return nomeC && (nomeC === alvo || nomeC.indexOf(alvo) !== -1 || alvo.indexOf(nomeC) !== -1);
-  });
-
-  if (encontrado && encontrado.email) {
-    emailEl.value = encontrado.email;
-    if (statusEl) { statusEl.textContent = '✅ encontrado nos Contatos'; statusEl.style.color = '#10b981'; }
-  } else {
-    if (statusEl) { statusEl.textContent = '⚠️ não encontrado — digite manualmente'; statusEl.style.color = '#f59e0b'; }
-  }
+  if (!emailEl.value.trim()) { emailEl.value = AJUSTE_EMAIL_PADRAO; }
+  if (statusEl) { statusEl.textContent = '✅ preenchido automaticamente'; statusEl.style.color = '#10b981'; }
 }
 
 function ajusteAtualizarPreview() {
@@ -3988,7 +4108,7 @@ function slaZoom(idx) {
 var BACKUP_KEYS = [
   'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
   'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
-  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados'
+  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados','wl_dados'
 ];
 
 function exportarBackup() {
@@ -4066,7 +4186,8 @@ var SYNC_KEY_MAP = {
   in_dados:    { setVar: function(v){ INTERNO = v; },     render: function(){ if(typeof renderInterno==='function') renderInterno(); } },
   mph_dados:   { setVar: function(v){ MATERIAL_PH = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('powerhub'); } },
   mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } },
-  rd_dados:    { setVar: function(v){ RD_DADOS.length = 0; v.forEach(function(item){ RD_DADOS.push(item); }); }, render: function(){ if(typeof rdRenderizar==='function') rdRenderizar(); } }
+  rd_dados:    { setVar: function(v){ RD_DADOS.length = 0; v.forEach(function(item){ RD_DADOS.push(item); }); }, render: function(){ if(typeof rdRenderizar==='function') rdRenderizar(); } },
+  wl_dados:    { setVar: function(v){ WORKLIAMAS = v; },  render: function(){ if(typeof renderWL==='function') renderWL(); } }
 };
 
 var _cloudDb = null;
