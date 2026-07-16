@@ -3795,15 +3795,15 @@ function ajusteExtrair() {
     return m ? m[1].trim() : '';
   }
 
-  var storm = extrair(/CÓDIGO STORM:\s*([^\n]+)/i);
-  var codbanco = extrair(/CÓDIGO BANCO:\s*([^\n]+)/i);
-  var banco = extrair(/BANCO:\s*([^\n]+)/i);
-  var agencia = extrair(/AGÊNCIA:\s*([^\n]+)/i);
-  var tipo = extrair(/TIPO DE CONTA:\s*([^\n]+)/i);
+  var storm = extrair(/C[ÓO]DIGO\s+STORM:\s*([^\n]+)/i);
+  var codbanco = extrair(/C[ÓO]DIGO\s+BANCO:\s*([^\n]+)/i);
+  var banco = extrair(/^BANCO:\s*([^\n]+)/im);
+  var agencia = extrair(/AG[ÊE]NCIA:\s*([^\n]+)/i);
+  var tipo = extrair(/TIPO\s+DE\s+CONTA:\s*([^\n]+)/i);
   var conta = extrair(/N\.?\s*CONTA:\s*([^\n]+)/i);
   var titular = extrair(/TITULAR:\s*([^\n]+)/i);
   var cnpj = extrair(/CNPJ:\s*([^\n]+)/i) || extrair(/CPF:\s*([^\n]+)/i);
-  var obs = extrair(/OBSERVAÇÃO:\s*([^\n]+)/i);
+  var obs = extrair(/OBSERVA[ÇC][ÃA]O:\s*([^\n]+)/i);
 
   document.getElementById('aj-storm').value = storm;
   document.getElementById('aj-codbanco').value = codbanco;
