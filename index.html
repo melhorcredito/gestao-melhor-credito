@@ -1048,7 +1048,11 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
         </div>
         <div>
           <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Banco</label>
-          <input id="aj-banco" type="text" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+          <input id="aj-banco" type="text" oninput="ajusteBuscarEmail()" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
+        </div>
+        <div style="grid-column:span 2">
+          <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">E-mail do Banco (destinatário) <span id="aj-email-status" style="font-weight:400;color:#9ca3af"></span></label>
+          <input id="aj-email" type="email" placeholder="contato@banco.com.br" style="width:100%;padding:8px 10px;border:1.5px solid #dde3ea;border-radius:8px;font-size:13px;background:#f0fdf4;font-family:inherit">
         </div>
         <div>
           <label style="font-size:11px;font-weight:600;color:#6b7f99;display:block;margin-bottom:4px">Agência | DV</label>
@@ -3812,7 +3816,34 @@ function ajusteExtrair() {
   document.getElementById('aj-obs').value = obs;
 
   document.getElementById('ajuste-resultado').style.display = 'block';
+  ajusteBuscarEmail();
   ajusteAtualizarPreview();
+}
+
+// Busca o e-mail do banco na lista de Contatos (co_dados) pelo nome do banco.
+// Faz correspondência flexível (ignora acentos/maiúsculas e aceita nome parcial).
+function ajusteBuscarEmail() {
+  var bancoDigitado = document.getElementById('aj-banco').value.trim();
+  var statusEl = document.getElementById('aj-email-status');
+  var emailEl = document.getElementById('aj-email');
+  if (!bancoDigitado) { if (statusEl) statusEl.textContent = ''; return; }
+
+  function norm(s) {
+    return (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+
+  var alvo = norm(bancoDigitado);
+  var encontrado = CONTATOS.find(function (c) {
+    var nomeC = norm(c.banco);
+    return nomeC && (nomeC === alvo || nomeC.indexOf(alvo) !== -1 || alvo.indexOf(nomeC) !== -1);
+  });
+
+  if (encontrado && encontrado.email) {
+    emailEl.value = encontrado.email;
+    if (statusEl) { statusEl.textContent = '✅ encontrado nos Contatos'; statusEl.style.color = '#10b981'; }
+  } else {
+    if (statusEl) { statusEl.textContent = '⚠️ não encontrado — digite manualmente'; statusEl.style.color = '#f59e0b'; }
+  }
 }
 
 function ajusteAtualizarPreview() {
@@ -3831,10 +3862,17 @@ function ajusteEnviarEmail() {
   var titular = document.getElementById('aj-titular').value.trim();
   var cnpj = document.getElementById('aj-cnpj').value.trim();
   var obs = document.getElementById('aj-obs').value.trim();
+  var destinatario = document.getElementById('aj-email').value.trim();
 
   if (!storm || !banco) {
     var st = document.getElementById('ajuste-status');
     st.textContent = '⚠️ Preencha ao menos o Código Storm e o Banco.';
+    st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#fef2f2;color:#991b1b';
+    return;
+  }
+  if (!destinatario) {
+    var st = document.getElementById('ajuste-status');
+    st.textContent = '⚠️ Preencha o e-mail do banco (destinatário) antes de enviar.';
     st.style.cssText = 'display:block;margin-top:12px;text-align:center;padding:10px;border-radius:8px;font-size:13px;font-weight:600;background:#fef2f2;color:#991b1b';
     return;
   }
@@ -3851,8 +3889,11 @@ function ajusteEnviarEmail() {
     'CNPJ: ' + cnpj + '\n' +
     'OBSERVAÇÃO: ' + (obs || '-');
 
-  var mailto = 'mailto:?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
-  window.open(mailto, '_blank');
+  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&to=' + encodeURIComponent(destinatario) +
+    '&su=' + encodeURIComponent(assunto) +
+    '&body=' + encodeURIComponent(corpo);
+  window.open(gmailUrl, '_blank');
 
   ajusteHistorico.unshift({ storm: storm, banco: banco, data: hoje() });
   localStorage.setItem('ajuste_historico', JSON.stringify(ajusteHistorico));
