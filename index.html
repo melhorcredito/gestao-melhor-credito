@@ -303,6 +303,7 @@ header{display:none}
     <div id="sb-material-sub" style="display:none">
       <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power hub</span></div>
       <div class="sb-subitem" onclick="switchTab('material-storm',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
+      <div class="sb-subitem" onclick="switchTab('material-operacional',this)"><span class="sb-icon">📘</span><span class="sb-label">Guia operacional</span></div>
       <div class="sb-subitem" onclick="switchTab('sla-nova',this)"><span class="sb-icon">📋</span><span class="sb-label">SLA Comissões / Nova</span></div>
     </div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins bancos</span></div>
@@ -800,6 +801,17 @@ header{display:none}
       <button class="btn-add" onclick="openMatModal('storm')">＋ Novo Material</button>
     </div>
     <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="mst-grid">
+      <div class="empty" style="grid-column:1/-1">Nenhum material cadastrado</div>
+    </div>
+  </div>
+</div>
+<div class="tab-content" id="tab-material-operacional">
+  <div style="background:var(--bg)">
+    <div class="toolbar" style="padding-top:16px">
+      <div class="toolbar-l"><input class="search" id="mop-srch" placeholder="🔍 Buscar material..." oninput="renderMaterial('operacional')"></div>
+      <button class="btn-add" onclick="openMatModal('operacional')">＋ Novo Material</button>
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="mop-grid">
       <div class="empty" style="grid-column:1/-1">Nenhum material cadastrado</div>
     </div>
   </div>
@@ -2315,6 +2327,7 @@ function confirmDel(){
   var map = {
     mat_powerhub: {arr: MATERIAL_PH, key: 'mph_dados', render: function(){ renderMaterial('powerhub'); }},
     mat_storm:    {arr: MATERIAL_ST, key: 'mst_dados', render: function(){ renderMaterial('storm'); }},
+    mat_operacional: {arr: MATERIAL_OP, key: 'mop_dados', render: function(){ renderMaterial('operacional'); }},
     login:        {arr: LOGINS,      key: 'mc_logins',  render: renderLogins},
     email:        {arr: EMAILS,      key: 'em_dados',  render: renderEmails},
     sub:          {arr: SUBS,        key: 'sb_dados',  render: renderSub},
@@ -3399,9 +3412,15 @@ async function salvarIn(){
 // ══════════════════════════════════════
 var MATERIAL_PH = JSON.parse(localStorage.getItem('mph_dados')||'[]');
 var MATERIAL_ST = JSON.parse(localStorage.getItem('mst_dados')||'[]');
-function materialSave(){ localStorage.setItem('mph_dados', JSON.stringify(MATERIAL_PH)); localStorage.setItem('mst_dados', JSON.stringify(MATERIAL_ST)); }
+var MATERIAL_OP = JSON.parse(localStorage.getItem('mop_dados')||'[]');
+function materialSave(){ localStorage.setItem('mph_dados', JSON.stringify(MATERIAL_PH)); localStorage.setItem('mst_dados', JSON.stringify(MATERIAL_ST)); localStorage.setItem('mop_dados', JSON.stringify(MATERIAL_OP)); }
 var matEditId = null;
 var matTipo = 'powerhub';
+
+function matArr(tipo){ return tipo==='powerhub' ? MATERIAL_PH : tipo==='storm' ? MATERIAL_ST : MATERIAL_OP; }
+function matGridId(tipo){ return tipo==='powerhub' ? 'mph-grid' : tipo==='storm' ? 'mst-grid' : 'mop-grid'; }
+function matSrchId(tipo){ return tipo==='powerhub' ? 'mph-srch' : tipo==='storm' ? 'mst-srch' : 'mop-srch'; }
+function matLabel(tipo){ return tipo==='powerhub' ? 'Power Hub' : tipo==='storm' ? 'Storm' : 'Guia Operacional'; }
 
 function toggleMaterial() {
   var sub = document.getElementById('sb-material-sub');
@@ -3415,7 +3434,7 @@ function toggleMaterial() {
 function openMatModal(tipo) {
   matTipo = tipo || 'powerhub';
   matEditId = null;
-  document.getElementById('mat-modal-title').textContent = 'Novo Material — ' + (tipo==='powerhub'?'Power Hub':'Storm');
+  document.getElementById('mat-modal-title').textContent = 'Novo Material — ' + matLabel(matTipo);
   document.getElementById('mat-titulo').value = '';
   document.getElementById('mat-desc').value = '';
   document.getElementById('mat-link').value = '';
@@ -3431,7 +3450,7 @@ function closeMatModal() {
 function openMatEdit(id, tipo) {
   matTipo = tipo;
   matEditId = id;
-  var arr = tipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
+  var arr = matArr(tipo);
   var it = arr.find(function(m){ return m.id===id; });
   if(!it) return;
   document.getElementById('mat-modal-title').textContent = 'Editar Material';
@@ -3450,7 +3469,7 @@ async function salvarMat() {
   var tipo   = document.getElementById('mat-tipo').value;
   var linkSistema = document.getElementById('mat-link-sistema').value.trim();
   if(!titulo || !link){ alert('Preencha título e link!'); return; }
-  var arr = matTipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
+  var arr = matArr(matTipo);
   try {
     if(matEditId) {
       var it = arr.find(function(m){ return m.id===matEditId; });
@@ -3465,9 +3484,9 @@ async function salvarMat() {
 }
 
 function renderMaterial(tipo) {
-  var arr  = tipo==='powerhub' ? MATERIAL_PH : MATERIAL_ST;
-  var grid = document.getElementById(tipo==='powerhub' ? 'mph-grid' : 'mst-grid');
-  var srchEl = document.getElementById(tipo==='powerhub' ? 'mph-srch' : 'mst-srch');
+  var arr  = matArr(tipo);
+  var grid = document.getElementById(matGridId(tipo));
+  var srchEl = document.getElementById(matSrchId(tipo));
   var srch = srchEl ? srchEl.value.trim().toLowerCase() : '';
   if(!grid) return;
   var icons = {pdf:'📄',video:'🎥',planilha:'📊',apresentacao:'📑',outro:'📌'};
@@ -4108,7 +4127,7 @@ function slaZoom(idx) {
 var BACKUP_KEYS = [
   'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
   'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
-  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados','wl_dados'
+  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados','wl_dados','mop_dados'
 ];
 
 function exportarBackup() {
@@ -4187,7 +4206,8 @@ var SYNC_KEY_MAP = {
   mph_dados:   { setVar: function(v){ MATERIAL_PH = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('powerhub'); } },
   mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } },
   rd_dados:    { setVar: function(v){ RD_DADOS.length = 0; v.forEach(function(item){ RD_DADOS.push(item); }); }, render: function(){ if(typeof rdRenderizar==='function') rdRenderizar(); } },
-  wl_dados:    { setVar: function(v){ WORKLIAMAS = v; },  render: function(){ if(typeof renderWL==='function') renderWL(); } }
+  wl_dados:    { setVar: function(v){ WORKLIAMAS = v; },  render: function(){ if(typeof renderWL==='function') renderWL(); } },
+  mop_dados:   { setVar: function(v){ MATERIAL_OP = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('operacional'); } }
 };
 
 var _cloudDb = null;
