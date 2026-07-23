@@ -269,7 +269,7 @@ header{display:none}
     <div class="sb-section-title">🏢 Operacional</div>
     <div class="sb-item" onclick="switchTab('logins',this)"><span class="sb-icon">🔐</span><span class="sb-label">Criações de logins</span></div>
     <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros SUB</span></div>
-    <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / propostas</span></div>
+    <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas de propostas</span></div>
     <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas e-mail</span></div>
     <div class="sb-item" onclick="switchTab('powerhub-pend',this)"><span class="sb-icon">🔌</span><span class="sb-label">Power Hub</span></div>
     <div class="sb-item" onclick="switchTab('storm-pend',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
@@ -291,8 +291,8 @@ header{display:none}
 
     <!-- GESTÃO -->
     <div class="sb-section-title">📊 Gestão</div>
-    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📝</span><span class="sb-label">Anotações</span></div>
-    <div class="sb-item" onclick="switchTab('contatos',this)"><span class="sb-icon">📒</span><span class="sb-label">Contatos</span></div>
+    <div class="sb-item" onclick="switchTab('comunicados',this)"><span class="sb-icon">📝</span><span class="sb-label">Anotações e recados</span></div>
+    <div class="sb-item" onclick="switchTab('contatos',this)"><span class="sb-icon">📒</span><span class="sb-label">Contatos bancos</span></div>
     <div class="sb-item" onclick="switchTab('interno',this)"><span class="sb-icon">🏢</span><span class="sb-label">Suporte interno</span></div>
 
     <!-- MATERIAL & ACESSO -->
@@ -303,10 +303,10 @@ header{display:none}
       <span class="sb-arr" id="sb-material-arr">›</span>
     </div>
     <div id="sb-material-sub" style="display:none">
-      <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power hub</span></div>
+      <div class="sb-subitem" onclick="switchTab('material-powerhub',this)"><span class="sb-icon">⚡</span><span class="sb-label">Power Hub</span></div>
       <div class="sb-subitem" onclick="switchTab('material-storm',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
       <div class="sb-subitem" onclick="switchTab('material-operacional',this)"><span class="sb-icon">📘</span><span class="sb-label">Guia operacional</span></div>
-      <div class="sb-subitem" onclick="switchTab('sla-nova',this)"><span class="sb-icon">📋</span><span class="sb-label">SLA Comissões / Nova</span></div>
+      <div class="sb-subitem" onclick="switchTab('sla-nova',this)"><span class="sb-icon">📋</span><span class="sb-label">SLA comissões</span></div>
     </div>
     <div class="sb-item" onclick="switchTab('loginsbancos',this)"><span class="sb-icon">🔑</span><span class="sb-label">Logins bancos</span></div>
     <div class="sb-item" onclick="switchTab('links',this)"><span class="sb-icon">🔗</span><span class="sb-label">Links úteis</span></div>
@@ -365,7 +365,7 @@ header{display:none}
     <div class="tab" onclick="switchTab('demandas',this)">📋 Demandas / Propostas</div>
     <div class="tab" onclick="switchTab('emails',this)">✉️ Demandas E-mail</div>
     <div class="tab" onclick="switchTab('sub',this)">🗂️ Cadastros Sub</div>
-    <div class="tab" onclick="switchTab('comunicados',this)">📝 Anotações</div>
+    <div class="tab" onclick="switchTab('comunicados',this)">📝 Anotações e recados</div>
     <div class="tab" onclick="switchTab('interno',this)">🏢 Suporte Interno</div>
     <div class="tab" onclick="switchTab('loginsbancos',this)">🔑 Logins Bancos</div>
     <div class="tab" onclick="switchTab('links',this)">🔗 Links Úteis</div>
@@ -431,8 +431,8 @@ header{display:none}
       <select class="fsel" id="l-fProm" onchange="renderLogins()">
         <option value="">Todas as promotoras</option>
         <option value="GLM">GLM</option>
-        <option value="Llamas">Llamas</option>
-        <option value="Nova Interno">Nova Interno</option>
+        <option value="Lhamas">Lhamas</option>
+        <option value="Nova Promotora">Nova Promotora</option>
         <option value="A Sua Promotora">A Sua Promotora</option>
       </select>
     </div>
@@ -442,8 +442,8 @@ header{display:none}
   <div class="pills" id="l-pills">
     <div class="pill active" onclick="setLoginPill(this,'')">Todas</div>
     <div class="pill glm" onclick="setLoginPill(this,'GLM')">GLM</div>
-    <div class="pill lla" onclick="setLoginPill(this,'Llamas')">Llamas</div>
-    <div class="pill nov" onclick="setLoginPill(this,'Nova Interno')">Nova Interno</div>
+    <div class="pill lla" onclick="setLoginPill(this,'Lhamas')">Lhamas</div>
+    <div class="pill nov" onclick="setLoginPill(this,'Nova Promotora')">Nova Promotora</div>
     <div class="pill" onclick="setLoginPill(this,'A Sua Promotora')" style="background:#e0f0ff;color:#0055a5;border-color:#99ccee">A Sua Promotora</div>
   </div>
 
@@ -1381,13 +1381,14 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
     </div>
     <div class="modal-body">
       <div class="mf" id="lw-nome"><label>Nome do Parceiro *</label><input id="l-nome" placeholder="Ex: João Silva"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>ID <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><input id="l-id" placeholder="Ex: 12345"></div>
       <div class="mf" id="lw-banco"><label>Banco *</label><input id="l-banco" placeholder="Ex: Itaú, Bradesco..."><span class="em">Campo obrigatório</span></div>
       <div class="mf" id="lw-prom"><label>Promotora *</label>
         <select id="l-prom">
           <option value="">Selecione...</option>
           <option value="GLM">GLM</option>
-          <option value="Llamas">Llamas</option>
-          <option value="Nova Interno">Nova Interno</option>
+          <option value="Lhamas">Lhamas</option>
+          <option value="Nova Promotora">Nova Promotora</option>
           <option value="A Sua Promotora">A Sua Promotora</option>
           <option value="Outra">Outra</option>
         </select>
@@ -1641,7 +1642,7 @@ OBSERVAÇÃO: -" style="width:100%;padding:12px;border:1.5px solid #dde3ea;borde
 <div class="tab-content" id="tab-sla-nova">
   <div style="background:var(--bg);min-height:calc(100vh - 58px)">
     <div style="max-width:1200px;margin:0 auto;padding:28px 20px">
-      <h2 style="font-family:var(--fd);font-size:20px;color:var(--dark);margin-bottom:6px">📋 SLA Comissões / Nova</h2>
+      <h2 style="font-family:var(--fd);font-size:20px;color:var(--dark);margin-bottom:6px">📋 SLA Comissões</h2>
       <p style="font-size:13px;color:var(--lbl);margin-bottom:24px">Deslize para o lado para ver todas as tabelas</p>
 
       <!-- Carrossel -->
@@ -2032,7 +2033,7 @@ function renderLogins(){
   var fProm = document.getElementById('l-fProm').value || lFilterProm;
   var cols = {and:[],pend:[],fin:[],rep:[]};
   LOGINS.forEach(function(it){
-    if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch)) return;
+    if(srch && !it.nome.toLowerCase().includes(srch) && !it.banco.toLowerCase().includes(srch) && !(it.idsol||'').toLowerCase().includes(srch)) return;
     if(fProm && it.prom !== fProm) return;
     cols[it.status] && cols[it.status].push(it);
   });
@@ -2046,7 +2047,7 @@ function renderLogins(){
       if(s!=='pend') btns+='<button class="mv-btn to-pend" onclick="moveLogin(\''+it.id+'\',\'pend\')">⬅ Pendente</button>';
       if(s!=='fin') btns+='<button class="mv-btn to-fin" onclick="moveLogin(\''+it.id+'\',\'fin\')">➡ Finalizado</button>';
       if(s!=='rep') btns+='<button class="mv-btn to-rep" onclick="moveLogin(\''+it.id+'\',\'rep\')">✖ Reprovado</button>';
-      return '<div class="card"><div class="card-top"><div class="card-name">'+it.nome+'</div>'
+      return '<div class="card"><div class="card-top"><div class="card-name">'+it.nome+(it.idsol?' <span style="font-size:11px;font-weight:700;color:#0077cc">#'+escHtml(it.idsol)+'</span>':'')+'</div>'
         +'<div class="card-actions"><button class="act-btn" onclick="openLoginEdit(\''+it.id+'\')">✏️</button>'
         +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'login\',\''+escHtml(it.nome)+'\')">🗑️</button></div></div>'
         +'<div class="card-meta"><span class="tag banco">🏦 '+it.banco+'</span>'+promTag(it.prom)
@@ -2077,7 +2078,7 @@ function setLoginPill(el,p){
 function openLoginModal(){
   lEditId=null;
   document.getElementById('l-modal-title').textContent='Nova Solicitação';
-  ['l-nome','l-banco','l-obs','l-oper'].forEach(function(id){ document.getElementById(id).value=''; });
+  ['l-nome','l-banco','l-obs','l-oper','l-id'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('l-prom').value=''; document.getElementById('l-status').value='and';
   ['lw-nome','lw-banco','lw-prom','lw-oper'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
   document.getElementById('l-overlay').classList.add('open');
@@ -2088,6 +2089,7 @@ function openLoginEdit(id){
   lEditId=id;
   document.getElementById('l-modal-title').textContent='Editar Solicitação';
   document.getElementById('l-nome').value=it.nome;
+  document.getElementById('l-id').value=it.idsol||'';
   document.getElementById('l-banco').value=it.banco;
   document.getElementById('l-prom').value=it.prom;
   document.getElementById('l-obs').value=it.obs||'';
@@ -2100,6 +2102,7 @@ function closeLoginModal(){ document.getElementById('l-overlay').classList.remov
 
 async function salvarLogin(){
   var nome=document.getElementById('l-nome').value.trim();
+  var idsol=document.getElementById('l-id').value.trim();
   var banco=document.getElementById('l-banco').value.trim();
   var prom=document.getElementById('l-prom').value;
   var obs=document.getElementById('l-obs').value.trim();
@@ -2112,9 +2115,9 @@ async function salvarLogin(){
   });
   if(!ok) return;
   if(lEditId){
-    (function(){ var it = LOGINS.find(function(x){return x.id===lEditId;}); if(it){ it.nome=nome;it.banco=banco;it.prom=prom;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
+    (function(){ var it = LOGINS.find(function(x){return x.id===lEditId;}); if(it){ it.nome=nome;it.idsol=idsol;it.banco=banco;it.prom=prom;it.obs=obs;it.oper=oper;it.status=status; } localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   } else {
-    (function(){ LOGINS.unshift({id:String(Date.now()),nome,banco,prom,obs,oper,status,data:hoje()}); localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
+    (function(){ LOGINS.unshift({id:String(Date.now()),nome,idsol,banco,prom,obs,oper,status,data:hoje()}); localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   }
   closeLoginModal();
 }
