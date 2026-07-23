@@ -271,6 +271,8 @@ header{display:none}
     <div class="sb-item" onclick="switchTab('sub',this)"><span class="sb-icon">🗂️</span><span class="sb-label">Cadastros SUB</span></div>
     <div class="sb-item" onclick="switchTab('demandas',this)"><span class="sb-icon">📋</span><span class="sb-label">Demandas / propostas</span></div>
     <div class="sb-item" onclick="switchTab('emails',this)"><span class="sb-icon">✉️</span><span class="sb-label">Demandas e-mail</span></div>
+    <div class="sb-item" onclick="switchTab('powerhub-pend',this)"><span class="sb-icon">🔌</span><span class="sb-label">Power Hub</span></div>
+    <div class="sb-item" onclick="switchTab('storm-pend',this)"><span class="sb-icon">🌪️</span><span class="sb-label">Storm</span></div>
 
     <!-- AUTOMAÇÕES -->
     <div class="sb-section-title">⚡ Automações</div>
@@ -559,6 +561,142 @@ header{display:none}
         <span class="col-count res" id="e-cnt-res">0</span>
       </div>
       <div class="col-body" id="e-col-res"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ABA: POWER HUB (PENDÊNCIAS) ══════════════ -->
+<div class="tab-content" id="tab-powerhub-pend">
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="ph-srch" placeholder="🔍 Buscar por código do parceiro..." oninput="renderPH()">
+      <select class="fsel" id="ph-ftipo" onchange="renderPH()">
+        <option value="">Todos os tipos</option>
+        <option value="Ativação PowerHub">Ativação PowerHub</option>
+        <option value="Inativação">Inativação</option>
+        <option value="Migração">Migração</option>
+        <option value="Degustação">Degustação</option>
+        <option value="Varredura">Varredura</option>
+        <option value="Ativação CashBack">Ativação CashBack</option>
+        <option value="Degustação - Imersão">Degustação - Imersão</option>
+        <option value="Alteração de senha - Parceiro Estratégico">Alteração de senha - Parceiro Estratégico</option>
+        <option value="Alteração de senha - Comercial">Alteração de senha - Comercial</option>
+        <option value="Migração e Ativação">Migração e Ativação</option>
+      </select>
+    </div>
+    <button class="btn-add" onclick="openPHModal()">＋ Nova Solicitação</button>
+  </div>
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px" id="ph-grid">
+    <div class="empty" style="grid-column:1/-1">Nenhuma solicitação cadastrada</div>
+  </div>
+</div>
+
+<!-- ══ MODAL POWER HUB ══ -->
+<div class="overlay" id="ph-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="ph-modal-title">Nova Solicitação Power Hub</h2>
+      <button class="close-btn" onclick="closePHModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="phw-tipo"><label>Tipo de Solicitação *</label>
+        <select id="ph-tipo">
+          <option value="">Selecione...</option>
+          <option>Ativação PowerHub</option>
+          <option>Inativação</option>
+          <option>Migração</option>
+          <option>Degustação</option>
+          <option>Varredura</option>
+          <option>Ativação CashBack</option>
+          <option>Degustação - Imersão</option>
+          <option>Alteração de senha - Parceiro Estratégico</option>
+          <option>Alteração de senha - Comercial</option>
+          <option>Migração e Ativação</option>
+        </select>
+        <span class="em">Campo obrigatório</span>
+      </div>
+      <div class="mf" id="phw-cod"><label>Código do Parceiro *</label><input id="ph-cod" placeholder="Ex: 12345"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Data da Solicitação</label><input id="ph-data" type="date"></div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="ph-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closePHModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarPH()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ABA: STORM (PENDÊNCIAS) ══════════════ -->
+<div class="tab-content" id="tab-storm-pend">
+  <div class="stats">
+    <div class="stat and"><div class="n" id="stm-st-aguac">0</div><div class="l">Aguardando Acordo</div></div>
+    <div class="stat pend"><div class="n" id="stm-st-aguat">0</div><div class="l">Aguardando Ativação</div></div>
+    <div class="stat fin"><div class="n" id="stm-st-ativ">0</div><div class="l">Ativado</div></div>
+    <div class="stat rep"><div class="n" id="stm-st-pend">0</div><div class="l">Pendências</div></div>
+    <div class="stat tot"><div class="n" id="stm-st-tot">0</div><div class="l">Total</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <input class="search" id="stm-srch" placeholder="🔍 Buscar por código do parceiro..." oninput="renderStm()">
+    </div>
+    <button class="btn-add" onclick="openStmModal()">＋ Nova Solicitação</button>
+  </div>
+
+  <div class="board" style="grid-template-columns:repeat(4,1fr)">
+    <div class="col">
+      <div class="col-head and">
+        <div class="col-title and"><span class="col-dot and"></span>Aguardando Acordo</div>
+        <span class="col-count and" id="stm-cnt-aguac">0</span>
+      </div>
+      <div class="col-body" id="stm-col-aguac"></div>
+    </div>
+    <div class="col">
+      <div class="col-head pend">
+        <div class="col-title pend"><span class="col-dot pend"></span>Aguardando Ativação</div>
+        <span class="col-count pend" id="stm-cnt-aguat">0</span>
+      </div>
+      <div class="col-body" id="stm-col-aguat"></div>
+    </div>
+    <div class="col">
+      <div class="col-head fin">
+        <div class="col-title fin"><span class="col-dot fin"></span>Ativado</div>
+        <span class="col-count fin" id="stm-cnt-ativ">0</span>
+      </div>
+      <div class="col-body" id="stm-col-ativ"></div>
+    </div>
+    <div class="col">
+      <div class="col-head rep">
+        <div class="col-title rep"><span class="col-dot rep"></span>Pendências</div>
+        <span class="col-count rep" id="stm-cnt-pend">0</span>
+      </div>
+      <div class="col-body" id="stm-col-pend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL STORM ══ -->
+<div class="overlay" id="stm-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="stm-modal-title">Nova Solicitação Storm</h2>
+      <button class="close-btn" onclick="closeStmModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf" id="stmw-cod"><label>Código do Parceiro *</label><input id="stm-cod" placeholder="Ex: 12345"><span class="em">Campo obrigatório</span></div>
+      <div class="mf"><label>Status</label>
+        <select id="stm-status">
+          <option value="aguac">Aguardando de acordo</option>
+          <option value="aguat">Aguardando ativação</option>
+          <option value="ativ">Ativado</option>
+          <option value="pend">Pendências</option>
+        </select>
+      </div>
+      <div class="mf"><label>Observação <span style="color:#9eb8cc;font-weight:400">(opcional)</span></label><textarea id="stm-obs" placeholder="Observações..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeStmModal()">Cancelar</button>
+      <button class="btn-save" onclick="salvarStm()">Salvar</button>
     </div>
   </div>
 </div>
@@ -1876,6 +2014,8 @@ function switchTab(name,el){
   if(name === 'comissoes') renderCom();
   if(name === 'sla-parceiro') renderSlaParceiro();
   if(name === 'workliamas') renderWL();
+  if(name === 'powerhub-pend') renderPH();
+  if(name === 'storm-pend') renderStm();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1983,6 +2123,171 @@ async function moveLogin(id,status){
   var label = status==='and'?'Em Andamento':status==='pend'?'Pendente':status==='fin'?'Finalizado':'Reprovado';
   (function(){ var it = LOGINS.find(function(x){return x.id===id;}); if(it){ it.status=status; } localStorage.setItem('mc_logins', JSON.stringify(LOGINS)); })()
   registrarHistorico('login','Login de '+(it?it.nome:'')+'  → '+label, '');
+}
+
+// ══════════════════════════════════════════════════════════════
+// ABA POWER HUB (PENDÊNCIAS)
+// ══════════════════════════════════════════════════════════════
+var PH_DADOS = JSON.parse(localStorage.getItem('ph_dados')||'[]');
+var phEditId = null;
+
+function phSave(){ localStorage.setItem('ph_dados', JSON.stringify(PH_DADOS)); }
+
+function renderPH(){
+  var srch = document.getElementById('ph-srch').value.trim().toLowerCase();
+  var ftipo = document.getElementById('ph-ftipo').value;
+  var grid = document.getElementById('ph-grid');
+  var list = PH_DADOS.filter(function(it){
+    if(srch && !it.cod.toLowerCase().includes(srch)) return false;
+    if(ftipo && it.tipo !== ftipo) return false;
+    return true;
+  });
+  if(!list.length){ grid.innerHTML='<div class="empty" style="grid-column:1/-1">Nenhuma solicitação cadastrada</div>'; return; }
+  grid.innerHTML = list.map(function(it){
+    return '<div class="card" style="background:#fff'+(it.concluido?';opacity:.65':'')+'">'
+      +'<div class="card-top"><div class="card-name">🔌 '+escHtml(it.cod)+(it.concluido?' <span style="font-size:11px;color:#22c55e;font-weight:700">✔ Concluído</span>':'')+'</div>'
+      +'<div class="card-actions">'
+      +'<button class="act-btn" onclick="openPHEdit(\''+it.id+'\')">✏️</button>'
+      +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'ph\',\''+escHtml(it.cod)+'\')">🗑️</button>'
+      +'</div></div>'
+      +'<div class="card-meta"><span class="tag banco">📋 '+escHtml(it.tipo)+'</span>'
+      +(it.data?'<span class="tag data">📅 '+escHtml(it.data)+'</span>':'')+'</div>'
+      +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+escHtml(it.obs)+'</div>':'')
+      +'<div class="card-move">'
+      +'<button class="mv-btn to-fin" onclick="togglePHConcluido(\''+it.id+'\')">'+(it.concluido?'↩ Reabrir':'✔ Concluir')+'</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+function togglePHConcluido(id){
+  var it = PH_DADOS.find(function(x){ return x.id===id; });
+  if(it){ it.concluido = !it.concluido; phSave(); renderPH(); }
+}
+
+function openPHModal(){
+  phEditId=null;
+  document.getElementById('ph-modal-title').textContent='Nova Solicitação Power Hub';
+  document.getElementById('ph-tipo').value='';
+  document.getElementById('ph-cod').value='';
+  document.getElementById('ph-obs').value='';
+  document.getElementById('ph-data').value=new Date().toISOString().slice(0,10);
+  ['phw-tipo','phw-cod'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('ph-overlay').classList.add('open');
+}
+function openPHEdit(id){
+  var it=PH_DADOS.find(function(x){ return x.id===id; }); if(!it) return;
+  phEditId=id;
+  document.getElementById('ph-modal-title').textContent='Editar Solicitação';
+  document.getElementById('ph-tipo').value=it.tipo;
+  document.getElementById('ph-cod').value=it.cod;
+  document.getElementById('ph-obs').value=it.obs||'';
+  document.getElementById('ph-data').value=it.data||'';
+  ['phw-tipo','phw-cod'].forEach(function(id){ document.getElementById(id).classList.remove('err'); });
+  document.getElementById('ph-overlay').classList.add('open');
+}
+function closePHModal(){ document.getElementById('ph-overlay').classList.remove('open'); }
+
+async function salvarPH(){
+  var tipo=document.getElementById('ph-tipo').value;
+  var cod=document.getElementById('ph-cod').value.trim();
+  var obs=document.getElementById('ph-obs').value.trim();
+  var data=document.getElementById('ph-data').value;
+  var ok=true;
+  [['phw-tipo',tipo],['phw-cod',cod]].forEach(function(p){
+    var w=document.getElementById(p[0]);
+    if(!p[1]){ w.classList.add('err'); ok=false; } else w.classList.remove('err');
+  });
+  if(!ok) return;
+  if(phEditId){
+    var it = PH_DADOS.find(function(x){return x.id===phEditId;});
+    if(it){ it.tipo=tipo; it.cod=cod; it.obs=obs; it.data=data; }
+  } else {
+    PH_DADOS.unshift({id:String(Date.now()),tipo,cod,obs,data,concluido:false});
+  }
+  phSave();
+  closePHModal();
+  renderPH();
+}
+
+// ══════════════════════════════════════════════════════════════
+// ABA STORM (PENDÊNCIAS)
+// ══════════════════════════════════════════════════════════════
+var STM_DADOS = JSON.parse(localStorage.getItem('stm_dados')||'[]');
+var stmEditId = null;
+var STM_LABELS = {aguac:'Aguardando de acordo', aguat:'Aguardando ativação', ativ:'Ativado', pend:'Pendências'};
+
+function stmSave(){ localStorage.setItem('stm_dados', JSON.stringify(STM_DADOS)); }
+
+function renderStm(){
+  var srch = document.getElementById('stm-srch').value.trim().toLowerCase();
+  var cols = {aguac:[],aguat:[],ativ:[],pend:[]};
+  STM_DADOS.forEach(function(it){
+    if(srch && !it.cod.toLowerCase().includes(srch)) return;
+    cols[it.status] && cols[it.status].push(it);
+  });
+  ['aguac','aguat','ativ','pend'].forEach(function(s){
+    var el=document.getElementById('stm-col-'+s);
+    document.getElementById('stm-cnt-'+s).textContent=cols[s].length;
+    document.getElementById('stm-st-'+s).textContent=cols[s].length;
+    if(!cols[s].length){ el.innerHTML='<div class="empty">Nenhuma solicitação</div>'; return; }
+    el.innerHTML=cols[s].map(function(it){
+      var btns='';
+      ['aguac','aguat','ativ','pend'].forEach(function(dest){
+        if(dest!==s) btns+='<button class="mv-btn to-'+dest+'" onclick="moveStm(\''+it.id+'\',\''+dest+'\')">➡ '+STM_LABELS[dest]+'</button>';
+      });
+      return '<div class="card"><div class="card-top"><div class="card-name">🌪️ '+escHtml(it.cod)+'</div>'
+        +'<div class="card-actions"><button class="act-btn" onclick="openStmEdit(\''+it.id+'\')">✏️</button>'
+        +'<button class="act-btn" onclick="openDel(\''+it.id+'\',\'stm\',\''+escHtml(it.cod)+'\')">🗑️</button></div></div>'
+        +(it.data?'<div class="card-meta"><span class="tag data">📅 '+escHtml(it.data)+'</span></div>':'')
+        +(it.obs?'<div style="margin-top:8px;font-size:12px;color:var(--lbl);background:var(--blue-p);border-radius:7px;padding:6px 10px;line-height:1.5">💬 '+escHtml(it.obs)+'</div>':'')
+        +'<div class="card-move">'+btns+'</div></div>';
+    }).join('');
+  });
+  var tot = STM_DADOS.filter(function(it){ return !srch || it.cod.toLowerCase().includes(srch); });
+  document.getElementById('stm-st-tot').textContent=tot.length;
+}
+
+function moveStm(id,status){
+  var it = STM_DADOS.find(function(x){ return x.id===id; });
+  if(it){ it.status=status; stmSave(); renderStm(); }
+}
+
+function openStmModal(){
+  stmEditId=null;
+  document.getElementById('stm-modal-title').textContent='Nova Solicitação Storm';
+  document.getElementById('stm-cod').value='';
+  document.getElementById('stm-status').value='aguac';
+  document.getElementById('stm-obs').value='';
+  document.getElementById('stmw-cod').classList.remove('err');
+  document.getElementById('stm-overlay').classList.add('open');
+}
+function openStmEdit(id){
+  var it=STM_DADOS.find(function(x){ return x.id===id; }); if(!it) return;
+  stmEditId=id;
+  document.getElementById('stm-modal-title').textContent='Editar Solicitação';
+  document.getElementById('stm-cod').value=it.cod;
+  document.getElementById('stm-status').value=it.status;
+  document.getElementById('stm-obs').value=it.obs||'';
+  document.getElementById('stmw-cod').classList.remove('err');
+  document.getElementById('stm-overlay').classList.add('open');
+}
+function closeStmModal(){ document.getElementById('stm-overlay').classList.remove('open'); }
+
+async function salvarStm(){
+  var cod=document.getElementById('stm-cod').value.trim();
+  var status=document.getElementById('stm-status').value;
+  var obs=document.getElementById('stm-obs').value.trim();
+  if(!cod){ document.getElementById('stmw-cod').classList.add('err'); return; }
+  document.getElementById('stmw-cod').classList.remove('err');
+  if(stmEditId){
+    var it = STM_DADOS.find(function(x){return x.id===stmEditId;});
+    if(it){ it.cod=cod; it.status=status; it.obs=obs; }
+  } else {
+    STM_DADOS.unshift({id:String(Date.now()),cod,status,obs,data:hoje()});
+  }
+  stmSave();
+  closeStmModal();
+  renderStm();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2341,6 +2646,8 @@ function confirmDel(){
     par:          {arr: PARCEIROS,   key: 'pc_dados',  render: renderParceiros},
     con:          {arr: CONTRATOS,   key: 'ct_dados',  render: renderContratos},
     demanda:      {arr: DEMANDAS,    key: 'dm_dados',  render: renderDemandas},
+    ph:           {arr: PH_DADOS,    key: 'ph_dados',  render: renderPH},
+    stm:          {arr: STM_DADOS,   key: 'stm_dados', render: renderStm},
     wl:           {arr: WORKLIAMAS,  key: 'wl_dados',  render: renderWL},
   };
   var m = map[delType] || map['demanda'];
@@ -3048,7 +3355,7 @@ async function salvarCon(){
 }
 
 // ── FECHAR OVERLAYS ────────────────────────────────────────────
-['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay','mat-overlay','wl-overlay'].forEach(function(id){
+['l-overlay','d-overlay','e-overlay','s-overlay','c-overlay','ct-overlay','in-overlay','lb-overlay','lk-overlay','cm-overlay','par-overlay','con-overlay','del-overlay','mat-overlay','wl-overlay','ph-overlay','stm-overlay'].forEach(function(id){
   var el = document.getElementById(id);
   if(!el) return;
   el.addEventListener('click',function(e){
@@ -3067,6 +3374,8 @@ async function salvarCon(){
       else if(id==='par-overlay') closeParModal();
       else if(id==='con-overlay') closeConModal();
       else if(id==='wl-overlay') closeWLModal();
+      else if(id==='ph-overlay') closePHModal();
+      else if(id==='stm-overlay') closeStmModal();
       else closeDel();
     }
   });
@@ -4127,7 +4436,7 @@ function slaZoom(idx) {
 var BACKUP_KEYS = [
   'mc_logins','dm_dados','em_dados','sb_dados','lb_dados','lk_dados',
   'cm_dados','pc_dados','ct_dados','cu_dados','co_dados','in_dados',
-  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados','wl_dados','mop_dados'
+  'mph_dados','mst_dados','rd_dados','mc_historico','sp_dados','wl_dados','mop_dados','ph_dados','stm_dados'
 ];
 
 function exportarBackup() {
@@ -4207,7 +4516,9 @@ var SYNC_KEY_MAP = {
   mst_dados:   { setVar: function(v){ MATERIAL_ST = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('storm'); } },
   rd_dados:    { setVar: function(v){ RD_DADOS.length = 0; v.forEach(function(item){ RD_DADOS.push(item); }); }, render: function(){ if(typeof rdRenderizar==='function') rdRenderizar(); } },
   wl_dados:    { setVar: function(v){ WORKLIAMAS = v; },  render: function(){ if(typeof renderWL==='function') renderWL(); } },
-  mop_dados:   { setVar: function(v){ MATERIAL_OP = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('operacional'); } }
+  mop_dados:   { setVar: function(v){ MATERIAL_OP = v; }, render: function(){ if(typeof renderMaterial==='function') renderMaterial('operacional'); } },
+  ph_dados:    { setVar: function(v){ PH_DADOS = v; },   render: function(){ if(typeof renderPH==='function') renderPH(); } },
+  stm_dados:   { setVar: function(v){ STM_DADOS = v; },  render: function(){ if(typeof renderStm==='function') renderStm(); } }
 };
 
 var _cloudDb = null;
