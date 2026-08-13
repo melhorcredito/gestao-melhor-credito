@@ -243,6 +243,23 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a
         <div class="confere-box" id="confere-outro"></div>
       </div>
     </div>
+
+    <div class="card">
+      <div class="card-head" style="background:#e8f5e9;color:#1b5e20">📥 Importar fatura (Excel ou PDF) e conferir automático</div>
+      <div class="card-body">
+        <div class="form-row">
+          <select id="import-cartao">
+            <option value="nubank">💜 Nubank</option>
+            <option value="outro">💳 Hipercard</option>
+          </select>
+          <input type="file" id="import-file" accept=".csv,.xlsx,.xls,.pdf">
+          <button class="btn btn-green" onclick="processarFatura()">Conferir fatura</button>
+        </div>
+        <div id="import-status" style="font-size:12px;color:#888;margin-top:6px"></div>
+        <div id="import-result" style="margin-top:12px"></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-head">📋 Contas fixas</div>
       <div class="card-body" id="list-debito"></div>
@@ -645,6 +662,175 @@ function limparFaturaReal(cartao){
   const k=curKey();
   if(S.faturaReal&&S.faturaReal[k])delete S.faturaReal[k][cartao];
   save();renderContas();
+}
+
+// ===== IMPORTAR FATURA (Excel/PDF) E CONFERIR AUTOMÁTICO =====
+let importCache={};
+
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    if(document.querySelector(`script[src="${src}"]`)){resolve();return}
+    const s=document.createElement('script');
+    s.src=src;s.onload=()=>resolve();s.onerror=()=>reject(new Error('Não consegui carregar a biblioteca (verifique sua internet)'));
+    document.head.appendChild(s);
+  });
+}
+
+function parseValorBR(str){
+  if(str===null||str===undefined)return null;
+  str=String(str).trim();
+  if(!str)return null;
+  str=str.replace(/R\$\s?/gi,'').replace(/\s/g,'');
+  if(!/\d/.test(str))return null;
+  if(/,\d{2}$/.test(str)){
+    str=str.replace(/\./g,'').replace(',','.');
+  } else if(/\.\d{2}$/.test(str)){
+    str=str.replace(/,/g,'');
+  } else {
+    str=str.replace(/\./g,'').replace(',','.');
+  }
+  const n=parseFloat(str);
+  return isNaN(n)?null:n;
+}
+
+async function extractFromSheet(file){
+  const buf=await file.arrayBuffer();
+  const wb=XLSX.read(buf,{type:'array'});
+  const sheet=wb.Sheets[wb.SheetNames[0]];
+  const rows=XLSX.utils.sheet_to_json(sheet,{header:1,raw:false});
+  const items=[];
+  rows.forEach(row=>{
+    if(!row||!row.length)return;
+    let valorIdx=-1,valor=null;
+    for(let i=row.length-1;i>=0;i--){
+      const cell=String(row[i]||'').trim();
+      if(!cell)continue;
+      const v=parseValorBR(cell);
+      if(v!==null&&v>0){valor=v;valorIdx=i;break}
+    }
+    if(valor===null)return;
+    const nomeParts=row.slice(0,valorIdx).map(c=>String(c||'').trim()).filter(Boolean);
+    const nome=nomeParts.join(' ').trim();
+    if(!nome||/^(valor|total|data|descri[cç][aã]o)$/i.test(nome))return;
+    items.push({nome,valor});
+  });
+  return items;
+}
+
+async function extractFromPDF(file){
+  const buf=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  const lines=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    const page=await pdf.getPage(p);
+    const content=await page.getTextContent();
+    const groups={};
+    content.items.forEach(it=>{
+      const y=Math.round(it.transform[5]);
+      if(!groups[y])groups[y]=[];
+      groups[y].push(it);
+    });
+    Object.keys(groups).map(Number).sort((a,b)=>b-a).forEach(y=>{
+      const lineItems=groups[y].sort((a,b)=>a.transform[4]-b.transform[4]);
+      const text=lineItems.map(it=>it.str).join(' ').replace(/\s+/g,' ').trim();
+      if(text)lines.push(text);
+    });
+  }
+  const items=[];
+  const re=/^(.*\S)\s+(-?R?\$?\s?\d{1,3}(?:\.\d{3})*,\d{2})$/;
+  lines.forEach(line=>{
+    const m=line.match(re);
+    if(m){
+      const nome=m[1].trim().replace(/^\d{1,2}\s*(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)\.?\s*/i,'');
+      const valor=parseValorBR(m[2]);
+      if(valor&&valor>0&&nome.length<100)items.push({nome,valor});
+    }
+  });
+  return items;
+}
+
+function compararFatura(items,cartao){
+  const sistema=S.contas.filter(c=>c.fora!=='sim'&&isAtiva(c)&&c.cartao===cartao).map(c=>({id:c.id,nome:c.nome,valor:c.valor,matched:false}));
+  const faturaMatched=items.map(it=>({...it,matched:false}));
+  faturaMatched.forEach(fi=>{
+    const cand=sistema.find(si=>!si.matched&&Math.abs(si.valor-fi.valor)<0.01);
+    if(cand){cand.matched=true;fi.matched=true}
+  });
+  const faltamNoSistema=faturaMatched.filter(fi=>!fi.matched);
+  const sobrandoNoSistema=sistema.filter(si=>!si.matched);
+  const totalFatura=items.reduce((s,i)=>s+i.valor,0);
+  const totalSistema=sistema.reduce((s,i)=>s+i.valor,0);
+  return{faltamNoSistema,sobrandoNoSistema,totalFatura,totalSistema};
+}
+
+async function processarFatura(){
+  const cartao=document.getElementById('import-cartao').value;
+  const file=document.getElementById('import-file').files[0];
+  const status=document.getElementById('import-status');
+  const resultEl=document.getElementById('import-result');
+  if(!file){alert('Escolha um arquivo primeiro');return}
+  resultEl.innerHTML='';
+  status.textContent='Lendo arquivo...';
+  try{
+    const ext=file.name.split('.').pop().toLowerCase();
+    let items=[];
+    if(ext==='pdf'){
+      status.textContent='Carregando leitor de PDF...';
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      status.textContent='Extraindo texto do PDF...';
+      items=await extractFromPDF(file);
+    } else {
+      status.textContent='Carregando leitor de planilha...';
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+      status.textContent='Lendo planilha...';
+      items=await extractFromSheet(file);
+    }
+    if(!items.length){
+      status.textContent='';
+      resultEl.innerHTML='<div class="confere-result confere-bad">⚠️ Não consegui identificar itens com valor nesse arquivo. Tenta outro formato de exportação ou confira manualmente.</div>';
+      return;
+    }
+    importCache[cartao]=items;
+    status.textContent=`${items.length} itens encontrados no arquivo.`;
+    renderImportResult(cartao);
+  }catch(e){
+    status.textContent='';
+    resultEl.innerHTML=`<div class="confere-result confere-bad">❌ Erro ao ler o arquivo: ${e.message}</div>`;
+  }
+}
+
+function renderImportResult(cartao){
+  const resultEl=document.getElementById('import-result');
+  const items=importCache[cartao]||[];
+  const{faltamNoSistema,sobrandoNoSistema,totalFatura,totalSistema}=compararFatura(items,cartao);
+  let h=`<div class="confere-row" style="margin-bottom:8px">
+    <span>Total da fatura importada: <strong>${fmt(totalFatura)}</strong></span>
+    <span>Total lançado no sistema: <strong>${fmt(totalSistema)}</strong></span>
+  </div>`;
+  if(Math.abs(totalFatura-totalSistema)<0.01&&!faltamNoSistema.length&&!sobrandoNoSistema.length){
+    h+='<div class="confere-result confere-ok">✅ Tudo bateu! Fatura e sistema estão iguais.</div>';
+  } else {
+    if(faltamNoSistema.length){
+      h+='<div class="confere-label" style="margin-top:8px">Está na fatura mas falta lançar no sistema</div>';
+      faltamNoSistema.forEach(it=>{
+        h+=`<div class="list-item"><div class="li-info"><div class="li-name">${it.nome}</div></div><span class="li-val">${fmt(it.valor)}</span><button class="btn btn-sm" onclick="addFaltante(${JSON.stringify(it.nome)},${it.valor},'${cartao}')">+ Adicionar</button></div>`;
+      });
+    }
+    if(sobrandoNoSistema.length){
+      h+='<div class="confere-label" style="margin-top:8px">Está no sistema mas não bateu com nenhum item da fatura (confira se é duplicado/errado)</div>';
+      sobrandoNoSistema.forEach(c=>{
+        h+=`<div class="list-item"><div class="li-info"><div class="li-name">${c.nome}</div></div><span class="li-val">${fmt(c.valor)}</span></div>`;
+      });
+    }
+  }
+  resultEl.innerHTML=h;
+}
+
+function addFaltante(nome,valor,cartao){
+  S.contas.push({id:Date.now()+Math.floor(Math.random()*1000),nome,valor,tipo:'avista',cartao,fora:'',startMonth:S.currentMonth,startYear:S.currentYear});
+  save();renderAll();
+  renderImportResult(cartao);
 }
 
 function renderConferencia(cartao,totalLancado){
